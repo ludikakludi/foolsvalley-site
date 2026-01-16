@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>permaculture design certificate — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: var(--black); text-decoration: underline; }
+        a:hover { text-decoration: none; background: var(--black); color: var(--bg); }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a { text-transform: lowercase; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+        .nav-logo svg { width: 32px; height: 32px; }
+        .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); }
+        .nav-logo:hover { background: none; }
+        .nav-logo:hover span { text-decoration: underline; }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 52px;
+        }
+
+        /* Header with symbols */
+        .header-v2 {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        .header-v2 .photo {
+            height: 100%;
+            width: auto;
+            max-width: 65%;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+
+        .header-v2 .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .header-v2 {
+                height: 300px;
+            }
+            .header-v2 .photo {
+                max-width: 80%;
+            }
+        }
+
+        .hero {
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--moss);
+            color: var(--moss);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-dates {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--moss);
+            margin-bottom: 2rem;
+        }
+
+        .hero-intro {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            max-width: 550px;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .hero-details {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.8;
+            max-width: 500px;
+        }
+
+        .hero-details ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .hero-details li {
+            padding: 0.3rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .hero-details li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--moss);
+        }
+
+        /* What is permaculture section */
+        .explainer-section {
+            background: var(--cream);
+            border-top: 1px solid var(--black);
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 900px;
+        }
+
+        .explainer-left h2 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .explainer-left p {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .explainer-right {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.9;
+        }
+
+        .explainer-right p {
+            margin-bottom: 1.5rem;
+        }
+
+        .impact-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .impact-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .impact-list li:last-child {
+            border-bottom: none;
+        }
+
+        .impact-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--moss);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .explainer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .hero-cta {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--moss);
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 2px solid var(--moss);
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--black);
+            border-color: var(--black);
+            color: var(--cream);
+        }
+
+        .hero-urgency {
+            font-size: 11px;
+            color: var(--rust);
+            font-style: italic;
+        }
+
+        /* Sticky CTA */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--black);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+            border-top: 1px solid var(--gray);
+        }
+
+        .sticky-cta-text {
+            color: var(--bg);
+            font-size: 12px;
+        }
+
+        .sticky-cta-text strong {
+            color: var(--cream);
+        }
+
+        .sticky-cta .btn-primary {
+            padding: 0.6rem 1.5rem;
+            font-size: 11px;
+        }
+
+        @media (max-width: 600px) {
+            .sticky-cta {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+
+        section {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 900px;
+        }
+
+        .split-left {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.8rem;
+            line-height: 1.3;
+        }
+
+        .split-right {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--gray);
+        }
+
+        .split-right p {
+            margin-bottom: 1.5rem;
+        }
+
+        .split-right ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .split-right li {
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .split-right li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--moss);
+        }
+
+        /* Photo strip */
+        .photo-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: var(--black);
+            border-top: 1px solid var(--black);
+            border-bottom: 1px solid var(--black);
+        }
+
+        .photo-strip img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        @media (max-width: 600px) {
+            .photo-strip {
+                grid-template-columns: 1fr;
+            }
+            .photo-strip img {
+                aspect-ratio: 16/10;
+            }
+        }
+
+        /* Curriculum */
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+        }
+
+        .curriculum-block {
+            padding: 1.5rem;
+            border: 1px solid var(--black);
+            position: relative;
+        }
+
+        .curriculum-symbol {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--moss);
+            opacity: 0.7;
+        }
+
+        .curriculum-block h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .curriculum-block ul {
+            list-style: none;
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .curriculum-block li {
+            padding: 0.3rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .curriculum-block li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--moss);
+        }
+
+        /* Pricing */
+        .moss-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .moss-section .section-label { color: rgba(255,255,255,0.5); }
+
+        .pricing-grid {
+            display: flex;
+            gap: 0;
+            max-width: 600px;
+        }
+
+        .pricing-box {
+            flex: 1;
+            padding: 2rem;
+            border: 2px solid var(--cream);
+            text-align: center;
+        }
+
+        .pricing-box:first-child { border-right: none; }
+
+        .pricing-amount {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .pricing-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            opacity: 0.8;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+
+        .pricing-note p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Accommodation */
+        .accommodation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 700px;
+        }
+
+        .accommodation-item {
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .accommodation-item h4 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .accommodation-item p {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .special-note {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border: 1px dashed rgba(255,255,255,0.4);
+            max-width: 500px;
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Facilitator */
+        .dark-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .dark-section .section-label { color: var(--gray); }
+
+        .facilitator {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            max-width: 800px;
+            align-items: start;
+        }
+
+        .facilitator-photo {
+            width: 220px;
+            height: auto;
+            object-fit: contain;
+            border: 1px solid var(--gray);
+        }
+
+        .facilitator-content {
+        }
+
+        .facilitator-name {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .facilitator-bio {
+            font-size: 13px;
+            color: var(--gray-light);
+            line-height: 1.9;
+        }
+
+        .facilitator-bio p {
+            margin-bottom: 1rem;
+        }
+
+        .facilitator-credentials {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+        }
+
+        .facilitator-credentials ul {
+            list-style: none;
+            font-size: 12px;
+            color: var(--gray);
+            columns: 2;
+            column-gap: 2rem;
+        }
+
+        .facilitator-credentials li {
+            padding: 0.3rem 0;
+            break-inside: avoid;
+        }
+
+        @media (max-width: 600px) {
+            .facilitator {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .facilitator-photo {
+                margin: 0 auto 1rem;
+                max-width: 280px;
+            }
+            .facilitator-credentials ul {
+                columns: 1;
+            }
+        }
+
+        /* Venue section */
+        .venue-features {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .venue-features span {
+            border-left: 2px solid var(--moss);
+            padding-left: 0.75rem;
+        }
+
+        /* Apply */
+        .apply-section {
+            background: var(--cream);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .apply-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .apply-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .apply-desc {
+            font-size: 13px;
+            color: var(--gray);
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .apply-cta {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 1px solid var(--black);
+            color: var(--black);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+        }
+
+        .apply-cta:hover {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .apply-note {
+            margin-top: 2rem;
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+
+        /* Stickers */
+        .hero-stickers {
+            position: absolute;
+            right: 2rem;
+            top: 4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 1;
+        }
+
+        .sticker {
+            border: 1px solid var(--black);
+            background: var(--cream);
+            padding: 0.5rem;
+            transition: transform 0.2s;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sticker:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+        }
+
+        .sticker img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .sticker-photo {
+            width: 340px;
+            transform: rotate(2deg);
+        }
+
+        .sticker-graphic {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .sticker-graphic svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sticker-1 { transform: rotate(-2deg); align-self: flex-end; }
+        .sticker-2 { transform: rotate(3deg); align-self: flex-start; margin-left: 2rem; }
+        .sticker-3 { transform: rotate(-1deg); align-self: flex-end; margin-right: 1rem; }
+
+        @media (max-width: 1100px) {
+            .hero-stickers {
+                position: relative;
+                right: auto;
+                top: auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin: 2rem auto;
+                gap: 1rem;
+            }
+            .sticker-photo { width: 220px; }
+            .sticker-graphic { width: 80px; height: 80px; }
+            .sticker-1, .sticker-2, .sticker-3 { align-self: auto; margin: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .split { grid-template-columns: 1fr; gap: 2rem; }
+            .curriculum-grid { grid-template-columns: 1fr; }
+            .pricing-grid { flex-direction: column; }
+            .pricing-box:first-child { border-right: 2px solid var(--cream); border-bottom: none; }
+            .accommodation-grid { grid-template-columns: 1fr; }
+            .facilitator-credentials ul { columns: 1; }
+            footer { flex-direction: column; gap: 0.5rem; }
+            .sticker { width: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>fools' valley</span>
+        </a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <section class="hero" style="margin-top: 52px; position: relative; overflow: visible;">
+        <div class="hero-stickers">
+            <div class="sticker sticker-photo">
+                <img src="assets/permaculture-planting.png" alt="Permaculture planting">
+            </div>
+            <div class="sticker sticker-graphic sticker-1">
+                <!-- Spiral -->
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 40 40 Q 40 25, 55 25 Q 70 25, 70 40 Q 70 58, 52 58 Q 30 58, 30 40 Q 30 18, 55 18 Q 78 18, 78 42 Q 78 68, 50 68 Q 18 68, 18 40 Q 18 10, 50 10" stroke="var(--moss)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="sticker sticker-graphic sticker-2">
+                <!-- Zones/Circles -->
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="10" stroke="var(--moss)" stroke-width="1.5" fill="none"/>
+                    <circle cx="40" cy="40" r="22" stroke="var(--moss)" stroke-width="1.5" fill="none"/>
+                    <circle cx="40" cy="40" r="34" stroke="var(--moss)" stroke-width="1.5" fill="none"/>
+                    <circle cx="40" cy="40" r="4" fill="var(--moss)"/>
+                </svg>
+            </div>
+            <div class="sticker sticker-graphic sticker-3">
+                <!-- Leaf/Seed -->
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 40 70 Q 40 50, 40 35 Q 25 40, 15 30 Q 20 15, 40 10 Q 60 15, 65 30 Q 55 40, 40 35" stroke="var(--moss)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M 40 35 Q 30 28, 25 18" stroke="var(--moss)" stroke-width="1" fill="none" stroke-linecap="round"/>
+                    <path d="M 40 35 Q 50 28, 55 18" stroke="var(--moss)" stroke-width="1" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-tag">72+ hours · internationally recognised</span>
+            <h1 class="hero-title">permaculture design certificate</h1>
+            <p class="hero-subtitle">a transformative 2-week training near lisbon</p>
+            <p class="hero-dates">March 15–27, 2026</p>
+
+            <p class="hero-intro">
+                step into a new way of living, designing and relating to the world.
+            </p>
+
+            <div class="hero-details">
+                <p>A permaculture design certificate (PDC) is the foundational training in permaculture, an approach for designing regenerative systems that work with nature.</p>
+                <p>Over 72+ hours of teaching, you'll learn to observe patterns, understand ecosystems, and design solutions for food, water, energy, shelter, and community. It's internationally recognised and offers both practical tools and a design framework that shifts how you see the world.</p>
+                <p>Whether you're transforming a balcony, designing a food forest, rethinking your lifestyle, or leading community projects, the PDC gives you the foundation to start.</p>
+            </div>
+
+            <div class="hero-cta">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWW1GVnAGtPhY2DME27teAvJSLxyje6Cb3nmH2NDGqfZEDEQ/viewform" class="btn-primary">register now</a>
+                <span class="hero-urgency">super early bird €895 · ends Jan 20</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="explainer-section">
+        <div class="explainer-grid">
+            <div class="explainer-left">
+                <h2>who this is for</h2>
+                <p>
+                    This course is for people who want to understand how to live and design in closer alignment with natural systems, whether or not you have a garden or land.
+                </p>
+            </div>
+            <div class="explainer-right">
+                <p>it's especially for:</p>
+                <ul class="impact-list">
+                    <li>people without a garden who want practical skills and systems thinking for everyday life, work, and community</li>
+                    <li>those considering stewarding land, joining or starting a community, or leading regenerative projects</li>
+                    <li>people already living on land or in community who want stronger design foundations</li>
+                    <li>activists, facilitators, organizers, educators seeking holistic approaches to social and ecological change</li>
+                    <li>researchers, designers, knowledge workers bridging theory with practice</li>
+                    <li>anyone feeling the tension between digital life and a longing for deeper connection, responsibility, and ecological belonging</li>
+                </ul>
+                <p style="margin-top: 1.5rem; font-style: italic;">
+                    No prior permaculture experience is required. What matters is a willingness to observe, engage, and co-create, both individually and collectively.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="photo-strip">
+        <img src="assets/permaculture-hands.jpg" alt="Hands-on learning">
+        <img src="assets/permaculture-land.jpg" alt="Group workshop">
+        <img src="assets/bedroom2.png" alt="Private bedroom">
+    </div>
+
+    <section>
+        <div class="section-label">001 / curriculum</div>
+
+        <p style="font-family: 'EB Garamond', serif; font-size: 1.3rem; max-width: 700px; margin-bottom: 2.5rem; line-height: 1.5;">
+            Over 12 full teaching days, you'll dive into permaculture as a living systems design approach, covering ecology, land stewardship, regenerative design, and community-scale applications.
+        </p>
+
+        <div class="curriculum-grid">
+            <div class="curriculum-block">
+                <div class="curriculum-symbol">◯</div>
+                <h3>core foundations</h3>
+                <ul>
+                    <li>ethics: earth care, people care, fair share</li>
+                    <li>core design principles</li>
+                    <li>reading landscapes</li>
+                    <li>understanding natural patterns</li>
+                    <li>designing with living systems</li>
+                </ul>
+            </div>
+
+            <div class="curriculum-block">
+                <div class="curriculum-symbol">❋</div>
+                <h3>ecological skills</h3>
+                <ul>
+                    <li>home & lifestyle design for resilience</li>
+                    <li>edible landscapes & soil regeneration</li>
+                    <li>water management & energy systems</li>
+                    <li>nutrient cycling</li>
+                    <li>practical hands-on exercises</li>
+                </ul>
+            </div>
+
+            <div class="curriculum-block">
+                <div class="curriculum-symbol">◈</div>
+                <h3>real design work</h3>
+                <ul>
+                    <li>real-world design projects</li>
+                    <li>full design cycle: observation → proposal → implementation plan</li>
+                    <li>mentoring & feedback from experienced facilitators</li>
+                    <li>practical challenges at Fools' Valley</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="dark-section">
+        <div class="section-label">002 / lead facilitator</div>
+
+        <div class="facilitator">
+            <img src="assets/tom-henfrey.png" alt="Tom Henfrey" class="facilitator-photo">
+
+            <div class="facilitator-content">
+                <h2 class="facilitator-name">Tom Henfrey</h2>
+
+                <div class="facilitator-bio">
+                    <p>
+                        Tom is a certified permaculture diploma tutor, an experienced educator with 20 years of experience in permaculture and ecology. He bridges permaculture, research, and core shamanism, weaving these into his teaching to strengthen both the social and ecological impact of projects.
+                    </p>
+                    <p>Tom's background includes:</p>
+                    <ul style="list-style: none; margin: 1rem 0;">
+                        <li style="padding: 0.3rem 0; padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--moss);">—</span> doctoral research on indigenous environmental knowledge</li>
+                        <li style="padding: 0.3rem 0; padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--moss);">—</span> co-founder of the ECOLISE network for community-led sustainability initiatives in Europe</li>
+                        <li style="padding: 0.3rem 0; padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--moss);">—</span> fellow & management board member at the Schumacher Institute, Bristol, UK</li>
+                        <li style="padding: 0.3rem 0; padding-left: 1rem; position: relative;"><span style="position: absolute; left: 0; color: var(--moss);">—</span> international consultancy and teaching on community-scale ecological and social regeneration</li>
+                    </ul>
+                    <p>
+                        In 2022, he co-founded Quinta Sol na Eira, a permaculture learning centre near Tomar in Central Portugal. Tom is also a practitioner and teacher of core shamanism.
+                    </p>
+                    <p style="margin-top: 1.5rem; font-style: italic; color: var(--bg);">
+                        Under Tom's guidance, you'll receive a globally recognised PDC certificate and a foundation to progress toward the Diploma in Applied Permaculture Design.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #333;">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWW1GVnAGtPhY2DME27teAvJSLxyje6Cb3nmH2NDGqfZEDEQ/viewform" class="btn-primary" style="background: transparent; border-color: var(--cream); color: var(--cream);">reserve your spot →</a>
+            <span style="margin-left: 1rem; font-size: 11px; color: var(--gray-light);">limited places available</span>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">003 / the place</div>
+
+        <div class="split">
+            <div class="split-left">
+                fools' valley
+            </div>
+            <div class="split-right">
+                <p>
+                    16 hectares of quiet land, 30 minutes north of Lisbon.
+                </p>
+                <div class="venue-features">
+                    <span>sauna & swimming pond</span>
+                    <span>movement hall & library</span>
+                    <span>community facilities</span>
+                    <span>space to explore and connect with nature</span>
+                    <span>delicious communal meals</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="moss-section">
+        <div class="section-label">004 / pricing & accommodation</div>
+
+        <div class="pricing-grid" style="max-width: 750px;">
+            <div class="pricing-box">
+                <div class="pricing-amount">€895</div>
+                <div class="pricing-label">super early bird</div>
+            </div>
+            <div class="pricing-box" style="border-left: none; border-right: none;">
+                <div class="pricing-amount">€945</div>
+                <div class="pricing-label">early bird</div>
+            </div>
+            <div class="pricing-box">
+                <div class="pricing-amount">€975</div>
+                <div class="pricing-label">full price</div>
+            </div>
+        </div>
+
+        <div class="pricing-note">
+            <p>super early bird: deposit before Jan 20, 2026</p>
+            <p>early bird: deposit before Feb 20, 2026</p>
+            <p>deposit: €300 (non-refundable except if organisers cancel)</p>
+            <p>includes: tuition, certification, meals, refreshments, and facility access</p>
+        </div>
+
+        <h3 style="font-family: 'EB Garamond', serif; font-size: 1.5rem; margin: 3rem 0 1.5rem;">accommodation add-ons</h3>
+
+        <div class="accommodation-grid">
+            <div class="accommodation-item">
+                <h4>dorm / tipi</h4>
+                <p>€96 for 12 nights<br><span style="opacity: 0.6;">mattress & bedding included</span></p>
+            </div>
+            <div class="accommodation-item">
+                <h4>private room</h4>
+                <p>€220 – €440<br><span style="opacity: 0.6;">depending on room</span></p>
+            </div>
+            <div class="accommodation-item">
+                <h4>extended stay</h4>
+                <p>€30 per extra day<br><span style="opacity: 0.6;">+ accommodation choice</span></p>
+            </div>
+        </div>
+
+        <div class="special-note">
+            volunteer exchange & limited discounted places for local residents available — inquire.
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">005 / schedule</div>
+
+        <div class="split">
+            <div class="split-left">
+                two weeks,<br>fully immersive
+            </div>
+            <div class="split-right">
+                <p>
+                    <strong>arrival:</strong> afternoon of March 15<br>
+                    <strong>teaching:</strong> March 16–26 (12 full days)<br>
+                    <strong>departure:</strong> late afternoon of March 27
+                </p>
+                <p>
+                    Daily rhythm includes morning theory, afternoon practical work, and evening discussions. You'll live permaculture principles as you learn them.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="apply-section" id="register">
+        <div class="section-label">006 / register</div>
+
+        <h2 class="apply-title">why this course</h2>
+        <p class="apply-subtitle" style="max-width: 500px; margin: 0 auto 2rem;">
+            If you've been meaning to truly connect with nature and learn to collaborate with the land, even if you don't have a garden — this knowledge can transform how you live, work, and make decisions. And you'll learn it in a supportive community.
+        </p>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWW1GVnAGtPhY2DME27teAvJSLxyje6Cb3nmH2NDGqfZEDEQ/viewform" class="apply-cta">register now</a>
+
+        <p class="apply-note">
+            questions? <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a><br>
+            we look forward to welcoming you at fools' valley
+        </p>
+    </section>
+
+    <footer style="padding-bottom: 4rem;">
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>design for regeneration</span>
+    </footer>
+
+    <div class="sticky-cta">
+        <div class="sticky-cta-text">
+            <strong>Permaculture Design Certificate</strong> · March 15–27, 2026 · from €895
+        </div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWW1GVnAGtPhY2DME27teAvJSLxyje6Cb3nmH2NDGqfZEDEQ/viewform" class="btn-primary">register now</a>
+    </div>
+</body>
+</html>

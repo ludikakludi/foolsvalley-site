@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fools' Valley Logo System — Card + Void</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f5f5f0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .logo-section h2 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .logo-section p {
+            font-size: 0.85rem;
+            color: #666;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        .logo-row {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .logo-container {
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        .logo-container.dark {
+            background: #0a0a0a;
+        }
+        .logo-container.cream {
+            background: #fffef8;
+        }
+        .label {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .card-flip {
+            perspective: 1000px;
+            width: 130px;
+            height: 190px;
+            cursor: pointer;
+        }
+        .card-flip:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        h3 {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: normal;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo-section">
+    <h2>The System</h2>
+    <p>Two sides of the same card. The front shows the fool on their journey. The back shows what they're stepping into — the void, the unknown, the portal. Hover to flip.</p>
+    
+    <div class="logo-row">
+        <div>
+            <div class="label">Hover to flip</div>
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- FRONT: The Fool Card -->
+                            <rect x="3" y="3" width="124" height="184" fill="#fffef8"/>
+                            <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                            <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#1a1a18" stroke-width="0.5" fill="none"/>
+                            
+                            <text x="65" y="28" font-family="Georgia, serif" font-size="9" fill="#1a1a18" text-anchor="middle">☽ ✦ ☾</text>
+                            
+                            <path d="M 22 38 Q 65 36, 108 39 Q 110 85, 109 132 Q 65 135, 21 133 Q 19 85, 22 38" stroke="#1a1a18" stroke-width="0.5" fill="none"/>
+                            
+                            <!-- Star the fool reaches for -->
+                            <path d="M 65 46 L 67 52 L 73 52 L 68 56 L 70 62 L 65 58 L 60 62 L 62 56 L 57 52 L 63 52 Z" stroke="#1a1a18" stroke-width="0.8" fill="none" stroke-linejoin="round"/>
+                            
+                            <!-- Fool figure reaching up -->
+                            <path d="M 62 72 Q 64 67, 69 66 Q 75 66, 77 72 Q 78 78, 73 80 Q 66 82, 63 77 Q 60 74, 62 72" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                            <path d="M 69 82 Q 67 90, 69 98 Q 67 104, 69 110" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                            <path d="M 67 110 Q 60 118, 52 126" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                            <path d="M 71 108 Q 78 114, 86 120" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                            <!-- Arms reaching UP toward star -->
+                            <path d="M 67 90 Q 56 78, 50 62" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                            <path d="M 71 90 Q 82 78, 88 62" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                            
+                            <text x="65" y="152" font-family="Georgia, serif" font-size="9" fill="#1a1a18" text-anchor="middle" font-style="italic">fools' valley</text>
+                            <text x="65" y="168" font-family="Georgia, serif" font-size="12" fill="#1a1a18" text-anchor="middle">0</text>
+                        </svg>
+                    </div>
+                    <div class="card-back">
+                        <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- BACK: The Void -->
+                            <rect x="3" y="3" width="124" height="184" fill="#0a0a0a"/>
+                            <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                            <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#f5f5f0" stroke-width="0.5" fill="none"/>
+                            
+                            <!-- Concentric void circles -->
+                            <path d="M 25 95 Q 23 60, 45 45 Q 70 30, 100 40 Q 125 55, 120 95 Q 115 135, 85 150 Q 55 162, 32 140 Q 18 120, 25 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                            <path d="M 38 95 Q 36 68, 55 56 Q 75 45, 98 54 Q 115 65, 112 95 Q 108 125, 82 136 Q 58 145, 42 128 Q 32 112, 38 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                            <path d="M 50 95 Q 48 76, 62 68 Q 78 60, 94 70 Q 106 82, 102 100 Q 97 118, 78 125 Q 60 130, 52 115 Q 46 104, 50 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                            <path d="M 58 95 Q 57 84, 66 79 Q 78 74, 88 82 Q 95 92, 90 104 Q 84 114, 72 116 Q 62 116, 58 106 Q 55 100, 58 95" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                            
+                            <!-- Tiny star at center -->
+                            <circle cx="73" cy="95" r="3" fill="#f5f5f0"/>
+                            
+                            <text x="65" y="175" font-family="Georgia, serif" font-size="8" fill="#f5f5f0" text-anchor="middle" letter-spacing="0.15em">THE UNKNOWN</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>The Front — The Fool's Card</h2>
+    <p>The fool reaching toward the star. Used for: hero sections, print materials, full brand moments.</p>
+    
+    <div class="logo-row">
+        <div class="logo-container cream">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#1a1a18" stroke-width="0.5" fill="none"/>
+                
+                <text x="65" y="28" font-family="Georgia, serif" font-size="9" fill="#1a1a18" text-anchor="middle">☽ ✦ ☾</text>
+                
+                <path d="M 22 38 Q 65 36, 108 39 Q 110 85, 109 132 Q 65 135, 21 133 Q 19 85, 22 38" stroke="#1a1a18" stroke-width="0.5" fill="none"/>
+                
+                <!-- Star -->
+                <path d="M 65 46 L 67 52 L 73 52 L 68 56 L 70 62 L 65 58 L 60 62 L 62 56 L 57 52 L 63 52 Z" stroke="#1a1a18" stroke-width="0.8" fill="none" stroke-linejoin="round"/>
+                
+                <!-- Fool reaching up -->
+                <path d="M 62 72 Q 64 67, 69 66 Q 75 66, 77 72 Q 78 78, 73 80 Q 66 82, 63 77 Q 60 74, 62 72" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 69 82 Q 67 90, 69 98 Q 67 104, 69 110" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 67 110 Q 60 118, 52 126" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 71 108 Q 78 114, 86 120" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 67 90 Q 56 78, 50 62" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 71 90 Q 82 78, 88 62" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                
+                <text x="65" y="152" font-family="Georgia, serif" font-size="9" fill="#1a1a18" text-anchor="middle" font-style="italic">fools' valley</text>
+                <text x="65" y="168" font-family="Georgia, serif" font-size="12" fill="#1a1a18" text-anchor="middle">0</text>
+            </svg>
+        </div>
+        
+        <div class="logo-container dark">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#f5f5f0" stroke-width="0.5" fill="none"/>
+                
+                <text x="65" y="28" font-family="Georgia, serif" font-size="9" fill="#f5f5f0" text-anchor="middle">☽ ✦ ☾</text>
+                
+                <path d="M 22 38 Q 65 36, 108 39 Q 110 85, 109 132 Q 65 135, 21 133 Q 19 85, 22 38" stroke="#f5f5f0" stroke-width="0.5" fill="none"/>
+                
+                <path d="M 65 46 L 67 52 L 73 52 L 68 56 L 70 62 L 65 58 L 60 62 L 62 56 L 57 52 L 63 52 Z" stroke="#f5f5f0" stroke-width="0.8" fill="none" stroke-linejoin="round"/>
+                
+                <path d="M 62 72 Q 64 67, 69 66 Q 75 66, 77 72 Q 78 78, 73 80 Q 66 82, 63 77 Q 60 74, 62 72" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 69 82 Q 67 90, 69 98 Q 67 104, 69 110" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 67 110 Q 60 118, 52 126" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 71 108 Q 78 114, 86 120" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 67 90 Q 56 78, 50 62" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 71 90 Q 82 78, 88 62" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                
+                <text x="65" y="152" font-family="Georgia, serif" font-size="9" fill="#f5f5f0" text-anchor="middle" font-style="italic">fools' valley</text>
+                <text x="65" y="168" font-family="Georgia, serif" font-size="12" fill="#f5f5f0" text-anchor="middle">0</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>The Back — The Void</h2>
+    <p>What the fool steps into. The unknown. Used for: favicon, loading states, mystery moments, card backs if you ever print actual cards.</p>
+    
+    <div class="logo-row">
+        <div class="logo-container dark">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#f5f5f0" stroke-width="0.5" fill="none"/>
+                
+                <!-- Concentric void -->
+                <path d="M 25 95 Q 23 60, 45 45 Q 70 30, 100 40 Q 125 55, 120 95 Q 115 135, 85 150 Q 55 162, 32 140 Q 18 120, 25 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                <path d="M 38 95 Q 36 68, 55 56 Q 75 45, 98 54 Q 115 65, 112 95 Q 108 125, 82 136 Q 58 145, 42 128 Q 32 112, 38 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                <path d="M 50 95 Q 48 76, 62 68 Q 78 60, 94 70 Q 106 82, 102 100 Q 97 118, 78 125 Q 60 130, 52 115 Q 46 104, 50 95" stroke="#f5f5f0" stroke-width="0.8" fill="none"/>
+                <path d="M 58 95 Q 57 84, 66 79 Q 78 74, 88 82 Q 95 92, 90 104 Q 84 114, 72 116 Q 62 116, 58 106 Q 55 100, 58 95" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                
+                <circle cx="73" cy="95" r="3" fill="#f5f5f0"/>
+                
+                <text x="65" y="175" font-family="Georgia, serif" font-size="8" fill="#f5f5f0" text-anchor="middle" letter-spacing="0.15em">THE UNKNOWN</text>
+            </svg>
+        </div>
+        
+        <div class="logo-container cream">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#1a1a18" stroke-width="0.5" fill="none"/>
+                
+                <path d="M 25 95 Q 23 60, 45 45 Q 70 30, 100 40 Q 125 55, 120 95 Q 115 135, 85 150 Q 55 162, 32 140 Q 18 120, 25 95" stroke="#1a1a18" stroke-width="0.8" fill="none"/>
+                <path d="M 38 95 Q 36 68, 55 56 Q 75 45, 98 54 Q 115 65, 112 95 Q 108 125, 82 136 Q 58 145, 42 128 Q 32 112, 38 95" stroke="#1a1a18" stroke-width="0.8" fill="none"/>
+                <path d="M 50 95 Q 48 76, 62 68 Q 78 60, 94 70 Q 106 82, 102 100 Q 97 118, 78 125 Q 60 130, 52 115 Q 46 104, 50 95" stroke="#1a1a18" stroke-width="0.8" fill="none"/>
+                <path d="M 58 95 Q 57 84, 66 79 Q 78 74, 88 82 Q 95 92, 90 104 Q 84 114, 72 116 Q 62 116, 58 106 Q 55 100, 58 95" stroke="#1a1a18" stroke-width="1" fill="none"/>
+                
+                <circle cx="73" cy="95" r="3" fill="#1a1a18"/>
+                
+                <text x="65" y="175" font-family="Georgia, serif" font-size="8" fill="#1a1a18" text-anchor="middle" letter-spacing="0.15em">THE UNKNOWN</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>The Void — Standalone</h2>
+    <p>Without the card frame. For favicon, app icon, small marks.</p>
+    
+    <div class="logo-row">
+        <div class="logo-container dark">
+            <div class="label">Large</div>
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 10 50 Q 8 25, 28 14 Q 52 2, 78 12 Q 98 25, 95 52 Q 92 80, 68 92 Q 42 102, 20 85 Q 5 70, 10 50" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 22 50 Q 20 32, 36 24 Q 55 15, 76 24 Q 90 35, 86 55 Q 82 75, 62 84 Q 42 91, 27 76 Q 17 62, 22 50" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 34 50 Q 32 38, 44 32 Q 58 26, 72 35 Q 82 46, 78 60 Q 72 74, 56 78 Q 40 81, 35 68 Q 30 56, 34 50" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 44 50 Q 43 42, 52 38 Q 62 35, 70 44 Q 76 54, 70 64 Q 62 72, 52 70 Q 44 68, 44 58 Q 42 54, 44 50" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <circle cx="56" cy="52" r="4" fill="#f5f5f0"/>
+            </svg>
+        </div>
+        
+        <div class="logo-container dark">
+            <div class="label">Medium (nav)</div>
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 10 50 Q 8 25, 28 14 Q 52 2, 78 12 Q 98 25, 95 52 Q 92 80, 68 92 Q 42 102, 20 85 Q 5 70, 10 50" stroke="#f5f5f0" stroke-width="2" fill="none"/>
+                <path d="M 25 50 Q 23 32, 40 24 Q 58 16, 78 28 Q 90 42, 85 60 Q 78 78, 58 85 Q 38 90, 26 72 Q 18 58, 25 50" stroke="#f5f5f0" stroke-width="2" fill="none"/>
+                <path d="M 40 50 Q 38 40, 50 35 Q 64 30, 74 42 Q 80 55, 72 68 Q 62 78, 48 75 Q 38 72, 40 58 Q 38 54, 40 50" stroke="#f5f5f0" stroke-width="2" fill="none"/>
+                <circle cx="56" cy="52" r="6" fill="#f5f5f0"/>
+            </svg>
+        </div>
+        
+        <div class="logo-container dark">
+            <div class="label">Small (favicon)</div>
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 12 50 Q 10 28, 30 16 Q 52 4, 78 16 Q 96 30, 92 55 Q 86 82, 60 92 Q 35 100, 18 78 Q 8 62, 12 50" stroke="#f5f5f0" stroke-width="3" fill="none"/>
+                <path d="M 30 50 Q 28 36, 45 30 Q 62 24, 76 38 Q 85 54, 76 70 Q 64 84, 45 80 Q 30 76, 30 58 Q 28 54, 30 50" stroke="#f5f5f0" stroke-width="3" fill="none"/>
+                <circle cx="54" cy="52" r="8" fill="#f5f5f0"/>
+            </svg>
+        </div>
+        
+        <div class="logo-container">
+            <div class="label">Light bg</div>
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 10 50 Q 8 25, 28 14 Q 52 2, 78 12 Q 98 25, 95 52 Q 92 80, 68 92 Q 42 102, 20 85 Q 5 70, 10 50" stroke="#1a1a18" stroke-width="2" fill="none"/>
+                <path d="M 25 50 Q 23 32, 40 24 Q 58 16, 78 28 Q 90 42, 85 60 Q 78 78, 58 85 Q 38 90, 26 72 Q 18 58, 25 50" stroke="#1a1a18" stroke-width="2" fill="none"/>
+                <path d="M 40 50 Q 38 40, 50 35 Q 64 30, 74 42 Q 80 55, 72 68 Q 62 78, 48 75 Q 38 72, 40 58 Q 38 54, 40 50" stroke="#1a1a18" stroke-width="2" fill="none"/>
+                <circle cx="56" cy="52" r="6" fill="#1a1a18"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>Nav Usage</h2>
+    <p>The void as nav icon + wordmark</p>
+    
+    <div class="logo-row">
+        <div class="logo-container" style="padding: 1rem 2rem;">
+            <svg width="200" height="36" viewBox="0 0 200 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Void icon -->
+                <path d="M 4 18 Q 3 10, 10 6 Q 18 2, 28 6 Q 35 10, 34 19 Q 33 28, 24 32 Q 15 35, 8 28 Q 3 23, 4 18" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 10 18 Q 9 12, 15 10 Q 22 7, 28 12 Q 32 18, 28 24 Q 23 29, 16 27 Q 10 25, 10 20 Q 9 19, 10 18" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <circle cx="19" cy="18" r="3" fill="#1a1a18"/>
+                
+                <!-- Wordmark -->
+                <text x="48" y="24" font-family="Georgia, serif" font-size="18" fill="#1a1a18" font-style="italic">fools' valley</text>
+            </svg>
+        </div>
+        
+        <div class="logo-container dark" style="padding: 1rem 2rem;">
+            <svg width="200" height="36" viewBox="0 0 200 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 4 18 Q 3 10, 10 6 Q 18 2, 28 6 Q 35 10, 34 19 Q 33 28, 24 32 Q 15 35, 8 28 Q 3 23, 4 18" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 10 18 Q 9 12, 15 10 Q 22 7, 28 12 Q 32 18, 28 24 Q 23 29, 16 27 Q 10 25, 10 20 Q 9 19, 10 18" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <circle cx="19" cy="18" r="3" fill="#f5f5f0"/>
+                
+                <text x="48" y="24" font-family="Georgia, serif" font-size="18" fill="#f5f5f0" font-style="italic">fools' valley</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>Application Ideas</h2>
+    <p>How the system works across touchpoints:</p>
+    <div style="font-size: 0.85rem; color: #666; line-height: 1.8; max-width: 500px;">
+        <p><strong>Favicon:</strong> The void (dark, with star at center)</p>
+        <p><strong>Nav:</strong> Void + wordmark</p>
+        <p><strong>Hero/headers:</strong> The full card (fool reaching for star)</p>
+        <p><strong>Loading state:</strong> Void rings could animate (ripple outward)</p>
+        <p><strong>404 page:</strong> The void with "you've stepped into the unknown"</p>
+        <p><strong>Email signature:</strong> Small void mark</p>
+        <p><strong>Physical cards:</strong> Actually print tarot-sized cards — fool on front, void on back</p>
+        <p><strong>Stickers:</strong> Either/both</p>
+    </div>
+</div>
+
+</body>
+</html>

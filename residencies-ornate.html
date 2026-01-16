@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>residencies — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f6f1;
+            --black: #1a1a18;
+            --gray: #6b6b6b;
+            --gray-light: #c5c0b5;
+            --gold: #8b7355;
+            --gold-light: #c9b896;
+            --moss: #4a5d3a;
+            --cream: #fffef8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: var(--black); text-decoration: underline; }
+        a:hover { text-decoration: none; background: var(--black); color: var(--bg); }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a { text-transform: lowercase; }
+        .nav-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; }
+
+        /* Hero with full ornamental frame */
+        .hero {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* The main FOOL text */
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+            font-size: 28vw;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--gold-light);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            letter-spacing: 0.15em;
+        }
+
+        /* Ornamental frame system */
+        .ornament-frame {
+            position: absolute;
+            pointer-events: none;
+            color: var(--gold-light);
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* Top border ornaments */
+        .frame-top {
+            top: 80px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+        }
+
+        .frame-top-inner {
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+        }
+
+        /* Bottom border ornaments */
+        .frame-bottom {
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+        }
+
+        .frame-bottom-inner {
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+        }
+
+        /* Side ornaments */
+        .frame-left {
+            top: 50%;
+            left: 30px;
+            transform: translateY(-50%) rotate(-90deg);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            white-space: nowrap;
+        }
+
+        .frame-right {
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%) rotate(90deg);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            white-space: nowrap;
+        }
+
+        /* Corner ornaments */
+        .corner {
+            position: absolute;
+            font-size: 1.8rem;
+            color: var(--gold-light);
+            opacity: 0.4;
+        }
+
+        .corner-tl { top: 70px; left: 25px; }
+        .corner-tr { top: 70px; right: 25px; }
+        .corner-bl { bottom: 25px; left: 25px; }
+        .corner-br { bottom: 25px; right: 25px; }
+
+        /* Celestial ring around FOOL */
+        .celestial-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vw;
+            max-width: 800px;
+            max-height: 800px;
+            border: 1px solid var(--gold-light);
+            border-radius: 50%;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .celestial-ring::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            border: 1px solid var(--gold-light);
+            border-radius: 50%;
+        }
+
+        .celestial-ring::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            border: 1px dashed var(--gold-light);
+            border-radius: 50%;
+        }
+
+        /* Zodiac-style symbols around the ring */
+        .zodiac-symbols {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75vw;
+            height: 75vw;
+            max-width: 850px;
+            max-height: 850px;
+            pointer-events: none;
+        }
+
+        .zodiac-symbol {
+            position: absolute;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            opacity: 0.3;
+        }
+
+        .zodiac-symbol:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .zodiac-symbol:nth-child(2) { top: 15%; right: 15%; }
+        .zodiac-symbol:nth-child(3) { top: 50%; right: 0; transform: translateY(-50%); }
+        .zodiac-symbol:nth-child(4) { bottom: 15%; right: 15%; }
+        .zodiac-symbol:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .zodiac-symbol:nth-child(6) { bottom: 15%; left: 15%; }
+        .zodiac-symbol:nth-child(7) { top: 50%; left: 0; transform: translateY(-50%); }
+        .zodiac-symbol:nth-child(8) { top: 15%; left: 15%; }
+
+        /* Roman numeral */
+        .numeral {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-18vw);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--gold);
+            opacity: 0.5;
+            letter-spacing: 0.5em;
+        }
+
+        .numeral-sub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(16vw);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gold);
+            opacity: 0.4;
+            letter-spacing: 0.3em;
+        }
+
+        /* Decorative lines */
+        .deco-line {
+            position: absolute;
+            background: var(--gold-light);
+            opacity: 0.2;
+        }
+
+        .deco-line-h {
+            height: 1px;
+            width: 15%;
+        }
+
+        .deco-line-h.left { top: 50%; left: 5%; }
+        .deco-line-h.right { top: 50%; right: 5%; }
+
+        /* Hero content */
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 550px;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-year {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            letter-spacing: 0.3em;
+        }
+
+        .intro-lead {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            font-style: italic;
+            font-weight: 300;
+            max-width: 480px;
+            margin-bottom: 2rem;
+        }
+
+        .intro-body {
+            font-size: 13px;
+            line-height: 1.8;
+            max-width: 420px;
+            color: var(--gray);
+        }
+
+        .intro-body p { margin-bottom: 1rem; }
+
+        .intro-who {
+            margin-top: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--moss);
+            border-left: 2px solid var(--gold);
+            padding-left: 1rem;
+        }
+
+        /* Section styles */
+        section {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--black);
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Section ornaments */
+        .section-ornament {
+            text-align: center;
+            color: var(--gold-light);
+            font-size: 1rem;
+            letter-spacing: 0.5em;
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+
+        /* Split layout */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .split-left {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            line-height: 1.3;
+        }
+
+        .split-right {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--gray);
+        }
+
+        /* Dark section */
+        .dark-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .dark-section .section-label { color: var(--gray); }
+        .dark-section .section-ornament { color: var(--gold); opacity: 0.3; }
+
+        .schedule-intro {
+            font-size: 12px;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+            max-width: 400px;
+        }
+
+        .schedule-table {
+            font-size: 13px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .schedule-row {
+            display: flex;
+            border-bottom: 1px solid #333;
+            padding: 0.75rem 0;
+        }
+
+        .schedule-time {
+            width: 80px;
+            color: var(--gray);
+            flex-shrink: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+        }
+
+        .schedule-activity { color: var(--bg); }
+
+        .schedule-activity.highlight {
+            background: var(--gold);
+            color: var(--black);
+            padding: 0 0.3rem;
+            margin: -0.1rem -0.3rem;
+        }
+
+        .schedule-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            color: var(--gray);
+            max-width: 450px;
+            line-height: 1.7;
+        }
+
+        /* Calendar with ornate cards */
+        .calendar-section {
+            position: relative;
+            min-height: 650px;
+        }
+
+        .calendar-note {
+            font-size: 11px;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            max-width: 350px;
+        }
+
+        .calendar-container {
+            position: relative;
+            height: 550px;
+        }
+
+        .calendar-item {
+            position: absolute;
+            font-size: 12px;
+            padding: 1rem;
+            border: 1px solid var(--gold-light);
+            background: var(--cream);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .calendar-item::before {
+            content: '✧';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            padding: 0 0.3rem;
+            color: var(--gold);
+            font-size: 0.8rem;
+        }
+
+        .calendar-item:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .calendar-month {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .calendar-dates {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .calendar-event {
+            font-size: 10px;
+            color: var(--gold);
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .calendar-item:nth-child(1) { top: 0; left: 0; transform: rotate(-2deg); }
+        .calendar-item:nth-child(2) { top: 10px; left: 160px; transform: rotate(1deg); }
+        .calendar-item:nth-child(3) { top: 60px; left: 340px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(4) { top: 130px; left: 60px; transform: rotate(2deg); }
+        .calendar-item:nth-child(5) { top: 110px; left: 240px; transform: rotate(-3deg); }
+        .calendar-item:nth-child(6) { top: 160px; left: 420px; transform: rotate(1deg); }
+        .calendar-item:nth-child(7) { top: 250px; left: 20px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(8) { top: 240px; left: 190px; transform: rotate(2deg); }
+        .calendar-item:nth-child(9) { top: 300px; left: 370px; transform: rotate(-2deg); }
+        .calendar-item:nth-child(10) { top: 370px; left: 90px; transform: rotate(1deg); }
+        .calendar-item:nth-child(11) { top: 380px; left: 270px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(12) { top: 440px; left: 440px; transform: rotate(2deg); }
+
+        /* Moss section */
+        .moss-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .moss-section .section-label { color: rgba(255,255,255,0.5); }
+        .moss-section .section-ornament { color: var(--cream); opacity: 0.3; }
+
+        .rooms-grid {
+            display: flex;
+            gap: 0;
+            max-width: 600px;
+        }
+
+        .room-box {
+            flex: 1;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.4);
+            position: relative;
+        }
+
+        .room-box::before {
+            content: '◇';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--moss);
+            padding: 0 0.5rem;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .room-box:first-child { border-right: none; }
+
+        .room-type {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .room-price {
+            font-size: 12px;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        .rooms-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            opacity: 0.7;
+            padding: 1rem;
+            border: 1px dashed rgba(255,255,255,0.3);
+            max-width: 400px;
+        }
+
+        /* Facilities */
+        .facilities-list {
+            columns: 2;
+            column-gap: 3rem;
+            max-width: 500px;
+            font-size: 13px;
+            list-style: none;
+        }
+
+        .facilities-list li {
+            margin-bottom: 0.6rem;
+            break-inside: avoid;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .facilities-list li::before {
+            content: '✧';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 0.7rem;
+        }
+
+        /* What you bring */
+        .bring-section {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .bring-item {
+            position: absolute;
+            max-width: 250px;
+            padding: 1.5rem;
+            border: 1px solid var(--gold-light);
+        }
+
+        .bring-item::before {
+            content: attr(data-numeral);
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: var(--bg);
+            padding: 0 0.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .bring-item h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .bring-item p {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .bring-1 { top: 0; left: 0; }
+        .bring-2 { top: 80px; left: 300px; }
+        .bring-3 { top: 220px; left: 120px; }
+
+        /* Apply section */
+        .apply-section {
+            background: var(--black);
+            color: var(--bg);
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .apply-section .section-label { color: var(--gray); }
+
+        .apply-frame {
+            border: 1px solid var(--gold);
+            padding: 4rem;
+            position: relative;
+            max-width: 500px;
+        }
+
+        .apply-frame::before {
+            content: '☽ ✦ ☀ ✦ ☾';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            padding: 0 1rem;
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+        }
+
+        .apply-frame::after {
+            content: '✧ · ✧ · ✧';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            padding: 0 1rem;
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+        }
+
+        .apply-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .apply-desc {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .apply-cta {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            transition: all 0.2s;
+        }
+
+        .apply-cta:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .apply-contact {
+            margin-top: 2rem;
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .apply-contact a { color: var(--gold); }
+
+        /* Footer */
+        footer {
+            padding: 1.5rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+            position: relative;
+        }
+
+        footer::before {
+            content: '✧';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            padding: 0 0.5rem;
+            color: var(--gold-light);
+        }
+
+        .struck { text-decoration: line-through; opacity: 0.5; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-bg-text { font-size: 35vw; }
+            .celestial-ring, .zodiac-symbols, .numeral, .numeral-sub { display: none; }
+            .frame-left, .frame-right { display: none; }
+            .corner { display: none; }
+            .deco-line { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .split { grid-template-columns: 1fr; gap: 2rem; }
+            .calendar-container {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .calendar-item {
+                position: relative !important;
+                transform: none !important;
+                top: auto !important;
+                left: auto !important;
+            }
+            .rooms-grid { flex-direction: column; }
+            .room-box:first-child { border-right: 1px solid rgba(255,255,255,0.4); border-bottom: none; }
+            .bring-section { min-height: auto; }
+            .bring-item {
+                position: relative;
+                top: auto !important;
+                left: auto !important;
+                max-width: 100%;
+                margin-bottom: 1.5rem;
+            }
+            .facilities-list { columns: 1; }
+            .apply-frame { padding: 2rem; margin: 0 1rem; }
+            .apply-title { font-size: 2.5rem; }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="nav-logo">fools' valley</a>
+        <a href="/residencies">residencies</a>
+        <a href="/events">events</a>
+        <a href="/saturdays">open saturdays</a>
+        <a href="/research">research</a>
+        <a href="/venue">venue</a>
+    </nav>
+
+    <section class="hero">
+        <!-- Ornamental frame system -->
+        <div class="ornament-frame frame-top">─────── ☽ ✦ ☀ ✦ ☾ ───────</div>
+        <div class="ornament-frame frame-top-inner">the major arcana</div>
+        <div class="ornament-frame frame-bottom">─────── ✧ · ✧ · ✧ ───────</div>
+        <div class="ornament-frame frame-bottom-inner">thirty minutes north of lisbon</div>
+        <div class="ornament-frame frame-left">✧ the journey begins ✧</div>
+        <div class="ornament-frame frame-right">✧ card zero ✧</div>
+        
+        <!-- Corner ornaments -->
+        <div class="corner corner-tl">❧</div>
+        <div class="corner corner-tr">☙</div>
+        <div class="corner corner-bl">☙</div>
+        <div class="corner corner-br">❧</div>
+        
+        <!-- Celestial ring -->
+        <div class="celestial-ring"></div>
+        
+        <!-- Zodiac symbols around the ring -->
+        <div class="zodiac-symbols">
+            <span class="zodiac-symbol">☉</span>
+            <span class="zodiac-symbol">☽</span>
+            <span class="zodiac-symbol">✧</span>
+            <span class="zodiac-symbol">◇</span>
+            <span class="zodiac-symbol">✦</span>
+            <span class="zodiac-symbol">◇</span>
+            <span class="zodiac-symbol">✧</span>
+            <span class="zodiac-symbol">☽</span>
+        </div>
+        
+        <!-- Roman numeral -->
+        <div class="numeral">— 0 —</div>
+        <div class="numeral-sub">le mat · il matto · der narr</div>
+        
+        <!-- Decorative lines -->
+        <div class="deco-line deco-line-h left"></div>
+        <div class="deco-line deco-line-h right"></div>
+        
+        <!-- Main text -->
+        <div class="hero-bg-text">FOOL</div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">residencies</h1>
+            <div class="hero-year">anno · 2026</div>
+            
+            <p class="intro-lead">
+                for those ready to become a fool — to sacrifice the intellect to the Unknown. not the passive sacrifice of an empty mind, but the active sacrifice of setting out on the fool's journey.
+            </p>
+            
+            <div class="intro-body">
+                <p>
+                    a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.
+                </p>
+                <p>
+                    this year: longer stays. limited move-in days. tighter curation. 100% co-created schedule.
+                </p>
+            </div>
+            
+            <p class="intro-who">
+                writers who need to finish the thing. renegade scientists. artists developing something they can't yet name. researchers of consciousness — human and machine. builders of futures they'd actually want to live in.
+            </p>
+        </div>
+    </section>
+
+    <section class="dark-section" id="rhythm">
+        <div class="section-ornament">✧ ─── ◇ ─── ✧</div>
+        <div class="section-label">II · rhythm</div>
+        
+        <div class="split">
+            <div class="split-left" style="color: var(--bg);">
+                daily rhythm<br>
+                <span style="font-size: 0.45em; font-family: 'Space Mono', monospace; color: var(--gray);">join what serves you</span>
+            </div>
+            <div class="split-right" style="color: var(--gray-light);">
+                <div class="schedule-intro">
+                    recommended: 1 month<br>
+                    minimum: 2 weeks
+                </div>
+                
+                <div class="schedule-table">
+                    <div class="schedule-row">
+                        <span class="schedule-time">VII–IX</span>
+                        <span class="schedule-activity">morning — exercise, meditation, dance, pond</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">IX–X</span>
+                        <span class="schedule-activity">breakfast</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">X–XIII</span>
+                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">XIII–XIV</span>
+                        <span class="schedule-activity">lunch</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">XIV–XVIII</span>
+                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">XVIII</span>
+                        <span class="schedule-activity">dinner</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">XX–XXII</span>
+                        <span class="schedule-activity">jams, salons, sauna, movement, ???</span>
+                    </div>
+                </div>
+                
+                <p class="schedule-note">
+                    you host what you want to see. we shape the schedule together at month start. collective space care is part of the deal.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="calendar-section" id="calendar">
+        <div class="section-ornament">☽ ── ✦ ── ☾</div>
+        <div class="section-label">III · calendar</div>
+        
+        <p class="calendar-note">
+            move-in: sun–mon<br>
+            if monday, before XIV:00<br>
+            <br>
+            <em>(hover to inspect)</em>
+        </p>
+        
+        <div class="calendar-container">
+            <div class="calendar-item">
+                <div class="calendar-month">January</div>
+                <div class="calendar-dates">flexible</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">February</div>
+                <div class="calendar-dates">7–8</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">March</div>
+                <div class="calendar-dates">2–3</div>
+                <div class="calendar-event">permaculture 15–27</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">April</div>
+                <div class="calendar-dates">6–7, 19–20</div>
+                <div class="calendar-event">fools lab 1–5</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">May</div>
+                <div class="calendar-dates">3–4, 17–18, 31</div>
+                <div class="calendar-event">circling</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">June</div>
+                <div class="calendar-dates">1, 14–15, 28–29</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">July</div>
+                <div class="calendar-dates">12–13, 26–27</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">August</div>
+                <div class="calendar-dates">9–10, 23–24</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">September</div>
+                <div class="calendar-dates">6–7, 20–21</div>
+                <div class="calendar-event">circling</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">October</div>
+                <div class="calendar-dates">4–5, 18–19</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">November</div>
+                <div class="calendar-dates">1–2, 15–16</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">December</div>
+                <div class="calendar-dates">tba</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="moss-section" id="rooms">
+        <div class="section-ornament">◇ ─── ◇ ─── ◇</div>
+        <div class="section-label">IV · accommodation</div>
+        
+        <div class="rooms-grid">
+            <div class="room-box">
+                <div class="room-type">private rooms</div>
+                <div class="room-price">
+                    €150–450 / week<br>
+                    €450–1350 / month
+                </div>
+            </div>
+            <div class="room-box">
+                <div class="room-type">dorm beds</div>
+                <div class="room-price">
+                    €70 / week<br>
+                    €210 / month
+                </div>
+            </div>
+        </div>
+        
+        <div class="rooms-note">
+            + €20/day per person<br>
+            food, bills, 1–2 prepared meals
+        </div>
+    </section>
+
+    <section id="facilities">
+        <div class="section-ornament">✧ ─ ✧ ─ ✧</div>
+        <div class="section-label">V · facilities</div>
+        
+        <ul class="facilities-list">
+            <li>200sqm dancehall (vinyl floor)</li>
+            <li>1000sqm warehouse</li>
+            <li>meditation room</li>
+            <li>gym + weights</li>
+            <li>swimming lake</li>
+            <li>wood-burning sauna</li>
+            <li>fast wifi</li>
+            <li>weekly cleaning (shared spaces)</li>
+        </ul>
+    </section>
+
+    <section class="bring-section" id="bring">
+        <div class="section-ornament">☽ ✧ ☾</div>
+        <div class="section-label">VI · what you bring</div>
+        
+        <div class="bring-item bring-1" data-numeral="i">
+            <h4>hosting</h4>
+            <p>practices you want to see happen. we shape the schedule together.</p>
+        </div>
+        
+        <div class="bring-item bring-2" data-numeral="ii">
+            <h4>presence</h4>
+            <p>your energy is part of the curation.</p>
+        </div>
+        
+        <div class="bring-item bring-3" data-numeral="iii">
+            <h4>care</h4>
+            <p>this is your home. hold it as such.</p>
+        </div>
+    </section>
+
+    <section class="apply-section" id="apply">
+        <div class="section-label">VII · apply</div>
+        
+        <div class="apply-frame">
+            <h2 class="apply-title">apply here</h2>
+            
+            <p class="apply-desc">
+                we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.
+            </p>
+            
+            <a href="#" class="apply-cta">begin application</a>
+            
+            <p class="apply-contact">
+                questions → <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a><br>
+                (we reply slowly)
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>anno mmxxvi</span>
+        <span>step off the cliff</span>
+    </footer>
+</body>
+</html>

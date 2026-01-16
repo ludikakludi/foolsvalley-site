@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>research — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: var(--black); text-decoration: underline; }
+        a:hover { text-decoration: none; background: var(--black); color: var(--bg); }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a { text-transform: lowercase; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; }
+
+        .hero {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-size: 12vw;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gray-light);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0.2;
+            white-space: nowrap;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-bg-text::before {
+            content: '◇';
+            position: absolute;
+            font-size: 0.2em;
+            top: -0.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-text-stroke: 1px var(--gray-light);
+        }
+
+        .hero-bg-text::after {
+            content: '— ∞ —';
+            position: absolute;
+            font-size: 0.12em;
+            bottom: -0.6em;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-text-stroke: 1px var(--gray-light);
+            letter-spacing: 0.3em;
+        }
+
+        .ornament {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.12;
+            color: var(--gray-light);
+            z-index: 0;
+        }
+
+        .ornament-arcana {
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.3rem;
+            letter-spacing: 1rem;
+        }
+
+        .ornament-zero {
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+
+        .hero-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--moss);
+        }
+
+        .hero-intro {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            max-width: 550px;
+        }
+
+        .hero-body {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.9;
+            max-width: 500px;
+        }
+
+        .hero-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .float {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--gray-light);
+            pointer-events: none;
+        }
+
+        .float-1 { top: 15%; right: 8%; font-size: 1rem; transform: rotate(8deg); }
+        .float-2 { bottom: 25%; right: 12%; font-size: 0.9rem; transform: rotate(-5deg); }
+        .float-3 { top: 35%; right: 3%; font-size: 5rem; opacity: 0.08; }
+
+        section {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* The Fool section */
+        .fool-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .fool-section .section-label { color: var(--gray); }
+
+        .fool-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 900px;
+        }
+
+        .fool-left {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            line-height: 1.4;
+        }
+
+        .fool-right {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--gray-light);
+        }
+
+        .fool-right p {
+            margin-bottom: 1.5rem;
+        }
+
+        .fool-quote {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            border-left: 3px solid var(--moss);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--bg);
+        }
+
+        /* Questions section */
+        .questions-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .questions-section .section-label { color: rgba(255,255,255,0.5); }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+        }
+
+        .question-item {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .question-item::before {
+            content: '?';
+            display: block;
+            font-size: 2rem;
+            opacity: 0.3;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Practices section */
+        .practices-section {
+            min-height: 500px;
+            position: relative;
+        }
+
+        .practice-item {
+            position: absolute;
+            max-width: 250px;
+        }
+
+        .practice-item h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-item p {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .practice-1 { top: 0; left: 0; }
+        .practice-2 { top: 50px; left: 300px; }
+        .practice-3 { top: 180px; left: 80px; }
+        .practice-4 { top: 200px; left: 400px; }
+        .practice-5 { top: 350px; left: 200px; }
+
+        /* Coming section */
+        .coming-section {
+            background: var(--cream);
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .coming-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .coming-subtitle {
+            font-size: 13px;
+            color: var(--gray);
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .coming-date {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--moss);
+        }
+
+        .struck {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg-text { font-size: 20vw; }
+            .fool-content { grid-template-columns: 1fr; gap: 2rem; }
+            .questions-grid { grid-template-columns: 1fr; }
+            .practices-section { min-height: auto; }
+            .practice-item {
+                position: relative;
+                top: auto !important;
+                left: auto !important;
+                max-width: 100%;
+                margin-bottom: 2rem;
+            }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><span>fools' valley</span></a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg-text">RESEARCH</div>
+
+        <div class="float float-1">what do you know that you can't prove?</div>
+        <div class="float float-2">the path is made by walking</div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">research</h1>
+
+            <p class="hero-intro">
+                the aim of the research lab is to explore how diverse practices — ranging from movement to dialogue, the introspective to the interactive, the improvisational to the reflective — support cognitive, emotional, and spiritual development.
+            </p>
+
+            <p class="hero-body" style="margin-top: 2rem;">
+                <span class="struck">[more text coming soon]</span>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>step off the cliff</span>
+    </footer>
+</body>
+</html>

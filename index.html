@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fools' valley — a place near lisbon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--black);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: none;
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a {
+            text-transform: lowercase;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-logo span {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--black);
+        }
+
+        .nav-logo:hover {
+            background: none;
+        }
+
+        .nav-logo:hover span {
+            text-decoration: underline;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* The void as background element */
+        .hero-void {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            width: 45vw;
+            max-width: 500px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-void img {
+            width: 100%;
+            height: auto;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .hero-tagline {
+            font-size: 13px;
+            color: var(--gray);
+            max-width: 400px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats span {
+            border-left: 2px solid var(--moss);
+            padding-left: 0.75rem;
+        }
+
+        .next-event {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--moss);
+            background: var(--cream);
+            margin-bottom: 1.5rem;
+            font-size: 12px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.1s;
+        }
+
+        .next-event:hover {
+            background: var(--moss);
+            color: var(--cream);
+            border-color: var(--moss);
+        }
+
+        .next-event-label {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--moss);
+            font-size: 10px;
+            margin-right: 0.5rem;
+        }
+
+        .next-event:hover .next-event-label {
+            color: var(--cream);
+        }
+
+        /* Floating elements */
+        .float {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--gray-light);
+            pointer-events: none;
+        }
+
+        .float-1 { top: 20%; right: 10%; font-size: 0.9rem; transform: rotate(8deg); }
+        .float-2 { bottom: 25%; right: 15%; font-size: 0.8rem; transform: rotate(-5deg); }
+
+        /* Section styles */
+        section {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        /* About / Mission */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .about-left {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.8rem;
+            line-height: 1.4;
+        }
+
+        .about-right {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--gray);
+        }
+
+        .about-right p {
+            margin-bottom: 1.5rem;
+        }
+
+        .symbol {
+            color: var(--moss);
+            margin-right: 0.5rem;
+        }
+
+        /* Video gallery */
+        .gallery-section {
+            padding: 2rem;
+            border-top: 1px solid var(--black);
+            display: flex;
+            justify-content: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 600px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                max-width: 100%;
+            }
+            .gallery-item {
+                aspect-ratio: 4/5;
+            }
+        }
+
+        /* Decorative border image */
+        .decorative-border {
+            width: 100%;
+            height: 120px;
+            background-image: url('assets/card-back.jpeg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.6;
+            margin: 2rem 0;
+        }
+
+        /* Navigation cards */
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0;
+            border: 1px solid var(--black);
+        }
+
+        .nav-card {
+            padding: 2rem;
+            border-right: 1px solid var(--black);
+            border-bottom: 1px solid var(--black);
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.1s;
+            position: relative;
+        }
+
+        .nav-card:hover {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .nav-card-number {
+            font-size: 10px;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .nav-card:hover .nav-card-number {
+            color: var(--gray);
+        }
+
+        .nav-card-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-card-desc {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .nav-card:hover .nav-card-desc {
+            color: var(--gray-light);
+        }
+
+        .nav-card-arrow {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .nav-card:hover .nav-card-arrow {
+            opacity: 1;
+        }
+
+        /* Dark section with void */
+        .dark-section {
+            background: var(--black);
+            color: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-section .section-label {
+            color: var(--gray);
+        }
+
+        .dark-section a {
+            color: var(--bg);
+        }
+
+        .dark-section a:hover {
+            background: var(--bg);
+            color: var(--black);
+        }
+
+        .dark-section-void {
+            position: absolute;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40%;
+            max-width: 400px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .dark-section-void img {
+            width: 100%;
+        }
+
+        /* Moss section */
+        .moss-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .moss-section .section-label {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .moss-section a {
+            color: var(--cream);
+        }
+
+        .moss-section a:hover {
+            background: var(--cream);
+            color: var(--moss);
+        }
+
+        /* Contact section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-item {
+            border-left: 2px solid var(--gray);
+            padding-left: 1rem;
+        }
+
+        .contact-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+        }
+
+        .contact-value a {
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+            background: none;
+            color: inherit;
+        }
+
+        /* Footer */
+        footer {
+            padding: 1.5rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .footer-left {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+        }
+
+        /* Struck text */
+        .struck {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .hero-void {
+                opacity: 0.08;
+                width: 80vw;
+                right: -20%;
+            }
+
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .dark-section-void {
+                display: none;
+            }
+
+            footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>fools' valley</span>
+        </a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-void">
+            <img src="assets/void.png" alt="">
+        </div>
+        
+        <div class="float float-1">somewhere between here and there</div>
+        <div class="float float-2">16 hectares of quiet</div>
+        
+        <div class="hero-content">
+            <div class="hero-eyebrow">a place near lisbon</div>
+            <h1 class="hero-title">
+                fools'<br>
+                valley
+            </h1>
+            <p class="hero-subtitle">residencies / research / retreats / fools</p>
+            
+            <p class="hero-tagline">
+                the project emerging on the land is a research lab, residency space, and occasional venue for events and retreats.
+            </p>
+            
+            <div class="hero-stats">
+                <span>16 hectares</span>
+                <span>20 bedrooms</span>
+                <span>200 sqm dancehall</span>
+                <span>swimming pond</span>
+                <span>sauna</span>
+            </div>
+
+            <a href="permaculture.html" class="next-event">
+                <span class="next-event-label">next event</span>
+                permaculture design course · march 15-27
+            </a>
+
+            <br>
+            <a href="residencies.html">explore residencies →</a>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">001 / the project</div>
+        
+        <div class="about-section">
+            <div class="about-left">
+                what is this place?
+            </div>
+            <div class="about-right">
+                <p>
+                    <span class="symbol">✦</span>the aim of the research lab is to explore how diverse practices — ranging from movement to dialogue, the introspective to the interactive, the improvisational to the reflective — support cognitive, emotional, and spiritual development.
+                </p>
+                <p>
+                    <span class="symbol">✦</span>in the way we do co-living, we seek to create a balance between a supportive <strong>structure</strong> for practices — solo or in community — and <strong>spaciousness</strong> to get on with one's own work, engage with the land, and be in a free-flow of connection to self, others, and the world around.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <video autoplay muted loop playsinline>
+                    <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop playsinline>
+                    <source src="assets/IMG_1129.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop playsinline>
+                    <source src="assets/IMG_1315.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="gallery-item">
+                <video autoplay muted loop playsinline>
+                    <source src="assets/IMG_1415.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">002 / pathways</div>
+        
+        <div class="nav-cards">
+            <a href="residencies.html" class="nav-card">
+                <div class="nav-card-number">01</div>
+                <div class="nav-card-title">residencies</div>
+                <div class="nav-card-desc">longer stays for writers, researchers, artists, builders. co-work, dance, meditate, play every day.</div>
+                <span class="nav-card-arrow">→</span>
+            </a>
+
+            <a href="saturdays.html" class="nav-card">
+                <div class="nav-card-number">02</div>
+                <div class="nav-card-title">open saturdays</div>
+                <div class="nav-card-desc">contact improvisation, movement, transformational connection practice, dinner, sauna. every week.</div>
+                <span class="nav-card-arrow">→</span>
+            </a>
+
+            <a href="events.html" class="nav-card">
+                <div class="nav-card-number">03</div>
+                <div class="nav-card-title">events</div>
+                <div class="nav-card-desc">retreats, courses, festivals. permaculture, circling, dance intensives, meditation.</div>
+                <span class="nav-card-arrow">→</span>
+            </a>
+
+            <a href="venue.html" class="nav-card">
+                <div class="nav-card-number">04</div>
+                <div class="nav-card-title">venue</div>
+                <div class="nav-card-desc">run your own event. 200sqm dancehall, 1000sqm warehouse, bedrooms, camping, the land.</div>
+                <span class="nav-card-arrow">→</span>
+            </a>
+
+            <a href="research.html" class="nav-card">
+                <div class="nav-card-number">05</div>
+                <div class="nav-card-title">research</div>
+                <div class="nav-card-desc">developmental practices. consciousness — human and machine. the fool's journey. <span class="struck">coming soon</span></div>
+                <span class="nav-card-arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="dark-section">
+        <div class="dark-section-void">
+            <img src="assets/void.png" alt="">
+        </div>
+        
+        <div class="section-label">003 / upcoming</div>
+        
+        <div class="about-section">
+            <div class="about-left" style="color: var(--bg);">
+                what's happening?
+            </div>
+            <div class="about-right" style="color: var(--gray-light);">
+                <p>
+                    <a href="permaculture.html" style="color: var(--bg); text-decoration: none;"><strong style="color: var(--bg);">permaculture design certificate</strong></a><br>
+                    Mar 15–27, 2026<br>
+                    72-hour introduction to permaculture design with Tom Henfrey.
+                </p>
+                <p>
+                    <strong style="color: var(--bg);">fools' research lab launch</strong><br>
+                    Apr 1–5, 2026<br>
+                    developing the fool archetype. the path of transformation and research.
+                </p>
+                <p style="margin-top: 2rem;">
+                    <a href="events.html">see all events →</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="moss-section">
+        <div class="section-label">004 / connect</div>
+        
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-label">community</div>
+                <div class="contact-value">
+                    <a href="https://t.me/+Okvs2yyKKRNiNzVi">telegram chat →</a>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-label">questions</div>
+                <div class="contact-value">
+                    <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a>
+                    <br><span style="font-family: 'Space Mono', monospace; font-size: 11px; opacity: 0.7;">(we reply slowly)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span class="footer-left">fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>you found it</span>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fools' Valley Logo Concepts — Hand-drawn</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f5f5f0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .logo-section h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #666;
+        }
+        .logo-row {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo-container {
+            padding: 2rem;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        .logo-container.dark {
+            background: #0a0a0a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo-section">
+    <h2>01 — The Fool's Step (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="sketchy1" x="-20%" y="-20%" width="140%" height="140%">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise"/>
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+                    </filter>
+                </defs>
+                
+                <!-- Sun - wobbly circle -->
+                <path d="M 140 40 C 142 28, 155 25, 165 28 C 178 32, 182 42, 180 52 C 178 65, 168 72, 155 70 C 142 68, 138 55, 140 40" stroke="#1a1a18" stroke-width="1.5" fill="none" style="filter: url(#sketchy1)"/>
+                
+                <!-- Sun rays - hand-drawn lines -->
+                <path d="M 160 12 Q 159 8, 161 5" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 159 68 Q 161 73, 158 77" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 132 38 Q 127 39, 124 37" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 186 41 Q 192 40, 195 42" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 139 22 Q 135 18, 133 15" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 181 58 Q 185 62, 188 65" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 140 57 Q 135 61, 132 65" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 180 23 Q 184 19, 187 15" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                
+                <!-- Cliff edge - rough line -->
+                <path d="M 18 98 Q 25 100, 35 99 Q 50 97, 68 101 L 69 102 Q 70 140, 71 178" stroke="#1a1a18" stroke-width="2" fill="none" stroke-linecap="round"/>
+                
+                <!-- Valley below - sketchy curves -->
+                <path d="M 72 179 Q 85 168, 100 172 Q 115 178, 132 182 Q 155 188, 175 172 Q 185 164, 192 168" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Figure head - imperfect circle -->
+                <path d="M 70 70 Q 72 62, 80 60 Q 88 58, 92 66 Q 94 74, 88 80 Q 80 84, 72 78 Q 68 74, 70 70" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Body -->
+                <path d="M 81 82 Q 80 90, 81 98 Q 80 103, 81 108" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Legs -->
+                <path d="M 80 107 Q 74 115, 68 126" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 82 106 Q 90 112, 97 120" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Arms -->
+                <path d="M 80 91 Q 72 88, 64 86" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 82 90 Q 90 84, 96 80" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Stick with bundle -->
+                <path d="M 96 79 Q 102 70, 112 58" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 108 58 Q 112 50, 118 52 Q 124 55, 122 62 Q 118 68, 112 65 Q 107 62, 108 58" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Zero -->
+                <text x="100" y="196" font-family="Georgia, serif" font-size="14" fill="#1a1a18" text-anchor="middle" style="font-style: italic;">0</text>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 140 40 C 142 28, 155 25, 165 28 C 178 32, 182 42, 180 52 C 178 65, 168 72, 155 70 C 142 68, 138 55, 140 40" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 160 12 Q 159 8, 161 5" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 159 68 Q 161 73, 158 77" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 132 38 Q 127 39, 124 37" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 186 41 Q 192 40, 195 42" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 139 22 Q 135 18, 133 15" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 181 58 Q 185 62, 188 65" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 140 57 Q 135 61, 132 65" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 180 23 Q 184 19, 187 15" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 18 98 Q 25 100, 35 99 Q 50 97, 68 101 L 69 102 Q 70 140, 71 178" stroke="#f5f5f0" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 72 179 Q 85 168, 100 172 Q 115 178, 132 182 Q 155 188, 175 172 Q 185 164, 192 168" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 70 70 Q 72 62, 80 60 Q 88 58, 92 66 Q 94 74, 88 80 Q 80 84, 72 78 Q 68 74, 70 70" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 81 82 Q 80 90, 81 98 Q 80 103, 81 108" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 80 107 Q 74 115, 68 126" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 82 106 Q 90 112, 97 120" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 80 91 Q 72 88, 64 86" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 82 90 Q 90 84, 96 80" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 96 79 Q 102 70, 112 58" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 108 58 Q 112 50, 118 52 Q 124 55, 122 62 Q 118 68, 112 65 Q 107 62, 108 58" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <text x="100" y="196" font-family="Georgia, serif" font-size="14" fill="#f5f5f0" text-anchor="middle" style="font-style: italic;">0</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>02 — Valley with Zero (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="220" height="90" viewBox="0 0 220 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Valley shape - sketchy -->
+                <path d="M 2 32 Q 15 48, 32 42 Q 48 35, 65 50 Q 85 68, 110 52 Q 135 35, 158 48 Q 178 62, 195 38 Q 208 22, 218 28" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Second hill line -->
+                <path d="M 5 45 Q 25 58, 50 52 Q 80 44, 110 60 Q 145 78, 175 55 Q 195 40, 215 48" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+                
+                <!-- Sun/moon - wobbly -->
+                <path d="M 98 38 Q 100 28, 110 26 Q 122 25, 124 36 Q 125 48, 114 50 Q 102 51, 98 38" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                
+                <!-- Zero below -->
+                <text x="110" y="82" font-family="Georgia, serif" font-size="11" fill="#1a1a18" text-anchor="middle" letter-spacing="0.2em" style="font-style: italic;">— 0 —</text>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="220" height="90" viewBox="0 0 220 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 2 32 Q 15 48, 32 42 Q 48 35, 65 50 Q 85 68, 110 52 Q 135 35, 158 48 Q 178 62, 195 38 Q 208 22, 218 28" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 5 45 Q 25 58, 50 52 Q 80 44, 110 60 Q 145 78, 175 55 Q 195 40, 215 48" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+                <path d="M 98 38 Q 100 28, 110 26 Q 122 25, 124 36 Q 125 48, 114 50 Q 102 51, 98 38" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <text x="110" y="82" font-family="Georgia, serif" font-size="11" fill="#f5f5f0" text-anchor="middle" letter-spacing="0.2em" style="font-style: italic;">— 0 —</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>03 — Tarot Card Frame (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer card border - wobbly -->
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Inner border -->
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#1a1a18" stroke-width="0.75" fill="none"/>
+                
+                <!-- Top ornament -->
+                <text x="65" y="28" font-family="Georgia, serif" font-size="10" fill="#1a1a18" text-anchor="middle">☽ ✦ ☾</text>
+                
+                <!-- Central frame - sketchy -->
+                <path d="M 22 38 Q 65 36, 108 39 Q 110 85, 109 132 Q 65 135, 21 133 Q 19 85, 22 38" stroke="#1a1a18" stroke-width="0.75" fill="none"/>
+                
+                <!-- Fool figure - very sketchy -->
+                <path d="M 58 55 Q 60 48, 67 47 Q 75 47, 77 54 Q 78 62, 72 66 Q 64 68, 59 62 Q 56 58, 58 55" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 67 68 Q 66 78, 67 88 Q 66 95, 67 100" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 66 100 Q 60 108, 54 118" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 68 99 Q 75 106, 82 115" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 66 82 Q 58 78, 50 76" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 68 81 Q 76 76, 84 72" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                
+                <!-- Cliff hint -->
+                <path d="M 22 122 Q 40 121, 58 123" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 60 123 Q 75 128, 90 125 Q 100 122, 108 128" stroke="#1a1a18" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+                
+                <!-- Bottom text -->
+                <text x="65" y="155" font-family="Georgia, serif" font-size="10" fill="#1a1a18" text-anchor="middle" font-style="italic">fools' valley</text>
+                <text x="65" y="172" font-family="Georgia, serif" font-size="13" fill="#1a1a18" text-anchor="middle" font-style="italic">0</text>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="130" height="190" viewBox="0 0 130 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 6 Q 60 4, 122 7 Q 124 90, 123 175 Q 65 178, 7 176 Q 5 90, 8 6" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 14 12 Q 65 10, 116 13 Q 118 90, 117 168 Q 65 170, 13 168 Q 11 90, 14 12" stroke="#f5f5f0" stroke-width="0.75" fill="none"/>
+                <text x="65" y="28" font-family="Georgia, serif" font-size="10" fill="#f5f5f0" text-anchor="middle">☽ ✦ ☾</text>
+                <path d="M 22 38 Q 65 36, 108 39 Q 110 85, 109 132 Q 65 135, 21 133 Q 19 85, 22 38" stroke="#f5f5f0" stroke-width="0.75" fill="none"/>
+                <path d="M 58 55 Q 60 48, 67 47 Q 75 47, 77 54 Q 78 62, 72 66 Q 64 68, 59 62 Q 56 58, 58 55" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 67 68 Q 66 78, 67 88 Q 66 95, 67 100" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 66 100 Q 60 108, 54 118" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 68 99 Q 75 106, 82 115" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 66 82 Q 58 78, 50 76" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 68 81 Q 76 76, 84 72" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 22 122 Q 40 121, 58 123" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 60 123 Q 75 128, 90 125 Q 100 122, 108 128" stroke="#f5f5f0" stroke-width="0.75" fill="none" stroke-linecap="round"/>
+                <text x="65" y="155" font-family="Georgia, serif" font-size="10" fill="#f5f5f0" text-anchor="middle" font-style="italic">fools' valley</text>
+                <text x="65" y="172" font-family="Georgia, serif" font-size="13" fill="#f5f5f0" text-anchor="middle" font-style="italic">0</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>04 — Abstract Zero / Portal (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer wobbly ellipse -->
+                <path d="M 15 75 Q 14 45, 35 28 Q 60 10, 90 12 Q 120 15, 135 40 Q 148 65, 140 95 Q 130 125, 100 138 Q 70 148, 40 135 Q 12 118, 15 75" stroke="#1a1a18" stroke-width="1" fill="none"/>
+                
+                <!-- Middle ellipse -->
+                <path d="M 32 75 Q 30 52, 48 40 Q 68 28, 92 30 Q 115 33, 125 55 Q 133 78, 122 100 Q 110 120, 85 127 Q 58 132, 40 115 Q 28 98, 32 75" stroke="#1a1a18" stroke-width="1" fill="none"/>
+                
+                <!-- Inner ellipse -->
+                <path d="M 50 75 Q 48 60, 60 52 Q 75 44, 93 48 Q 108 52, 112 68 Q 116 85, 105 98 Q 92 110, 72 108 Q 55 105, 50 88 Q 47 78, 50 75" stroke="#1a1a18" stroke-width="1" fill="none"/>
+                
+                <!-- Center tiny circle -->
+                <path d="M 68 75 Q 68 68, 75 66 Q 83 65, 86 72 Q 88 80, 82 85 Q 74 88, 69 82 Q 66 78, 68 75" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                
+                <!-- Tiny star -->
+                <text x="76" y="79" font-family="Georgia, serif" font-size="6" fill="#1a1a18" text-anchor="middle">✦</text>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 15 75 Q 14 45, 35 28 Q 60 10, 90 12 Q 120 15, 135 40 Q 148 65, 140 95 Q 130 125, 100 138 Q 70 148, 40 135 Q 12 118, 15 75" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 32 75 Q 30 52, 48 40 Q 68 28, 92 30 Q 115 33, 125 55 Q 133 78, 122 100 Q 110 120, 85 127 Q 58 132, 40 115 Q 28 98, 32 75" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 50 75 Q 48 60, 60 52 Q 75 44, 93 48 Q 108 52, 112 68 Q 116 85, 105 98 Q 92 110, 72 108 Q 55 105, 50 88 Q 47 78, 50 75" stroke="#f5f5f0" stroke-width="1" fill="none"/>
+                <path d="M 68 75 Q 68 68, 75 66 Q 83 65, 86 72 Q 88 80, 82 85 Q 74 88, 69 82 Q 66 78, 68 75" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <text x="76" y="79" font-family="Georgia, serif" font-size="6" fill="#f5f5f0" text-anchor="middle">✦</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>05 — Wordmark with Symbol (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="300" height="70" viewBox="0 0 300 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Circle - wobbly -->
+                <path d="M 8 35 Q 7 18, 20 10 Q 35 2, 50 8 Q 62 15, 63 32 Q 64 50, 50 60 Q 35 68, 18 60 Q 6 52, 8 35" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Figure inside -->
+                <path d="M 32 22 Q 34 18, 38 18 Q 43 18, 44 23 Q 45 28, 41 30 Q 36 32, 33 28 Q 31 25, 32 22" stroke="#1a1a18" stroke-width="1.2" fill="none"/>
+                <path d="M 38 32 Q 37 38, 38 44 Q 37 48, 38 52" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 37 52 Q 33 56, 28 62" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 39 51 Q 44 56, 50 60" stroke="#1a1a18" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                
+                <!-- Text - hand lettered feel using a handwriting-ish font -->
+                <text x="82" y="45" font-family="Georgia, serif" font-size="26" fill="#1a1a18" font-style="italic">fools' valley</text>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="300" height="70" viewBox="0 0 300 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 8 35 Q 7 18, 20 10 Q 35 2, 50 8 Q 62 15, 63 32 Q 64 50, 50 60 Q 35 68, 18 60 Q 6 52, 8 35" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 32 22 Q 34 18, 38 18 Q 43 18, 44 23 Q 45 28, 41 30 Q 36 32, 33 28 Q 31 25, 32 22" stroke="#f5f5f0" stroke-width="1.2" fill="none"/>
+                <path d="M 38 32 Q 37 38, 38 44 Q 37 48, 38 52" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 37 52 Q 33 56, 28 62" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M 39 51 Q 44 56, 50 60" stroke="#f5f5f0" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <text x="82" y="45" font-family="Georgia, serif" font-size="26" fill="#f5f5f0" font-style="italic">fools' valley</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>06 — Celestial Valley (hand-drawn)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="200" height="130" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sun - wobbly with rays -->
+                <path d="M 88 48 Q 90 38, 100 35 Q 112 33, 116 44 Q 119 56, 110 62 Q 98 66, 90 58 Q 85 52, 88 48" stroke="#1a1a18" stroke-width="1.3" fill="none"/>
+                
+                <!-- Rays - sketchy -->
+                <path d="M 100 28 Q 99 22, 101 16" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 100 72 Q 101 78, 99 85" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 78 50 Q 72 49, 65 51" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 122 50 Q 128 51, 135 49" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 82 35 Q 77 30, 72 24" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 118 35 Q 123 30, 130 25" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 82 65 Q 76 70, 70 76" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 118 64 Q 124 70, 132 75" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round"/>
+                
+                <!-- Valley hills - multiple layers, sketchy -->
+                <path d="M 2 100 Q 20 78, 45 88 Q 70 98, 100 82 Q 130 65, 160 85 Q 180 98, 198 80" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 2 115 Q 30 95, 60 105 Q 95 118, 130 100 Q 160 85, 198 98" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>
+                <path d="M 2 125 Q 50 112, 100 122 Q 150 130, 198 118" stroke="#1a1a18" stroke-width="0.75" fill="none" stroke-linecap="round" opacity="0.3"/>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="200" height="130" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 88 48 Q 90 38, 100 35 Q 112 33, 116 44 Q 119 56, 110 62 Q 98 66, 90 58 Q 85 52, 88 48" stroke="#f5f5f0" stroke-width="1.3" fill="none"/>
+                <path d="M 100 28 Q 99 22, 101 16" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 100 72 Q 101 78, 99 85" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 78 50 Q 72 49, 65 51" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 122 50 Q 128 51, 135 49" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 82 35 Q 77 30, 72 24" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 118 35 Q 123 30, 130 25" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 82 65 Q 76 70, 70 76" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 118 64 Q 124 70, 132 75" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M 2 100 Q 20 78, 45 88 Q 70 98, 100 82 Q 130 65, 160 85 Q 180 98, 198 80" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 2 115 Q 30 95, 60 105 Q 95 118, 130 100 Q 160 85, 198 98" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>
+                <path d="M 2 125 Q 50 112, 100 122 Q 150 130, 198 118" stroke="#f5f5f0" stroke-width="0.75" fill="none" stroke-linecap="round" opacity="0.3"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>07 — Simple Mark (hand-drawn figure in wobbly circle)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer circle - very wobbly -->
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Head -->
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Body -->
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Legs - one stepping -->
+                <path d="M 47 63 Q 40 70, 32 78" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Arms up slightly -->
+                <path d="M 47 48 Q 38 44, 28 42" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 47 63 Q 40 70, 32 78" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 47 48 Q 38 44, 28 42" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section">
+    <h2>08 — Just the Fool (no frame, pure sketch)</h2>
+    <div class="logo-row">
+        <div class="logo-container">
+            <svg width="120" height="160" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Body -->
+                <path d="M 68 48 Q 66 62, 68 75 Q 66 88, 68 100" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Back leg (grounded) -->
+                <path d="M 66 100 Q 55 115, 42 135" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Front leg (stepping into void) -->
+                <path d="M 70 98 Q 82 110, 95 118" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Back arm -->
+                <path d="M 66 72 Q 52 68, 38 72" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Front arm holding stick -->
+                <path d="M 70 70 Q 82 62, 92 52" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Stick -->
+                <path d="M 92 52 Q 98 42, 105 28" stroke="#1a1a18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                
+                <!-- Bundle -->
+                <path d="M 100 30 Q 105 22, 112 24 Q 120 28, 118 38 Q 114 46, 105 44 Q 98 40, 100 30" stroke="#1a1a18" stroke-width="1.5" fill="none"/>
+                
+                <!-- Small ground line hint -->
+                <path d="M 10 138 Q 30 136, 50 140" stroke="#1a1a18" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+        </div>
+        <div class="logo-container dark">
+            <svg width="120" height="160" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 68 48 Q 66 62, 68 75 Q 66 88, 68 100" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 66 100 Q 55 115, 42 135" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 70 98 Q 82 110, 95 118" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 66 72 Q 52 68, 38 72" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 70 70 Q 82 62, 92 52" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 92 52 Q 98 42, 105 28" stroke="#f5f5f0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 100 30 Q 105 22, 112 24 Q 120 28, 118 38 Q 114 46, 105 44 Q 98 40, 100 30" stroke="#f5f5f0" stroke-width="1.5" fill="none"/>
+                <path d="M 10 138 Q 30 136, 50 140" stroke="#f5f5f0" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

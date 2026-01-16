@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>residencies — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--black);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: none;
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a {
+            text-transform: lowercase;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-logo span {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--black);
+        }
+
+        .nav-logo:hover {
+            background: none;
+        }
+
+        .nav-logo:hover span {
+            text-decoration: underline;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-bg-text {
+            display: none;
+        }
+
+        .hero-illustration {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-illustration svg {
+            width: 45vw;
+            max-width: 400px;
+            height: auto;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 4rem;
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title .glitch {
+            position: relative;
+        }
+
+        .hero-title .glitch::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -3px;
+            top: 0;
+            color: var(--moss);
+            opacity: 0.4;
+            clip-path: inset(0 0 50% 0);
+        }
+
+        .hero-year {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            letter-spacing: 0.3em;
+        }
+
+        .intro-lead {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            font-style: italic;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .intro-body {
+            font-size: 13px;
+            line-height: 1.8;
+            max-width: 450px;
+            color: var(--gray);
+        }
+
+        .intro-body p {
+            margin-bottom: 1rem;
+        }
+
+        .intro-who {
+            margin-top: 2rem;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--moss);
+            border-left: 3px solid var(--moss);
+            padding-left: 1rem;
+        }
+
+        .float {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--gray-light);
+            pointer-events: none;
+        }
+
+        .float-1 { top: 15%; right: 10%; font-size: 1rem; transform: rotate(12deg); }
+        .float-2 { bottom: 20%; right: 5%; font-size: 0.8rem; transform: rotate(-8deg); }
+        .float-3 { top: 30%; right: 25%; font-size: 5rem; opacity: 0.1; }
+
+        /* Sections */
+        section {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Split layout */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .split-left {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            line-height: 1.3;
+        }
+
+        .split-right {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--gray);
+            padding-top: 0.5rem;
+        }
+
+        /* Dark section */
+        .dark-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .dark-section .section-label {
+            color: var(--gray);
+        }
+
+        .schedule-intro {
+            font-size: 12px;
+            color: var(--gray-light);
+            margin-bottom: 2rem;
+            max-width: 400px;
+        }
+
+        .schedule-table {
+            font-size: 13px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .schedule-row {
+            display: flex;
+            border-bottom: 1px solid #333;
+            padding: 0.6rem 0;
+        }
+
+        .schedule-time {
+            width: 80px;
+            color: var(--gray);
+            flex-shrink: 0;
+        }
+
+        .schedule-activity {
+            color: var(--bg);
+        }
+
+        .schedule-activity.highlight {
+            background: var(--moss);
+            color: var(--black);
+            padding: 0 0.3rem;
+            margin: -0.1rem -0.3rem;
+        }
+
+        .schedule-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            color: var(--gray);
+            max-width: 450px;
+            line-height: 1.7;
+        }
+
+        /* Calendar scattered */
+        .calendar-section {
+            position: relative;
+            min-height: 600px;
+        }
+
+        .calendar-note {
+            font-size: 11px;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            max-width: 350px;
+        }
+
+        .calendar-container {
+            position: relative;
+            height: 500px;
+        }
+
+        .calendar-item {
+            position: absolute;
+            font-size: 12px;
+            padding: 0.5rem;
+            border: 1px solid var(--black);
+            background: var(--cream);
+            transition: transform 0.2s;
+        }
+
+        .calendar-item:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 10;
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .calendar-month {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .calendar-dates {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .calendar-event {
+            font-size: 10px;
+            color: var(--rust);
+            margin-top: 0.25rem;
+        }
+
+        .calendar-item:hover .calendar-dates,
+        .calendar-item:hover .calendar-event {
+            color: var(--bg);
+        }
+
+        .calendar-item:nth-child(1) { top: 0; left: 0; transform: rotate(-2deg); }
+        .calendar-item:nth-child(2) { top: 10px; left: 150px; transform: rotate(1deg); }
+        .calendar-item:nth-child(3) { top: 60px; left: 320px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(4) { top: 120px; left: 50px; transform: rotate(2deg); }
+        .calendar-item:nth-child(5) { top: 100px; left: 220px; transform: rotate(-3deg); }
+        .calendar-item:nth-child(6) { top: 150px; left: 400px; transform: rotate(1deg); }
+        .calendar-item:nth-child(7) { top: 230px; left: 10px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(8) { top: 220px; left: 180px; transform: rotate(2deg); }
+        .calendar-item:nth-child(9) { top: 280px; left: 350px; transform: rotate(-2deg); }
+        .calendar-item:nth-child(10) { top: 340px; left: 80px; transform: rotate(1deg); }
+        .calendar-item:nth-child(11) { top: 350px; left: 250px; transform: rotate(-1deg); }
+        .calendar-item:nth-child(12) { top: 400px; left: 420px; transform: rotate(2deg); }
+
+        /* Moss section */
+        .moss-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .moss-section .section-label {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .rooms-grid {
+            display: flex;
+            gap: 0;
+            max-width: 600px;
+        }
+
+        .room-box {
+            flex: 1;
+            padding: 2rem;
+            border: 2px solid var(--cream);
+        }
+
+        .room-box:first-child {
+            border-right: none;
+        }
+
+        .room-type {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .room-price {
+            font-size: 12px;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        .rooms-note {
+            margin-top: 2rem;
+            font-size: 12px;
+            opacity: 0.7;
+            padding: 1rem;
+            border: 1px dashed rgba(255,255,255,0.3);
+            max-width: 400px;
+        }
+
+        /* Facilities list */
+        .facilities-list {
+            columns: 2;
+            column-gap: 3rem;
+            max-width: 500px;
+            font-size: 13px;
+            list-style: none;
+        }
+
+        .facilities-list li {
+            margin-bottom: 0.5rem;
+            break-inside: avoid;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .facilities-list li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gray);
+        }
+
+        /* What you bring - overlapping */
+        .bring-section {
+            position: relative;
+            min-height: 350px;
+        }
+
+        .bring-item {
+            position: absolute;
+            max-width: 250px;
+        }
+
+        .bring-item h4 {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .bring-item p {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .bring-1 { top: 0; left: 0; }
+        .bring-2 { top: 80px; left: 280px; }
+        .bring-3 { top: 200px; left: 100px; }
+
+        /* Apply section */
+        .apply-section {
+            background: var(--black);
+            color: var(--bg);
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .apply-section .section-label {
+            color: var(--gray);
+        }
+
+        .apply-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .apply-desc {
+            font-size: 13px;
+            color: var(--gray);
+            max-width: 350px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .apply-cta {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 1px solid var(--bg);
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            transition: all 0.1s;
+        }
+
+        .apply-cta:hover {
+            background: var(--bg);
+            color: var(--black);
+        }
+
+        .apply-contact {
+            margin-top: 3rem;
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .apply-contact a {
+            color: var(--gray);
+        }
+
+        .apply-contact a:hover {
+            color: var(--bg);
+            background: none;
+            text-decoration: underline;
+        }
+
+        /* Photo gallery - minimal */
+        .gallery-section {
+            padding: 0;
+            border-top: 1px solid var(--black);
+        }
+
+        .gallery-row {
+            display: flex;
+            border-bottom: 1px solid var(--black);
+        }
+
+        .gallery-item {
+            flex: 1;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border-right: 1px solid var(--black);
+        }
+
+        .gallery-item:last-child {
+            border-right: none;
+        }
+
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img,
+        .gallery-item:hover video {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-row {
+                flex-wrap: wrap;
+            }
+            .gallery-item {
+                flex: 1 1 50%;
+                border-right: none;
+                border-bottom: 1px solid var(--black);
+            }
+            .gallery-item:nth-child(odd) {
+                border-right: 1px solid var(--black);
+            }
+        }
+
+        /* Footer */
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+
+        .struck {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-bg-text { font-size: 40vw; }
+            .hero-title { font-size: 2.5rem; }
+            .split { grid-template-columns: 1fr; gap: 2rem; }
+            .calendar-container {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .calendar-item {
+                position: relative !important;
+                transform: none !important;
+                top: auto !important;
+                left: auto !important;
+            }
+            .rooms-grid { flex-direction: column; }
+            .room-box:first-child { border-right: 2px solid var(--cream); border-bottom: none; }
+            .bring-item {
+                position: relative;
+                top: auto !important;
+                left: auto !important;
+                margin-bottom: 2rem;
+            }
+            .bring-section { min-height: auto; }
+            .facilities-list { columns: 1; }
+            .apply-title { font-size: 3rem; }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>fools' valley</span>
+        </a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <section class="hero">
+        <!-- Hand-drawn fool illustration -->
+        <div class="hero-illustration">
+            <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M 68 48 Q 66 62, 68 75 Q 66 88, 68 100" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 66 100 Q 55 115, 42 135" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 70 98 Q 82 110, 95 118" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 66 72 Q 52 68, 38 72" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 70 70 Q 82 62, 92 52" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 92 52 Q 98 42, 105 28" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <path d="M 100 30 Q 105 22, 112 24 Q 120 28, 118 38 Q 114 46, 105 44 Q 98 40, 100 30" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M 10 138 Q 30 136, 50 140" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+        </div>
+        
+        <div class="float float-1">30 min north of lisbon</div>
+        <div class="float float-2">est. 2024 (or was it always here?)</div>
+        <div class="float float-3">?</div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title"><span class="glitch" data-text="residencies">residencies</span></h1>
+            <div class="hero-year">2026</div>
+            
+            <p class="intro-lead">
+                for those ready to become a fool — to sacrifice the intellect to the Unknown. not just the passive sacrifice of an empty mind, but the active sacrifice of setting out on the fool's journey of openness and curiosity.
+            </p>
+            
+            <div class="intro-body">
+                <p>
+                    a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.
+                </p>
+                <p>
+                    this year: longer stays. limited move-in days. tighter curation. 100% co-created schedule.
+                </p>
+            </div>
+            
+            <p class="intro-who">
+                writers who need to finish the thing. renegade scientists. artists developing something they can't yet name. researchers of consciousness — human and machine. builders of futures they'd actually want to live in.
+            </p>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-row">
+            <div class="gallery-item">
+                <img src="assets/dancing.jpeg" alt="Dancing">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/danceparty.jpeg" alt="Dance party">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/permaculture-group.jpeg" alt="Community">
+            </div>
+        </div>
+    </section>
+
+    <section class="dark-section" id="rhythm">
+        <div class="section-label">002 / rhythm</div>
+        
+        <div class="split">
+            <div class="split-left" style="color: var(--bg);">
+                daily rhythm<br>
+                <span style="font-size: 0.5em; font-family: 'Space Mono', monospace; color: var(--gray);">join what serves you</span>
+            </div>
+            <div class="split-right" style="color: var(--gray-light);">
+                <div class="schedule-intro">
+                    recommended: 1 month<br>
+                    minimum: 2 weeks
+                </div>
+                
+                <div class="schedule-table">
+                    <div class="schedule-row">
+                        <span class="schedule-time">07-09</span>
+                        <span class="schedule-activity">morning — exercise, meditation, dance, pond</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">09-10</span>
+                        <span class="schedule-activity">breakfast</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">10-13</span>
+                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">13-14</span>
+                        <span class="schedule-activity">lunch</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">14-18</span>
+                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">18:00</span>
+                        <span class="schedule-activity">dinner</span>
+                    </div>
+                    <div class="schedule-row">
+                        <span class="schedule-time">20-22</span>
+                        <span class="schedule-activity">jams, salons, sauna, movement, ???</span>
+                    </div>
+                </div>
+                
+                <p class="schedule-note">
+                    you host what you want to see. we shape the schedule together at month start. collective space care is part of the deal.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="calendar-section" id="calendar">
+        <div class="section-label">003 / calendar</div>
+        
+        <p class="calendar-note">
+            move-in: sun-mon<br>
+            if monday, before 14:00<br>
+            <br>
+            (hover to inspect)
+        </p>
+        
+        <div class="calendar-container">
+            <div class="calendar-item">
+                <div class="calendar-month">Jan</div>
+                <div class="calendar-dates">flexible</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Feb</div>
+                <div class="calendar-dates">7-8</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Mar</div>
+                <div class="calendar-dates">2-3</div>
+                <div class="calendar-event">permaculture 15-27</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Apr</div>
+                <div class="calendar-dates">6-7, 19-20</div>
+                <div class="calendar-event">fools lab 1-5</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">May</div>
+                <div class="calendar-dates">3-4, 17-18, 31</div>
+                <div class="calendar-event">circling</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Jun</div>
+                <div class="calendar-dates">1, 14-15, 28-29</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Jul</div>
+                <div class="calendar-dates">12-13, 26-27</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Aug</div>
+                <div class="calendar-dates">9-10, 23-24</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Sep</div>
+                <div class="calendar-dates">6-7, 20-21</div>
+                <div class="calendar-event">circling</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Oct</div>
+                <div class="calendar-dates">4-5, 18-19</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Nov</div>
+                <div class="calendar-dates">1-2, 15-16</div>
+            </div>
+            <div class="calendar-item">
+                <div class="calendar-month">Dec</div>
+                <div class="calendar-dates">tba</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="moss-section" id="rooms">
+        <div class="section-label">004 / accommodation</div>
+        
+        <div class="rooms-grid">
+            <div class="room-box">
+                <div class="room-type">private rooms</div>
+                <div class="room-price">
+                    €150-450 / week<br>
+                    €450-1350 / month
+                </div>
+            </div>
+            <div class="room-box">
+                <div class="room-type">dorm beds</div>
+                <div class="room-price">
+                    €70 / week<br>
+                    €210 / month
+                </div>
+            </div>
+        </div>
+        
+        <div class="rooms-note">
+            + €20/day per person<br>
+            food, bills, 1-2 prepared meals
+        </div>
+
+        <a href="rooms.html" style="display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; border: 2px solid var(--cream); color: var(--cream); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; transition: all 0.1s;">room options →</a>
+    </section>
+
+    <section id="facilities">
+        <div class="section-label">005 / facilities</div>
+        
+        <ul class="facilities-list">
+            <li>200sqm dancehall (vinyl floor)</li>
+            <li>1000sqm warehouse</li>
+            <li>meditation room</li>
+            <li>gym + weights</li>
+            <li>swimming lake</li>
+            <li>wood-burning sauna</li>
+            <li>fast wifi</li>
+            <li>weekly cleaning (shared spaces)</li>
+        </ul>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-row">
+            <div class="gallery-item">
+                <img src="assets/land-view.jpg" alt="Land view">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/Copy of photo_2024-07-18_14-11-12 (2).jpg" alt="Fools Valley">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/coworking.jpeg" alt="Coworking space">
+            </div>
+        </div>
+    </section>
+
+    <section class="apply-section" id="apply">
+        <div class="section-label">006 / apply</div>
+        
+        <h2 class="apply-title">apply here</h2>
+        
+        <p class="apply-desc">
+            we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.
+        </p>
+        
+        <a href="https://tally.so/r/OD4AZg" class="apply-cta">begin application</a>
+        
+        <p class="apply-contact">
+            questions → <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a><br>
+            (we reply slowly)
+        </p>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>you're not sure if it's broken or genius</span>
+    </footer>
+</body>
+</html>

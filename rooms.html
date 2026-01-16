@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rooms & spaces — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--black);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            text-decoration: none;
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a {
+            text-transform: lowercase;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-logo span {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--black);
+        }
+
+        .nav-logo:hover {
+            background: none;
+        }
+
+        .nav-logo:hover span {
+            text-decoration: underline;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 60vh;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 4rem;
+            font-weight: 400;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            letter-spacing: 0.3em;
+        }
+
+        .intro-lead {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            font-style: italic;
+            max-width: 500px;
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Space blocks */
+        .space-block {
+            margin-bottom: 4rem;
+        }
+
+        .space-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .space-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .space-name {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+        }
+
+        .space-rooms {
+            font-size: 11px;
+            color: var(--gray);
+            text-align: right;
+        }
+
+        .space-rooms span {
+            display: block;
+        }
+
+        .space-description {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--gray);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .space-amenities {
+            font-size: 12px;
+            color: var(--moss);
+            margin-bottom: 2rem;
+        }
+
+        /* Photo grids */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--black);
+            border: 1px solid var(--black);
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.03);
+        }
+
+        .photo-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 0.75rem;
+            background: rgba(10, 10, 10, 0.8);
+            color: var(--bg);
+            font-size: 11px;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+        }
+
+        /* Dark section */
+        .dark-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .dark-section .section-label {
+            color: var(--gray);
+        }
+
+        .dark-section .space-name {
+            color: var(--bg);
+        }
+
+        .dark-section .space-description {
+            color: var(--gray-light);
+        }
+
+        .dark-section .space-amenities {
+            color: var(--moss);
+        }
+
+        .dark-section .space-rooms {
+            color: var(--gray-light);
+        }
+
+        /* Moss section */
+        .moss-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .moss-section .section-label {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .moss-section .space-description {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .moss-section .space-amenities {
+            color: var(--cream);
+        }
+
+        .moss-section .space-rooms {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Footer */
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .space-name { font-size: 2rem; }
+            .space-header { flex-direction: column; }
+            .space-rooms { text-align: left; }
+            .photo-grid { grid-template-columns: 1fr 1fr; }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .photo-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>fools' valley</span>
+        </a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">rooms & spaces</h1>
+            <div class="hero-subtitle">where fools rest & create</div>
+            <p class="intro-lead">
+                multiple houses scattered across the land. each with its own character. some for sleeping, some for working, some for moving, some for being still.
+            </p>
+        </div>
+    </section>
+
+    <!-- The Old House -->
+    <section id="old-house">
+        <div class="section-label">001 / the old house</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">The Old House</h2>
+                <div class="space-rooms">
+                    <span>Chafariz</span>
+                    <span>Isabel</span>
+                    <span>Library</span>
+                    <span>Studio</span>
+                    <span>Galeria</span>
+                    <span>Dorm</span>
+                </div>
+            </div>
+
+            <p class="space-description">
+                The heart of the property. Features the most bedrooms and communal areas. A range of rooms from very simple ones to larger rooms with private bathrooms, as well as a plush dorm with individual curtains.
+            </p>
+
+            <p class="space-amenities">
+                living room — kitchen — mushroom lounge — small gym with weights — meditation/yoga room (workshops up to 12 people)
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2025/06/Copy-of-IMG_7464-1-1024x768.jpeg" alt="Inner courtyard">
+                    <div class="photo-label">inner courtyard</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2025/06/2024-01-10-19.59.41-1-1024x770.jpg" alt="Meditation room">
+                    <div class="photo-label">meditation room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1314-1024x768.jpeg" alt="Library">
+                    <div class="photo-label">library</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/Copy-of-photo_2024-05-20_10-34-26-4-1-1024x576.jpg" alt="Library">
+                    <div class="photo-label">library</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_3211_1-893x1024.jpg" alt="Galeria room">
+                    <div class="photo-label">galeria room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1326-1-1024x768.jpeg" alt="Dorm">
+                    <div class="photo-label">dorm</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_3325-806x1024.jpg" alt="Chafariz">
+                    <div class="photo-label">chafariz</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_3374_1-1-768x1024.jpg" alt="Isabel">
+                    <div class="photo-label">isabel</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_3264_2-880x1024.jpg" alt="Library room">
+                    <div class="photo-label">library room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_3298-1-1-768x1024.jpg" alt="Studio">
+                    <div class="photo-label">studio</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- M / Octopus House -->
+    <section class="dark-section" id="octopus-house">
+        <div class="section-label">002 / m — octopus house</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">M / Octopus House</h2>
+                <div class="space-rooms">
+                    <span>M Curve Suite</span>
+                    <span>M Big Suite</span>
+                    <span>M Room</span>
+                </div>
+            </div>
+
+            <p class="space-description">
+                Contemporary residence with full-wall walk-in windows and underfloor heating. Main living room-kitchen-lounge space flows into three distinct bedrooms.
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1351-1024x768.jpeg" alt="Living room">
+                    <div class="photo-label">living room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1037-2-1024x768.jpg" alt="M-big suite">
+                    <div class="photo-label">M-big suite</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_0071-1024x768.jpeg" alt="M-curve suite">
+                    <div class="photo-label">M-curve suite</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1036_1-1024x768.jpg" alt="M-room">
+                    <div class="photo-label">M-room</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- L / Dancehall -->
+    <section id="dancehall">
+        <div class="section-label">003 / l — dancehall</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">L / Dancehall</h2>
+            </div>
+
+            <p class="space-description">
+                200 sqm hall with a professional dance vinyl floor, three showers and bathrooms, aerial silks, boxing bag, yoga mats, meditation cushions. Workshop space for up to 60 people.
+            </p>
+
+            <p class="space-amenities">
+                200sqm vinyl floor — aerial silks — boxing bag — yoga mats — meditation cushions — showers — workshop capacity: 60
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1777-1-1024x768.jpeg" alt="Dancehall">
+                    <div class="photo-label">dancehall</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1822-1024x768.jpeg" alt="Dancehall">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- S / Small House -->
+    <section class="moss-section" id="small-house">
+        <div class="section-label">004 / s — small house</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">S / Small House</h2>
+            </div>
+
+            <p class="space-description">
+                Features silent coworking space with living room and kitchen. Two bedrooms primarily occupied by permanent residents.
+            </p>
+
+            <p class="space-amenities">
+                silent coworking — living room — kitchen
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_0057-1-1024x768.jpeg" alt="Coworking space">
+                    <div class="photo-label">coworking space</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1052-1024x768.jpeg" alt="Coworking space">
+                    <div class="photo-label">coworking space</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1050-1-1024x768.jpeg" alt="Bedroom">
+                    <div class="photo-label">bedroom</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_0140-1024x768.jpeg" alt="Living room">
+                    <div class="photo-label">living room</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Blue House -->
+    <section class="dark-section" id="blue-house">
+        <div class="section-label">005 / the blue house</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">The Blue House</h2>
+                <div class="space-rooms">
+                    <span>2 big bedrooms</span>
+                    <span>3 small bedrooms</span>
+                    <span>dorm</span>
+                    <span>pool room</span>
+                    <span>ground floor room</span>
+                </div>
+            </div>
+
+            <p class="space-description">
+                Large villa a 5-minute walk from the main property. Seven bedrooms and a basement with soft floor for movement. Perfect for group retreats and circling practice.
+            </p>
+
+            <p class="space-amenities">
+                7 bedrooms — basement movement space — 5 min walk from main property
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.58.46-768x1024.jpeg" alt="Living room">
+                    <div class="photo-label">living room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.59.00-768x1024.jpeg" alt="Kitchen">
+                    <div class="photo-label">kitchen</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.58.56-768x1024.jpeg" alt="Terrace">
+                    <div class="photo-label">terrace</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.59.17-1024x768.jpeg" alt="Big bedroom 1">
+                    <div class="photo-label">big bedroom 1</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.59.03-1024x768.jpeg" alt="Big bedroom 2">
+                    <div class="photo-label">big bedroom 2</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-15.04.38-1024x768.jpeg" alt="Pool room">
+                    <div class="photo-label">pool room</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-14.59.13-1-768x1024.jpeg" alt="Small bedroom">
+                    <div class="photo-label">small bedroom</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-15.04.51-1024x768.jpeg" alt="Dorm">
+                    <div class="photo-label">dorm</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/photo_2026-01-03-15.04.23-1024x768.jpeg" alt="Ground floor room">
+                    <div class="photo-label">ground floor room</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pond, Sauna and More -->
+    <section id="pond-sauna">
+        <div class="section-label">006 / pond, sauna & more</div>
+
+        <div class="space-block">
+            <div class="space-header">
+                <h2 class="space-name">Pond, Sauna & More</h2>
+            </div>
+
+            <p class="space-description">
+                The swimming lake and wood-burning sauna. For cold plunges, hot sweats, and everything in between.
+            </p>
+
+            <div class="photo-grid">
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/Copy-of-photo_2024-07-18_14-11-12-1-768x1024.jpg" alt="Pond">
+                    <div class="photo-label">pond</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/IMG_1440-768x1024.jpeg" alt="Pond and sauna">
+                    <div class="photo-label">pond and sauna</div>
+                </div>
+                <div class="photo-item">
+                    <img src="https://foolsvalley.com/wp-content/uploads/2026/01/2024-01-10-19.59.14-1-1-1024x768.jpg" alt="Nature">
+                    <div class="photo-label">nature</div>
+                </div>
+                <div class="photo-item">
+                    <img src="assets/danceparty.jpeg" alt="Warehouse">
+                    <div class="photo-label">1000 sqm warehouse</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>every room has a story</span>
+    </footer>
+</body>
+</html>

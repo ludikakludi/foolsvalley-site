@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>venue — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: var(--black); text-decoration: underline; }
+        a:hover { text-decoration: none; background: var(--black); color: var(--bg); }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a { text-transform: lowercase; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; }
+
+        .hero {
+            min-height: 80vh;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-size: 18vw;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gray-light);
+            bottom: 10%;
+            right: 5%;
+            pointer-events: none;
+            opacity: 0.25;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 3rem;
+        }
+
+        .hero-intro {
+            font-size: 13px;
+            color: var(--gray);
+            max-width: 450px;
+            line-height: 1.8;
+        }
+
+        section {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Hero image */
+        .hero-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--black);
+        }
+
+        /* Photo gallery */
+        .gallery-section {
+            padding: 0;
+            border-top: 1px solid var(--black);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Facilities grid - scattered */
+        .facilities-section {
+            position: relative;
+            min-height: 850px;
+        }
+
+        .facility-card {
+            position: absolute;
+            max-width: 280px;
+            padding: 1.5rem;
+            border: 1px solid var(--black);
+            background: var(--cream);
+            transition: transform 0.2s, z-index 0s;
+        }
+
+        .facility-card:hover {
+            transform: scale(1.02) rotate(0deg) !important;
+            z-index: 10;
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .facility-card h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .facility-card p {
+            font-size: 12px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .facility-card:hover p { color: var(--gray-light); }
+
+        .facility-card:nth-child(1) { top: 0; left: 0; transform: rotate(-1deg); }
+        .facility-card:nth-child(2) { top: 20px; left: 320px; transform: rotate(1deg); }
+        .facility-card:nth-child(3) { top: 150px; left: 100px; transform: rotate(-2deg); }
+        .facility-card:nth-child(4) { top: 180px; left: 450px; transform: rotate(2deg); }
+        .facility-card:nth-child(5) { top: 350px; left: 0; transform: rotate(1deg); }
+        .facility-card:nth-child(6) { top: 380px; left: 300px; transform: rotate(-1deg); }
+        .facility-card:nth-child(7) { top: 550px; left: 500px; transform: rotate(2deg); }
+
+        .facility-sticker {
+            background: var(--moss);
+            color: var(--cream);
+            border-color: var(--moss);
+        }
+
+        .facility-sticker h3 {
+            color: var(--cream);
+        }
+
+        .facility-sticker p {
+            color: rgba(255,255,255,0.85);
+        }
+
+        .facility-sticker:hover {
+            background: var(--black);
+            border-color: var(--black);
+        }
+
+        .facility-sticker:hover p {
+            color: var(--gray-light);
+        }
+
+        /* Capacity section */
+        .capacity-section {
+            background: var(--moss);
+            color: var(--cream);
+        }
+
+        .capacity-section .section-label { color: rgba(255,255,255,0.5); }
+
+        .capacity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            max-width: 800px;
+            border: 2px solid var(--cream);
+        }
+
+        .capacity-item {
+            padding: 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .capacity-number {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .capacity-label {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        /* How to */
+        .howto-section {
+            background: var(--black);
+            color: var(--bg);
+        }
+
+        .howto-section .section-label { color: var(--gray); }
+
+        .howto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2rem;
+            max-width: 1000px;
+        }
+
+        .howto-item h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--bg);
+        }
+
+        .howto-item p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .howto-examples {
+            font-size: 12px;
+            color: var(--gray-light);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Contact */
+        .contact-section {
+            padding: 5rem 2rem;
+        }
+
+        .contact-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-email {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-note {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .hero-bg-text { font-size: 25vw; }
+            .facilities-section { min-height: auto; }
+            .facility-card {
+                position: relative !important;
+                transform: none !important;
+                top: auto !important;
+                left: auto !important;
+                max-width: 100%;
+                margin-bottom: 1rem;
+            }
+            .howto-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            footer { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><span>fools' valley</span></a>
+        <a href="residencies.html">residencies</a>
+        <a href="events.html">events</a>
+        <a href="saturdays.html">open saturdays</a>
+        <a href="research.html">research</a>
+        <a href="rooms.html">rooms</a>
+        <a href="venue.html">venue</a>
+    </nav>
+
+    <img src="assets/aerial.jpeg" alt="Aerial view of Fools' Valley" class="hero-image">
+
+    <section class="hero" style="min-height: 60vh; padding-top: 4rem;">
+        <div class="hero-bg-text">SPACE</div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">venue</h1>
+            <p class="hero-subtitle">you can run your own event</p>
+
+            <p class="hero-intro">
+                host retreats, workshops, festivals, gatherings. we have the space, the infrastructure, and the vibe. you bring the people and the purpose.
+            </p>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="assets/dancehall.jpg" alt="200sqm dancehall">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/warehouse.jpeg" alt="1000sqm warehouse">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/sauna.jpeg" alt="Wood-fired sauna">
+            </div>
+            <div class="gallery-item">
+                <img src="assets/pond.jpeg" alt="Swimming pond">
+            </div>
+        </div>
+    </section>
+
+    <section class="facilities-section">
+        <div class="section-label">001 / facilities</div>
+        
+        <div class="facility-card">
+            <h3>dancehall</h3>
+            <p>200 sqm with professional vinyl dance surface, changing room, 4 bathrooms and showers. fits 40-60 participants depending on activity.</p>
+        </div>
+        
+        <div class="facility-card">
+            <h3>the old house</h3>
+            <p>a magical old Portuguese house. dorm (6 beds), 5 bedrooms, dining for 12, kitchen, mushroom lounge, small gym, library, meditation space.</p>
+        </div>
+        
+        <div class="facility-card">
+            <h3>new buildings</h3>
+            <p>3 high-end bedrooms (2 en-suite), open kitchen and dining for 30 with a giant octopus couch. plus 2 bedrooms with a view.</p>
+        </div>
+        
+        <div class="facility-card">
+            <h3>the warehouse</h3>
+            <p>1000 sqm for raves, art projects, whatever you dream up. 7 min walk on the other side of the land.</p>
+        </div>
+        
+        <div class="facility-card">
+            <h3>outdoor</h3>
+            <p>natural swimming pond, wood-fired sauna, vegetable garden, chickens, trampoline on the hill, unlimited camping space.</p>
+        </div>
+        
+        <div class="facility-card">
+            <h3>infrastructure</h3>
+            <p>fast wifi throughout, weekly professional cleaning, various co-working spaces, meditation room, gym with weights.</p>
+        </div>
+
+        <div class="facility-card facility-sticker">
+            <h3>the blue house</h3>
+            <p>a villa 5 min walk from the main venue that can be booked separately. 8 bedrooms, a dorm and sleeping capacity of up to 20 people.</p>
+        </div>
+
+        <a href="rooms.html" style="position: absolute; bottom: 2rem; left: 2rem; display: inline-block; padding: 0.75rem 1.5rem; border: 1px solid var(--black); background: var(--cream); color: var(--black); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; transition: all 0.1s;">all facilities →</a>
+    </section>
+
+    <section class="capacity-section">
+        <div class="section-label">002 / capacity</div>
+        
+        <div class="capacity-grid">
+            <div class="capacity-item">
+                <div class="capacity-number">20</div>
+                <div class="capacity-label">private bedrooms</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-number">34</div>
+                <div class="capacity-label">beds in all rooms</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-number">20</div>
+                <div class="capacity-label">tipi glamping tents</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-number">∞</div>
+                <div class="capacity-label">camping spaces</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="howto-section">
+        <div class="section-label">003 / how it works</div>
+        
+        <div class="howto-grid">
+            <div class="howto-item">
+                <h3>option a</h3>
+                <p>run your event alongside our ongoing residencies, offering participation to our residents. schedule can integrate with our activities.</p>
+                <p class="howto-examples">examples: dance retreat, art residency, science salon, thematic co-working sprint, conference</p>
+            </div>
+
+            <div class="howto-item">
+                <h3>option b</h3>
+                <p>book the whole venue for a private retreat. rare dates available — inquire early.</p>
+                <p class="howto-examples">full exclusivity, design your own container</p>
+            </div>
+
+            <div class="howto-item">
+                <h3>option c</h3>
+                <p>book just the blue house or another part of the venue for a smaller event (6-20 people).</p>
+                <p class="howto-examples">intimate gatherings, team retreats, small workshops</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="section-label">004 / get in touch</div>
+        
+        <h2 class="contact-title">tell us about your event</h2>
+        
+        <p class="contact-email">
+            <a href="mailto:theonlyfool@gmail.com">theonlyfool@gmail.com</a>
+        </p>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>your event here?</span>
+    </footer>
+</body>
+</html>
