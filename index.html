@@ -105,22 +105,88 @@
             justify-content: center;
         }
 
-        /* The void as background element */
-        .hero-void {
+        /* The void as flip card */
+        .void-card {
             position: absolute;
             top: 50%;
-            right: 5%;
+            right: 8%;
             transform: translateY(-50%);
-            width: 45vw;
-            max-width: 500px;
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
+            perspective: 1000px;
+            width: 160px;
+            height: 240px;
+            cursor: pointer;
+            z-index: 2;
         }
 
-        .hero-void img {
+        .void-card-inner {
+            position: relative;
             width: 100%;
-            height: auto;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .void-card.flipped .void-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .void-card-front,
+        .void-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .void-card-front {
+            background: transparent;
+            opacity: 0.4;
+        }
+
+        .void-card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .void-card-back {
+            transform: rotateY(180deg);
+            background: var(--bg);
+            border: 1px solid rgba(26, 26, 24, 0.1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .back-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .back-text span {
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .back-text span:last-child {
+            margin-bottom: 0;
+        }
+
+        .back-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 1.25rem;
+            opacity: 0.4;
         }
 
         .hero-content {
@@ -495,10 +561,22 @@
                 padding: 1rem;
             }
 
-            .hero-void {
-                opacity: 0.08;
-                width: 80vw;
-                right: -20%;
+            .void-card {
+                width: 120px;
+                height: 180px;
+                right: 5%;
+            }
+
+            .void-card-front {
+                opacity: 0.25;
+            }
+
+            .void-card-back {
+                padding: 1rem;
+            }
+
+            .back-text {
+                font-size: 0.85rem;
             }
 
             .about-section {
@@ -544,8 +622,19 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-void">
-            <img src="assets/void.png" alt="">
+        <div class="void-card" onclick="this.classList.toggle('flipped')">
+            <div class="void-card-inner">
+                <div class="void-card-front">
+                    <img src="assets/void.png" alt="">
+                </div>
+                <div class="void-card-back">
+                    <p class="back-text">
+                        <span>arrive with nothing figured out.</span>
+                        <span>the ground rises to meet you.</span>
+                    </p>
+                    <span class="back-label">0 · the fool</span>
+                </div>
+            </div>
         </div>
         
                 <div class="float float-2">16 hectares of quiet</div>
