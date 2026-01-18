@@ -366,12 +366,12 @@
                 width: 70px;
                 height: 98px;
             }
-            /* Scattered positions on mobile */
+            /* Scattered positions on mobile - only 3 cards */
             .hero-card-1 { top: 12%; right: 5%; transform: rotate(8deg); }
             .hero-card-2 { top: 28%; right: 22%; transform: rotate(-5deg); }
             .hero-card-3 { top: 50%; right: 8%; transform: rotate(12deg); }
-            .hero-card-4 { top: 18%; right: 42%; transform: rotate(-8deg); }
-            .hero-card-5 { top: 58%; right: 28%; transform: rotate(5deg); }
+            .hero-card-4 { display: none; }
+            .hero-card-5 { display: none; }
             .hero-card-6 { display: none; }
             .hero-back-text { font-size: 0.38rem; line-height: 1.25; }
             .hero-back-label { font-size: 4px; margin-top: 0.3rem; }
@@ -379,19 +379,6 @@
 
             .hero-card-back.text-back {
                 padding: 0.35rem;
-            }
-
-            .hero-card .resize-handle {
-                position: absolute;
-                bottom: -6px;
-                right: -6px;
-                width: 20px;
-                height: 20px;
-                background: var(--moss);
-                border-radius: 50%;
-                opacity: 0.5;
-                z-index: 10;
-                border: 2px solid var(--cream);
             }
         }
 
@@ -852,7 +839,7 @@
     </footer>
 
     <script>
-    // Mobile: draggable and resizable cards
+    // Mobile: draggable cards, tap to flip
     // Desktop: hover to flip only
     (function() {
         const cards = document.querySelectorAll('.hero-card');
@@ -861,32 +848,14 @@
         if (!isMobile) return; // Desktop uses CSS hover, no JS needed
 
         let activeCard = null;
-        let isResizing = false;
-        let startX, startY, startLeft, startTop, startWidth, startHeight;
+        let startX, startY, startLeft, startTop;
         let hasMoved = false;
-
-        // Add resize handles on mobile
-        cards.forEach(card => {
-            const handle = document.createElement('div');
-            handle.className = 'resize-handle';
-            card.appendChild(handle);
-        });
 
         cards.forEach(card => {
             card.style.touchAction = 'none';
 
             card.addEventListener('touchstart', function(e) {
                 const touch = e.touches[0];
-                const target = e.target;
-
-                if (target.classList.contains('resize-handle')) {
-                    isResizing = true;
-                    startWidth = this.offsetWidth;
-                    startHeight = this.offsetHeight;
-                } else {
-                    isResizing = false;
-                }
-
                 activeCard = this;
                 hasMoved = false;
                 const rect = this.getBoundingClientRect();
@@ -909,19 +878,12 @@
                     hasMoved = true;
                 }
 
-                if (isResizing) {
-                    const newWidth = Math.max(40, Math.min(200, startWidth + dx));
-                    const newHeight = newWidth * 1.4;
-                    this.style.width = newWidth + 'px';
-                    this.style.height = newHeight + 'px';
-                } else {
-                    this.style.position = 'fixed';
-                    this.style.left = (startLeft + dx) + 'px';
-                    this.style.top = (startTop + dy) + 'px';
-                    this.style.right = 'auto';
-                    this.style.bottom = 'auto';
-                    this.style.transform = 'none';
-                }
+                this.style.position = 'fixed';
+                this.style.left = (startLeft + dx) + 'px';
+                this.style.top = (startTop + dy) + 'px';
+                this.style.right = 'auto';
+                this.style.bottom = 'auto';
+                this.style.transform = 'none';
             });
 
             card.addEventListener('touchend', function(e) {
@@ -929,12 +891,11 @@
                 this.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
                 this.style.zIndex = '';
 
-                if (!hasMoved && !isResizing) {
+                if (!hasMoved) {
                     this.classList.toggle('flipped');
                 }
 
                 activeCard = null;
-                isResizing = false;
             });
         });
     })();
