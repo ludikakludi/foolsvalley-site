@@ -1,0 +1,30 @@
+<svg width="160" height="240" viewBox="0 0 160 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="160" height="240" fill="#1a1a18"/>
+  
+  <!-- Hand-drawn wobbly frame -->
+  <path d="M 10 8 Q 80 6, 150 9 Q 152 120, 151 231 Q 80 233, 9 230 Q 7 120, 10 8" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.2"/>
+  
+  <!-- Wobbly concentric circles - like the void image -->
+  <path d="M 80 30 Q 140 35, 145 120 Q 142 200, 80 210 Q 20 205, 15 120 Q 18 40, 80 30" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.08"/>
+  
+  <path d="M 80 45 Q 125 48, 130 120 Q 128 188, 80 195 Q 35 190, 30 120 Q 33 52, 80 45" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.1"/>
+  
+  <path d="M 80 60 Q 115 62, 118 120 Q 116 175, 80 180 Q 46 177, 42 120 Q 44 65, 80 60" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.12"/>
+  
+  <path d="M 80 75 Q 102 77, 105 120 Q 103 162, 80 165 Q 58 163, 55 120 Q 57 78, 80 75" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.15"/>
+  
+  <path d="M 80 90 Q 95 91, 97 120 Q 96 148, 80 150 Q 65 149, 63 120 Q 64 92, 80 90" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.18"/>
+  
+  <path d="M 80 105 Q 88 106, 89 120 Q 88 134, 80 135 Q 72 134, 71 120 Q 72 106, 80 105" 
+        stroke="#f5f5f0" stroke-width="0.5" fill="none" opacity="0.22"/>
+  
+  <!-- Center point / star -->
+  <circle cx="80" cy="120" r="2" fill="#f5f5f0" opacity="0.35"/>
+</svg>

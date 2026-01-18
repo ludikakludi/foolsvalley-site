@@ -272,19 +272,7 @@
         }
 
         .hero-card-front {
-            background: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-hint {
-            font-family: 'EB Garamond', serif;
-            font-style: italic;
-            font-size: 0.9rem;
-            color: var(--cream);
-            opacity: 0.6;
-            z-index: 1;
+            background: url('card-back-v5.svg') center/cover no-repeat;
         }
 
         .hero-card-back {
@@ -627,9 +615,9 @@
 
     <section class="hero">
         <!-- Scattered cards -->
-        <div class="hero-card hero-card-1" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-1">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">i</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back">
                     <video autoplay muted loop playsinline>
                         <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
@@ -637,9 +625,9 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card hero-card-2" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-2">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">ii</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back">
                     <video autoplay muted loop playsinline>
                         <source src="assets/IMG_1129.mp4" type="video/mp4">
@@ -647,9 +635,9 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card hero-card-3" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-3">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">iii</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back text-back">
                     <p class="hero-back-text">
                         <span>arrive with</span>
@@ -663,9 +651,9 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card hero-card-4" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-4">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">iv</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back">
                     <video autoplay muted loop playsinline>
                         <source src="assets/IMG_1315.mp4" type="video/mp4">
@@ -673,9 +661,9 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card hero-card-5" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-5">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">v</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back">
                     <video autoplay muted loop playsinline>
                         <source src="assets/IMG_1415.mp4" type="video/mp4">
@@ -683,9 +671,9 @@
                 </div>
             </div>
         </div>
-        <div class="hero-card hero-card-6" onclick="this.classList.toggle('flipped')">
+        <div class="hero-card hero-card-6">
             <div class="hero-card-inner">
-                <div class="hero-card-front"><span class="card-hint">vi</span></div>
+                <div class="hero-card-front"></div>
                 <div class="hero-card-back text-back">
                     <p class="hero-back-text">
                         <span>the fool is</span>
@@ -844,5 +832,78 @@
         <span>30 min north of lisbon</span>
         <span>you found it</span>
     </footer>
+
+    <script>
+    // Draggable cards on mobile
+    (function() {
+        if (window.innerWidth > 600) return;
+
+        const cards = document.querySelectorAll('.hero-card');
+        let activeCard = null;
+        let startX, startY, startLeft, startTop;
+        let hasMoved = false;
+
+        cards.forEach(card => {
+            card.style.touchAction = 'none';
+
+            card.addEventListener('touchstart', function(e) {
+                activeCard = this;
+                hasMoved = false;
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                startX = touch.clientX;
+                startY = touch.clientY;
+                startLeft = rect.left;
+                startTop = rect.top;
+                this.style.transition = 'none';
+                this.style.zIndex = 100;
+            });
+
+            card.addEventListener('touchmove', function(e) {
+                if (!activeCard) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                const dx = touch.clientX - startX;
+                const dy = touch.clientY - startY;
+
+                if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                    hasMoved = true;
+                }
+
+                this.style.position = 'fixed';
+                this.style.left = (startLeft + dx) + 'px';
+                this.style.top = (startTop + dy) + 'px';
+                this.style.right = 'auto';
+                this.style.bottom = 'auto';
+            });
+
+            card.addEventListener('touchend', function(e) {
+                if (!activeCard) return;
+                this.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                this.style.zIndex = '';
+
+                // Flip on tap (not drag)
+                if (!hasMoved) {
+                    this.classList.toggle('flipped');
+                }
+
+                activeCard = null;
+            });
+        });
+
+        // Re-init on resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 600) {
+                cards.forEach(card => {
+                    card.style.position = '';
+                    card.style.left = '';
+                    card.style.top = '';
+                    card.style.right = '';
+                    card.style.bottom = '';
+                });
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
