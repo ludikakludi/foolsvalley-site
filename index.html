@@ -105,90 +105,6 @@
             justify-content: center;
         }
 
-        /* The void as flip card */
-        .void-card {
-            position: absolute;
-            top: 50%;
-            right: 8%;
-            transform: translateY(-50%);
-            perspective: 1000px;
-            width: 160px;
-            height: 240px;
-            cursor: pointer;
-            z-index: 2;
-        }
-
-        .void-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .void-card.flipped .void-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .void-card-front,
-        .void-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .void-card-front {
-            background: transparent;
-            opacity: 0.4;
-        }
-
-        .void-card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .void-card-back {
-            transform: rotateY(180deg);
-            background: var(--bg);
-            border: 1px solid rgba(26, 26, 24, 0.1);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .back-text {
-            font-family: 'EB Garamond', serif;
-            font-size: 0.95rem;
-            font-style: italic;
-            line-height: 1.7;
-        }
-
-        .back-text span {
-            display: block;
-            margin-bottom: 0.4rem;
-        }
-
-        .back-text span:last-child {
-            margin-bottom: 0;
-        }
-
-        .back-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 8px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-top: 1.25rem;
-            opacity: 0.4;
-        }
-
         .hero-content {
             position: relative;
             z-index: 1;
@@ -329,30 +245,17 @@
             margin-right: 0.5rem;
         }
 
-        /* Video gallery flip cards */
-        .gallery-section {
-            padding: 2rem;
-            border-top: 1px solid var(--black);
-            display: flex;
-            justify-content: center;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .gallery-card {
+        /* Scattered hero cards */
+        .hero-card {
+            position: absolute;
             perspective: 1000px;
-            aspect-ratio: 4/5;
-            min-height: 200px;
+            width: 100px;
+            height: 140px;
             cursor: pointer;
+            z-index: 3;
         }
 
-        .gallery-card-inner {
+        .hero-card-inner {
             position: relative;
             width: 100%;
             height: 100%;
@@ -360,39 +263,30 @@
             transform-style: preserve-3d;
         }
 
-        /* Flip on hover for desktop */
-        .gallery-card:hover .gallery-card-inner {
+        .hero-card:hover .hero-card-inner {
             transform: rotateY(180deg);
         }
 
-        /* Also flip on click/tap for mobile */
-        .gallery-card.flipped .gallery-card-inner {
+        .hero-card.flipped .hero-card-inner {
             transform: rotateY(180deg);
         }
 
-        .gallery-card-front,
-        .gallery-card-back {
+        .hero-card-front,
+        .hero-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
             border-radius: 4px;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .gallery-card-front {
+        .hero-card-front {
             background: var(--black);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .gallery-card-front::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(74, 93, 58, 0.3) 0%, rgba(10, 10, 10, 0.5) 100%);
-            pointer-events: none;
         }
 
         .card-hint {
@@ -400,79 +294,88 @@
             font-style: italic;
             font-size: 0.9rem;
             color: var(--cream);
-            opacity: 0.7;
+            opacity: 0.6;
             z-index: 1;
-            text-align: center;
-            padding: 1rem;
         }
 
-        .gallery-card-back {
+        .hero-card-back {
             transform: rotateY(180deg);
             background: var(--bg);
             border: 1px solid var(--black);
         }
 
-        .gallery-card-back video {
+        .hero-card-back video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .gallery-card-back.text-back {
+        .hero-card-back.text-back {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: center;
             background: var(--cream);
         }
 
-        .gallery-back-text {
+        .hero-back-text {
             font-family: 'EB Garamond', serif;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-style: italic;
-            line-height: 1.6;
+            line-height: 1.5;
             color: var(--black);
         }
 
-        .gallery-back-text span {
+        .hero-back-text span {
             display: block;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }
 
-        .gallery-back-label {
+        .hero-back-label {
             font-family: 'Space Mono', monospace;
-            font-size: 7px;
-            letter-spacing: 0.15em;
+            font-size: 6px;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             opacity: 0.4;
         }
 
-        @media (max-width: 768px) {
-            .gallery-grid {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 0.5rem;
-                max-width: 100%;
+        /* Card positions - scattered */
+        .hero-card-1 { top: 15%; right: 8%; transform: rotate(5deg); }
+        .hero-card-2 { top: 35%; right: 22%; transform: rotate(-8deg); }
+        .hero-card-3 { top: 60%; right: 5%; transform: rotate(12deg); }
+        .hero-card-4 { top: 20%; right: 38%; transform: rotate(-3deg); }
+        .hero-card-5 { top: 55%; right: 30%; transform: rotate(7deg); }
+
+        @media (max-width: 900px) {
+            .hero-card {
+                width: 80px;
+                height: 112px;
             }
-            .card-hint {
-                font-size: 0.7rem;
-                padding: 0.5rem;
-            }
-            .gallery-back-text {
-                font-size: 0.7rem;
-            }
+            .hero-card-1 { top: 12%; right: 3%; }
+            .hero-card-2 { top: 30%; right: 15%; }
+            .hero-card-3 { top: 55%; right: 2%; }
+            .hero-card-4 { top: 18%; right: 28%; }
+            .hero-card-5 { top: 48%; right: 20%; }
+            .hero-back-text { font-size: 0.6rem; }
+            .card-hint { font-size: 0.75rem; }
         }
 
-        @media (max-width: 500px) {
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
+        @media (max-width: 600px) {
+            .hero-card {
+                width: 60px;
+                height: 84px;
             }
-            .gallery-card:nth-child(4),
-            .gallery-card:nth-child(5) {
+            .hero-card-4, .hero-card-5 {
                 display: none;
             }
+            .hero-card-1 { top: 8%; right: 5%; }
+            .hero-card-2 { top: 25%; right: 2%; }
+            .hero-card-3 { top: 45%; right: 8%; }
+            .hero-back-text { font-size: 0.5rem; }
+            .card-hint { font-size: 0.6rem; }
         }
 
         /* Decorative border image */
@@ -669,24 +572,6 @@
                 padding: 1rem;
             }
 
-            .void-card {
-                width: 120px;
-                height: 180px;
-                right: 5%;
-            }
-
-            .void-card-front {
-                opacity: 0.25;
-            }
-
-            .void-card-back {
-                padding: 1rem;
-            }
-
-            .back-text {
-                font-size: 0.85rem;
-            }
-
             .about-section {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -730,22 +615,62 @@
     </nav>
 
     <section class="hero">
-        <div class="void-card" onclick="this.classList.toggle('flipped')">
-            <div class="void-card-inner">
-                <div class="void-card-front">
-                    <img src="assets/void.png" alt="">
-                </div>
-                <div class="void-card-back">
-                    <p class="back-text">
-                        <span>arrive with nothing figured out.</span>
-                        <span>the ground rises to meet you.</span>
-                    </p>
-                    <span class="back-label">0 · the fool</span>
+        <!-- Scattered cards -->
+        <div class="hero-card hero-card-1" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">i</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
         </div>
-        
-                <div class="float float-2">16 hectares of quiet</div>
+        <div class="hero-card hero-card-2" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">ii</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1129.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-3" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">iii</span></div>
+                <div class="hero-card-back text-back">
+                    <p class="hero-back-text">
+                        <span>arrive with</span>
+                        <span>nothing</span>
+                        <span>figured out.</span>
+                    </p>
+                    <span class="hero-back-label">0 · the fool</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-4" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">iv</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1315.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-5" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">v</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1415.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <div class="float float-2">16 hectares of quiet</div>
         
         <div class="hero-content">
             <div class="hero-eyebrow">a place near lisbon</div>
@@ -795,72 +720,6 @@
         </div>
     </section>
 
-    <section class="gallery-section">
-        <div class="gallery-grid">
-            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
-                <div class="gallery-card-inner">
-                    <div class="gallery-card-front">
-                        <span class="card-hint">i</span>
-                    </div>
-                    <div class="gallery-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
-                <div class="gallery-card-inner">
-                    <div class="gallery-card-front">
-                        <span class="card-hint">ii</span>
-                    </div>
-                    <div class="gallery-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1129.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
-                <div class="gallery-card-inner">
-                    <div class="gallery-card-front">
-                        <span class="card-hint">iii</span>
-                    </div>
-                    <div class="gallery-card-back text-back">
-                        <p class="gallery-back-text">
-                            <span>arrive with nothing figured out.</span>
-                            <span>the ground rises to meet you.</span>
-                        </p>
-                        <span class="gallery-back-label">0 · the fool</span>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
-                <div class="gallery-card-inner">
-                    <div class="gallery-card-front">
-                        <span class="card-hint">iv</span>
-                    </div>
-                    <div class="gallery-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1315.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
-                <div class="gallery-card-inner">
-                    <div class="gallery-card-front">
-                        <span class="card-hint">v</span>
-                    </div>
-                    <div class="gallery-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1415.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section>
         <div class="section-label">002 / pathways</div>
