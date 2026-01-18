@@ -329,7 +329,7 @@
             margin-right: 0.5rem;
         }
 
-        /* Video gallery */
+        /* Video gallery flip cards */
         .gallery-section {
             padding: 2rem;
             border-top: 1px solid var(--black);
@@ -339,31 +339,131 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 1rem;
-            max-width: 800px;
+            max-width: 900px;
         }
 
-        .gallery-item {
+        .gallery-card {
+            perspective: 1000px;
             aspect-ratio: 4/5;
-            overflow: hidden;
-            position: relative;
+            cursor: pointer;
         }
 
-        .gallery-item video {
+        .gallery-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .gallery-card.flipped .gallery-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .gallery-card-front,
+        .gallery-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .gallery-card-front {
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-card-front::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(74, 93, 58, 0.3) 0%, rgba(10, 10, 10, 0.5) 100%);
+            pointer-events: none;
+        }
+
+        .card-hint {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.7;
+            z-index: 1;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery-card-back {
+            transform: rotateY(180deg);
+            background: var(--bg);
+            border: 1px solid var(--black);
+        }
+
+        .gallery-card-back video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        @media (max-width: 600px) {
+        .gallery-card-back.text-back {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+            background: var(--cream);
+        }
+
+        .gallery-back-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--black);
+        }
+
+        .gallery-back-text span {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .gallery-back-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 7px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.4;
+        }
+
+        @media (max-width: 768px) {
             .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 0.5rem;
                 max-width: 100%;
             }
-            .gallery-item {
-                aspect-ratio: 4/5;
+            .card-hint {
+                font-size: 0.7rem;
+                padding: 0.5rem;
+            }
+            .gallery-back-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .gallery-card:nth-child(4),
+            .gallery-card:nth-child(5) {
+                display: none;
             }
         }
 
@@ -689,25 +789,67 @@
 
     <section class="gallery-section">
         <div class="gallery-grid">
-            <div class="gallery-item">
-                <video autoplay muted loop playsinline>
-                    <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
-                </video>
+            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
+                <div class="gallery-card-inner">
+                    <div class="gallery-card-front">
+                        <span class="card-hint">i</span>
+                    </div>
+                    <div class="gallery-card-back">
+                        <video autoplay muted loop playsinline>
+                            <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <video autoplay muted loop playsinline>
-                    <source src="assets/IMG_1129.mp4" type="video/mp4">
-                </video>
+            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
+                <div class="gallery-card-inner">
+                    <div class="gallery-card-front">
+                        <span class="card-hint">ii</span>
+                    </div>
+                    <div class="gallery-card-back">
+                        <video autoplay muted loop playsinline>
+                            <source src="assets/IMG_1129.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <video autoplay muted loop playsinline>
-                    <source src="assets/IMG_1315.mp4" type="video/mp4">
-                </video>
+            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
+                <div class="gallery-card-inner">
+                    <div class="gallery-card-front">
+                        <span class="card-hint">iii</span>
+                    </div>
+                    <div class="gallery-card-back text-back">
+                        <p class="gallery-back-text">
+                            <span>arrive with nothing figured out.</span>
+                            <span>the ground rises to meet you.</span>
+                        </p>
+                        <span class="gallery-back-label">0 · the fool</span>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <video autoplay muted loop playsinline>
-                    <source src="assets/IMG_1415.mp4" type="video/mp4">
-                </video>
+            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
+                <div class="gallery-card-inner">
+                    <div class="gallery-card-front">
+                        <span class="card-hint">iv</span>
+                    </div>
+                    <div class="gallery-card-back">
+                        <video autoplay muted loop playsinline>
+                            <source src="assets/IMG_1315.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-card" onclick="this.classList.toggle('flipped')">
+                <div class="gallery-card-inner">
+                    <div class="gallery-card-front">
+                        <span class="card-hint">v</span>
+                    </div>
+                    <div class="gallery-card-back">
+                        <video autoplay muted loop playsinline>
+                            <source src="assets/IMG_1415.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
