@@ -249,8 +249,8 @@
         .hero-card {
             position: absolute;
             perspective: 1000px;
-            width: 100px;
-            height: 140px;
+            width: 140px;
+            height: 196px;
             cursor: pointer;
             z-index: 3;
         }
@@ -322,7 +322,7 @@
 
         .hero-back-text {
             font-family: 'EB Garamond', serif;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-style: italic;
             line-height: 1.5;
             color: var(--black);
@@ -342,40 +342,40 @@
             opacity: 0.4;
         }
 
-        /* Card positions - scattered */
-        .hero-card-1 { top: 15%; right: 8%; transform: rotate(5deg); }
-        .hero-card-2 { top: 35%; right: 22%; transform: rotate(-8deg); }
-        .hero-card-3 { top: 60%; right: 5%; transform: rotate(12deg); }
-        .hero-card-4 { top: 20%; right: 38%; transform: rotate(-3deg); }
-        .hero-card-5 { top: 55%; right: 30%; transform: rotate(7deg); }
+        /* Card positions - scattered & overlapping */
+        .hero-card-1 { top: 12%; right: 12%; transform: rotate(8deg); z-index: 5; }
+        .hero-card-2 { top: 25%; right: 20%; transform: rotate(-6deg); z-index: 4; }
+        .hero-card-3 { top: 45%; right: 8%; transform: rotate(14deg); z-index: 6; }
+        .hero-card-4 { top: 8%; right: 28%; transform: rotate(-12deg); z-index: 3; }
+        .hero-card-5 { top: 42%; right: 25%; transform: rotate(4deg); z-index: 5; }
 
         @media (max-width: 900px) {
             .hero-card {
-                width: 80px;
-                height: 112px;
+                width: 100px;
+                height: 140px;
             }
-            .hero-card-1 { top: 12%; right: 3%; }
-            .hero-card-2 { top: 30%; right: 15%; }
-            .hero-card-3 { top: 55%; right: 2%; }
-            .hero-card-4 { top: 18%; right: 28%; }
-            .hero-card-5 { top: 48%; right: 20%; }
+            .hero-card-1 { top: 10%; right: 5%; }
+            .hero-card-2 { top: 22%; right: 18%; }
+            .hero-card-3 { top: 45%; right: 3%; }
+            .hero-card-4 { top: 8%; right: 30%; }
+            .hero-card-5 { top: 40%; right: 22%; }
             .hero-back-text { font-size: 0.6rem; }
-            .card-hint { font-size: 0.75rem; }
+            .card-hint { font-size: 0.8rem; }
         }
 
         @media (max-width: 600px) {
             .hero-card {
-                width: 60px;
-                height: 84px;
+                width: 75px;
+                height: 105px;
             }
             .hero-card-4, .hero-card-5 {
                 display: none;
             }
-            .hero-card-1 { top: 8%; right: 5%; }
-            .hero-card-2 { top: 25%; right: 2%; }
-            .hero-card-3 { top: 45%; right: 8%; }
+            .hero-card-1 { top: 10%; right: 3%; }
+            .hero-card-2 { top: 28%; right: 18%; }
+            .hero-card-3 { top: 48%; right: 5%; }
             .hero-back-text { font-size: 0.5rem; }
-            .card-hint { font-size: 0.6rem; }
+            .card-hint { font-size: 0.65rem; }
         }
 
         /* Decorative border image */
