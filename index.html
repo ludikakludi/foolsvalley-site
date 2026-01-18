@@ -360,6 +360,12 @@
             transform-style: preserve-3d;
         }
 
+        /* Flip on hover for desktop */
+        .gallery-card:hover .gallery-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Also flip on click/tap for mobile */
         .gallery-card.flipped .gallery-card-inner {
             transform: rotateY(180deg);
         }
