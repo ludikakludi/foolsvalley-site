@@ -95,6 +95,21 @@
             text-decoration: underline;
         }
 
+        /* Hamburger menu */
+        .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }
+        .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--black); margin: 5px 0; transition: 0.3s; }
+        .nav-links { display: contents; }
+
+        @media (max-width: 600px) {
+            nav { flex-wrap: nowrap; justify-content: space-between; align-items: center; }
+            .nav-toggle { display: block; }
+            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--bg); flex-direction: column; padding: 1.25rem 1.5rem; border: 1px solid var(--black); border-top: none; gap: 1rem; text-align: right; min-width: 160px; font-size: 14px; }
+            .nav-links.open { display: flex; }
+            .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .nav-toggle.open span:nth-child(2) { opacity: 0; }
+            .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        }
+
         /* Hero */
         .hero {
             min-height: 100vh;
@@ -630,12 +645,15 @@
             </svg>
             <span>fools' valley</span>
         </a>
-        <a href="residencies.html">residencies</a>
-        <a href="events.html">events</a>
-        <a href="saturdays.html">open saturdays</a>
-        <a href="research.html">research</a>
-        <a href="rooms.html">rooms</a>
-        <a href="venue.html">venue</a>
+        <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-links">
+            <a href="residencies.html">residencies</a>
+            <a href="events.html">events</a>
+            <a href="saturdays.html">open saturdays</a>
+            <a href="research.html">research</a>
+            <a href="rooms.html">rooms</a>
+            <a href="venue.html">venue</a>
+        </div>
     </nav>
 
     <section class="hero">
@@ -891,5 +909,22 @@
         <span>30 min north of lisbon</span>
         <span>you're not sure if it's broken or genius</span>
     </footer>
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
