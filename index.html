@@ -187,17 +187,6 @@
             color: var(--cream);
         }
 
-        /* Floating elements */
-        .float {
-            position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            color: var(--gray-light);
-            pointer-events: none;
-        }
-
-        .float-1 { top: 20%; right: 10%; font-size: 0.9rem; transform: rotate(8deg); }
-        .float-2 { bottom: 25%; right: 15%; font-size: 0.8rem; transform: rotate(-5deg); }
 
         /* Section styles */
         section {
@@ -348,6 +337,23 @@
         .hero-card-3 { top: 45%; right: 8%; transform: rotate(14deg); z-index: 6; }
         .hero-card-4 { top: 8%; right: 28%; transform: rotate(-12deg); z-index: 3; }
         .hero-card-5 { top: 42%; right: 25%; transform: rotate(4deg); z-index: 5; }
+        .hero-card-6 { top: 62%; right: 18%; transform: rotate(-5deg); z-index: 4; }
+
+        /* Background text */
+        .hero-background-text {
+            position: absolute;
+            bottom: 15%;
+            right: 5%;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gray-light);
+            opacity: 0.4;
+            max-width: 200px;
+            text-align: right;
+            line-height: 1.4;
+            z-index: 1;
+        }
 
         @media (max-width: 900px) {
             .hero-card {
@@ -359,8 +365,10 @@
             .hero-card-3 { top: 45%; right: 3%; }
             .hero-card-4 { top: 8%; right: 30%; }
             .hero-card-5 { top: 40%; right: 22%; }
+            .hero-card-6 { top: 58%; right: 15%; }
             .hero-back-text { font-size: 0.6rem; }
             .card-hint { font-size: 0.8rem; }
+            .hero-background-text { font-size: 0.85rem; max-width: 160px; }
         }
 
         @media (max-width: 600px) {
@@ -368,7 +376,7 @@
                 width: 75px;
                 height: 105px;
             }
-            .hero-card-4, .hero-card-5 {
+            .hero-card-4, .hero-card-5, .hero-card-6 {
                 display: none;
             }
             .hero-card-1 { top: 10%; right: 3%; }
@@ -376,6 +384,7 @@
             .hero-card-3 { top: 48%; right: 5%; }
             .hero-back-text { font-size: 0.5rem; }
             .card-hint { font-size: 0.65rem; }
+            .hero-background-text { font-size: 0.75rem; max-width: 120px; bottom: 10%; }
         }
 
         /* Decorative border image */
@@ -644,6 +653,9 @@
                         <span>arrive with</span>
                         <span>nothing</span>
                         <span>figured out.</span>
+                        <span>the ground</span>
+                        <span>rises to</span>
+                        <span>meet you.</span>
                     </p>
                     <span class="hero-back-label">0 · the fool</span>
                 </div>
@@ -669,8 +681,22 @@
                 </div>
             </div>
         </div>
+        <div class="hero-card hero-card-6" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">vi</span></div>
+                <div class="hero-card-back text-back">
+                    <p class="hero-back-text">
+                        <span>the fool is</span>
+                        <span>the spirit</span>
+                        <span>in search of</span>
+                        <span>experience.</span>
+                    </p>
+                    <span class="hero-back-label">0 · the fool</span>
+                </div>
+            </div>
+        </div>
 
-        <div class="float float-2">16 hectares of quiet</div>
+        <div class="hero-background-text">unburdened by knowing where the road leads</div>
         
         <div class="hero-content">
             <div class="hero-eyebrow">a place near lisbon</div>
