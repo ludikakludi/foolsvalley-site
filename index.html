@@ -105,24 +105,6 @@
             justify-content: center;
         }
 
-        /* The void as background element */
-        .hero-void {
-            position: absolute;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 45vw;
-            max-width: 500px;
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero-void img {
-            width: 100%;
-            height: auto;
-        }
-
         .hero-content {
             position: relative;
             z-index: 1;
@@ -205,17 +187,6 @@
             color: var(--cream);
         }
 
-        /* Floating elements */
-        .float {
-            position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            color: var(--gray-light);
-            pointer-events: none;
-        }
-
-        .float-1 { top: 20%; right: 10%; font-size: 0.9rem; transform: rotate(8deg); }
-        .float-2 { bottom: 25%; right: 15%; font-size: 0.8rem; transform: rotate(-5deg); }
 
         /* Section styles */
         section {
@@ -263,32 +234,17 @@
             margin-right: 0.5rem;
         }
 
-        /* Cards row section */
-        .cards-section {
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--black);
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .cards-row {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 0;
-        }
-
-        .tarot-card {
+        /* Scattered hero cards */
+        .hero-card {
+            position: absolute;
             perspective: 1000px;
             width: 140px;
-            height: 210px;
+            height: 196px;
             cursor: pointer;
-            flex-shrink: 0;
+            z-index: 3;
         }
 
-        .tarot-card-inner {
+        .hero-card-inner {
             position: relative;
             width: 100%;
             height: 100%;
@@ -296,112 +252,141 @@
             transform-style: preserve-3d;
         }
 
-        .tarot-card:hover .tarot-card-inner {
+        .hero-card:hover .hero-card-inner {
             transform: rotateY(180deg);
         }
 
-        .tarot-card.flipped .tarot-card-inner {
+        .hero-card.flipped .hero-card-inner {
             transform: rotateY(180deg);
         }
 
-        .tarot-card-front,
-        .tarot-card-back {
+        .hero-card-front,
+        .hero-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 6px;
+            border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .tarot-card-front {
+        .hero-card-front {
             background: var(--black);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .card-numeral {
+        .card-hint {
             font-family: 'EB Garamond', serif;
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             color: var(--cream);
-            opacity: 0.5;
+            opacity: 0.6;
+            z-index: 1;
         }
 
-        .tarot-card-back {
+        .hero-card-back {
             transform: rotateY(180deg);
             background: var(--bg);
             border: 1px solid var(--black);
         }
 
-        .tarot-card-back video {
+        .hero-card-back video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .tarot-card-back.text-back {
+        .hero-card-back.text-back {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: center;
             background: var(--cream);
         }
 
-        .card-text {
+        .hero-back-text {
             font-family: 'EB Garamond', serif;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-style: italic;
             line-height: 1.5;
             color: var(--black);
         }
 
-        .card-label {
+        .hero-back-text span {
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .hero-back-label {
             font-family: 'Space Mono', monospace;
-            font-size: 7px;
+            font-size: 6px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-top: 0.75rem;
             opacity: 0.4;
         }
 
-        /* Tilted cards */
-        .tarot-card:nth-child(1) { transform: rotate(-8deg); }
-        .tarot-card:nth-child(2) { transform: rotate(-4deg); }
-        .tarot-card:nth-child(3) { transform: rotate(2deg); }
-        .tarot-card:nth-child(4) { transform: rotate(6deg); }
-        .tarot-card:nth-child(5) { transform: rotate(-3deg); }
-        .tarot-card:nth-child(6) { transform: rotate(9deg); }
+        /* Card positions - scattered & overlapping */
+        .hero-card-1 { top: 12%; right: 12%; transform: rotate(8deg); z-index: 5; }
+        .hero-card-2 { top: 25%; right: 20%; transform: rotate(-6deg); z-index: 4; }
+        .hero-card-3 { top: 45%; right: 8%; transform: rotate(14deg); z-index: 6; }
+        .hero-card-4 { top: 8%; right: 28%; transform: rotate(-12deg); z-index: 3; }
+        .hero-card-5 { top: 42%; right: 25%; transform: rotate(4deg); z-index: 5; }
+        .hero-card-6 { top: 62%; right: 18%; transform: rotate(-5deg); z-index: 4; }
+
+        /* Background text */
+        .hero-background-text {
+            position: absolute;
+            bottom: 15%;
+            right: 5%;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gray-light);
+            opacity: 0.4;
+            max-width: 200px;
+            text-align: right;
+            line-height: 1.4;
+            z-index: 1;
+        }
 
         @media (max-width: 900px) {
-            .tarot-card {
-                width: 110px;
-                height: 165px;
+            .hero-card {
+                width: 100px;
+                height: 140px;
             }
-            .cards-row {
-                gap: 1rem;
-            }
-            .card-text { font-size: 0.7rem; }
+            .hero-card-1 { top: 10%; right: 5%; }
+            .hero-card-2 { top: 22%; right: 18%; }
+            .hero-card-3 { top: 45%; right: 3%; }
+            .hero-card-4 { top: 8%; right: 30%; }
+            .hero-card-5 { top: 40%; right: 22%; }
+            .hero-card-6 { top: 58%; right: 15%; }
+            .hero-back-text { font-size: 0.6rem; }
+            .card-hint { font-size: 0.8rem; }
+            .hero-background-text { font-size: 0.85rem; max-width: 160px; }
         }
 
         @media (max-width: 600px) {
-            .tarot-card {
-                width: 80px;
-                height: 120px;
+            .hero-card {
+                width: 70px;
+                height: 98px;
+                top: auto;
+                bottom: 8%;
             }
-            .cards-row {
-                gap: 0.5rem;
-            }
-            .tarot-card:nth-child(5),
-            .tarot-card:nth-child(6) {
+            .hero-card-4, .hero-card-5, .hero-card-6 {
                 display: none;
             }
-            .card-text { font-size: 0.55rem; }
-            .card-numeral { font-size: 0.9rem; }
+            .hero-card-1 { right: 65%; transform: rotate(-8deg); }
+            .hero-card-2 { right: 35%; transform: rotate(4deg); }
+            .hero-card-3 { right: 5%; transform: rotate(-5deg); }
+            .hero-back-text { font-size: 0.5rem; }
+            .card-hint { font-size: 0.65rem; }
+            .hero-background-text { display: none; }
         }
 
         /* Decorative border image */
@@ -598,12 +583,6 @@
                 padding: 1rem;
             }
 
-            .hero-void {
-                opacity: 0.08;
-                width: 80vw;
-                right: -20%;
-            }
-
             .about-section {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -647,11 +626,79 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-void">
-            <img src="assets/void.png" alt="">
+        <!-- Scattered cards -->
+        <div class="hero-card hero-card-1" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">i</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
         </div>
-        
-                <div class="float float-2">16 hectares of quiet</div>
+        <div class="hero-card hero-card-2" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">ii</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1129.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-3" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">iii</span></div>
+                <div class="hero-card-back text-back">
+                    <p class="hero-back-text">
+                        <span>arrive with</span>
+                        <span>nothing</span>
+                        <span>figured out.</span>
+                        <span>the ground</span>
+                        <span>rises to</span>
+                        <span>meet you.</span>
+                    </p>
+                    <span class="hero-back-label">0 · the fool</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-4" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">iv</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1315.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-5" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">v</span></div>
+                <div class="hero-card-back">
+                    <video autoplay muted loop playsinline>
+                        <source src="assets/IMG_1415.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card hero-card-6" onclick="this.classList.toggle('flipped')">
+            <div class="hero-card-inner">
+                <div class="hero-card-front"><span class="card-hint">vi</span></div>
+                <div class="hero-card-back text-back">
+                    <p class="hero-back-text">
+                        <span>the fool is</span>
+                        <span>the spirit</span>
+                        <span>in search of</span>
+                        <span>experience.</span>
+                    </p>
+                    <span class="hero-back-label">0 · the fool</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-background-text">unburdened by knowing where the road leads</div>
         
         <div class="hero-content">
             <div class="hero-eyebrow">a place near lisbon</div>
@@ -701,68 +748,6 @@
         </div>
     </section>
 
-    <section class="cards-section">
-        <div class="cards-row">
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">i</span></div>
-                    <div class="tarot-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/VID_20220425_134020.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">ii</span></div>
-                    <div class="tarot-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1129.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">iii</span></div>
-                    <div class="tarot-card-back text-back">
-                        <p class="card-text">arrive with nothing figured out. the ground rises to meet you.</p>
-                        <span class="card-label">0 · the fool</span>
-                    </div>
-                </div>
-            </div>
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">iv</span></div>
-                    <div class="tarot-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1315.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">v</span></div>
-                    <div class="tarot-card-back text-back">
-                        <p class="card-text">the fool is the spirit in search of experience.</p>
-                        <span class="card-label">0 · the fool</span>
-                    </div>
-                </div>
-            </div>
-            <div class="tarot-card" onclick="this.classList.toggle('flipped')">
-                <div class="tarot-card-inner">
-                    <div class="tarot-card-front"><span class="card-numeral">vi</span></div>
-                    <div class="tarot-card-back">
-                        <video autoplay muted loop playsinline>
-                            <source src="assets/IMG_1415.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section>
         <div class="section-label">002 / pathways</div>
