@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>open saturdays — fools' valley</title>
+    <title>open saturday — 26 january — fools' valley</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -72,7 +72,7 @@
         }
 
         .hero {
-            min-height: 70vh;
+            min-height: 60vh;
             padding: 4rem 2rem;
             position: relative;
             display: flex;
@@ -112,7 +112,15 @@
             font-size: 12px;
             color: var(--gray);
             letter-spacing: 0.2em;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-date {
+            font-family: 'EB Garamond', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--moss);
+            margin-bottom: 2rem;
         }
 
         .hero-intro {
@@ -121,19 +129,7 @@
             font-style: italic;
             line-height: 1.5;
             max-width: 500px;
-            margin-bottom: 3rem;
         }
-
-        .float {
-            position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            color: var(--gray-light);
-            pointer-events: none;
-        }
-
-        .float-1 { top: 20%; right: 10%; font-size: 1rem; transform: rotate(5deg); }
-        .float-2 { bottom: 30%; right: 8%; font-size: 0.85rem; transform: rotate(-3deg); }
 
         section {
             padding: 4rem 2rem;
@@ -158,9 +154,9 @@
 
         .schedule-grid {
             display: grid;
-            grid-template-columns: 120px 1fr 80px;
+            grid-template-columns: 140px 1fr;
             gap: 0;
-            max-width: 600px;
+            max-width: 700px;
             font-size: 14px;
         }
 
@@ -169,7 +165,7 @@
         }
 
         .schedule-row > * {
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             border-bottom: 1px solid #333;
         }
 
@@ -182,10 +178,25 @@
             color: var(--bg);
         }
 
-        .schedule-price {
-            text-align: right;
+        .schedule-activity h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-activity p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-activity .facilitator {
+            font-size: 11px;
             color: var(--moss);
-            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         /* Pricing */
@@ -199,7 +210,7 @@
         .pricing-grid {
             display: flex;
             gap: 0;
-            max-width: 500px;
+            max-width: 600px;
         }
 
         .pricing-box {
@@ -209,7 +220,7 @@
             text-align: center;
         }
 
-        .pricing-box:first-child { border-right: none; }
+        .pricing-box:not(:last-child) { border-right: none; }
 
         .pricing-amount {
             font-family: 'EB Garamond', serif;
@@ -283,9 +294,8 @@
             .schedule-grid { grid-template-columns: 1fr; }
             .schedule-row > * { border-bottom: none; padding: 0.5rem 0; }
             .schedule-row { border-bottom: 1px solid #333; padding: 1rem 0; }
-            .schedule-price { text-align: left; }
             .pricing-grid { flex-direction: column; }
-            .pricing-box:first-child { border-right: 2px solid var(--cream); border-bottom: none; }
+            .pricing-box:not(:last-child) { border-right: 2px solid var(--cream); border-bottom: none; }
             footer { flex-direction: column; gap: 0.5rem; }
         }
     </style>
@@ -304,76 +314,78 @@
         </div>
     </nav>
 
-    <img src="assets/IMG_1413.jpeg" alt="Open Saturdays at Fools' Valley" class="hero-image">
+    <img src="assets/IMG_1413.jpeg" alt="Open Saturday at Fools' Valley" class="hero-image">
 
     <section class="hero">
-        <div class="hero-bg-text">SATURDAY</div>
-        
-        <div class="float float-1">every week, the doors open</div>
-        <div class="float float-2">come as you are</div>
-        
-        <div class="hero-content">
-            <h1 class="hero-title">open saturdays</h1>
-            <div class="hero-subtitle">every saturday · all welcome</div>
-            
-            <p class="hero-intro">
-                every saturday we open our doors for guests. if you'd like to visit, that's the best day. movement, connection, food, sauna, whatever emerges.
-            </p>
+        <div class="hero-bg-text">26 JAN</div>
 
-            <a href="saturday-jan26.html" class="cta-button" style="margin-top: 2rem; display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); color: var(--black); text-decoration: none; font-size: 12px; letter-spacing: 0.1em;">next one — 26 january →</a>
+        <div class="hero-content">
+            <h1 class="hero-title">open saturday</h1>
+            <div class="hero-subtitle">special event</div>
+            <div class="hero-date">26 january 2025</div>
+
+            <p class="hero-intro">
+                a day of somatic practice, connection, and community. movement, contact improvisation, transformational connection, and a shared meal.
+            </p>
         </div>
     </section>
 
     <section class="schedule-section">
-        <div class="section-label">001 / typical schedule</div>
-        
-        <p style="font-size: 12px; color: var(--gray); margin-bottom: 2rem; max-width: 400px;">
-            (subject to change — join telegram for updates)
-        </p>
-        
+        <div class="section-label">001 / schedule</div>
+
         <div class="schedule-grid">
             <div class="schedule-row">
-                <span class="schedule-time">12:00</span>
-                <span class="schedule-activity">contact improvisation / movement class</span>
-                <span class="schedule-price">5-20€</span>
+                <span class="schedule-time">11:00 – 14:00</span>
+                <div class="schedule-activity">
+                    <h3>somatic communication</h3>
+                    <p>exploring body-based dialogue and authentic movement</p>
+                    <span class="facilitator">with francisco borges</span>
+                </div>
             </div>
             <div class="schedule-row">
-                <span class="schedule-time">14:00</span>
-                <span class="schedule-activity">contact jam</span>
-                <span class="schedule-price">5-20€</span>
+                <span class="schedule-time">14:00 – 16:00</span>
+                <div class="schedule-activity">
+                    <h3>contact improvisation jam</h3>
+                    <p>open practice for all levels</p>
+                    <span class="facilitator">with francisco borges</span>
+                </div>
             </div>
             <div class="schedule-row">
-                <span class="schedule-time">16:30</span>
-                <span class="schedule-activity">transformational connection practice</span>
-                <span class="schedule-price">5-20€</span>
+                <span class="schedule-time">16:30 – 18:30</span>
+                <div class="schedule-activity">
+                    <h3>transformational connection / circling</h3>
+                    <p>deepening presence and authentic relating</p>
+                    <span class="facilitator">with einar boson & liza simonova</span>
+                </div>
             </div>
             <div class="schedule-row">
-                <span class="schedule-time">18:30</span>
-                <span class="schedule-activity">dinner</span>
-                <span class="schedule-price">10€</span>
-            </div>
-            <div class="schedule-row">
-                <span class="schedule-time">after</span>
-                <span class="schedule-activity">sauna, ecstatic dance, other activities, open time</span>
-                <span class="schedule-price">—</span>
+                <span class="schedule-time">19:00</span>
+                <div class="schedule-activity">
+                    <h3>community dinner</h3>
+                    <p>vegetarian meal together</p>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="pricing-section">
         <div class="section-label">002 / pricing</div>
-        
+
         <div class="pricing-grid">
             <div class="pricing-box">
-                <div class="pricing-amount">40€</div>
-                <div class="pricing-label">whole day</div>
+                <div class="pricing-amount">15€</div>
+                <div class="pricing-label">class or jam</div>
             </div>
             <div class="pricing-box">
-                <div class="pricing-amount">5-20€</div>
-                <div class="pricing-label">per activity</div>
+                <div class="pricing-amount">20–30€</div>
+                <div class="pricing-label">class + jam</div>
+            </div>
+            <div class="pricing-box">
+                <div class="pricing-amount">40€</div>
+                <div class="pricing-label">full day + dinner</div>
             </div>
         </div>
-        
+
         <p class="pricing-note">
             sliding scale where noted. pay what feels right.
         </p>
@@ -381,13 +393,13 @@
 
     <section class="cta-section">
         <div class="section-label">003 / join us</div>
-        
+
         <h2 class="cta-title">telegram chat</h2>
-        
+
         <p class="cta-desc">
             receive updates, ask questions, organize ride shares. the community lives here.
         </p>
-        
+
         <a href="https://t.me/+Okvs2yyKKRNiNzVi" class="cta-button">join telegram →</a>
     </section>
 
