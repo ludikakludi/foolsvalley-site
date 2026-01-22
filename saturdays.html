@@ -46,7 +46,7 @@
         }
 
         nav a { text-transform: lowercase; }
-        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; transition: transform 0.5s ease; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; } .nav-logo:hover svg { transform: rotate(360deg); }
 
         /* Hamburger menu */
         .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }

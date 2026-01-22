@@ -46,7 +46,7 @@
         }
 
         nav a { text-transform: lowercase; }
-        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; transition: transform 0.5s ease; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; } .nav-logo:hover svg { transform: rotate(360deg); }
 
         /* Hamburger menu */
         .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }
@@ -104,8 +104,10 @@
             font-family: 'EB Garamond', serif;
             font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 400;
-            line-height: 1;
+            line-height: 0.9;
             margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
         }
 
         .hero-subtitle {
@@ -320,7 +322,7 @@
         <div class="hero-bg-text">26 JAN</div>
 
         <div class="hero-content">
-            <h1 class="hero-title">open saturday</h1>
+            <h1 class="hero-title"><span>open</span><span>saturday</span></h1>
             <div class="hero-subtitle">special event</div>
             <div class="hero-date">26 january 2025</div>
 
@@ -397,7 +399,7 @@
         <h2 class="cta-title">telegram chat</h2>
 
         <p class="cta-desc">
-            receive updates, ask questions, organize ride shares. the community lives here.
+            receive updates, ask questions, organize ride shares.
         </p>
 
         <a href="https://t.me/+Okvs2yyKKRNiNzVi" class="cta-button">join telegram →</a>
