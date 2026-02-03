@@ -226,6 +226,7 @@
             aspect-ratio: 4/3;
             overflow: hidden;
             background: var(--bg);
+            cursor: pointer;
         }
 
         .photo-item img {
@@ -323,6 +324,126 @@
 
         @media (max-width: 480px) {
             .photo-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .lightbox-caption {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            color: var(--bg);
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .lightbox-close,
+        .lightbox-prev,
+        .lightbox-next {
+            position: fixed;
+            background: none;
+            border: none;
+            color: var(--bg);
+            font-size: 3rem;
+            cursor: pointer;
+            padding: 1rem;
+            z-index: 1001;
+            transition: opacity 0.2s;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .lightbox-close:hover,
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            opacity: 0.7;
+        }
+
+        .lightbox-close {
+            top: 1rem;
+            right: 1rem;
+            font-size: 4rem;
+        }
+
+        .lightbox-prev {
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-next {
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .lightbox-counter {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--bg);
+            font-size: 0.9rem;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            .lightbox-prev,
+            .lightbox-next {
+                font-size: 2rem;
+                padding: 0.5rem;
+            }
+
+            .lightbox-prev {
+                left: 0.5rem;
+            }
+
+            .lightbox-next {
+                right: 0.5rem;
+            }
+
+            .lightbox-close {
+                font-size: 2.5rem;
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .lightbox-caption {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
         }
     </style>
 </head>
@@ -642,8 +763,21 @@
         <span>every room has a story</span>
     </footer>
 
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+        <button class="lightbox-prev" aria-label="Previous image">&#8249;</button>
+        <button class="lightbox-next" aria-label="Next image">&#8250;</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+        <div class="lightbox-counter"></div>
+    </div>
+
     <script>
     (function() {
+        // Navigation toggle
         const toggle = document.querySelector('.nav-toggle');
         const navLinks = document.querySelector('.nav-links');
         toggle.addEventListener('click', function() {
@@ -655,6 +789,86 @@
                 toggle.classList.remove('open');
                 navLinks.classList.remove('open');
             });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxCounter = document.querySelector('.lightbox-counter');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+
+        let currentImages = [];
+        let currentIndex = 0;
+
+        // Collect all photo items
+        const photoItems = Array.from(document.querySelectorAll('.photo-item'));
+
+        // Add click handlers to photos
+        photoItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                openLightbox(index);
+            });
+        });
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightbox() {
+            const item = photoItems[currentIndex];
+            const img = item.querySelector('img');
+            const label = item.querySelector('.photo-label');
+
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxCaption.textContent = label ? label.textContent : img.alt;
+            lightboxCounter.textContent = `${currentIndex + 1} / ${photoItems.length}`;
+        }
+
+        function showNext() {
+            currentIndex = (currentIndex + 1) % photoItems.length;
+            updateLightbox();
+        }
+
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + photoItems.length) % photoItems.length;
+            updateLightbox();
+        }
+
+        // Event listeners
+        closeBtn.addEventListener('click', closeLightbox);
+        nextBtn.addEventListener('click', showNext);
+        prevBtn.addEventListener('click', showPrev);
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                showNext();
+            } else if (e.key === 'ArrowLeft') {
+                showPrev();
+            }
         });
     })();
     </script>
