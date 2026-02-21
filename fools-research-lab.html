@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fools' Research Lab — April 1–5, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f1eb;
+    --ink: #1a1815;
+    --ink-light: #4a4540;
+    --ink-faint: #8a8580;
+    --ochre: #c4874a;
+    --sage: #6a7a5e;
+    --rule: rgba(26,24,21,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeIn 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    line-height: 1.0;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeIn 0.8s ease 0.4s forwards;
+  }
+  .hero-title .l1 { display: block; font-size: clamp(3.5rem, 11vw, 9rem); letter-spacing: -0.02em; }
+  .hero-title .l2 { display: block; font-size: clamp(3.5rem, 11vw, 9rem); font-style: italic; color: var(--ochre); letter-spacing: -0.02em; }
+
+  .hero-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    line-height: 2;
+    opacity: 0; animation: fadeIn 0.8s ease 0.7s forwards;
+  }
+
+  .content { max-width: 640px; margin: 0 auto; padding: 0 3rem; position: relative; }
+  .spacer { height: 6rem; }
+  .spacer-sm { height: 4rem; }
+  .rule { border: none; height: 1px; background: var(--rule); }
+
+  .body-text { font-size: 1rem; line-height: 1.9; color: var(--ink-light); font-weight: 300; }
+  .body-text + .body-text { margin-top: 1.25rem; }
+  .body-text em { font-style: italic; color: var(--ink); }
+
+  .lead {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    line-height: 1.5;
+    color: var(--ink);
+    font-weight: 400;
+  }
+  .lead em { color: var(--ochre); font-style: italic; }
+
+  .implication {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem;
+    color: var(--ink-light);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1.5rem;
+  }
+
+  .expect-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .expect-text span {
+    color: var(--ink-faint);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    vertical-align: middle;
+    margin: 0 0.3rem;
+  }
+
+  /* 3D model */
+  .model-container {
+    margin: 4rem auto;
+    max-width: 600px;
+    background: white;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .model-header {
+    padding: 1.5rem 2rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+  #model-canvas { width: 100%; height: 420px; display: block; cursor: grab; }
+  #model-canvas:active { cursor: grabbing; }
+  .model-hint {
+    text-align: center;
+    padding: 0 2rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .detail-list {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 2.4;
+    color: var(--ink-light);
+    margin-top: 2rem;
+  }
+  .detail-list .dl {
+    color: var(--ink-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 0.6rem;
+  }
+
+  .cta { text-align: center; padding: 6rem 2rem 5rem; }
+  .cta h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2rem,5vw,3rem); font-weight: 400; font-style: italic; margin-bottom: 0.75rem; }
+  .cta .cta-sub { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); margin-bottom: 2.5rem; }
+  .cta-button {
+    display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: white; background: var(--ink);
+    padding: 1rem 2.5rem; text-decoration: none; transition: all 0.3s ease;
+  }
+  .cta-button:hover { background: var(--ochre); transform: translateY(-1px); }
+  .cta-note { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--ink-faint); margin-top: 1.25rem; max-width: 360px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+
+  footer { text-align: center; padding: 2.5rem 2rem; border-top: 1px solid var(--rule); }
+  footer a { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--ink-faint); text-decoration: none; }
+  footer a:hover { color: var(--ochre); }
+
+  /* --- DRAGGABLE PHOTO CARDS --- */
+  .photo-card {
+    position: fixed;
+    perspective: 1000px;
+    cursor: grab;
+    z-index: 50;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: box-shadow 0.3s;
+  }
+  .photo-card:active { cursor: grabbing; }
+  .photo-card.dragging { z-index: 999; }
+
+  .photo-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .photo-card.flipped .photo-card-inner { transform: rotateY(180deg); }
+
+  .photo-card-front, .photo-card-back {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  }
+  .photo-card-front {
+    background: url('void.webp') center/cover no-repeat;
+    background-color: #1a1714;
+  }
+  .photo-card-back { transform: rotateY(180deg); }
+  .photo-card-back img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Mobile photo strip fallback */
+  .mobile-photos {
+    display: none;
+    margin: 3rem -1rem;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-photos img {
+    height: 180px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 800px) {
+    .photo-card { display: none !important; }
+    .mobile-photos { display: flex; }
+    .content { padding: 0 2rem; }
+    .hero { padding: 3rem 2rem; }
+    #model-canvas { height: 320px; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-tag">Inaugural Lab · Invite Only</div>
+    <h1 class="hero-title">
+      <span class="l1">Fools'</span>
+      <span class="l2">Research Lab</span>
+    </h1>
+    <div class="hero-meta">
+      1 – 5 April 2026<br>
+      Fools' Valley · Near Lisbon, Portugal
+    </div>
+  </header>
+
+  <div class="content">
+    <hr class="rule">
+    <div class="spacer"></div>
+
+    <div class="fade-in">
+      <p class="lead">
+        The inaugural Fools' Research Lab will investigate how embodied practices — contact improvisation, circling, constellations — shape human mental <em>representational dimensionality and geometry</em> in the face of highly complex moral and political scenarios, in contrast with purely verbal interventions.
+      </p>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <div class="fade-in">
+      <p class="implication">
+        …and explore the implications for the (in)adequacy of verbal constitutional alignment of large language models.
+      </p>
+    </div>
+
+    <div class="mobile-photos">
+      <img src="IMG_1206.jpeg" alt="">
+      <img src="IMG_1246.jpeg" alt="">
+      <img src="IMG_1431.jpeg" alt="">
+      <img src="IMG_6001.jpeg" alt="">
+    </div>
+
+    <div class="spacer"></div>
+    <hr class="rule">
+    <div class="spacer"></div>
+
+    <div class="fade-in">
+      <div class="label">What to Expect</div>
+      <p class="expect-text">
+        Embodied practice <span>·</span> getting weird <span>·</span> going meta on the getting weird <span>·</span> asking difficult questions with our bodies, our mental substrates, and machine-augmented intelligence <span>·</span> not resolving the contradictions <span>·</span> co-created sessions <span>·</span> good food <span>·</span> octopus cuddles
+      </p>
+    </div>
+
+    <div class="model-container fade-in">
+      <div class="model-header">Dimensions of the Inquiry</div>
+      <canvas id="model-canvas"></canvas>
+      <div class="model-hint">drag to rotate</div>
+    </div>
+
+    <div class="fade-in">
+      <p class="body-text">
+        We are selecting for a group whose collective experience spans this entire space. Somatic practitioners, relational facilitators, cognitive scientists, AI alignment researchers, artists, fools. The programme will be co-created. The research questions are ours; the sessions are yours.
+      </p>
+    </div>
+
+    <div class="spacer"></div>
+    <hr class="rule">
+    <div class="spacer"></div>
+
+    <div class="fade-in">
+      <div class="detail-list">
+        <span class="dl">When</span><br>
+        1 – 5 April 2026 (starting on Fools' Day)<br><br>
+        <span class="dl">Where</span><br>
+        Fools' Valley · Near Lisbon, Portugal<br><br>
+        <span class="dl">Format</span><br>
+        Residential · Invite-only · ~15 participants<br><br>
+        <span class="dl">Includes</span><br>
+        Accommodation &amp; meals<br><br>
+        <span class="dl">Cost</span><br>
+        Non-commercial · No fee
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+
+  <div class="cta fade-in">
+    <h2>Begin as a fool.</h2>
+    <p class="cta-sub">Application-based · We select for complementarity</p>
+    <a href="mailto:theonlyfool@foolsvalley.com?subject=Fools'%20Research%20Lab" class="cta-button">Apply</a>
+    <p class="cta-note">Tell us about yourself and what draws you to join us.</p>
+  </div>
+
+  <footer>
+    <a href="https://foolsvalley.com">foolsvalley.com</a>
+  </footer>
+
+  <script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // --- CREATE DRAGGABLE PHOTO CARDS ---
+  (function() {
+    if (window.innerWidth <= 800) return;
+
+    const images = [
+      { src: 'IMG_1206.jpeg', w: 155, h: 220, x: 85, y: 18, rot: 7, flipped: true },
+      { src: 'IMG_1246.jpeg', w: 130, h: 175, x: 78, y: 52, rot: -6, flipped: false },
+      { src: 'IMG_1431.jpeg', w: 150, h: 200, x: 2, y: 30, rot: -4, flipped: true },
+      { src: 'IMG_6001.jpeg', w: 135, h: 190, x: 5, y: 65, rot: 9, flipped: false },
+      { src: 'IMG_1206.jpeg', w: 115, h: 160, x: 3, y: 10, rot: -11, flipped: false },
+    ];
+
+    let topZ = 50;
+
+    images.forEach(img => {
+      const card = document.createElement('div');
+      card.className = 'photo-card' + (img.flipped ? ' flipped' : '');
+      card.style.width = img.w + 'px';
+      card.style.height = img.h + 'px';
+
+      // Position using vw percentages
+      const isRight = img.x > 50;
+      if (isRight) {
+        card.style.right = (100 - img.x) + 'vw';
+      } else {
+        card.style.left = img.x + 'vw';
+      }
+      card.style.top = img.y + 'vh';
+      card.style.transform = `rotate(${img.rot}deg)`;
+
+      card.innerHTML = `
+        <div class="photo-card-inner">
+          <div class="photo-card-front"></div>
+          <div class="photo-card-back"><img src="${img.src}" alt="" draggable="false"></div>
+        </div>
+      `;
+
+      document.body.appendChild(card);
+
+      // Drag + flip logic
+      let isDragging = false, hasMoved = false;
+      let startX, startY, cardX, cardY, origRotate;
+
+      function onStart(cx, cy) {
+        isDragging = true;
+        hasMoved = false;
+        const r = card.getBoundingClientRect();
+        startX = cx; startY = cy;
+        cardX = r.left; cardY = r.top;
+        card.style.zIndex = ++topZ;
+        card.classList.add('dragging');
+        // Kill CSS positioning, go fixed
+        card.style.left = cardX + 'px';
+        card.style.top = cardY + 'px';
+        card.style.right = 'auto';
+        card.style.position = 'fixed';
+        card.style.transform = 'rotate(0deg)';
+      }
+
+      function onMove(cx, cy) {
+        if (!isDragging) return;
+        const dx = cx - startX, dy = cy - startY;
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) hasMoved = true;
+        card.style.left = (cardX + dx) + 'px';
+        card.style.top = (cardY + dy) + 'px';
+      }
+
+      function onEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        card.classList.remove('dragging');
+        if (!hasMoved) card.classList.toggle('flipped');
+      }
+
+      card.addEventListener('mousedown', e => { e.preventDefault(); onStart(e.clientX, e.clientY); });
+      window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+      window.addEventListener('mouseup', onEnd);
+
+      card.addEventListener('touchstart', e => {
+        const t = e.touches[0]; onStart(t.clientX, t.clientY);
+      }, { passive: true });
+      window.addEventListener('touchmove', e => {
+        if (isDragging) { e.preventDefault(); const t = e.touches[0]; onMove(t.clientX, t.clientY); }
+      }, { passive: false });
+      window.addEventListener('touchend', onEnd);
+    });
+  })();
+
+  // --- 3D DIAGRAM ---
+  (() => {
+    const canvas = document.getElementById('model-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, dpr;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      dpr = window.devicePixelRatio || 1;
+      W = rect.width; H = rect.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let rotY = -0.55, rotX = 0.45, targetRotY = -0.55, targetRotX = 0.45;
+    let dragging = false, lastMouse = {x:0,y:0}, autoRotate = true;
+
+    canvas.addEventListener('mousedown', e => { dragging=true; autoRotate=false; lastMouse={x:e.clientX,y:e.clientY}; });
+    canvas.addEventListener('touchstart', e => { dragging=true; autoRotate=false; lastMouse={x:e.touches[0].clientX,y:e.touches[0].clientY}; }, {passive:true});
+    window.addEventListener('mousemove', e => { if(!dragging) return; targetRotY+=(e.clientX-lastMouse.x)*0.006; targetRotX+=(e.clientY-lastMouse.y)*0.006; targetRotX=Math.max(-1.2,Math.min(1.2,targetRotX)); lastMouse={x:e.clientX,y:e.clientY}; });
+    window.addEventListener('touchmove', e => { if(!dragging) return; targetRotY+=(e.touches[0].clientX-lastMouse.x)*0.006; targetRotX+=(e.touches[0].clientY-lastMouse.y)*0.006; targetRotX=Math.max(-1.2,Math.min(1.2,targetRotX)); lastMouse={x:e.touches[0].clientX,y:e.touches[0].clientY}; }, {passive:true});
+    window.addEventListener('mouseup', () => dragging=false);
+    window.addEventListener('touchend', () => dragging=false);
+
+    function project(x,y,z) {
+      const cY=Math.cos(rotY),sY=Math.sin(rotY); let x1=x*cY-z*sY,z1=x*sY+z*cY;
+      const cX=Math.cos(rotX),sX=Math.sin(rotX); let y1=y*cX-z1*sX,z2=y*sX+z1*cX;
+      const s=600/(600+z2); return {x:W/2+x1*s,y:H/2-y1*s,z:z2,scale:s};
+    }
+
+    const L=130, ink='#1a1815', inkF='#8a8580', ochre='#c4874a', sage='#6a7a5e';
+
+    const points = [
+      {pos:[-0.7,-0.8,-0.6],label:'heuristics, bias',color:inkF},
+      {pos:[-0.6,0.1,-0.7],label:'logical reasoning',color:ink},
+      {pos:[0.7,0.1,0.6],label:'analogical reasoning',color:ochre},
+      {pos:[0.8,0.0,0.8],label:'somatic awareness',color:ochre},
+      {pos:[0.5,0.2,0.3],label:'empathy',color:ochre},
+      {pos:[0.3,0.7,-0.1],label:'vigilance · doubt',color:sage},
+      {pos:[-0.3,0.6,-0.5],label:'inquiry',color:sage},
+      {pos:[0.6,-0.5,0.7],label:'embodied intuition',color:ochre},
+      {pos:[-0.5,0.3,-0.3],label:'framing',color:inkF},
+      {pos:[0.5,0.4,0.5],label:'holding paradox',color:ochre},
+    ];
+
+    function drawArrow(from,to,color,w) {
+      const p1=project(...from),p2=project(...to);
+      ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+      ctx.strokeStyle=color;ctx.lineWidth=w;ctx.stroke();
+      const dx=p2.x-p1.x,dy=p2.y-p1.y,len=Math.sqrt(dx*dx+dy*dy);
+      if(len<1)return; const ux=dx/len,uy=dy/len,a=6;
+      ctx.beginPath();ctx.moveTo(p2.x,p2.y);ctx.lineTo(p2.x-ux*a+uy*a*.4,p2.y-uy*a-ux*a*.4);
+      ctx.moveTo(p2.x,p2.y);ctx.lineTo(p2.x-ux*a-uy*a*.4,p2.y-uy*a+ux*a*.4);ctx.stroke();
+    }
+
+    function draw() {
+      rotY+=(targetRotY-rotY)*.08; rotX+=(targetRotX-rotX)*.08;
+      if(autoRotate) targetRotY+=0.002;
+      ctx.clearRect(0,0,W,H);
+
+      for(let i=-5;i<=5;i++) {
+        const t=i/5;
+        const a=project(t*L,0,-L),b=project(t*L,0,L),c=project(-L,0,t*L),d=project(L,0,t*L);
+        ctx.strokeStyle='rgba(26,24,21,0.04)';ctx.lineWidth=.5;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.stroke();
+      }
+
+      drawArrow([-L,0,0],[L,0,0],ochre,1.2);
+      drawArrow([0,-L,0],[0,L,0],ink,1.2);
+      drawArrow([0,0,-L],[0,0,L],sage,1.2);
+
+      const o=1.18;
+      const lbl=(t,p,c,fs)=>{const pr=project(...p);ctx.font=`${fs}px "DM Mono",monospace`;ctx.fillStyle=c;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(t,pr.x,pr.y);};
+      lbl('open',[L*o,0,0],ochre,10); lbl('closed',[-L*o,0,0],ochre,10);
+      lbl('reflective',[0,L*o,0],ink,10); lbl('fast',[0,-L*o,0],ink,10);
+      lbl('experiential',[0,0,L*o],sage,10); lbl('representational',[0,0,-L*o],sage,10);
+
+      const pp=points.map(p=>{const p3=[p.pos[0]*L*.85,p.pos[1]*L*.85,p.pos[2]*L*.85];return{...p,p3,pr:project(...p3)};}).sort((a,b)=>b.pr.z-a.pr.z);
+      pp.forEach(p=>{
+        const{pr,label,color}=p;
+        const al=Math.max(.2,Math.min(1,.3+.7*((pr.z+200)/400)));
+        ctx.globalAlpha=al;
+        ctx.beginPath();ctx.arc(pr.x,pr.y,4*pr.scale,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+        ctx.font=`${Math.round(9*pr.scale)}px "DM Mono",monospace`;ctx.fillStyle=color;
+        ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,pr.x+4*pr.scale+5,pr.y);
+        ctx.globalAlpha=1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+  </script>
+</body>
+</html>
