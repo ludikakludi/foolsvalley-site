@@ -269,18 +269,10 @@
   /* --- MINESWEEPER --- */
   .minesweeper-container {
     position: fixed;
-    background: rgba(192, 192, 192, 0.95);
+    background: #c0c0c0;
     border: 2px outset #dfdfdf;
     padding: 4px;
-    transition: all 0.3s ease;
     z-index: 10000;
-  }
-  .minesweeper-container.fullscreen {
-    width: auto !important;
-    height: auto !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
   }
   .minesweeper-header {
     position: absolute;
@@ -304,20 +296,15 @@
   .minesweeper-board {
     display: grid;
     gap: 0;
-    background: rgba(128, 128, 128, 0.2);
-    border: 2px inset rgba(223, 223, 223, 0.3);
+    background: #808080;
+    border: 2px inset #dfdfdf;
     padding: 4px;
-  }
-  .minesweeper-container.fullscreen .minesweeper-board {
-    background: transparent;
-    border: none;
-    padding: 0;
   }
   .mine-cell {
     width: 20px;
     height: 20px;
-    background: rgba(192, 192, 192, 0.9);
-    border: 1px solid rgba(128, 128, 128, 0.3);
+    background: #c0c0c0;
+    border: 2px outset #dfdfdf;
     cursor: pointer;
     font-family: 'MS Sans Serif', Arial, sans-serif;
     font-size: 12px;
@@ -325,23 +312,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.1s;
   }
-  .minesweeper-container.fullscreen .mine-cell {
-    width: 30px;
-    height: 30px;
-    background: rgba(192, 192, 192, 0.6);
-    border: 1px solid rgba(128, 128, 128, 0.2);
-  }
-  .mine-cell:hover {
-    background: rgba(220, 220, 220, 0.95);
+  .mine-cell:active {
+    border-style: inset;
   }
   .mine-cell.revealed {
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    background: rgba(191, 191, 191, 0.3);
+    border: 1px solid #808080;
+    background: #bfbfbf;
   }
   .mine-cell.mine {
-    background: rgba(255, 0, 0, 0.7);
+    background: #ff0000;
   }
   .mine-cell.flagged::after {
     content: '🚩';
@@ -391,7 +371,7 @@
         <p style="font-family: 'DM Mono', monospace; font-size: 0.4rem; color: var(--ink-faint);">― Iain McGilchrist</p>
       </div>
       <div style="height: 180px; min-width: 140px; background: #fffef8; border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-        <p style="font-family: 'Instrument Serif', serif; font-size: 0.7rem; line-height: 1.3; color: var(--ink); margin-bottom: 0.5rem;">"we have to be constantly vigilant to undermine language's attempt to undermine our understanding."</p>
+        <p style="font-family: 'Instrument Serif', serif; font-size: 0.85rem; line-height: 1.4; color: var(--ink); margin-bottom: 0.5rem;">"What we attend to, and how we attend to it, alters what we find."</p>
         <p style="font-family: 'DM Mono', monospace; font-size: 0.4rem; color: var(--ink-faint);">― Iain McGilchrist</p>
       </div>
     </div>
@@ -470,7 +450,7 @@
       { type: 'quote', quote: 'By paying a certain kind of attention, you can humanise or dehumanise, cherish or strip of all value. By a kind of alienating, fragmenting and focal attention, you can reduce humanity – or art, sex, humour, or religion – to nothing.', author: 'Iain McGilchrist', w: 180, h: 240, x: 3, y: 10, rot: -11, flipped: false },
       { type: 'cookies', w: 140, h: 196, x: 50, y: 45, rot: 3, flipped: false },
       { type: 'minesweeper', w: 140, h: 196, x: 12, y: 52, rot: -7, flipped: false },
-      { type: 'quote', quote: 'we have to be constantly vigilant to undermine language\'s attempt to undermine our understanding.', author: 'Iain McGilchrist', w: 135, h: 190, x: 90, y: 35, rot: 5, flipped: true },
+      { type: 'quote', quote: 'What we attend to, and how we attend to it, alters what we find.', author: 'Iain McGilchrist', w: 135, h: 190, x: 90, y: 35, rot: 5, flipped: true },
     ];
 
     let topZ = 50;
@@ -609,10 +589,10 @@
         const cardRect = card.getBoundingClientRect();
         container.style.left = cardRect.left + 'px';
         container.style.top = cardRect.top + 'px';
-        container.style.width = cardRect.width + 'px';
-        container.style.height = cardRect.height + 'px';
+        container.style.width = 'auto';
+        container.style.height = 'auto';
 
-        const rows = 12, cols = 12, mineCount = 30;
+        const rows = 10, cols = 10, mineCount = 15;
         const mines = new Set();
 
         // Generate mines
@@ -631,15 +611,21 @@
         const closeBtn = container.querySelector('.minesweeper-close');
         const cells = [];
 
-        // Update grid on fullscreen
-        const gridObserver = new MutationObserver(() => {
-          if (container.classList.contains('fullscreen')) {
-            boardEl.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
-          } else {
-            boardEl.style.gridTemplateColumns = `repeat(${cols}, 20px)`;
-          }
-        });
-        gridObserver.observe(container, { attributes: true, attributeFilter: ['class'] });
+        // Game over - reveal all mines
+        function gameOver() {
+          mines.forEach(mineIndex => {
+            const cell = cells[mineIndex];
+            if (cell) {
+              cell.classList.add('revealed');
+              cell.classList.add('mine');
+              cell.textContent = '💣';
+            }
+          });
+          // Disable all cell clicks
+          cells.forEach(cell => {
+            cell.style.pointerEvents = 'none';
+          });
+        }
 
         // Flood fill reveal
         function revealCell(index) {
@@ -652,6 +638,7 @@
           if (mines.has(index)) {
             cell.classList.add('mine');
             cell.textContent = '💣';
+            gameOver();
             return;
           }
 
@@ -686,12 +673,7 @@
           cells.push(cell);
 
           cell.addEventListener('click', () => {
-            if (!container.classList.contains('fullscreen')) {
-              container.classList.add('fullscreen');
-            }
-
             if (cell.classList.contains('revealed') || cell.classList.contains('flagged')) return;
-
             revealCell(i);
           });
 
@@ -704,14 +686,12 @@
         }
 
         closeBtn.onclick = () => {
-          gridObserver.disconnect();
           container.remove();
           minesweeperGame = null;
         };
 
         document.body.appendChild(container);
         minesweeperGame = container;
-        minesweeperGame.gridObserver = gridObserver;
       }
 
       function getAdjacentMines(index, rows, cols, mines) {
@@ -735,9 +715,6 @@
 
       function removeMinesweeper() {
         if (minesweeperGame) {
-          if (minesweeperGame.gridObserver) {
-            minesweeperGame.gridObserver.disconnect();
-          }
           minesweeperGame.remove();
           minesweeperGame = null;
         }
