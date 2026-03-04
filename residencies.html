@@ -6,113 +6,69 @@
     <title>residencies — fools' valley</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f5f5f0;
-            --black: #0a0a0a;
-            --gray: #6b6b6b;
-            --gray-light: #b0b0b0;
+            --bg: #f4f3ee;
+            --black: #1a1a1a;
+            --gray: #7a7a72;
+            --gray-light: #b5b5a8;
             --moss: #4a5d3a;
-            --rust: #8b4a2b;
             --cream: #fffef8;
+            --tc-bg: #2c3525;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Space Mono', monospace;
+            font-family: 'EB Garamond', 'Georgia', serif;
             background: var(--bg);
             color: var(--black);
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 16px;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
         a {
             color: var(--black);
             text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            transition: all 0.15s ease;
         }
-
-        a:hover {
-            text-decoration: none;
-            background: var(--black);
-            color: var(--bg);
-        }
+        a:hover { text-decoration: none; opacity: 0.7; }
 
         /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            position: fixed; top: 0; left: 0; right: 0;
             padding: 1rem 2rem;
-            border-bottom: 1px solid var(--black);
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            font-size: 12px;
-            z-index: 100;
+            border-bottom: 1px solid rgba(26,26,26,0.15);
+            background: rgba(244,243,238,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+            font-size: 12px; z-index: 100;
+            font-family: 'Space Mono', monospace;
         }
+        nav a { text-transform: lowercase; text-decoration: none; color: var(--gray); letter-spacing: 0.03em; }
+        nav a:hover { color: var(--black); opacity: 1; }
 
-        nav a {
-            text-transform: lowercase;
-        }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+        .nav-logo svg { width: 32px; height: 32px; transition: transform 0.5s ease; }
+        .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); }
+        .nav-logo:hover { background: none; opacity: 1; }
+        .nav-logo:hover span { text-decoration: underline; }
+        .nav-logo:hover svg { transform: rotate(360deg); }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-        }
-
-        .nav-logo svg {
-            width: 32px;
-            height: 32px;
-        }
-
-        .nav-logo span {
-            font-family: 'EB Garamond', serif;
-            font-style: italic;
-            font-size: 14px;
-            color: var(--black);
-        }
-
-        .nav-logo:hover {
-            background: none;
-        }
-
-        .nav-logo:hover span {
-            text-decoration: underline;
-        }
-
-        .nav-logo svg {
-            transition: transform 0.5s ease;
-        }
-
-        .nav-logo:hover svg {
-            transform: rotate(360deg);
-        }
-
-        /* Hamburger menu */
         .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }
         .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--black); margin: 5px 0; transition: 0.3s; }
         .nav-links { display: contents; }
 
         @media (max-width: 600px) {
-            nav { flex-wrap: nowrap; justify-content: space-between; align-items: center; }
+            nav { flex-wrap: nowrap; justify-content: space-between; }
             .nav-toggle { display: block; }
-            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--bg); flex-direction: column; padding: 1.25rem 1.5rem; border: 1px solid var(--black); border-top: none; gap: 1rem; text-align: right; min-width: 160px; font-size: 14px; }
+            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--bg); flex-direction: column; padding: 1.25rem 1.5rem; border: 1px solid rgba(26,26,26,0.15); border-top: none; gap: 1rem; text-align: right; min-width: 160px; font-size: 14px; }
             .nav-links.open { display: flex; }
             .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
             .nav-toggle.open span:nth-child(2) { opacity: 0; }
@@ -121,529 +77,142 @@
 
         /* Hero */
         .hero {
-            min-height: 100vh;
-            padding: 6rem 2rem 4rem;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            min-height: 100vh; padding: 8rem 2rem 5rem;
+            position: relative; display: flex; flex-direction: column; justify-content: center;
         }
-
-        .hero-bg-text {
-            display: none;
-        }
-
-        .hero-illustration {
-            position: absolute;
-            top: 50%;
-            right: 10%;
-            transform: translateY(-50%);
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero-illustration svg {
-            width: 45vw;
-            max-width: 400px;
-            height: auto;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-        }
+        .hero-illustration { position: absolute; top: 50%; right: 10%; transform: translateY(-50%); opacity: 0.08; pointer-events: none; z-index: 0; }
+        .hero-illustration svg { width: 45vw; max-width: 400px; height: auto; }
+        .hero-content { position: relative; z-index: 1; max-width: 560px; }
 
         .hero-title {
-            font-family: 'EB Garamond', serif;
-            font-size: 4rem;
-            font-weight: 400;
-            line-height: 0.9;
-            margin-bottom: 0.5rem;
+            font-family: 'EB Garamond', serif; font-size: 4.5rem; font-weight: 400;
+            line-height: 0.9; margin-bottom: 0.5rem; letter-spacing: -0.02em;
         }
-
-        .hero-title .glitch {
-            position: relative;
-        }
-
+        .hero-title .glitch { position: relative; }
         .hero-title .glitch::before {
-            content: attr(data-text);
-            position: absolute;
-            left: -3px;
-            top: 0;
-            color: var(--moss);
-            opacity: 0.4;
-            clip-path: inset(0 0 50% 0);
+            content: attr(data-text); position: absolute; left: -2px; top: 0;
+            color: var(--moss); opacity: 0.25; clip-path: inset(0 0 50% 0);
         }
 
-        .hero-year {
-            font-size: 0.8rem;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            letter-spacing: 0.3em;
-        }
+        .hero-year { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gray-light); margin-bottom: 3.5rem; letter-spacing: 0.3em; }
 
-        .intro-lead {
-            font-family: 'EB Garamond', serif;
-            font-size: 1.5rem;
-            line-height: 1.5;
-            font-style: italic;
-            max-width: 500px;
-            margin-bottom: 2rem;
-        }
-
-        .intro-body {
-            font-size: 13px;
-            line-height: 1.8;
-            max-width: 450px;
-            color: var(--gray);
-        }
-
-        .intro-body p {
-            margin-bottom: 1rem;
-        }
+        .intro-lead { font-size: 1.45rem; line-height: 1.55; font-style: italic; max-width: 480px; margin-bottom: 2rem; }
+        .intro-body { font-size: 1rem; line-height: 1.75; max-width: 440px; color: var(--gray); }
+        .intro-body p { margin-bottom: 1rem; }
 
         .intro-who {
-            margin-top: 2rem;
-            font-family: 'EB Garamond', serif;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--moss);
-            border-left: 3px solid var(--moss);
-            padding-left: 1rem;
+            margin-top: 2.5rem; font-size: 1.1rem; line-height: 1.6;
+            color: var(--moss); border-left: 2px solid var(--moss); padding-left: 1.25rem;
         }
 
-        .float {
-            position: absolute;
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            color: var(--gray-light);
-            pointer-events: none;
+        .intro-who + a {
+            display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem;
+            border: 1.5px solid var(--moss); color: var(--moss); text-decoration: none;
+            font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+            transition: all 0.2s; background: transparent;
+        }
+        .intro-who + a:hover {
+            background: var(--moss); color: var(--cream); opacity: 1;
         }
 
-        .float-1 { top: 15%; right: 10%; font-size: 1rem; transform: rotate(12deg); }
-        .float-2 { bottom: 20%; right: 5%; font-size: 0.8rem; transform: rotate(-8deg); }
-        .float-3 { top: 30%; right: 25%; font-size: 5rem; opacity: 0.1; }
+        .float { position: absolute; font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gray-light); pointer-events: none; opacity: 0.6; }
+        .float-1 { top: 15%; right: 10%; font-size: 0.9rem; transform: rotate(12deg); }
+        .float-2 { bottom: 20%; right: 5%; font-size: 0.75rem; transform: rotate(-8deg); }
+        .float-3 { top: 30%; right: 25%; font-size: 5rem; opacity: 0.06; }
 
         /* Sections */
-        section {
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--black);
+        section { padding: 4rem 2rem; border-top: 1px solid rgba(26,26,26,0.12); }
+        .section-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gray-light); margin-bottom: 2.5rem; }
+
+        /* How it works */
+        .how-section { max-width: 520px; font-size: 1.15rem; line-height: 1.7; color: var(--gray); }
+        .how-section p { margin-bottom: 1rem; }
+        .how-section p:first-child { color: var(--black); font-style: italic; font-size: 1.3rem; line-height: 1.55; }
+
+        /* TC section */
+        .tc-section { background: var(--tc-bg); color: var(--cream); position: relative; overflow: hidden; }
+        .tc-section::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 40%; height: 100%;
+            background: radial-gradient(ellipse at 80% 50%, rgba(90,112,72,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .tc-section .section-label { color: rgba(255,255,255,0.35); }
+
+        .tc-content { max-width: 680px; position: relative; z-index: 1; }
+        .tc-title { font-size: 1.8rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.35; max-width: 620px; }
+        .tc-title .struck { text-decoration: line-through; opacity: 0.4; font-style: italic; }
+        .tc-title a { color: var(--cream); text-decoration-color: rgba(255,255,255,0.35); }
+        .tc-title a:hover { text-decoration-color: rgba(255,255,255,0.7); opacity: 1; }
+
+        .tc-body { font-size: 1rem; line-height: 1.8; color: rgba(255,254,248,0.7); max-width: 580px; }
+        .tc-body p { margin-bottom: 1rem; }
+
+        /* Accommodation */
+        .moss-section { background: var(--moss); color: var(--cream); }
+        .moss-section .section-label { color: rgba(255,255,255,0.4); }
+
+        .rooms-grid { display: flex; gap: 0; max-width: 550px; }
+        .room-box { flex: 1; padding: 2rem; border: 1.5px solid rgba(255,254,248,0.5); }
+        .room-box:first-child { border-right: none; }
+        .room-type { font-size: 1.4rem; margin-bottom: 1rem; }
+        .room-price { font-size: 0.9rem; line-height: 1.8; opacity: 0.75; }
+        .rooms-note { margin-top: 2rem; font-size: 0.9rem; opacity: 0.6; padding: 1rem; border: 1px dashed rgba(255,255,255,0.25); max-width: 380px; line-height: 1.7; }
+        .rooms-link { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; border: 1.5px solid rgba(255,254,248,0.5); color: var(--cream); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: all 0.2s; }
+        .rooms-link:hover { background: var(--cream); color: var(--moss); opacity: 1; }
+
+        /* Facilities */
+        .facilities-list { columns: 2; column-gap: 3rem; max-width: 500px; font-size: 1rem; list-style: none; }
+        .facilities-list li { margin-bottom: 0.5rem; break-inside: avoid; padding-left: 1.5rem; position: relative; color: var(--gray); }
+        .facilities-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--gray-light); }
+
+        /* Gallery */
+        .gallery-section { padding: 0; border-top: 1px solid rgba(26,26,26,0.12); }
+        .gallery-row { display: flex; border-bottom: 1px solid rgba(26,26,26,0.12); }
+        .gallery-item { flex: 1; aspect-ratio: 4/3; overflow: hidden; border-right: 1px solid rgba(26,26,26,0.12); }
+        .gallery-item:last-child { border-right: none; }
+        .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+        .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.03); }
+
+        @media (max-width: 768px) {
+            .gallery-row { flex-wrap: wrap; }
+            .gallery-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid rgba(26,26,26,0.12); }
+            .gallery-item:nth-child(odd) { border-right: 1px solid rgba(26,26,26,0.12); }
         }
 
-        .section-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: var(--gray);
-            margin-bottom: 2rem;
-        }
-
-        /* Split layout */
-        .split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .split-left {
-            font-family: 'EB Garamond', serif;
-            font-size: 2rem;
-            line-height: 1.3;
-        }
-
-        .split-right {
-            font-size: 13px;
-            line-height: 1.8;
-            color: var(--gray);
-            padding-top: 0.5rem;
-        }
-
-        /* Dark section */
-        .dark-section {
-            background: var(--black);
-            color: var(--bg);
-        }
-
-        .dark-section .section-label {
-            color: var(--gray);
-        }
-
-        .schedule-intro {
-            font-size: 12px;
-            color: var(--gray-light);
-            margin-bottom: 2rem;
-            max-width: 400px;
-        }
-
-        .schedule-table {
-            font-size: 13px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .schedule-row {
-            display: flex;
-            border-bottom: 1px solid #333;
-            padding: 0.6rem 0;
-        }
-
-        .schedule-time {
-            width: 80px;
-            color: var(--gray);
-            flex-shrink: 0;
-        }
-
-        .schedule-activity {
-            color: var(--bg);
-        }
-
-        .schedule-activity.highlight {
-            background: var(--moss);
-            color: var(--black);
-            padding: 0 0.3rem;
-            margin: -0.1rem -0.3rem;
-        }
-
-        .schedule-note {
-            margin-top: 2rem;
-            font-size: 12px;
-            color: var(--gray);
-            max-width: 450px;
-            line-height: 1.7;
-        }
-
-        /* Calendar scattered */
-        .calendar-section {
-            position: relative;
-            min-height: 600px;
-        }
-
-        .calendar-note {
-            font-size: 11px;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            max-width: 350px;
-        }
-
-        .calendar-container {
-            position: relative;
-            height: 500px;
-        }
-
-        .calendar-item {
-            position: absolute;
-            font-size: 12px;
-            padding: 0.5rem;
-            border: 1px solid var(--black);
-            background: var(--cream);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: grab;
-            user-select: none;
-        }
-
-        .calendar-item.dragging {
-            cursor: grabbing;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 100 !important;
-        }
-
-        .calendar-item:hover {
-            transform: scale(1.05) rotate(0deg) !important;
-            z-index: 10;
-            background: var(--black);
-            color: var(--bg);
-        }
-
-        .calendar-month {
-            font-family: 'EB Garamond', serif;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .calendar-dates {
-            font-size: 11px;
-            color: var(--gray);
-        }
-
-        .calendar-event {
-            font-size: 10px;
-            color: var(--rust);
-            margin-top: 0.25rem;
-        }
-
-        .calendar-item:hover .calendar-dates,
-        .calendar-item:hover .calendar-event {
-            color: var(--bg);
-        }
-
-        .calendar-item:nth-child(1) { top: 0; left: 0; transform: rotate(-2deg); }
-        .calendar-item:nth-child(2) { top: 10px; left: 150px; transform: rotate(1deg); }
-        .calendar-item:nth-child(3) { top: 60px; left: 320px; transform: rotate(-1deg); }
-        .calendar-item:nth-child(4) { top: 120px; left: 50px; transform: rotate(2deg); }
-        .calendar-item:nth-child(5) { top: 100px; left: 220px; transform: rotate(-3deg); }
-        .calendar-item:nth-child(6) { top: 150px; left: 400px; transform: rotate(1deg); }
-        .calendar-item:nth-child(7) { top: 230px; left: 10px; transform: rotate(-1deg); }
-        .calendar-item:nth-child(8) { top: 220px; left: 180px; transform: rotate(2deg); }
-        .calendar-item:nth-child(9) { top: 280px; left: 350px; transform: rotate(-2deg); }
-        .calendar-item:nth-child(10) { top: 340px; left: 80px; transform: rotate(1deg); }
-        .calendar-item:nth-child(11) { top: 350px; left: 250px; transform: rotate(-1deg); }
-        .calendar-item:nth-child(12) { top: 400px; left: 420px; transform: rotate(2deg); }
-
-        /* Moss section */
-        .moss-section {
-            background: var(--moss);
-            color: var(--cream);
-        }
-
-        .moss-section .section-label {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .rooms-grid {
-            display: flex;
-            gap: 0;
-            max-width: 600px;
-        }
-
-        .room-box {
-            flex: 1;
-            padding: 2rem;
-            border: 2px solid var(--cream);
-        }
-
-        .room-box:first-child {
-            border-right: none;
-        }
-
-        .room-type {
-            font-family: 'EB Garamond', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .room-price {
-            font-size: 12px;
-            line-height: 1.8;
-            opacity: 0.8;
-        }
-
-        .rooms-note {
-            margin-top: 2rem;
-            font-size: 12px;
-            opacity: 0.7;
-            padding: 1rem;
-            border: 1px dashed rgba(255,255,255,0.3);
-            max-width: 400px;
-        }
-
-        /* Facilities list */
-        .facilities-list {
-            columns: 2;
-            column-gap: 3rem;
-            max-width: 500px;
-            font-size: 13px;
-            list-style: none;
-        }
-
-        .facilities-list li {
-            margin-bottom: 0.5rem;
-            break-inside: avoid;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .facilities-list li::before {
-            content: '—';
-            position: absolute;
-            left: 0;
-            color: var(--gray);
-        }
-
-        /* What you bring - overlapping */
-        .bring-section {
-            position: relative;
-            min-height: 350px;
-        }
-
-        .bring-item {
-            position: absolute;
-            max-width: 250px;
-        }
-
-        .bring-item h4 {
-            font-family: 'EB Garamond', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-        }
-
-        .bring-item p {
-            font-size: 12px;
-            color: var(--gray);
-            line-height: 1.6;
-        }
-
-        .bring-1 { top: 0; left: 0; }
-        .bring-2 { top: 80px; left: 280px; }
-        .bring-3 { top: 200px; left: 100px; }
-
-        /* Apply section */
+        /* Apply */
         .apply-section {
-            background: var(--black);
-            color: var(--bg);
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
+            background: var(--black); color: var(--bg); min-height: 65vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
         }
-
-        .apply-section .section-label {
-            color: var(--gray);
-        }
-
-        .apply-title {
-            font-family: 'EB Garamond', serif;
-            font-size: 5rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        .apply-desc {
-            font-size: 13px;
-            color: var(--gray);
-            max-width: 350px;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-
+        .apply-section .section-label { color: var(--gray); }
+        .apply-title { font-size: 4.5rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .apply-desc { font-size: 1rem; color: var(--gray); max-width: 350px; margin-bottom: 2.5rem; line-height: 1.7; }
         .apply-cta {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border: 1px solid var(--bg);
-            color: var(--bg);
-            text-decoration: none;
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            transition: all 0.1s;
+            display: inline-block; padding: 1rem 2rem; border: 1px solid rgba(244,243,238,0.5);
+            color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace;
+            font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s;
         }
+        .apply-cta:hover { background: var(--bg); color: var(--black); opacity: 1; }
+        .apply-contact { margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray); }
+        .apply-contact a { color: var(--gray); }
+        .apply-contact a:hover { color: var(--bg); background: none; text-decoration: underline; }
 
-        .apply-cta:hover {
-            background: var(--bg);
-            color: var(--black);
-        }
+        .struck { text-decoration: line-through; opacity: 0.4; }
 
-        .apply-contact {
-            margin-top: 3rem;
-            font-size: 11px;
-            color: var(--gray);
-        }
-
-        .apply-contact a {
-            color: var(--gray);
-        }
-
-        .apply-contact a:hover {
-            color: var(--bg);
-            background: none;
-            text-decoration: underline;
-        }
-
-        /* Photo gallery - minimal */
-        .gallery-section {
-            padding: 0;
-            border-top: 1px solid var(--black);
-        }
-
-        .gallery-row {
-            display: flex;
-            border-bottom: 1px solid var(--black);
-        }
-
-        .gallery-item {
-            flex: 1;
-            aspect-ratio: 4/3;
-            overflow: hidden;
-            border-right: 1px solid var(--black);
-        }
-
-        .gallery-item:last-child {
-            border-right: none;
-        }
-
-        .gallery-item img,
-        .gallery-item video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-
-        .gallery-item:hover img,
-        .gallery-item:hover video {
-            transform: scale(1.03);
-        }
-
-        @media (max-width: 768px) {
-            .gallery-row {
-                flex-wrap: wrap;
-            }
-            .gallery-item {
-                flex: 1 1 50%;
-                border-right: none;
-                border-bottom: 1px solid var(--black);
-            }
-            .gallery-item:nth-child(odd) {
-                border-right: 1px solid var(--black);
-            }
-        }
-
-        /* Footer */
         footer {
-            padding: 1rem 2rem;
-            font-size: 11px;
-            color: var(--gray);
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--black);
+            padding: 1.25rem 2rem; font-family: 'Space Mono', monospace; font-size: 11px;
+            color: var(--gray-light); display: flex; justify-content: space-between;
+            border-top: 1px solid rgba(26,26,26,0.12);
         }
 
-        .struck {
-            text-decoration: line-through;
-            opacity: 0.5;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .hero-bg-text { font-size: 40vw; }
-            .hero-title { font-size: 2.5rem; }
-            .split { grid-template-columns: 1fr; gap: 2rem; }
-            .calendar-container {
-                height: auto;
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .calendar-item {
-                position: relative !important;
-                transform: none !important;
-                top: auto !important;
-                left: auto !important;
-            }
+            .hero-title { font-size: 2.8rem; }
+            .intro-lead { font-size: 1.25rem; }
             .rooms-grid { flex-direction: column; }
-            .room-box:first-child { border-right: 2px solid var(--cream); border-bottom: none; }
-            .bring-item {
-                position: relative;
-                top: auto !important;
-                left: auto !important;
-                margin-bottom: 2rem;
-            }
-            .bring-section { min-height: auto; }
+            .room-box:first-child { border-right: 1.5px solid rgba(255,254,248,0.5); border-bottom: none; }
             .facilities-list { columns: 1; }
             .apply-title { font-size: 3rem; }
+            .tc-title { font-size: 1.4rem; }
             footer { flex-direction: column; gap: 0.5rem; }
         }
     </style>
@@ -674,7 +243,6 @@
     </nav>
 
     <section class="hero">
-        <!-- Hand-drawn fool illustration -->
         <div class="hero-illustration">
             <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -688,195 +256,64 @@
                 <path d="M 10 138 Q 30 136, 50 140" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
             </svg>
         </div>
-        
+
         <div class="float float-1">30 min north of lisbon</div>
         <div class="float float-2">est. 2024 (or was it always here?)</div>
         <div class="float float-3">?</div>
-        
+
         <div class="hero-content">
             <h1 class="hero-title"><span class="glitch" data-text="residencies">residencies</span></h1>
             <div class="hero-year">2026</div>
-            
+
             <p class="intro-lead">
                 for those ready to become a fool — to sacrifice the intellect to the Unknown. not just the passive sacrifice of an empty mind, but the active sacrifice of setting out on the fool's journey of openness and curiosity.
             </p>
-            
+
             <div class="intro-body">
-                <p>
-                    a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.
-                </p>
-                <p>
-                    this year: longer stays. limited move-in days. tighter curation. 100% co-created schedule.
-                </p>
+                <p>a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.</p>
             </div>
-            
+
             <p class="intro-who">
                 writers who need to finish the thing. renegade scientists. artists developing something they can't yet name. researchers of consciousness — human and machine. builders of futures they'd actually want to live in.
             </p>
+            <a href="#apply">apply</a>
         </div>
     </section>
 
     <section class="gallery-section">
         <div class="gallery-row">
-            <div class="gallery-item">
-                <img src="assets/dancing.webp" alt="Dancing">
-            </div>
-            <div class="gallery-item">
-                <img src="assets/danceparty.webp" alt="Dance party">
-            </div>
-            <div class="gallery-item">
-                <img src="assets/permaculture-group.webp" alt="Community">
-            </div>
+            <div class="gallery-item"><img src="assets/dancing.webp" alt="Dancing"></div>
+            <div class="gallery-item"><img src="assets/danceparty.webp" alt="Dance party"></div>
+            <div class="gallery-item"><img src="assets/permaculture-group.webp" alt="Community"></div>
         </div>
     </section>
 
-    <section class="dark-section" id="rhythm">
-        <div class="section-label">002 / rhythm</div>
-        
-        <div class="split">
-            <div class="split-left" style="color: var(--bg);">
-                daily rhythm<br>
-                <span style="font-size: 0.5em; font-family: 'Space Mono', monospace; color: var(--gray);">join what serves you</span>
-            </div>
-            <div class="split-right" style="color: var(--gray-light);">
-                <div class="schedule-intro">
-                    recommended: 1 month<br>
-                    minimum: 2 weeks
-                </div>
-                
-                <div class="schedule-table">
-                    <div class="schedule-row">
-                        <span class="schedule-time">07-09</span>
-                        <span class="schedule-activity">morning — exercise, meditation, dance, pond</span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">09-10</span>
-                        <span class="schedule-activity">breakfast</span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">10-13</span>
-                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">13-14</span>
-                        <span class="schedule-activity">lunch</span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">14-18</span>
-                        <span class="schedule-activity"><span class="highlight">work / workshops</span></span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">18:00</span>
-                        <span class="schedule-activity">dinner</span>
-                    </div>
-                    <div class="schedule-row">
-                        <span class="schedule-time">20-22</span>
-                        <span class="schedule-activity">jams, salons, sauna, movement, ???</span>
-                    </div>
-                </div>
-                
-                <p class="schedule-note">
-                    you host what you want to see. we shape the schedule together at month start. collective space care is part of the deal.
-                </p>
-            </div>
+    <section id="how-it-works">
+        <div class="section-label">002 / how it works</div>
+        <div class="how-section">
+            <p>schedule is co-created. we encourage everyone to host practices, workshops, salons — on what you know and what you don't know about.</p>
+            <p>three meals a day by our chef, with 1-3 cooking and cleaning shifts by the residents. arrival day is monday. minimum stay: 2 weeks.</p>
+            <p>€20/day for food and bills. private rooms from €150-525/week (less if monthly), dorms from €70/week. <a href="rooms.html">room options →</a></p>
         </div>
     </section>
 
-    <section class="calendar-section" id="calendar">
-        <div class="section-label">003 / calendar</div>
-        
-        <p class="calendar-note">
-            move-in: sun-mon<br>
-            if monday, before 14:00
-        </p>
-        
-        <div class="calendar-container">
-            <div class="calendar-item">
-                <div class="calendar-month">Jan</div>
-                <div class="calendar-dates">flexible</div>
+    <section class="tc-section" id="tc">
+        <div class="section-label">003 / transformational connection</div>
+        <div class="tc-content">
+            <div class="tc-body">
+                <p>for those interested in getting meditation, embodiment, and relational practice out of retreat spaces and into a co-created co-living environment.</p>
             </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Feb</div>
-                <div class="calendar-dates">7-8</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Mar</div>
-                <div class="calendar-dates">2-3</div>
-                <div class="calendar-event">permaculture 15-27</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Apr</div>
-                <div class="calendar-dates">6-7, 19-20</div>
-                <div class="calendar-event">fools lab 1-5</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">May</div>
-                <div class="calendar-dates">3-4, 17-18, 31</div>
-                <div class="calendar-event">circling</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Jun</div>
-                <div class="calendar-dates">1, 14-15, 28-29</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Jul</div>
-                <div class="calendar-dates">12-13, 26-27</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Aug</div>
-                <div class="calendar-dates">9-10, 23-24</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Sep</div>
-                <div class="calendar-dates">6-7, 20-21</div>
-                <div class="calendar-event">circling</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Oct</div>
-                <div class="calendar-dates">4-5, 18-19</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Nov</div>
-                <div class="calendar-dates">1-2, 15-16</div>
-            </div>
-            <div class="calendar-item">
-                <div class="calendar-month">Dec</div>
-                <div class="calendar-dates">tba</div>
+            <h2 class="tc-title">
+                five professionally facilitated <span class="struck">circling</span> <a href="https://www.transformationalconnection.com/what-is-transformational-connection">transformational connection</a> sessions a week at transformational connection hub and at the dancehall.
+            </h2>
+            <div class="tc-body">
+                <p>everyone in the valley is welcome to join. for those coming primarily for transformational connection who expect to join most sessions and are interested to practice throughout the day, you can choose to stay in the transformational connection hub.</p>
             </div>
         </div>
-    </section>
-
-    <section class="moss-section" id="rooms">
-        <div class="section-label">004 / accommodation</div>
-        
-        <div class="rooms-grid">
-            <div class="room-box">
-                <div class="room-type">private rooms</div>
-                <div class="room-price">
-                    €150-450 / week<br>
-                    €450-1350 / month
-                </div>
-            </div>
-            <div class="room-box">
-                <div class="room-type">dorm beds</div>
-                <div class="room-price">
-                    €70 / week<br>
-                    €210 / month
-                </div>
-            </div>
-        </div>
-        
-        <div class="rooms-note">
-            + €20/day per person<br>
-            food, bills, 1-2 prepared meals
-        </div>
-
-        <a href="rooms.html" style="display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; border: 2px solid var(--cream); color: var(--cream); text-decoration: none; font-size: 12px; letter-spacing: 0.1em; transition: all 0.1s;">room options →</a>
     </section>
 
     <section id="facilities">
-        <div class="section-label">005 / facilities</div>
-        
+        <div class="section-label">004 / facilities</div>
         <ul class="facilities-list">
             <li>200sqm dancehall (vinyl floor)</li>
             <li>1000sqm warehouse</li>
@@ -885,38 +322,108 @@
             <li>swimming lake</li>
             <li>wood-burning sauna</li>
             <li>fast wifi</li>
-            <li>weekly cleaning (shared spaces)</li>
         </ul>
     </section>
 
     <section class="gallery-section">
         <div class="gallery-row">
-            <div class="gallery-item">
-                <img src="assets/land-view.webp" alt="Land view">
-            </div>
-            <div class="gallery-item">
-                <img src="assets/Copy of photo_2024-07-18_14-11-12 (2).webp" alt="Fools Valley">
-            </div>
-            <div class="gallery-item">
-                <img src="assets/coworking.webp" alt="Coworking space">
-            </div>
+            <div class="gallery-item"><img src="assets/land-view.webp" alt="Land view"></div>
+            <div class="gallery-item"><img src="assets/Copy of photo_2024-07-18_14-11-12 (2).webp" alt="Fools Valley"></div>
+            <div class="gallery-item"><img src="assets/coworking.webp" alt="Coworking space"></div>
         </div>
     </section>
 
-    <section class="apply-section" id="apply">
-        <div class="section-label">006 / apply</div>
-        
-        <h2 class="apply-title">apply here</h2>
-        
-        <p class="apply-desc">
-            we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.
-        </p>
-        
-        <a href="https://tally.so/r/OD4AZg" class="apply-cta">begin application</a>
-        
-        <p class="apply-contact">
-            questions → <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a>
-        </p>
+    <section class="apply-section" id="apply" style="background: var(--bg); color: var(--black); padding: 5rem 2rem;">
+        <div style="max-width: 720px; margin: 0 auto;">
+            <div class="section-label" style="color: var(--gray-light);">005 / apply</div>
+            <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
+            <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.</p>
+
+            <form id="apply-form" action="apply.html" method="get">
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
+                    <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
+                    <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
+                    <div style="display: flex; gap: 1.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="visited" value="yes" style="accent-color: var(--black);" />
+                            <span style="font-size: 0.95rem;">yes</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="visited" value="no" checked style="accent-color: var(--black);" />
+                            <span style="font-size: 0.95rem;">no</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Questions only for new visitors -->
+                <div id="new-visitor-questions">
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
+                        <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
+                        <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
+                        <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
+                        <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
+                        <textarea name="ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Questions for everyone (including returning visitors) -->
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
+                    <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
+                    <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
+                    <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                            <input type="radio" name="tc" value="tc-primary" required style="margin-top: 0.25rem;" />
+                            <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
+                        </label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                            <input type="radio" name="tc" value="tc-no" style="margin-top: 0.25rem;" />
+                            <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 3rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
+                    <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
+
+                <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
+            </form>
+        </div>
     </section>
 
     <footer>
@@ -925,7 +432,7 @@
         <span>you're not sure if it's broken or genius</span>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     (function() {
         const toggle = document.querySelector('.nav-toggle');
         const navLinks = document.querySelector('.nav-links');
@@ -940,62 +447,33 @@
             });
         });
 
-        // Draggable calendar cards
-        document.querySelectorAll('.calendar-item').forEach(card => {
-            let isDragging = false;
-            let startX, startY, initialX, initialY;
+        // Handle conditional questions visibility
+        const visitedRadios = document.querySelectorAll('input[name="visited"]');
+        const questionsDiv = document.getElementById('new-visitor-questions');
 
-            card.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                card.classList.add('dragging');
-                startX = e.clientX;
-                startY = e.clientY;
-                const rect = card.getBoundingClientRect();
-                const container = card.parentElement.getBoundingClientRect();
-                initialX = rect.left - container.left;
-                initialY = rect.top - container.top;
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const dx = e.clientX - startX;
-                const dy = e.clientY - startY;
-                card.style.left = (initialX + dx) + 'px';
-                card.style.top = (initialY + dy) + 'px';
-                card.style.transform = 'none';
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-                card.classList.remove('dragging');
-            });
-
-            // Touch support
-            card.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                card.classList.add('dragging');
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                const rect = card.getBoundingClientRect();
-                const container = card.parentElement.getBoundingClientRect();
-                initialX = rect.left - container.left;
-                initialY = rect.top - container.top;
-            });
-
-            document.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                const dx = e.touches[0].clientX - startX;
-                const dy = e.touches[0].clientY - startY;
-                card.style.left = (initialX + dx) + 'px';
-                card.style.top = (initialY + dy) + 'px';
-                card.style.transform = 'none';
-            });
-
-            document.addEventListener('touchend', () => {
-                isDragging = false;
-                card.classList.remove('dragging');
+        visitedRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'no') {
+                    questionsDiv.style.display = 'block';
+                } else {
+                    questionsDiv.style.display = 'none';
+                }
             });
         });
+
+        // Handle form submission to pass data to apply.html
+        const form = document.getElementById('apply-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const params = new URLSearchParams();
+                for (const [key, value] of formData.entries()) {
+                    if (value) params.append(key, value);
+                }
+                window.location.href = 'apply.html?' + params.toString();
+            });
+        }
     })();
     </script>
 </body>

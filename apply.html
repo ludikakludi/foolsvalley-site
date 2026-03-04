@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>apply — fools' valley</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #f5f2ed;
+  --text: #1a1a1a;
+  --text-light: #666;
+  --accent: #1a1a1a;
+  --border: #d4d0c8;
+  --card-bg: #fff;
+  --highlight: #e8e4dc;
+  --error: #c44;
+  --success: #2a7a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 18px;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+nav .logo {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+nav .links { display: flex; gap: 1.5rem; }
+nav .links a:hover { opacity: 0.6; }
+
+/* MAIN */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+
+/* SECTIONS */
+.section {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.step h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+}
+
+/* FORM FIELDS */
+.field {
+  margin-bottom: 2rem;
+}
+.field label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+.field .hint {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="date"],
+.field textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  transition: border-color 0.2s;
+  line-height: 1.6;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--text);
+}
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.field.error input,
+.field.error textarea {
+  border-color: var(--error);
+}
+.field .error-msg {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  display: none;
+}
+.field.error .error-msg { display: block; }
+
+/* DATE PICKER */
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.date-info {
+  background: var(--highlight);
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.date-info strong { font-weight: 600; }
+
+/* CALENDAR WIDGET */
+.calendar-container {
+  margin-bottom: 2rem;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.calendar-header h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.calendar-header button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.calendar-header button:hover { background: var(--highlight); }
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+.calendar-grid .day-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  padding: 0.5rem 0;
+}
+.calendar-grid .day {
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: default;
+  font-size: 0.95rem;
+  position: relative;
+  transition: all 0.15s;
+}
+.calendar-grid .day.selectable {
+  cursor: pointer;
+}
+.calendar-grid .day.selectable:hover {
+  background: var(--highlight);
+}
+.calendar-grid .day.disabled {
+  color: #ccc;
+}
+.calendar-grid .day.monday.selectable {
+  font-weight: 600;
+}
+.calendar-grid .day.selected-arrival {
+  background: var(--text);
+  color: #fff;
+  border-radius: 6px 0 0 6px;
+}
+.calendar-grid .day.selected-departure {
+  background: var(--text);
+  color: #fff;
+  border-radius: 0 6px 6px 0;
+}
+.calendar-grid .day.in-range {
+  background: var(--highlight);
+  border-radius: 0;
+}
+.calendar-grid .day.today {
+  border: 1px solid var(--border);
+}
+
+.date-selection-mode {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  min-height: 1.2em;
+}
+
+/* ROOMS */
+.rooms-loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+.rooms-loading .spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.rooms-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 1.2rem;
+  border-radius: 8px;
+  color: var(--error);
+  margin-bottom: 1.5rem;
+}
+
+.building-group {
+  margin-bottom: 2.5rem;
+}
+.building-group h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.room-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.room-card:hover {
+  border-color: var(--text);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.room-card.selected {
+  border-color: var(--text);
+  border-width: 2px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+}
+.room-card-inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+}
+.room-card img {
+  width: 200px;
+  height: 160px;
+  object-fit: cover;
+}
+.room-card .no-photo {
+  width: 200px;
+  height: 160px;
+  background: var(--highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.room-card-info {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.room-card-info h4 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.room-card-info .room-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+.room-card-info .room-price {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.room-card-info .room-price .breakdown {
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* REVIEW */
+.review-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+.review-section h3 {
+  font-size: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f0ede8;
+}
+.review-row:last-child { border-bottom: none; }
+.review-row .label {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+.review-row .value {
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+.review-total {
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: right;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid var(--text);
+}
+.review-total .label { font-size: 1rem; }
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  gap: 1rem;
+}
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-primary {
+  background: var(--text);
+  color: #fff;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover { background: var(--highlight); }
+
+/* SUCCESS */
+.success-screen {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.success-screen .checkmark {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 1.5rem;
+}
+.success-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.success-screen p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--text); }
+
+/* RADIO GROUP */
+.radio-group { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+.radio-option { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: var(--card-bg); transition: all 0.2s; }
+.radio-option:hover { border-color: var(--text); }
+.radio-option.selected { border-color: var(--text); background: var(--highlight); }
+.radio-option input[type="radio"] { margin-top: 0.25rem; accent-color: var(--text); }
+.radio-option .radio-label { font-size: 0.95rem; line-height: 1.5; }
+
+/* TC BADGE */
+.building-group.tc-recommended h3 { color: var(--tc-accent); border-bottom-color: var(--tc-accent); }
+.tc-badge { display: inline-block; background: var(--tc-bg); color: var(--tc-accent); font-size: 0.7rem; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 0.04em; padding: 0.2rem 0.6rem; border-radius: 4px; margin-left: 0.5rem; vertical-align: middle; }
+
+/* FALLBACK */
+.rooms-fallback { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+.rooms-fallback h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.8rem; }
+.rooms-fallback p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1rem; }
+
+/* MOBILE */
+@media (max-width: 640px) {
+  nav { padding: 1rem; }
+  nav .links { gap: 0.8rem; font-size: 0.8rem; }
+  main { padding: 2rem 1.2rem 4rem; }
+  h1 { font-size: 2.2rem; }
+  .date-row { grid-template-columns: 1fr; }
+  .room-card-inner { grid-template-columns: 1fr; }
+  .room-card img, .room-card .no-photo { width: 100%; height: 180px; }
+  .review-row { flex-direction: column; gap: 0.2rem; }
+  .review-row .value { text-align: left; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://foolsvalley.com" class="logo">fools' valley</a>
+  <div class="links">
+    <a href="https://foolsvalley.com/residencies.html">residencies</a>
+    <a href="https://foolsvalley.com/rooms.html">rooms</a>
+    <a href="https://foolsvalley.com/events.html">events</a>
+  </div>
+</nav>
+
+<main>
+  <div style="margin-bottom: 2rem;">
+    <a href="residencies.html#apply" style="font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--text-light); text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
+      ← back to residencies
+    </a>
+  </div>
+
+  <h1>apply</h1>
+  <p class="subtitle"></p>
+
+  <!-- DATES SECTION -->
+  <div class="section">
+    <div class="step-label">001 / when</div>
+    <h2>when would you like to come?</h2>
+
+    <p style="margin-bottom:0.3rem; color: var(--text-light);">
+      <span id="calendar-instruction">move-in is on Mondays. pick your arrival Monday, then your departure day.</span>
+    </p>
+    <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic;">
+      <span id="min-duration-text">minimum booking: 2 weeks. if you'd like to come for a shorter amount of time, let us know and we see if it's possible.</span>
+    </p>
+
+    <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
+
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <button onclick="calendarPrev()">&larr;</button>
+        <h3 id="calendar-title"></h3>
+        <button onclick="calendarNext()">&rarr;</button>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+
+    <div class="date-info" id="date-summary" style="display:none;">
+      <strong>Arrival:</strong> <span id="arrival-display"></span><br>
+      <strong>Departure:</strong> <span id="departure-display"></span><br>
+      <strong>Duration:</strong> <span id="duration-display"></span>
+      <button onclick="resetDates()" style="margin-top:0.8rem; padding:0.5rem 1rem; background:none; border:1px solid var(--border); border-radius:6px; cursor:pointer; font-family:'Inter',sans-serif; font-size:0.8rem; color:var(--text);">change dates</button>
+    </div>
+
+    <div style="margin-top:2rem; max-width:400px;">
+      <label style="display:block; font-size:0.9rem; margin-bottom:0.4rem; color:var(--text-light);">have a codeword?</label>
+      <input type="text" id="codeword-input" placeholder="enter codeword" style="width:100%; padding:0.7rem 1rem; font-family:'Inter',sans-serif; font-size:0.9rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); color:var(--text);" />
+      <div id="codeword-message" style="margin-top:0.5rem; font-size:0.85rem; display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ROOMS SECTION -->
+  <div class="section" id="rooms-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">002 / where</div>
+    <h2>choose your room</h2>
+    <p style="margin-bottom:0.5rem; color: var(--text-light);">
+      showing rooms available for your full stay. the price per day depends on the length of stay (monthly prices are cheaper, <a href="#" onclick="showPriceList(event)" style="color:var(--text); text-decoration:underline;">full price list</a>).
+    </p>
+    <p style="margin-bottom:1rem; font-size:0.9rem; color: var(--text-light);">
+      + &euro;20/day per person for food, bills &amp; communal expenses is added on top.
+    </p>
+    <div id="price-list-modal" style="display:none; background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; max-height:420px; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h4 style="font-size:1rem; font-weight:500;">all rooms &amp; prices</h4>
+        <button onclick="document.getElementById('price-list-modal').style.display='none'" style="background:none; border:none; cursor:pointer; font-size:1.2rem; color:var(--text-light);">&times;</button>
+      </div>
+      <div id="price-list-table" style="font-size:0.85rem; font-family:'Inter',sans-serif;"></div>
+    </div>
+
+    <div id="rooms-container">
+      <div class="rooms-loading">
+        <div class="spinner"></div><br>
+        checking availability...
+      </div>
+    </div>
+
+  </div>
+
+  <!-- REVIEW SECTION -->
+  <div class="section" id="review-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">003 / review</div>
+    <h2>review & submit</h2>
+
+    <div class="review-section">
+      <h3>about you</h3>
+      <div class="review-row"><span class="label">name</span><span class="value" id="rev-name"></span></div>
+      <div class="review-row"><span class="label">email</span><span class="value" id="rev-email"></span></div>
+      <div class="review-row"><span class="label">main quest</span><span class="value" id="rev-quest"></span></div>
+      <div class="review-row"><span class="label">TC interest</span><span class="value" id="rev-tc"></span></div>
+    </div>
+
+    <div class="review-section">
+      <h3>stay details</h3>
+      <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
+      <div class="review-row"><span class="label">departure</span><span class="value" id="rev-departure"></span></div>
+      <div class="review-row"><span class="label">duration</span><span class="value" id="rev-duration"></span></div>
+      <div class="review-row"><span class="label">room</span><span class="value" id="rev-room"></span></div>
+    </div>
+
+    <div class="review-section" id="rev-pricing-section">
+      <h3>pricing</h3>
+      <div class="review-row"><span class="label">room</span><span class="value" id="rev-room-price"></span></div>
+      <div class="review-row"><span class="label" id="rev-room-breakdown-label">breakdown</span><span class="value" id="rev-room-breakdown"></span></div>
+      <div class="review-row"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
+      <div class="review-total">
+        <div class="review-row">
+          <span class="label">total</span>
+          <span class="value" id="rev-total"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" id="btn-submit" onclick="submitApplication()">submit application</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="section" id="success-section" style="display:none;"></div>
+
+</main>
+
+<footer>
+  fools' valley · 30 min north of lisbon · <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a>
+</footer>
+
+<script>
+// ============================================================
+// CONFIG — Replace this URL after deploying the Apps Script
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZVjyZMsFA9nuRjKxcmy-8SNPeVLQopaqkPNAjsZpm2E58e_K0MQo4JcVqSOd0b7o1/exec';
+const ROOM_PHOTOS_BASE = 'https://foolsvalley.com/assets/rooms/';
+
+// ============================================================
+// STATE
+// ============================================================
+let calendarMonth = new Date().getMonth();
+let calendarYear = new Date().getFullYear();
+let arrivalDate = null;
+let departureDate = null;
+let selectingWhat = 'arrival'; // 'arrival' or 'departure'
+let availableRooms = [];
+let selectedRoom = null;
+let fallbackMode = false;
+let formData = {}; // Store form data from previous page
+let hasShortStayCode = false; // Track if shortstay codeword is active
+
+// Advance to today or next month if we're past the 15th
+if (new Date().getDate() > 15) {
+  calendarMonth++;
+  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+}
+
+// Parse URL parameters from residencies.html
+const urlParams = new URLSearchParams(window.location.search);
+formData = {
+  name: urlParams.get('name') || '',
+  email: urlParams.get('email') || '',
+  visited: urlParams.get('visited') || '',
+  quest: urlParams.get('quest') || '',
+  pastQuests: urlParams.get('past-quests') || '',
+  reference: urlParams.get('reference') || '',
+  useTime: urlParams.get('use-time') || '',
+  contribute: urlParams.get('contribute') || '',
+  idealDay: urlParams.get('ideal-day') || '',
+  tc: urlParams.get('tc') || '',
+  questions: urlParams.get('questions') || ''
+};
+
+
+// ============================================================
+// SHOW/HIDE SECTIONS
+// ============================================================
+function showRoomsSection() {
+  const roomsSection = document.getElementById('rooms-section');
+  roomsSection.style.display = 'block';
+  fetchAvailability();
+  // Scroll to rooms section
+  setTimeout(() => {
+    roomsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function showReviewSection() {
+  const reviewSection = document.getElementById('review-section');
+  reviewSection.style.display = 'block';
+  populateReview();
+  // Scroll to review section
+  setTimeout(() => {
+    reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function showSuccessSection() {
+  document.getElementById('success-section').style.display = 'block';
+  document.getElementById('success-section').innerHTML = `
+    <div class="success-screen">
+      <div class="checkmark">✓</div>
+      <h2>application sent</h2>
+      <p>thank you! we'll review your application and get back to you at the email you provided.</p>
+      <br><br>
+      <a href="https://foolsvalley.com" class="btn btn-secondary" style="display:inline-block; text-decoration:none;">back to fools' valley</a>
+    </div>
+  `;
+  setTimeout(() => {
+    document.getElementById('success-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function renderCalendar() {
+  const title = document.getElementById('calendar-title');
+  title.textContent = MONTHS[calendarMonth] + ' ' + calendarYear;
+
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+
+  // Day labels (Mon first)
+  DAYS.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'day-label';
+    div.textContent = d;
+    grid.appendChild(div);
+  });
+
+  const firstDay = new Date(calendarYear, calendarMonth, 1);
+  let startDow = firstDay.getDay(); // 0=Sun
+  startDow = startDow === 0 ? 6 : startDow - 1; // convert to Mon=0
+
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // Empty cells before first day
+  for (let i = 0; i < startDow; i++) {
+    const div = document.createElement('div');
+    div.className = 'day';
+    grid.appendChild(div);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(calendarYear, calendarMonth, d);
+    const div = document.createElement('div');
+    div.className = 'day';
+    div.textContent = d;
+
+    const isMonday = date.getDay() === 1;
+    const isPast = date < today;
+    const tooSoon = date < new Date(today.getTime() + 7*24*60*60*1000); // at least a week out
+
+    if (isMonday) div.classList.add('monday');
+
+    if (date.getTime() === today.getTime()) div.classList.add('today');
+
+    // Highlight range
+    if (arrivalDate && departureDate) {
+      if (date.getTime() === arrivalDate.getTime()) div.classList.add('selected-arrival');
+      else if (date.getTime() === departureDate.getTime()) div.classList.add('selected-departure');
+      else if (date > arrivalDate && date < departureDate) div.classList.add('in-range');
+    } else if (arrivalDate && date.getTime() === arrivalDate.getTime()) {
+      div.classList.add('selected-arrival');
+    }
+
+    // Selectable logic
+    if (selectingWhat === 'arrival') {
+      // With shortstay code, allow any day; otherwise only Mondays
+      const isValidArrival = hasShortStayCode ? !isPast && !tooSoon : (isMonday && !isPast && !tooSoon);
+
+      if (isValidArrival) {
+        div.classList.add('selectable');
+        div.addEventListener('click', () => selectArrival(date));
+      } else {
+        div.classList.add('disabled');
+      }
+    } else if (selectingWhat === 'departure' || selectingWhat === 'done') {
+      // With shortstay code, allow any duration; otherwise minimum 13 days
+      const minDays = hasShortStayCode ? 1 : 13;
+      const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
+
+      if (date >= minDep) {
+        div.classList.add('selectable');
+        div.addEventListener('click', () => selectDeparture(date));
+      } else {
+        div.classList.add('disabled');
+      }
+    }
+
+    grid.appendChild(div);
+  }
+}
+
+function selectArrival(date) {
+  arrivalDate = date;
+  departureDate = null;
+  selectedRoom = null;
+  fallbackMode = false;
+  selectingWhat = 'departure';
+
+  // Update message based on whether shortstay code is active
+  const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
+  document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
+  document.getElementById('date-summary').style.display = 'block';
+  document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
+  document.getElementById('departure-display').textContent = '—';
+  document.getElementById('duration-display').textContent = '—';
+  renderCalendar();
+}
+
+function selectDeparture(date) {
+  departureDate = date;
+  selectingWhat = 'done';
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  document.getElementById('date-mode').textContent = 'dates selected ✓';
+  document.getElementById('departure-display').textContent = formatDate(departureDate);
+  document.getElementById('duration-display').textContent = days + ' days' + (days >= 28 ? ' (~' + Math.round(days/30*10)/10 + ' months)' : days >= 7 ? ' (~' + Math.round(days/7*10)/10 + ' weeks)' : '');
+  renderCalendar();
+
+  // Automatically show rooms section
+  showRoomsSection();
+}
+
+function calendarPrev() {
+  calendarMonth--;
+  if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+  renderCalendar();
+}
+
+function calendarNext() {
+  calendarMonth++;
+  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+  renderCalendar();
+}
+
+function resetDates() {
+  arrivalDate = null;
+  departureDate = null;
+  selectingWhat = 'arrival';
+  selectedRoom = null;
+  fallbackMode = false;
+  document.getElementById('date-mode').textContent = 'select your arrival Monday';
+  document.getElementById('date-summary').style.display = 'none';
+
+  // Hide rooms and review sections
+  document.getElementById('rooms-section').style.display = 'none';
+  document.getElementById('review-section').style.display = 'none';
+
+  renderCalendar();
+}
+
+function formatDate(d) {
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function formatDateISO(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+
+// ============================================================
+// FETCH AVAILABILITY
+// ============================================================
+async function fetchAvailability() {
+  const container = document.getElementById('rooms-container');
+  container.innerHTML = '<div class="rooms-loading"><div class="spinner"></div><br>checking availability...</div>';
+  selectedRoom = null;
+  fallbackMode = false;
+
+  const from = formatDateISO(arrivalDate);
+  const to = formatDateISO(departureDate);
+
+  try {
+    const url = APPS_SCRIPT_URL + '?action=availability&from=' + from + '&to=' + to;
+
+    // Add timeout to the fetch
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const resp = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    const data = await resp.json();
+
+    if (data.error) {
+      showFallback(container, "We couldn't check room availability right now: " + data.error);
+      return;
+    }
+
+    availableRooms = data.rooms || [];
+
+    if (availableRooms.length === 0) {
+      showFallback(container, 'No rooms appear available for your selected dates, but this might be a data issue.');
+      return;
+    }
+
+    renderRooms();
+  } catch (err) {
+    console.error('Availability check error:', err);
+    showFallback(container, "Couldn't reach the availability system. Please describe what room you'd like below.");
+  }
+}
+
+function showFallback(container, msg) {
+  fallbackMode = true;
+  container.innerHTML = '';
+  const fb = document.createElement('div');
+  fb.className = 'rooms-fallback';
+  fb.innerHTML = '<h4>room selection unavailable</h4>' +
+    '<p>' + msg + '</p>' +
+    '<p>no worries \u2014 just tell us what kind of accommodation you\'re interested in and we\'ll get back to you with options and pricing.</p>' +
+    '<div class="field"><label>what type of accommodation are you interested in?</label>' +
+    '<div class="hint">e.g. private room, dorm bed, own tent/van, a room in a specific house...</div>' +
+    '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>' +
+    '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) showReviewSection();">continue to review</button>';
+  container.appendChild(fb);
+}
+
+function renderRooms() {
+  const container = document.getElementById('rooms-container');
+  container.innerHTML = '';
+
+  const isTCPrimary = formData.tc === 'tc-primary';
+
+  // Group by building
+  const buildings = {};
+  const normalOrder = ['Octopus House', 'Old House', 'Blue House', 'Camping'];
+  const tcOrder = ['Blue House', 'Octopus House', 'Old House', 'Camping'];
+  const order = isTCPrimary ? tcOrder : normalOrder;
+
+  availableRooms.forEach(r => {
+    if (!buildings[r.building]) buildings[r.building] = [];
+    buildings[r.building].push(r);
+  });
+
+  order.forEach(b => {
+    if (!buildings[b]) return;
+    const group = document.createElement('div');
+    group.className = 'building-group';
+
+    const isTCBuilding = b === 'Blue House';
+
+    const h3 = document.createElement('h3');
+    let title = b === 'Old House' ? 'the old house' : b === 'Octopus House' ? 'm / octopus house' : b === 'Blue House' ? 'transformational connection hub' : 'own tent / van';
+    h3.innerHTML = title;
+    group.appendChild(h3);
+
+    buildings[b].forEach(room => {
+      const card = document.createElement('div');
+      card.className = 'room-card';
+      card.dataset.roomId = room.id;
+
+      const inner = document.createElement('div');
+      inner.className = 'room-card-inner';
+
+      if (room.photo) {
+        const img = document.createElement('img');
+        img.src = ROOM_PHOTOS_BASE + room.photo;
+        img.alt = room.name;
+        img.loading = 'lazy';
+        inner.appendChild(img);
+      } else {
+        const noPhoto = document.createElement('div');
+        noPhoto.className = 'no-photo';
+        noPhoto.textContent = 'bring your own shelter';
+        inner.appendChild(noPhoto);
+      }
+
+      const info = document.createElement('div');
+      info.className = 'room-card-info';
+      // Clean display text
+      var displayName = room.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
+      var displayDesc = room.desc.replace(/\s*5 min walk from main property\.?/g, '').trim();
+      if (displayDesc.endsWith('.')) displayDesc = displayDesc;
+      else if (displayDesc.length > 0 && !displayDesc.endsWith('.')) displayDesc += '';
+
+      info.innerHTML = '<h4>' + displayName + '</h4>' +
+        '<div class="room-desc">' + displayDesc + '</div>' +
+        '<div class="room-price">€' + room.totalPrice + ' total<span class="breakdown">room: €' + room.roomPrice + ' (' + room.priceBreakdown + ')<br>+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
+      inner.appendChild(info);
+
+      card.appendChild(inner);
+
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedRoom = room;
+
+        // Automatically show review section
+        showReviewSection();
+      });
+
+      group.appendChild(card);
+    });
+
+    container.appendChild(group);
+  });
+}
+
+// ============================================================
+// REVIEW
+// ============================================================
+function populateReview() {
+  document.getElementById('rev-name').textContent = formData.name || '—';
+  document.getElementById('rev-email').textContent = formData.email || '—';
+  document.getElementById('rev-quest').textContent = formData.quest || '—';
+
+  const tcLabels = {
+    'tc-primary': 'Yes \u2014 primary interest, join all sessions, TC hub',
+    'tc-no': "No, that's not my primary interest"
+  };
+  document.getElementById('rev-tc').textContent = tcLabels[formData.tc] || '—';
+
+  document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
+  document.getElementById('rev-departure').textContent = formatDate(departureDate);
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  document.getElementById('rev-duration').textContent = days + ' days';
+
+  const pricingSection = document.getElementById('rev-pricing-section');
+
+  if (fallbackMode) {
+    const pref = document.getElementById('f-room-preference');
+    document.getElementById('rev-room').textContent = 'Preference: ' + (pref ? pref.value : 'not specified');
+    pricingSection.style.display = 'none';
+  } else if (selectedRoom) {
+    var bldg = selectedRoom.building === 'Blue House' ? 'TC Hub' : selectedRoom.building;
+    var cleanName = selectedRoom.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
+    document.getElementById('rev-room').textContent = cleanName + ' \u2014 ' + bldg;
+    pricingSection.style.display = 'block';
+    document.getElementById('rev-room-price').textContent = '\u20AC' + selectedRoom.roomPrice;
+    document.getElementById('rev-room-breakdown').textContent = selectedRoom.priceBreakdown;
+    document.getElementById('rev-daily-fee').textContent = '\u20AC' + selectedRoom.dailyFee;
+    document.getElementById('rev-total').textContent = '\u20AC' + selectedRoom.totalPrice;
+  }
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+async function submitApplication() {
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'submitting...';
+
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+
+  const payload = {
+    action: 'submit',
+    application: {
+      name: formData.name,
+      email: formData.email,
+      visited: formData.visited,
+      tcInterest: formData.tc,
+      mainQuest: formData.quest,
+      pastQuests: formData.pastQuests,
+      reference: formData.reference,
+      useTimeFor: formData.useTime,
+      contribute: formData.contribute,
+      idealDay: formData.idealDay,
+      questions: formData.questions,
+      arrivalDate: formatDate(arrivalDate),
+      departureDate: formatDate(departureDate),
+      numDays: days,
+      roomName: fallbackMode ? 'none' : (selectedRoom ? selectedRoom.name : 'none'),
+      roomId: fallbackMode ? 'none' : (selectedRoom ? selectedRoom.id : 'none'),
+      building: fallbackMode ? '' : (selectedRoom ? selectedRoom.building : ''),
+      roomPrice: fallbackMode ? 0 : (selectedRoom ? selectedRoom.roomPrice : 0),
+      priceBreakdown: fallbackMode ? '' : (selectedRoom ? selectedRoom.priceBreakdown : ''),
+      dailyFee: fallbackMode ? 0 : (selectedRoom ? selectedRoom.dailyFee : 0),
+      totalPrice: fallbackMode ? 0 : (selectedRoom ? selectedRoom.totalPrice : 0),
+      roomPreference: fallbackMode ? (document.getElementById('f-room-preference') ? document.getElementById('f-room-preference').value.trim() : '') : ''
+    }
+  };
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+
+    if (data.success) {
+      showSuccessSection();
+    } else {
+      alert('Something went wrong: ' + (data.error || 'Unknown error'));
+      btn.disabled = false;
+      btn.textContent = 'submit application';
+    }
+  } catch (err) {
+    alert('Could not submit. Please check your connection and try again.\n\n' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'submit application';
+  }
+}
+
+// ============================================================
+// PRICE LIST
+// ============================================================
+var cachedPrices = null;
+
+async function showPriceList(e) {
+  e.preventDefault();
+  var modal = document.getElementById('price-list-modal');
+  var table = document.getElementById('price-list-table');
+
+  if (modal.style.display === 'block') {
+    modal.style.display = 'none';
+    return;
+  }
+
+  if (cachedPrices) {
+    buildPriceTable(table, cachedPrices);
+    modal.style.display = 'block';
+    return;
+  }
+
+  table.innerHTML = '<em>loading prices...</em>';
+  modal.style.display = 'block';
+
+  try {
+    var url = APPS_SCRIPT_URL + '?action=prices';
+    var resp = await fetch(url);
+    var data = await resp.json();
+    if (data.rooms) {
+      cachedPrices = data.rooms;
+      buildPriceTable(table, data.rooms);
+    } else {
+      table.innerHTML = '<em>could not load prices</em>';
+    }
+  } catch (err) {
+    table.innerHTML = '<em>could not load prices</em>';
+  }
+}
+
+function buildPriceTable(container, rooms) {
+  var buildingLabels = {'Octopus House': 'm / octopus house', 'Old House': 'the old house', 'Blue House': 'transformational connection hub', 'Camping': 'camping'};
+  var order = ['Octopus House', 'Old House', 'Blue House', 'Camping'];
+  var buildings = {};
+  rooms.forEach(function(r) {
+    if (!buildings[r.building]) buildings[r.building] = [];
+    buildings[r.building].push(r);
+  });
+
+  var html = '<table style="width:100%; border-collapse:collapse;">';
+  html += '<tr style="border-bottom:2px solid var(--border); text-align:left;"><th style="padding:0.4rem 0.3rem;">room</th><th style="padding:0.4rem 0.3rem; text-align:right;">daily</th><th style="padding:0.4rem 0.3rem; text-align:right;">weekly</th><th style="padding:0.4rem 0.3rem; text-align:right;">monthly</th></tr>';
+
+  order.forEach(function(b) {
+    if (!buildings[b] || buildings[b].length === 0) return;
+    html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + '</td></tr>';
+    buildings[b].forEach(function(r) {
+      html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + r.name + '</td>';
+      html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.daily + '</td>';
+      html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.weekly + '</td>';
+      html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.monthly + '</td></tr>';
+    });
+  });
+  html += '</table>';
+  html += '<p style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-light);">+ \u20AC20/day food &amp; expenses on top of all prices</p>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// CODEWORD
+// ============================================================
+document.getElementById('codeword-input').addEventListener('input', function() {
+  const code = this.value.trim().toLowerCase();
+  const message = document.getElementById('codeword-message');
+  const instructionText = document.getElementById('calendar-instruction');
+  const minDurationText = document.getElementById('min-duration-text');
+
+  if (code === 'shortstay') {
+    hasShortStayCode = true;
+    message.style.display = 'block';
+    message.style.color = 'var(--success)';
+    message.textContent = '✓ Short stay unlocked: book any day, any duration';
+
+    // Update instructions
+    instructionText.textContent = 'pick your arrival day, then your departure day.';
+    minDurationText.textContent = 'flexible booking enabled.';
+
+    renderCalendar(); // Re-render calendar with flexible rules
+  } else if (code.length > 0) {
+    hasShortStayCode = false;
+    message.style.display = 'block';
+    message.style.color = 'var(--error)';
+    message.textContent = 'Invalid codeword';
+
+    // Restore normal instructions
+    instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
+    minDurationText.textContent = 'minimum booking: 2 weeks. if you\'d like to come for a shorter amount of time, let us know and we see if it\'s possible.';
+
+    renderCalendar(); // Re-render with normal rules
+  } else {
+    hasShortStayCode = false;
+    message.style.display = 'none';
+
+    // Restore normal instructions
+    instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
+    minDurationText.textContent = 'minimum booking: 2 weeks. if you\'d like to come for a shorter amount of time, let us know and we see if it\'s possible.';
+
+    renderCalendar(); // Re-render with normal rules
+  }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+renderCalendar();
+</script>
+
+</body>
+</html>
