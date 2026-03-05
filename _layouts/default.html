@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include head.html %}
+    {% if page.custom_css %}
+    <style>
+        {{ page.custom_css }}
+    </style>
+    {% endif %}
+</head>
+<body>
+    {% include nav.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+
+    {% if page.custom_js %}
+    <script>
+        {{ page.custom_js }}
+    </script>
+    {% endif %}
+</body>
+</html>

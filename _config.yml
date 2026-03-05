@@ -1,0 +1,37 @@
+# Fools' Valley Jekyll Configuration
+
+title: "fools' valley"
+description: "a place near lisbon — residencies, research, retreats"
+url: "https://foolsvalley.com"
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - .git
+  - .claude
+  - files.zip
+  - residenciesnew.html
+
+# Site settings
+email: slowreply@foolsvalley.com
+telegram: "https://t.me/+Okvs2yyKKRNiNzVi"
+location: "30 min north of lisbon"
+
+# Navigation links
+nav_links:
+  - name: residencies
+    url: /residencies.html
+  - name: events
+    url: /events.html
+  - name: open saturdays
+    url: /saturdays.html
+  - name: research
+    url: /research.html
+  - name: rooms
+    url: /rooms.html
+  - name: venue
+    url: /venue.html

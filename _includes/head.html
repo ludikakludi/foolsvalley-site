@@ -1,0 +1,193 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }} — {{ site.description }}{% endif %}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --bg: #f5f5f0;
+        --black: #0a0a0a;
+        --gray: #6b6b6b;
+        --gray-light: #b0b0b0;
+        --moss: #4a5d3a;
+        --rust: #8b4a2b;
+        --cream: #fffef8;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Space Mono', monospace;
+        background: var(--bg);
+        color: var(--black);
+        font-size: 14px;
+        line-height: 1.5;
+        overflow-x: hidden;
+    }
+
+    a {
+        color: var(--black);
+        text-decoration: underline;
+    }
+
+    a:hover {
+        text-decoration: none;
+        background: var(--black);
+        color: var(--bg);
+    }
+
+    /* Navigation */
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--black);
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        font-size: 12px;
+        z-index: 100;
+    }
+
+    nav a {
+        text-transform: lowercase;
+    }
+
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+    }
+
+    .nav-logo svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nav-logo span {
+        font-family: 'EB Garamond', serif;
+        font-style: italic;
+        font-size: 14px;
+        color: var(--black);
+    }
+
+    .nav-logo:hover {
+        background: none;
+    }
+
+    .nav-logo:hover span {
+        text-decoration: underline;
+    }
+
+    /* Hamburger menu */
+    .nav-toggle {
+        display: none;
+        background: var(--bg);
+        border: none;
+        cursor: pointer;
+        padding: 0.75rem;
+        margin-left: auto;
+        z-index: 101;
+    }
+
+    .nav-toggle span {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: var(--black);
+        margin: 5px 0;
+        transition: 0.3s;
+    }
+
+    .nav-links {
+        display: contents;
+    }
+
+    @media (max-width: 600px) {
+        nav {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-toggle {
+            display: block;
+        }
+
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg);
+            flex-direction: column;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--black);
+            border-top: none;
+            gap: 1rem;
+            text-align: right;
+            min-width: 160px;
+            font-size: 14px;
+        }
+
+        .nav-links.open {
+            display: flex;
+        }
+
+        .nav-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .nav-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+    }
+
+    /* Footer */
+    footer {
+        padding: 1.5rem 2rem;
+        font-size: 11px;
+        color: var(--gray);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        border-top: 1px solid var(--black);
+    }
+
+    .footer-left {
+        font-family: 'EB Garamond', serif;
+        font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+        nav {
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        footer {
+            flex-direction: column;
+        }
+    }
+</style>

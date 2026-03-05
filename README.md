@@ -50,6 +50,16 @@ Two-sided concept:
 - **Back**: The Void spiral (void.png)
 
 ## Deployment
-Static HTML — can deploy directly to Vercel, Netlify, or any static host.
 
-No build step required.
+**GitHub Pages** with Jekyll support — pushes to main branch auto-deploy to foolsvalley.com.
+
+### Jekyll Templates
+
+This site now has Jekyll set up to make editing easier. You can:
+- Edit navigation, footer, and styles in one place
+- Convert pages to use templates gradually
+- Push directly to GitHub (it builds automatically)
+
+See **[JEKYLL_GUIDE.md](JEKYLL_GUIDE.md)** for how to use templates.
+
+Your existing HTML files still work as-is!

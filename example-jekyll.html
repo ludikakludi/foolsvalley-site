@@ -1,0 +1,86 @@
+---
+layout: default
+title: example page
+custom_css: |
+  .example-section {
+    padding: 8rem 2rem 4rem;
+    max-width: 800px;
+  }
+
+  .example-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .example-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+
+  .code-block {
+    background: var(--cream);
+    border: 1px solid var(--gray-light);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+  }
+
+  .highlight {
+    background: var(--moss);
+    color: var(--cream);
+    padding: 0.2rem 0.5rem;
+  }
+---
+
+<section class="example-section">
+    <h1 class="example-title">This Page Uses Jekyll Templates</h1>
+
+    <p class="example-text">
+        This is an example page showing how Jekyll templates work. Notice how this file
+        is much shorter than the regular HTML files - it only contains the content, not
+        the navigation, footer, or repeated styles.
+    </p>
+
+    <div class="code-block">
+        <p style="color: var(--gray); margin-bottom: 1rem;">This file starts with:</p>
+        <pre>---
+layout: default
+title: example page
+custom_css: |
+  /* Page-specific styles */
+---
+
+&lt;section&gt;
+  Your content here
+&lt;/section&gt;</pre>
+    </div>
+
+    <p class="example-text">
+        <span class="highlight">The navigation and footer are automatically included</span>
+        from the template files in <code>_includes/</code>
+    </p>
+
+    <p class="example-text">
+        To make your own pages use this system:
+    </p>
+
+    <ol class="example-text" style="margin-left: 2rem;">
+        <li>Add the front matter (the --- section) to the top of your HTML file</li>
+        <li>Remove the &lt;head&gt;, &lt;nav&gt;, and &lt;footer&gt; sections</li>
+        <li>Keep only the main content</li>
+        <li>Add page-specific CSS in the custom_css section</li>
+    </ol>
+
+    <p class="example-text" style="margin-top: 2rem;">
+        <a href="JEKYLL_GUIDE.md">Read the full guide →</a>
+    </p>
+
+    <p class="example-text">
+        <a href="index.html">← Back to home</a>
+    </p>
+</section>
