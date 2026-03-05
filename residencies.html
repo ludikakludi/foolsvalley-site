@@ -1,480 +1,384 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>residencies — fools' valley</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #f4f3ee;
-            --black: #1a1a1a;
-            --gray: #7a7a72;
-            --gray-light: #b5b5a8;
-            --moss: #4a5d3a;
-            --cream: #fffef8;
-            --tc-bg: #2c3525;
-        }
+---
+layout: default
+title: residencies
+custom_css: |
+  /* Page-specific color overrides */
+  :root {
+    --bg: #f4f3ee;
+    --black: #1a1a1a;
+    --gray: #7a7a72;
+    --gray-light: #b5b5a8;
+    --moss: #4a5d3a;
+    --cream: #fffef8;
+    --tc-bg: #2c3525;
+  }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+  body {
+    font-family: 'EB Garamond', 'Georgia', serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
 
-        body {
-            font-family: 'EB Garamond', 'Georgia', serif;
-            background: var(--bg);
-            color: var(--black);
-            font-size: 16px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: all 0.15s ease;
+  }
+  a:hover { text-decoration: none; opacity: 0.7; }
 
-        a {
-            color: var(--black);
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 3px;
-            transition: all 0.15s ease;
-        }
-        a:hover { text-decoration: none; opacity: 0.7; }
+  /* Navigation overrides for residencies page */
+  nav {
+    border-bottom: 1px solid rgba(26,26,26,0.15);
+    background: rgba(244,243,238,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-family: 'Space Mono', monospace;
+  }
+  nav a { text-decoration: none; color: var(--gray); letter-spacing: 0.03em; }
+  nav a:hover { color: var(--black); opacity: 1; }
+  .nav-logo svg { transition: transform 0.5s ease; }
+  .nav-logo:hover svg { transform: rotate(360deg); }
 
-        /* Navigation */
-        nav {
-            position: fixed; top: 0; left: 0; right: 0;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid rgba(26,26,26,0.15);
-            background: rgba(244,243,238,0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
-            font-size: 12px; z-index: 100;
-            font-family: 'Space Mono', monospace;
-        }
-        nav a { text-transform: lowercase; text-decoration: none; color: var(--gray); letter-spacing: 0.03em; }
-        nav a:hover { color: var(--black); opacity: 1; }
+  @media (max-width: 600px) {
+    .nav-links { border: 1px solid rgba(26,26,26,0.15); }
+  }
 
-        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
-        .nav-logo svg { width: 32px; height: 32px; transition: transform 0.5s ease; }
-        .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); }
-        .nav-logo:hover { background: none; opacity: 1; }
-        .nav-logo:hover span { text-decoration: underline; }
-        .nav-logo:hover svg { transform: rotate(360deg); }
+  /* Hero */
+  .hero {
+    min-height: 100vh; padding: 8rem 2rem 5rem;
+    position: relative; display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-illustration { position: absolute; top: 50%; right: 10%; transform: translateY(-50%); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .hero-illustration svg { width: 45vw; max-width: 400px; height: auto; }
+  .hero-content { position: relative; z-index: 1; max-width: 560px; }
 
-        .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }
-        .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--black); margin: 5px 0; transition: 0.3s; }
-        .nav-links { display: contents; }
+  .hero-title {
+    font-family: 'EB Garamond', serif; font-size: 4.5rem; font-weight: 400;
+    line-height: 0.9; margin-bottom: 0.5rem; letter-spacing: -0.02em;
+  }
+  .hero-title .glitch { position: relative; }
+  .hero-title .glitch::before {
+    content: attr(data-text); position: absolute; left: -2px; top: 0;
+    color: var(--moss); opacity: 0.25; clip-path: inset(0 0 50% 0);
+  }
 
-        @media (max-width: 600px) {
-            nav { flex-wrap: nowrap; justify-content: space-between; }
-            .nav-toggle { display: block; }
-            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--bg); flex-direction: column; padding: 1.25rem 1.5rem; border: 1px solid rgba(26,26,26,0.15); border-top: none; gap: 1rem; text-align: right; min-width: 160px; font-size: 14px; }
-            .nav-links.open { display: flex; }
-            .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .nav-toggle.open span:nth-child(2) { opacity: 0; }
-            .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        }
+  .hero-year { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gray-light); margin-bottom: 3.5rem; letter-spacing: 0.3em; }
 
-        /* Hero */
-        .hero {
-            min-height: 100vh; padding: 8rem 2rem 5rem;
-            position: relative; display: flex; flex-direction: column; justify-content: center;
-        }
-        .hero-illustration { position: absolute; top: 50%; right: 10%; transform: translateY(-50%); opacity: 0.08; pointer-events: none; z-index: 0; }
-        .hero-illustration svg { width: 45vw; max-width: 400px; height: auto; }
-        .hero-content { position: relative; z-index: 1; max-width: 560px; }
+  .intro-lead { font-size: 1.45rem; line-height: 1.55; font-style: italic; max-width: 480px; margin-bottom: 2rem; }
+  .intro-body { font-size: 1rem; line-height: 1.75; max-width: 440px; color: var(--gray); }
+  .intro-body p { margin-bottom: 1rem; }
 
-        .hero-title {
-            font-family: 'EB Garamond', serif; font-size: 4.5rem; font-weight: 400;
-            line-height: 0.9; margin-bottom: 0.5rem; letter-spacing: -0.02em;
-        }
-        .hero-title .glitch { position: relative; }
-        .hero-title .glitch::before {
-            content: attr(data-text); position: absolute; left: -2px; top: 0;
-            color: var(--moss); opacity: 0.25; clip-path: inset(0 0 50% 0);
-        }
+  .intro-who {
+    margin-top: 2.5rem; font-size: 1.1rem; line-height: 1.6;
+    color: var(--moss); border-left: 2px solid var(--moss); padding-left: 1.25rem;
+  }
 
-        .hero-year { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--gray-light); margin-bottom: 3.5rem; letter-spacing: 0.3em; }
+  .intro-who + a {
+    display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem;
+    border: 1.5px solid var(--moss); color: var(--moss); text-decoration: none;
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+    transition: all 0.2s; background: transparent;
+  }
+  .intro-who + a:hover {
+    background: var(--moss); color: var(--cream); opacity: 1;
+  }
 
-        .intro-lead { font-size: 1.45rem; line-height: 1.55; font-style: italic; max-width: 480px; margin-bottom: 2rem; }
-        .intro-body { font-size: 1rem; line-height: 1.75; max-width: 440px; color: var(--gray); }
-        .intro-body p { margin-bottom: 1rem; }
+  .float { position: absolute; font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gray-light); pointer-events: none; opacity: 0.6; }
+  .float-1 { top: 15%; right: 10%; font-size: 0.9rem; transform: rotate(12deg); }
+  .float-2 { bottom: 20%; right: 5%; font-size: 0.75rem; transform: rotate(-8deg); }
+  .float-3 { top: 30%; right: 25%; font-size: 5rem; opacity: 0.06; }
 
-        .intro-who {
-            margin-top: 2.5rem; font-size: 1.1rem; line-height: 1.6;
-            color: var(--moss); border-left: 2px solid var(--moss); padding-left: 1.25rem;
-        }
+  /* Sections */
+  section { padding: 4rem 2rem; border-top: 1px solid rgba(26,26,26,0.12); }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gray-light); margin-bottom: 2.5rem; }
 
-        .intro-who + a {
-            display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem;
-            border: 1.5px solid var(--moss); color: var(--moss); text-decoration: none;
-            font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-            transition: all 0.2s; background: transparent;
-        }
-        .intro-who + a:hover {
-            background: var(--moss); color: var(--cream); opacity: 1;
-        }
+  /* How it works */
+  .how-section { max-width: 520px; font-size: 1.15rem; line-height: 1.7; color: var(--gray); }
+  .how-section p { margin-bottom: 1rem; }
+  .how-section p:first-child { color: var(--black); font-style: italic; font-size: 1.3rem; line-height: 1.55; }
 
-        .float { position: absolute; font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gray-light); pointer-events: none; opacity: 0.6; }
-        .float-1 { top: 15%; right: 10%; font-size: 0.9rem; transform: rotate(12deg); }
-        .float-2 { bottom: 20%; right: 5%; font-size: 0.75rem; transform: rotate(-8deg); }
-        .float-3 { top: 30%; right: 25%; font-size: 5rem; opacity: 0.06; }
+  /* TC section */
+  .tc-section { background: var(--tc-bg); color: var(--cream); position: relative; overflow: hidden; }
+  .tc-section::before {
+    content: ''; position: absolute; top: 0; right: 0; width: 40%; height: 100%;
+    background: radial-gradient(ellipse at 80% 50%, rgba(90,112,72,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .tc-section .section-label { color: rgba(255,255,255,0.35); }
 
-        /* Sections */
-        section { padding: 4rem 2rem; border-top: 1px solid rgba(26,26,26,0.12); }
-        .section-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gray-light); margin-bottom: 2.5rem; }
+  .tc-content { max-width: 680px; position: relative; z-index: 1; }
+  .tc-title { font-size: 1.8rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.35; max-width: 620px; }
+  .tc-title .struck { text-decoration: line-through; opacity: 0.4; font-style: italic; }
+  .tc-title a { color: var(--cream); text-decoration-color: rgba(255,255,255,0.35); }
+  .tc-title a:hover { text-decoration-color: rgba(255,255,255,0.7); opacity: 1; }
 
-        /* How it works */
-        .how-section { max-width: 520px; font-size: 1.15rem; line-height: 1.7; color: var(--gray); }
-        .how-section p { margin-bottom: 1rem; }
-        .how-section p:first-child { color: var(--black); font-style: italic; font-size: 1.3rem; line-height: 1.55; }
+  .tc-body { font-size: 1rem; line-height: 1.8; color: rgba(255,254,248,0.7); max-width: 580px; }
+  .tc-body p { margin-bottom: 1rem; }
 
-        /* TC section */
-        .tc-section { background: var(--tc-bg); color: var(--cream); position: relative; overflow: hidden; }
-        .tc-section::before {
-            content: ''; position: absolute; top: 0; right: 0; width: 40%; height: 100%;
-            background: radial-gradient(ellipse at 80% 50%, rgba(90,112,72,0.15) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .tc-section .section-label { color: rgba(255,255,255,0.35); }
+  /* Accommodation */
+  .moss-section { background: var(--moss); color: var(--cream); }
+  .moss-section .section-label { color: rgba(255,255,255,0.4); }
 
-        .tc-content { max-width: 680px; position: relative; z-index: 1; }
-        .tc-title { font-size: 1.8rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.35; max-width: 620px; }
-        .tc-title .struck { text-decoration: line-through; opacity: 0.4; font-style: italic; }
-        .tc-title a { color: var(--cream); text-decoration-color: rgba(255,255,255,0.35); }
-        .tc-title a:hover { text-decoration-color: rgba(255,255,255,0.7); opacity: 1; }
+  .rooms-grid { display: flex; gap: 0; max-width: 550px; }
+  .room-box { flex: 1; padding: 2rem; border: 1.5px solid rgba(255,254,248,0.5); }
+  .room-box:first-child { border-right: none; }
+  .room-type { font-size: 1.4rem; margin-bottom: 1rem; }
+  .room-price { font-size: 0.9rem; line-height: 1.8; opacity: 0.75; }
+  .rooms-note { margin-top: 2rem; font-size: 0.9rem; opacity: 0.6; padding: 1rem; border: 1px dashed rgba(255,255,255,0.25); max-width: 380px; line-height: 1.7; }
+  .rooms-link { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; border: 1.5px solid rgba(255,254,248,0.5); color: var(--cream); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: all 0.2s; }
+  .rooms-link:hover { background: var(--cream); color: var(--moss); opacity: 1; }
 
-        .tc-body { font-size: 1rem; line-height: 1.8; color: rgba(255,254,248,0.7); max-width: 580px; }
-        .tc-body p { margin-bottom: 1rem; }
+  /* Facilities */
+  .facilities-list { columns: 2; column-gap: 3rem; max-width: 500px; font-size: 1rem; list-style: none; }
+  .facilities-list li { margin-bottom: 0.5rem; break-inside: avoid; padding-left: 1.5rem; position: relative; color: var(--gray); }
+  .facilities-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--gray-light); }
 
-        /* Accommodation */
-        .moss-section { background: var(--moss); color: var(--cream); }
-        .moss-section .section-label { color: rgba(255,255,255,0.4); }
+  /* Gallery */
+  .gallery-section { padding: 0; border-top: 1px solid rgba(26,26,26,0.12); }
+  .gallery-row { display: flex; border-bottom: 1px solid rgba(26,26,26,0.12); }
+  .gallery-item { flex: 1; aspect-ratio: 4/3; overflow: hidden; border-right: 1px solid rgba(26,26,26,0.12); }
+  .gallery-item:last-child { border-right: none; }
+  .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+  .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.03); }
 
-        .rooms-grid { display: flex; gap: 0; max-width: 550px; }
-        .room-box { flex: 1; padding: 2rem; border: 1.5px solid rgba(255,254,248,0.5); }
-        .room-box:first-child { border-right: none; }
-        .room-type { font-size: 1.4rem; margin-bottom: 1rem; }
-        .room-price { font-size: 0.9rem; line-height: 1.8; opacity: 0.75; }
-        .rooms-note { margin-top: 2rem; font-size: 0.9rem; opacity: 0.6; padding: 1rem; border: 1px dashed rgba(255,255,255,0.25); max-width: 380px; line-height: 1.7; }
-        .rooms-link { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; border: 1.5px solid rgba(255,254,248,0.5); color: var(--cream); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; transition: all 0.2s; }
-        .rooms-link:hover { background: var(--cream); color: var(--moss); opacity: 1; }
+  @media (max-width: 768px) {
+    .gallery-row { flex-wrap: wrap; }
+    .gallery-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid rgba(26,26,26,0.12); }
+    .gallery-item:nth-child(odd) { border-right: 1px solid rgba(26,26,26,0.12); }
+  }
 
-        /* Facilities */
-        .facilities-list { columns: 2; column-gap: 3rem; max-width: 500px; font-size: 1rem; list-style: none; }
-        .facilities-list li { margin-bottom: 0.5rem; break-inside: avoid; padding-left: 1.5rem; position: relative; color: var(--gray); }
-        .facilities-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--gray-light); }
+  /* Apply */
+  .apply-section {
+    background: var(--bg); color: var(--black); padding: 5rem 2rem;
+  }
+  .apply-section .section-label { color: var(--gray-light); }
 
-        /* Gallery */
-        .gallery-section { padding: 0; border-top: 1px solid rgba(26,26,26,0.12); }
-        .gallery-row { display: flex; border-bottom: 1px solid rgba(26,26,26,0.12); }
-        .gallery-item { flex: 1; aspect-ratio: 4/3; overflow: hidden; border-right: 1px solid rgba(26,26,26,0.12); }
-        .gallery-item:last-child { border-right: none; }
-        .gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
-        .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.03); }
+  .struck { text-decoration: line-through; opacity: 0.4; }
 
-        @media (max-width: 768px) {
-            .gallery-row { flex-wrap: wrap; }
-            .gallery-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid rgba(26,26,26,0.12); }
-            .gallery-item:nth-child(odd) { border-right: 1px solid rgba(26,26,26,0.12); }
-        }
+  /* Footer overrides */
+  footer {
+    font-family: 'Space Mono', monospace;
+    border-top: 1px solid rgba(26,26,26,0.12);
+  }
 
-        /* Apply */
-        .apply-section {
-            background: var(--black); color: var(--bg); min-height: 65vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
-        }
-        .apply-section .section-label { color: var(--gray); }
-        .apply-title { font-size: 4.5rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em; }
-        .apply-desc { font-size: 1rem; color: var(--gray); max-width: 350px; margin-bottom: 2.5rem; line-height: 1.7; }
-        .apply-cta {
-            display: inline-block; padding: 1rem 2rem; border: 1px solid rgba(244,243,238,0.5);
-            color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace;
-            font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s;
-        }
-        .apply-cta:hover { background: var(--bg); color: var(--black); opacity: 1; }
-        .apply-contact { margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray); }
-        .apply-contact a { color: var(--gray); }
-        .apply-contact a:hover { color: var(--bg); background: none; text-decoration: underline; }
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.8rem; }
+    .intro-lead { font-size: 1.25rem; }
+    .rooms-grid { flex-direction: column; }
+    .room-box:first-child { border-right: 1.5px solid rgba(255,254,248,0.5); border-bottom: none; }
+    .facilities-list { columns: 1; }
+    .tc-title { font-size: 1.4rem; }
+  }
+custom_js: |
+  // Handle conditional questions visibility
+  const visitedRadios = document.querySelectorAll('input[name="visited"]');
+  const questionsDiv = document.getElementById('new-visitor-questions');
 
-        .struck { text-decoration: line-through; opacity: 0.4; }
+  visitedRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'no') {
+        questionsDiv.style.display = 'block';
+      } else {
+        questionsDiv.style.display = 'none';
+      }
+    });
+  });
 
-        footer {
-            padding: 1.25rem 2rem; font-family: 'Space Mono', monospace; font-size: 11px;
-            color: var(--gray-light); display: flex; justify-content: space-between;
-            border-top: 1px solid rgba(26,26,26,0.12);
-        }
+  // Handle form submission to pass data to apply.html
+  const form = document.getElementById('apply-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        if (value) params.append(key, value);
+      }
+      window.location.href = 'apply.html?' + params.toString();
+    });
+  }
+---
 
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.8rem; }
-            .intro-lead { font-size: 1.25rem; }
-            .rooms-grid { flex-direction: column; }
-            .room-box:first-child { border-right: 1.5px solid rgba(255,254,248,0.5); border-bottom: none; }
-            .facilities-list { columns: 1; }
-            .apply-title { font-size: 3rem; }
-            .tc-title { font-size: 1.4rem; }
-            footer { flex-direction: column; gap: 0.5rem; }
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="index.html" class="nav-logo">
-            <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/>
-                <path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/>
-                <path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
-            <span>fools' valley</span>
-        </a>
-        <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-        <div class="nav-links">
-            <a href="residencies.html">residencies</a>
-            <a href="events.html">events</a>
-            <a href="saturdays.html">open saturdays</a>
-            <a href="research.html">research</a>
-            <a href="rooms.html">rooms</a>
-            <a href="venue.html">venue</a>
-        </div>
-    </nav>
+<section class="hero">
+    <div class="hero-illustration">
+        <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M 68 48 Q 66 62, 68 75 Q 66 88, 68 100" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 66 100 Q 55 115, 42 135" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 70 98 Q 82 110, 95 118" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 66 72 Q 52 68, 38 72" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 70 70 Q 82 62, 92 52" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 92 52 Q 98 42, 105 28" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M 100 30 Q 105 22, 112 24 Q 120 28, 118 38 Q 114 46, 105 44 Q 98 40, 100 30" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M 10 138 Q 30 136, 50 140" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+    </div>
 
-    <section class="hero">
-        <div class="hero-illustration">
-            <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 52 28 Q 55 18, 65 16 Q 78 15, 82 26 Q 85 38, 75 45 Q 62 50, 54 42 Q 48 35, 52 28" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <path d="M 68 48 Q 66 62, 68 75 Q 66 88, 68 100" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 66 100 Q 55 115, 42 135" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 70 98 Q 82 110, 95 118" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 66 72 Q 52 68, 38 72" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 70 70 Q 82 62, 92 52" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 92 52 Q 98 42, 105 28" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M 100 30 Q 105 22, 112 24 Q 120 28, 118 38 Q 114 46, 105 44 Q 98 40, 100 30" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <path d="M 10 138 Q 30 136, 50 140" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5"/>
-            </svg>
+    <div class="float float-1">30 min north of lisbon</div>
+    <div class="float float-2">est. 2024 (or was it always here?)</div>
+    <div class="float float-3">?</div>
+
+    <div class="hero-content">
+        <h1 class="hero-title"><span class="glitch" data-text="residencies">residencies</span></h1>
+        <div class="hero-year">2026</div>
+
+        <p class="intro-lead">
+            for those ready to become a fool — to sacrifice the intellect to the Unknown. not just the passive sacrifice of an empty mind, but the active sacrifice of setting out on the fool's journey of openness and curiosity.
+        </p>
+
+        <div class="intro-body">
+            <p>a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.</p>
         </div>
 
-        <div class="float float-1">30 min north of lisbon</div>
-        <div class="float float-2">est. 2024 (or was it always here?)</div>
-        <div class="float float-3">?</div>
+        <p class="intro-who">
+            writers who need to finish the thing. renegade scientists. artists developing something they can't yet name. researchers of consciousness — human and machine. builders of futures they'd actually want to live in.
+        </p>
+        <a href="#apply">apply</a>
+    </div>
+</section>
 
-        <div class="hero-content">
-            <h1 class="hero-title"><span class="glitch" data-text="residencies">residencies</span></h1>
-            <div class="hero-year">2026</div>
+<section class="gallery-section">
+    <div class="gallery-row">
+        <div class="gallery-item"><img src="assets/dancing.webp" alt="Dancing"></div>
+        <div class="gallery-item"><img src="assets/danceparty.webp" alt="Dance party"></div>
+        <div class="gallery-item"><img src="assets/permaculture-group.webp" alt="Community"></div>
+    </div>
+</section>
 
-            <p class="intro-lead">
-                for those ready to become a fool — to sacrifice the intellect to the Unknown. not just the passive sacrifice of an empty mind, but the active sacrifice of setting out on the fool's journey of openness and curiosity.
-            </p>
+<section id="how-it-works">
+    <div class="section-label">002 / how it works</div>
+    <div class="how-section">
+        <p>schedule is co-created. we encourage everyone to host practices, workshops, salons — on what you know and what you don't know about.</p>
+        <p>three meals a day by our chef, with 1-3 cooking and cleaning shifts by the residents. arrival day is monday. minimum stay: 2 weeks.</p>
+        <p>€20/day for food and bills. private rooms from €150-525/week (less if monthly), dorms from €70/week. <a href="rooms.html">room options →</a></p>
+    </div>
+</section>
 
-            <div class="intro-body">
-                <p>a sanctuary for creative weirdos. a place where nothing and everything can be sacred. every idea <span class="struck">within reason</span> (yes) is up for serious discussion or a good joke.</p>
+<section class="tc-section" id="tc">
+    <div class="section-label">003 / transformational connection</div>
+    <div class="tc-content">
+        <div class="tc-body">
+            <p>for those interested in getting meditation, embodiment, and relational practice out of retreat spaces and into a co-created co-living environment.</p>
+        </div>
+        <h2 class="tc-title">
+            five professionally facilitated <span class="struck">circling</span> <a href="https://www.transformationalconnection.com/what-is-transformational-connection">transformational connection</a> sessions a week at transformational connection hub and at the dancehall.
+        </h2>
+        <div class="tc-body">
+            <p>everyone in the valley is welcome to join. for those coming primarily for transformational connection who expect to join most sessions and are interested to practice throughout the day, you can choose to stay in the transformational connection hub.</p>
+        </div>
+    </div>
+</section>
+
+<section id="facilities">
+    <div class="section-label">004 / facilities</div>
+    <ul class="facilities-list">
+        <li>200sqm dancehall (vinyl floor)</li>
+        <li>1000sqm warehouse</li>
+        <li>meditation room</li>
+        <li>gym + weights</li>
+        <li>swimming lake</li>
+        <li>wood-burning sauna</li>
+        <li>fast wifi</li>
+    </ul>
+</section>
+
+<section class="gallery-section">
+    <div class="gallery-row">
+        <div class="gallery-item"><img src="assets/land-view.webp" alt="Land view"></div>
+        <div class="gallery-item"><img src="assets/Copy of photo_2024-07-18_14-11-12 (2).webp" alt="Fools Valley"></div>
+        <div class="gallery-item"><img src="assets/coworking.webp" alt="Coworking space"></div>
+    </div>
+</section>
+
+<section class="apply-section" id="apply">
+    <div style="max-width: 720px; margin: 0 auto;">
+        <div class="section-label">005 / apply</div>
+        <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
+        <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.</p>
+
+        <form id="apply-form" action="apply.html" method="get">
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
+                <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
             </div>
 
-            <p class="intro-who">
-                writers who need to finish the thing. renegade scientists. artists developing something they can't yet name. researchers of consciousness — human and machine. builders of futures they'd actually want to live in.
-            </p>
-            <a href="#apply">apply</a>
-        </div>
-    </section>
-
-    <section class="gallery-section">
-        <div class="gallery-row">
-            <div class="gallery-item"><img src="assets/dancing.webp" alt="Dancing"></div>
-            <div class="gallery-item"><img src="assets/danceparty.webp" alt="Dance party"></div>
-            <div class="gallery-item"><img src="assets/permaculture-group.webp" alt="Community"></div>
-        </div>
-    </section>
-
-    <section id="how-it-works">
-        <div class="section-label">002 / how it works</div>
-        <div class="how-section">
-            <p>schedule is co-created. we encourage everyone to host practices, workshops, salons — on what you know and what you don't know about.</p>
-            <p>three meals a day by our chef, with 1-3 cooking and cleaning shifts by the residents. arrival day is monday. minimum stay: 2 weeks.</p>
-            <p>€20/day for food and bills. private rooms from €150-525/week (less if monthly), dorms from €70/week. <a href="rooms.html">room options →</a></p>
-        </div>
-    </section>
-
-    <section class="tc-section" id="tc">
-        <div class="section-label">003 / transformational connection</div>
-        <div class="tc-content">
-            <div class="tc-body">
-                <p>for those interested in getting meditation, embodiment, and relational practice out of retreat spaces and into a co-created co-living environment.</p>
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
+                <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
             </div>
-            <h2 class="tc-title">
-                five professionally facilitated <span class="struck">circling</span> <a href="https://www.transformationalconnection.com/what-is-transformational-connection">transformational connection</a> sessions a week at transformational connection hub and at the dancehall.
-            </h2>
-            <div class="tc-body">
-                <p>everyone in the valley is welcome to join. for those coming primarily for transformational connection who expect to join most sessions and are interested to practice throughout the day, you can choose to stay in the transformational connection hub.</p>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
+                <div style="display: flex; gap: 1.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="visited" value="yes" style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">yes</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="visited" value="no" checked style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">no</span>
+                    </label>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <section id="facilities">
-        <div class="section-label">004 / facilities</div>
-        <ul class="facilities-list">
-            <li>200sqm dancehall (vinyl floor)</li>
-            <li>1000sqm warehouse</li>
-            <li>meditation room</li>
-            <li>gym + weights</li>
-            <li>swimming lake</li>
-            <li>wood-burning sauna</li>
-            <li>fast wifi</li>
-        </ul>
-    </section>
-
-    <section class="gallery-section">
-        <div class="gallery-row">
-            <div class="gallery-item"><img src="assets/land-view.webp" alt="Land view"></div>
-            <div class="gallery-item"><img src="assets/Copy of photo_2024-07-18_14-11-12 (2).webp" alt="Fools Valley"></div>
-            <div class="gallery-item"><img src="assets/coworking.webp" alt="Coworking space"></div>
-        </div>
-    </section>
-
-    <section class="apply-section" id="apply" style="background: var(--bg); color: var(--black); padding: 5rem 2rem;">
-        <div style="max-width: 720px; margin: 0 auto;">
-            <div class="section-label" style="color: var(--gray-light);">005 / apply</div>
-            <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
-            <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.</p>
-
-            <form id="apply-form" action="apply.html" method="get">
+            <!-- Questions only for new visitors -->
+            <div id="new-visitor-questions">
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
-                    <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
+                    <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
+                    <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
                 </div>
 
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
-                    <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
+                    <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
                 </div>
 
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
-                    <div style="display: flex; gap: 1.5rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="radio" name="visited" value="yes" style="accent-color: var(--black);" />
-                            <span style="font-size: 0.95rem;">yes</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="radio" name="visited" value="no" checked style="accent-color: var(--black);" />
-                            <span style="font-size: 0.95rem;">no</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Questions only for new visitors -->
-                <div id="new-visitor-questions">
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
-                        <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
-                        <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                    </div>
-
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
-                        <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                    </div>
-
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
-                        <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
-                    </div>
-
-                    <div style="margin-bottom: 2rem;">
-                        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
-                        <textarea name="ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                    </div>
-                </div>
-
-                <!-- Questions for everyone (including returning visitors) -->
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
-                    <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
+                    <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
                 </div>
 
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
-                    <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
-                    <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
+                    <textarea name="ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
                 </div>
+            </div>
 
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
-                    <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-                        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
-                            <input type="radio" name="tc" value="tc-primary" required style="margin-top: 0.25rem;" />
-                            <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
-                        </label>
-                        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
-                            <input type="radio" name="tc" value="tc-no" style="margin-top: 0.25rem;" />
-                            <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
-                        </label>
-                    </div>
+            <!-- Questions for everyone (including returning visitors) -->
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
+                <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
+                <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
+                <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
+                <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                        <input type="radio" name="tc" value="tc-primary" required style="margin-top: 0.25rem;" />
+                        <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
+                    </label>
+                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                        <input type="radio" name="tc" value="tc-no" style="margin-top: 0.25rem;" />
+                        <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
+                    </label>
                 </div>
+            </div>
 
-                <div style="margin-bottom: 3rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
-                    <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                </div>
+            <div style="margin-bottom: 3rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
+                <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
 
-                <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
+            <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
 
-                <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <span>fools' valley</span>
-        <span>30 min north of lisbon</span>
-        <span>you're not sure if it's broken or genius</span>
-    </footer>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    (function() {
-        const toggle = document.querySelector('.nav-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        toggle.addEventListener('click', function() {
-            this.classList.toggle('open');
-            navLinks.classList.toggle('open');
-        });
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                toggle.classList.remove('open');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        // Handle conditional questions visibility
-        const visitedRadios = document.querySelectorAll('input[name="visited"]');
-        const questionsDiv = document.getElementById('new-visitor-questions');
-
-        visitedRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'no') {
-                    questionsDiv.style.display = 'block';
-                } else {
-                    questionsDiv.style.display = 'none';
-                }
-            });
-        });
-
-        // Handle form submission to pass data to apply.html
-        const form = document.getElementById('apply-form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const params = new URLSearchParams();
-                for (const [key, value] of formData.entries()) {
-                    if (value) params.append(key, value);
-                }
-                window.location.href = 'apply.html?' + params.toString();
-            });
-        }
-    })();
-    </script>
-</body>
-</html>
+            <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
+        </form>
+    </div>
+</section>
