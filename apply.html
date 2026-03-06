@@ -965,6 +965,10 @@ async function fetchAvailability() {
 
     const data = await resp.json();
 
+    // Debug logging
+    console.log('API Response:', data);
+    console.log('Rooms received:', data.rooms);
+
     if (data.error) {
       showFallback(container, "We couldn't check room availability right now: " + data.error);
       return;
@@ -1004,6 +1008,12 @@ function renderRooms() {
   container.innerHTML = '';
 
   const isTCPrimary = formData.tc === 'tc-primary';
+
+  // Debug logging
+  console.log('Rendering rooms. Total available:', availableRooms.length);
+  if (availableRooms.length > 0) {
+    console.log('First room structure:', availableRooms[0]);
+  }
 
   // Group by building
   const buildings = {};
