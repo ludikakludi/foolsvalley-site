@@ -1051,11 +1051,10 @@ function renderRooms() {
 
       const info = document.createElement('div');
       info.className = 'room-card-info';
-      // Clean display text
+      // Clean display text - strip dorm bed/van spot counts
       var displayName = room.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
-      var displayDesc = room.desc.replace(/\s*5 min walk from main property\.?/g, '').trim();
-      if (displayDesc.endsWith('.')) displayDesc = displayDesc;
-      else if (displayDesc.length > 0 && !displayDesc.endsWith('.')) displayDesc += '';
+      // Description comes cleaned from the API - display as-is
+      var displayDesc = room.desc;
 
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
@@ -1230,7 +1229,9 @@ function buildPriceTable(container, rooms) {
     if (!buildings[b] || buildings[b].length === 0) return;
     html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + '</td></tr>';
     buildings[b].forEach(function(r) {
-      html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + r.name + '</td>';
+      // Strip dorm bed/van spot counts from room names in price table
+      var cleanName = r.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
+      html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + cleanName + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.daily + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.weekly + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.monthly + '</td></tr>';
