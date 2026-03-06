@@ -833,6 +833,19 @@ function renderCalendar() {
 }
 
 function selectArrival(date) {
+  // If clicking the same arrival date, unselect it
+  if (arrivalDate && date.getTime() === arrivalDate.getTime()) {
+    arrivalDate = null;
+    departureDate = null;
+    selectedRoom = null;
+    fallbackMode = false;
+    selectingWhat = 'arrival';
+    document.getElementById('date-mode').textContent = 'select your arrival Monday';
+    document.getElementById('date-summary').style.display = 'none';
+    renderCalendar();
+    return;
+  }
+
   arrivalDate = date;
   departureDate = null;
   selectedRoom = null;
@@ -850,6 +863,24 @@ function selectArrival(date) {
 }
 
 function selectDeparture(date) {
+  // If clicking the same departure date, unselect it
+  if (departureDate && date.getTime() === departureDate.getTime()) {
+    departureDate = null;
+    selectedRoom = null;
+    selectingWhat = 'departure';
+    const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
+    document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
+    document.getElementById('departure-display').textContent = '—';
+    document.getElementById('duration-display').textContent = '—';
+
+    // Hide rooms and review sections
+    document.getElementById('rooms-section').style.display = 'none';
+    document.getElementById('review-section').style.display = 'none';
+
+    renderCalendar();
+    return;
+  }
+
   departureDate = date;
   selectingWhat = 'done';
   const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
