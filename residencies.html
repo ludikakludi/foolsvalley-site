@@ -170,33 +170,7 @@ custom_css: |
     .tc-title { font-size: 1.4rem; }
   }
 custom_js: |
-  // Handle conditional questions visibility
-  const visitedRadios = document.querySelectorAll('input[name="visited"]');
-  const questionsDiv = document.getElementById('new-visitor-questions');
-
-  visitedRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      if (this.value === 'no') {
-        questionsDiv.style.display = 'block';
-      } else {
-        questionsDiv.style.display = 'none';
-      }
-    });
-  });
-
-  // Handle form submission to pass data to apply.html
-  const form = document.getElementById('apply-form');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const params = new URLSearchParams();
-      for (const [key, value] of formData.entries()) {
-        if (value) params.append(key, value);
-      }
-      window.location.href = 'apply.html?' + params.toString();
-    });
-  }
+  // No custom JS needed for residencies page
 ---
 
 <section class="hero">
@@ -292,94 +266,13 @@ custom_js: |
 </section>
 
 <section class="apply-section" id="apply">
-    <div style="max-width: 720px; margin: 0 auto;">
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
         <div class="section-label">005 / apply</div>
-        <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
-        <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some <span class="struck">weird</span> fun ones.</p>
+        <h2 style="font-family: 'EB Garamond', serif; font-size: 3.5rem; font-weight: 400; margin-bottom: 1.5rem; letter-spacing: -0.02em;">ready to apply?</h2>
+        <p style="font-size: 1rem; color: var(--gray); margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some fun ones.</p>
 
-        <form id="apply-form" action="apply.html" method="get">
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
-                <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
-            </div>
+        <a href="apply.html" style="display: inline-block; padding: 1rem 2.5rem; border: 1.5px solid var(--moss); background: var(--moss); color: var(--cream); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; border-radius: 4px;">start application →</a>
 
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
-                <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
-            </div>
-
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
-                <div style="display: flex; gap: 1.5rem;">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="radio" name="visited" value="yes" style="accent-color: var(--black);" />
-                        <span style="font-size: 0.95rem;">yes</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="radio" name="visited" value="no" checked style="accent-color: var(--black);" />
-                        <span style="font-size: 0.95rem;">no</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Questions only for new visitors -->
-            <div id="new-visitor-questions">
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
-                    <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
-                    <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                </div>
-
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
-                    <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                </div>
-
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
-                    <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
-                </div>
-
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
-                    <textarea name="ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-                </div>
-            </div>
-
-            <!-- Questions for everyone (including returning visitors) -->
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
-                <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-            </div>
-
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
-                <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
-                <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-            </div>
-
-            <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
-                <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
-                        <input type="radio" name="tc" value="tc-primary" required style="margin-top: 0.25rem;" />
-                        <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
-                    </label>
-                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
-                        <input type="radio" name="tc" value="tc-no" style="margin-top: 0.25rem;" />
-                        <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
-                    </label>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 3rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
-                <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
-            </div>
-
-            <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
-
-            <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
-        </form>
+        <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions? → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray); text-decoration: underline;">slowreply@foolsvalley.com</a></p>
     </div>
 </section>

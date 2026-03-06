@@ -533,17 +533,107 @@ footer a { color: var(--text); }
 
 <main>
   <div style="margin-bottom: 2rem;">
-    <a href="residencies.html#apply" style="font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--text-light); text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
+    <a href="residencies.html" style="font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--text-light); text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
       ← back to residencies
     </a>
   </div>
 
-  <h1>apply</h1>
-  <p class="subtitle"></p>
+  <h1>apply for residency</h1>
+  <p class="subtitle">we curate each month's group. tell us about yourself and what brings you here.</p>
+
+  <!-- FORM SECTION -->
+  <div class="section" id="form-section">
+    <div class="step-label">001 / who</div>
+    <h2>who are you & what are you up to?</h2>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
+      <input type="text" id="form-name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6;" />
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
+      <input type="email" id="form-email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6;" />
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
+      <div style="display: flex; gap: 1.5rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="radio" name="visited" value="yes" style="accent-color: var(--moss);" />
+          <span style="font-size: 0.95rem;">yes</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="radio" name="visited" value="no" checked style="accent-color: var(--moss);" />
+          <span style="font-size: 0.95rem;">no</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Questions only for new visitors -->
+    <div id="new-visitor-questions">
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
+        <div style="font-size: 0.85rem; color: var(--text-light); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
+        <textarea id="form-quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
+        <textarea id="form-past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
+        <input type="text" id="form-reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6;" />
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
+        <textarea id="form-ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+      </div>
+    </div>
+
+    <!-- Questions for everyone (including returning visitors) -->
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
+      <textarea id="form-use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
+      <div style="font-size: 0.85rem; color: var(--text-light); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
+      <textarea id="form-contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: var(--card-bg); transition: all 0.2s;">
+          <input type="radio" name="tc" value="tc-primary" id="tc-primary" required style="margin-top: 0.25rem;" />
+          <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
+        </label>
+        <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: var(--card-bg); transition: all 0.2s;">
+          <input type="radio" name="tc" value="tc-no" id="tc-no" style="margin-top: 0.25rem;" />
+          <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
+      <textarea id="form-questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); line-height: 1.6; resize: vertical;"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" onclick="proceedToDates()">continue to dates →</button>
+    </div>
+  </div>
 
   <!-- DATES SECTION -->
-  <div class="section">
-    <div class="step-label">001 / when</div>
+  <div class="section" id="dates-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">002 / when</div>
     <h2>when would you like to come?</h2>
 
     <p style="margin-bottom:0.3rem; color: var(--text-light);">
@@ -580,7 +670,7 @@ footer a { color: var(--text); }
 
   <!-- ROOMS SECTION -->
   <div class="section" id="rooms-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
-    <div class="step-label">002 / where</div>
+    <div class="step-label">003 / where</div>
     <h2>choose your room</h2>
     <p style="margin-bottom:0.5rem; color: var(--text-light);">
       showing rooms available for your full stay. the price per day depends on the length of stay (monthly prices are cheaper, <a href="#" onclick="showPriceList(event)" style="color:var(--text); text-decoration:underline;">full price list</a>).
@@ -607,7 +697,7 @@ footer a { color: var(--text); }
 
   <!-- REVIEW SECTION -->
   <div class="section" id="review-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
-    <div class="step-label">003 / review</div>
+    <div class="step-label">004 / review</div>
     <h2>review & submit</h2>
 
     <div class="review-section">
@@ -674,21 +764,63 @@ if (new Date().getDate() > 15) {
   if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
 }
 
-// Parse URL parameters from residencies.html
-const urlParams = new URLSearchParams(window.location.search);
-formData = {
-  name: urlParams.get('name') || '',
-  email: urlParams.get('email') || '',
-  visited: urlParams.get('visited') || '',
-  quest: urlParams.get('quest') || '',
-  pastQuests: urlParams.get('past-quests') || '',
-  reference: urlParams.get('reference') || '',
-  useTime: urlParams.get('use-time') || '',
-  contribute: urlParams.get('contribute') || '',
-  idealDay: urlParams.get('ideal-day') || '',
-  tc: urlParams.get('tc') || '',
-  questions: urlParams.get('questions') || ''
-};
+// ============================================================
+// FORM HANDLING
+// ============================================================
+// Handle conditional questions visibility
+document.addEventListener('DOMContentLoaded', function() {
+  const visitedRadios = document.querySelectorAll('input[name="visited"]');
+  const questionsDiv = document.getElementById('new-visitor-questions');
+
+  visitedRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'no') {
+        questionsDiv.style.display = 'block';
+      } else {
+        questionsDiv.style.display = 'none';
+      }
+    });
+  });
+});
+
+function proceedToDates() {
+  // Validate email is filled
+  const email = document.getElementById('form-email').value.trim();
+  if (!email) {
+    alert('Please enter your email address');
+    return;
+  }
+
+  // Validate TC question is answered
+  const tcRadios = document.querySelectorAll('input[name="tc"]');
+  const tcSelected = Array.from(tcRadios).some(radio => radio.checked);
+  if (!tcSelected) {
+    alert('Please answer whether you\'re interested in practicing transformational connection');
+    return;
+  }
+
+  // Collect form data
+  formData = {
+    name: document.getElementById('form-name').value.trim(),
+    email: email,
+    visited: document.querySelector('input[name="visited"]:checked')?.value || 'no',
+    quest: document.getElementById('form-quest').value.trim(),
+    pastQuests: document.getElementById('form-past-quests').value.trim(),
+    reference: document.getElementById('form-reference').value.trim(),
+    useTime: document.getElementById('form-use-time').value.trim(),
+    contribute: document.getElementById('form-contribute').value.trim(),
+    idealDay: document.getElementById('form-ideal-day').value.trim(),
+    tc: document.querySelector('input[name="tc"]:checked')?.value || '',
+    questions: document.getElementById('form-questions').value.trim()
+  };
+
+  // Show dates section and scroll to it
+  const datesSection = document.getElementById('dates-section');
+  datesSection.style.display = 'block';
+  setTimeout(() => {
+    datesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
 
 
 // ============================================================
