@@ -816,15 +816,25 @@ function renderCalendar() {
         div.classList.add('disabled');
       }
     } else if (selectingWhat === 'departure' || selectingWhat === 'done') {
-      // With shortstay code, allow any duration; otherwise minimum 6 days
-      const minDays = hasShortStayCode ? 1 : 6;
-      const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
-
-      if (date >= minDep) {
+      // Always allow clicking the selected arrival date to unselect it
+      if (arrivalDate && date.getTime() === arrivalDate.getTime()) {
+        div.classList.add('selectable');
+        div.addEventListener('click', () => selectArrival(date));
+      } else if (departureDate && date.getTime() === departureDate.getTime()) {
+        // Allow clicking the selected departure date to unselect it
         div.classList.add('selectable');
         div.addEventListener('click', () => selectDeparture(date));
       } else {
-        div.classList.add('disabled');
+        // With shortstay code, allow any duration; otherwise minimum 6 days
+        const minDays = hasShortStayCode ? 1 : 6;
+        const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
+
+        if (date >= minDep) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectDeparture(date));
+        } else {
+          div.classList.add('disabled');
+        }
       }
     }
 
