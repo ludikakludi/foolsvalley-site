@@ -639,8 +639,8 @@ footer a { color: var(--text); }
     <p style="margin-bottom:0.3rem; color: var(--text-light);">
       <span id="calendar-instruction">move-in is on Mondays. pick your arrival Monday, then your departure day.</span>
     </p>
-    <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic;">
-      <span id="min-duration-text">minimum booking: 2 weeks. if you'd like to come for a shorter amount of time, let us know and we see if it's possible.</span>
+    <p id="min-duration-container" style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic; display:none;">
+      <span id="min-duration-text">minimum recommended stay if you're coming for the first time: 2 weeks.</span>
     </p>
 
     <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
@@ -814,6 +814,14 @@ function proceedToDates() {
     questions: document.getElementById('form-questions').value.trim()
   };
 
+  // Show minimum duration text only for new visitors
+  const minDurationContainer = document.getElementById('min-duration-container');
+  if (formData.visited === 'no') {
+    minDurationContainer.style.display = 'block';
+  } else {
+    minDurationContainer.style.display = 'none';
+  }
+
   // Show dates section and scroll to it
   const datesSection = document.getElementById('dates-section');
   datesSection.style.display = 'block';
@@ -933,8 +941,8 @@ function renderCalendar() {
         div.classList.add('disabled');
       }
     } else if (selectingWhat === 'departure' || selectingWhat === 'done') {
-      // With shortstay code, allow any duration; otherwise minimum 13 days
-      const minDays = hasShortStayCode ? 1 : 13;
+      // With shortstay code, allow any duration; otherwise minimum 6 days
+      const minDays = hasShortStayCode ? 1 : 6;
       const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
 
       if (date >= minDep) {
@@ -1325,6 +1333,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
   const message = document.getElementById('codeword-message');
   const instructionText = document.getElementById('calendar-instruction');
   const minDurationText = document.getElementById('min-duration-text');
+  const minDurationContainer = document.getElementById('min-duration-container');
 
   if (code === 'shortstay') {
     hasShortStayCode = true;
@@ -1334,6 +1343,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
 
     // Update instructions
     instructionText.textContent = 'pick your arrival day, then your departure day.';
+    minDurationContainer.style.display = 'block';
     minDurationText.textContent = 'flexible booking enabled.';
 
     renderCalendar(); // Re-render calendar with flexible rules
@@ -1345,7 +1355,12 @@ document.getElementById('codeword-input').addEventListener('input', function() {
 
     // Restore normal instructions
     instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
-    minDurationText.textContent = 'minimum booking: 2 weeks. if you\'d like to come for a shorter amount of time, let us know and we see if it\'s possible.';
+    if (formData.visited === 'no') {
+      minDurationContainer.style.display = 'block';
+      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
+    } else {
+      minDurationContainer.style.display = 'none';
+    }
 
     renderCalendar(); // Re-render with normal rules
   } else {
@@ -1354,7 +1369,12 @@ document.getElementById('codeword-input').addEventListener('input', function() {
 
     // Restore normal instructions
     instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
-    minDurationText.textContent = 'minimum booking: 2 weeks. if you\'d like to come for a shorter amount of time, let us know and we see if it\'s possible.';
+    if (formData.visited === 'no') {
+      minDurationContainer.style.display = 'block';
+      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
+    } else {
+      minDurationContainer.style.display = 'none';
+    }
 
     renderCalendar(); // Re-render with normal rules
   }
