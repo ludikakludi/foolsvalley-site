@@ -133,6 +133,113 @@ custom_css: |
   .facilities-list li { margin-bottom: 0.5rem; break-inside: avoid; padding-left: 1.5rem; position: relative; color: var(--gray); }
   .facilities-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--gray-light); }
 
+  /* Calendar */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .calendar-month {
+    border: 1px solid rgba(26,26,26,0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+
+  .calendar-month:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .month-name {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    padding: 1.2rem 1.5rem;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(26,26,26,0.15);
+  }
+
+  .month-status {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    min-height: 120px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+  }
+
+  .status-badge.open {
+    background: rgba(74, 93, 58, 0.15);
+    color: var(--moss);
+    border: 1px solid rgba(74, 93, 58, 0.3);
+  }
+
+  .status-badge.closed {
+    background: rgba(122, 122, 114, 0.15);
+    color: var(--gray);
+    border: 1px solid rgba(122, 122, 114, 0.3);
+  }
+
+  .status-badge.maybe {
+    background: rgba(139, 74, 43, 0.15);
+    color: #8b4a2b;
+    border: 1px solid rgba(139, 74, 43, 0.3);
+  }
+
+  .status-item {
+    margin-bottom: 0.5rem;
+    color: var(--gray);
+  }
+
+  .status-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .status-item strong {
+    color: var(--black);
+    font-weight: 500;
+  }
+
+  .calendar-link {
+    color: var(--moss);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .calendar-link:hover {
+    opacity: 0.7;
+    text-decoration: none;
+  }
+
+  .status-open {
+    background: rgba(74, 93, 58, 0.05);
+  }
+
+  .status-closed {
+    background: rgba(122, 122, 114, 0.05);
+  }
+
+  .status-maybe {
+    background: rgba(139, 74, 43, 0.05);
+  }
+
+  .status-mixed {
+    background: rgba(255, 254, 248, 0.5);
+  }
+
   /* Gallery */
   .gallery-section { padding: 0; border-top: 1px solid rgba(26,26,26,0.12); }
   .gallery-row { display: flex; border-bottom: 1px solid rgba(26,26,26,0.12); }
@@ -168,6 +275,7 @@ custom_css: |
     .room-box:first-child { border-right: 1.5px solid rgba(255,254,248,0.5); border-bottom: none; }
     .facilities-list { columns: 1; }
     .tc-title { font-size: 1.4rem; }
+    .calendar-grid { grid-template-columns: 1fr; }
   }
 custom_js: |
   // No custom JS needed for residencies page
@@ -228,8 +336,128 @@ custom_js: |
     </div>
 </section>
 
+<section id="calendar">
+    <div class="section-label">003 / 2026 calendar</div>
+    <div style="max-width: 900px;">
+        <div class="calendar-grid">
+            <!-- April -->
+            <div class="calendar-month">
+                <div class="month-name">April</div>
+                <div class="month-status status-mixed">
+                    <div class="status-item">
+                        <span class="status-badge open">open</span>
+                    </div>
+                    <div class="status-item">
+                        <a href="https://www.agartha.one/houseofgames" target="_blank" class="calendar-link">agartha residency</a>
+                    </div>
+                    <div class="status-item">
+                        <a href="fools-research-lab.html" class="calendar-link">1-5 fools' research lab</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- May -->
+            <div class="calendar-month">
+                <div class="month-name">May</div>
+                <div class="month-status status-open">
+                    <span class="status-badge open">OPEN!</span>
+                    <div class="status-item">
+                        <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- June -->
+            <div class="calendar-month">
+                <div class="month-name">June</div>
+                <div class="month-status status-open">
+                    <span class="status-badge open">OPEN!</span>
+                    <div class="status-item">
+                        <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- July -->
+            <div class="calendar-month">
+                <div class="month-name">July</div>
+                <div class="month-status status-closed">
+                    <span class="status-badge closed">closed</span>
+                    <div class="status-item">
+                        private residency Dream House
+                    </div>
+                </div>
+            </div>
+
+            <!-- August -->
+            <div class="calendar-month">
+                <div class="month-name">August</div>
+                <div class="month-status status-maybe">
+                    <span class="status-badge maybe">apply if interested</span>
+                    <div class="status-item">
+                        will open if enough interest
+                    </div>
+                </div>
+            </div>
+
+            <!-- September -->
+            <div class="calendar-month">
+                <div class="month-name">September</div>
+                <div class="month-status status-open">
+                    <span class="status-badge open">open</span>
+                    <div class="status-item">
+                        <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- October -->
+            <div class="calendar-month">
+                <div class="month-name">October</div>
+                <div class="month-status status-open">
+                    <span class="status-badge open">open</span>
+                    <div class="status-item">
+                        <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- November -->
+            <div class="calendar-month">
+                <div class="month-name">November</div>
+                <div class="month-status status-closed">
+                    <span class="status-badge closed">closed for residencies</span>
+                    <div class="status-item">
+                        open for events hosting — <a href="mailto:theonlyfool@foolsvalley.com" class="calendar-link">inquire!</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- December -->
+            <div class="calendar-month">
+                <div class="month-name">December</div>
+                <div class="month-status status-closed">
+                    <span class="status-badge closed">closed for residencies</span>
+                    <div class="status-item">
+                        open for events hosting — <a href="mailto:theonlyfool@foolsvalley.com" class="calendar-link">inquire!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2rem; border: 1px solid rgba(26,26,26,0.15); border-radius: 8px; background: rgba(255,254,248,0.3);">
+            <p style="font-size: 1rem; line-height: 1.8; margin-bottom: 1rem;">
+                want to host your own residency or event? would you like to volunteer or part-time volunteer?
+            </p>
+            <p style="font-size: 1rem;">
+                contact us: <a href="mailto:theonlyfool@foolsvalley.com" style="color: var(--moss); font-weight: 500;">theonlyfool@foolsvalley.com</a>
+            </p>
+        </div>
+    </div>
+</section>
+
 <section class="tc-section" id="tc">
-    <div class="section-label">003 / TRANSFORMATIONAL CONNECTION HUB FOOLS' EDITION: MAY, JUNE, SEPTEMBER AND OCTOBER ONLY.</div>
+    <div class="section-label">004 / TRANSFORMATIONAL CONNECTION HUB FOOLS' EDITION: MAY, JUNE, SEPTEMBER AND OCTOBER ONLY.</div>
     <div class="tc-content">
         <div class="tc-body">
             <p>for those interested to bring the practice out of retreat and workshop spaces and into a co-created co-living environment.</p>
@@ -244,7 +472,7 @@ custom_js: |
 </section>
 
 <section id="facilities">
-    <div class="section-label">004 / facilities</div>
+    <div class="section-label">005 / facilities</div>
     <ul class="facilities-list">
         <li>200sqm dancehall (vinyl floor)</li>
         <li>1000sqm warehouse for creative projects</li>
@@ -267,7 +495,7 @@ custom_js: |
 
 <section class="apply-section" id="apply">
     <div style="max-width: 600px; margin: 0 auto; text-align: center;">
-        <div class="section-label">005 / apply</div>
+        <div class="section-label">006 / apply</div>
         <h2 style="font-family: 'EB Garamond', serif; font-size: 3.5rem; font-weight: 400; margin-bottom: 1.5rem; letter-spacing: -0.02em;">ready to apply?</h2>
         <p style="font-size: 1rem; color: var(--gray); margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some fun ones.</p>
 
