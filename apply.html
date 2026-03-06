@@ -629,14 +629,7 @@ footer a { color: var(--text); }
     <div class="review-section" id="rev-pricing-section">
       <h3>pricing</h3>
       <div class="review-row"><span class="label">room</span><span class="value" id="rev-room-price"></span></div>
-      <div class="review-row"><span class="label" id="rev-room-breakdown-label">breakdown</span><span class="value" id="rev-room-breakdown"></span></div>
-      <div class="review-row"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
-      <div class="review-total">
-        <div class="review-row">
-          <span class="label">total</span>
-          <span class="value" id="rev-total"></span>
-        </div>
-      </div>
+      <div class="review-row" style="font-size: 0.85rem; color: var(--text-light);"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
     </div>
 
     <div class="btn-row">
@@ -1010,7 +1003,7 @@ function renderRooms() {
 
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
-        '<div class="room-price">€' + room.totalPrice + ' total<span class="breakdown">room: €' + room.roomPrice + ' (' + room.priceBreakdown + ')<br>+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
+        '<div class="room-price">€' + room.roomPrice + ' <span style="font-weight:400;">(' + room.priceBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
       inner.appendChild(info);
 
       card.appendChild(inner);
@@ -1061,10 +1054,8 @@ function populateReview() {
     var cleanName = selectedRoom.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
     document.getElementById('rev-room').textContent = cleanName + ' \u2014 ' + bldg;
     pricingSection.style.display = 'block';
-    document.getElementById('rev-room-price').textContent = '\u20AC' + selectedRoom.roomPrice;
-    document.getElementById('rev-room-breakdown').textContent = selectedRoom.priceBreakdown;
+    document.getElementById('rev-room-price').innerHTML = '\u20AC' + selectedRoom.roomPrice + ' <span style="font-weight:400; font-size:0.9rem;">(' + selectedRoom.priceBreakdown + ')</span>';
     document.getElementById('rev-daily-fee').textContent = '\u20AC' + selectedRoom.dailyFee;
-    document.getElementById('rev-total').textContent = '\u20AC' + selectedRoom.totalPrice;
   }
 }
 
