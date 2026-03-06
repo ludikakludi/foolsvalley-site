@@ -136,48 +136,58 @@ custom_css: |
   /* Calendar */
   .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid rgba(26,26,26,0.2);
+    border-radius: 4px;
+    overflow: hidden;
   }
 
   .calendar-month {
-    border: 1px solid rgba(26,26,26,0.15);
-    border-radius: 6px;
-    overflow: hidden;
-    transition: all 0.2s ease;
+    border-right: 1px solid rgba(26,26,26,0.15);
+    border-bottom: 1px solid rgba(26,26,26,0.15);
+    transition: background 0.15s ease;
+  }
+
+  .calendar-month:nth-child(3n) {
+    border-right: none;
+  }
+
+  .calendar-month:nth-last-child(-n+3) {
+    border-bottom: none;
   }
 
   .calendar-month:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transform: translateY(-1px);
+    background: rgba(255,254,248,0.5);
   }
 
   .month-name {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    padding: 0.8rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.6rem 0.8rem;
     background: var(--cream);
     border-bottom: 1px solid rgba(26,26,26,0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .month-status {
-    padding: 1rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    min-height: 90px;
+    padding: 0.8rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 
   .status-badge {
     display: inline-block;
-    padding: 0.25rem 0.6rem;
+    padding: 0.2rem 0.5rem;
     border-radius: 3px;
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
     font-weight: 500;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
   }
 
   .status-badge.open {
@@ -199,9 +209,10 @@ custom_css: |
   }
 
   .status-item {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
     color: var(--gray);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 
   .status-item:last-child {
@@ -277,9 +288,36 @@ custom_css: |
     .facilities-list { columns: 1; }
     .tc-title { font-size: 1.4rem; }
     .calendar-grid { grid-template-columns: 1fr; }
+    .calendar-month { border-right: none !important; }
   }
 custom_js: |
-  // No custom JS needed for residencies page
+  // Handle conditional questions visibility
+  const visitedRadios = document.querySelectorAll('input[name="visited"]');
+  const questionsDiv = document.getElementById('new-visitor-questions');
+
+  visitedRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'no') {
+        questionsDiv.style.display = 'block';
+      } else {
+        questionsDiv.style.display = 'none';
+      }
+    });
+  });
+
+  // Handle form submission to pass data to apply.html
+  const form = document.getElementById('apply-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        if (value) params.append(key, value);
+      }
+      window.location.href = 'apply.html?' + params.toString();
+    });
+  }
 ---
 
 <section class="hero">
@@ -361,7 +399,7 @@ custom_js: |
             <div class="calendar-month">
                 <div class="month-name">May</div>
                 <div class="month-status status-open">
-                    <span class="status-badge open">OPEN!</span>
+                    <span class="status-badge open">open</span>
                     <div class="status-item">
                         <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
                     </div>
@@ -372,7 +410,7 @@ custom_js: |
             <div class="calendar-month">
                 <div class="month-name">June</div>
                 <div class="month-status status-open">
-                    <span class="status-badge open">OPEN!</span>
+                    <span class="status-badge open">open</span>
                     <div class="status-item">
                         <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
                     </div>
@@ -426,10 +464,10 @@ custom_js: |
             <!-- November -->
             <div class="calendar-month">
                 <div class="month-name">November</div>
-                <div class="month-status status-closed">
-                    <span class="status-badge closed">closed for residencies</span>
+                <div class="month-status status-maybe">
+                    <span class="status-badge maybe">apply if interested</span>
                     <div class="status-item">
-                        open for events hosting — <a href="mailto:theonlyfool@foolsvalley.com" class="calendar-link">inquire!</a>
+                        open for events hosting
                     </div>
                 </div>
             </div>
@@ -437,21 +475,18 @@ custom_js: |
             <!-- December -->
             <div class="calendar-month">
                 <div class="month-name">December</div>
-                <div class="month-status status-closed">
-                    <span class="status-badge closed">closed for residencies</span>
+                <div class="month-status status-maybe">
+                    <span class="status-badge maybe">apply if interested</span>
                     <div class="status-item">
-                        open for events hosting — <a href="mailto:theonlyfool@foolsvalley.com" class="calendar-link">inquire!</a>
+                        open for events hosting
                     </div>
                 </div>
             </div>
         </div>
 
         <div style="margin-top: 3rem; padding: 2rem; border: 1px solid rgba(26,26,26,0.15); border-radius: 8px; background: rgba(255,254,248,0.3);">
-            <p style="font-size: 1rem; line-height: 1.8; margin-bottom: 1rem;">
-                want to host your own residency or event? would you like to volunteer or part-time volunteer?
-            </p>
-            <p style="font-size: 1rem;">
-                contact us: <a href="mailto:theonlyfool@foolsvalley.com" style="color: var(--moss); font-weight: 500;">theonlyfool@foolsvalley.com</a>
+            <p style="font-size: 1rem; line-height: 1.8;">
+                want to host your own residency or event? → <a href="venue.html" style="color: var(--moss); font-weight: 500; text-decoration: underline;">venue page</a>
             </p>
         </div>
     </div>
@@ -495,13 +530,94 @@ custom_js: |
 </section>
 
 <section class="apply-section" id="apply">
-    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="max-width: 720px; margin: 0 auto;">
         <div class="section-label">006 / apply</div>
-        <h2 style="font-family: 'EB Garamond', serif; font-size: 3.5rem; font-weight: 400; margin-bottom: 1.5rem; letter-spacing: -0.02em;">ready to apply?</h2>
-        <p style="font-size: 1rem; color: var(--gray); margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some fun ones.</p>
+        <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
+        <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some fun ones.</p>
 
-        <a href="apply.html" style="display: inline-block; padding: 1rem 2.5rem; border: 1.5px solid var(--moss); background: var(--moss); color: var(--cream); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; border-radius: 4px;">start application →</a>
+        <form id="apply-form" action="apply.html" method="get">
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
+                <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+            </div>
 
-        <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions? → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray); text-decoration: underline;">slowreply@foolsvalley.com</a></p>
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
+                <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">are you interested in practicing transformational connection? *</label>
+                <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                        <input type="radio" name="tc" value="tc-primary" required style="margin-top: 0.25rem;" />
+                        <span style="font-size: 0.95rem; line-height: 1.5;">yes, that's my primary interest — I'd like to join all sessions and stay in the TC hub</span>
+                    </label>
+                    <label style="display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 8px; cursor: pointer; background: var(--cream); transition: all 0.2s;">
+                        <input type="radio" name="tc" value="tc-no" style="margin-top: 0.25rem;" />
+                        <span style="font-size: 0.95rem; line-height: 1.5;">no, that's not my primary interest</span>
+                    </label>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">have you already visited?</label>
+                <div style="display: flex; gap: 1.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="visited" value="yes" style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">yes</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="visited" value="no" checked style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">no</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questions only for new visitors -->
+            <div id="new-visitor-questions">
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
+                    <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
+                    <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on</label>
+                    <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
+                    <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would an ideal day at the residency include?</label>
+                    <textarea name="ideal-day" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                </div>
+            </div>
+
+            <!-- Questions for everyone (including returning visitors) -->
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
+                <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to contribute? which sessions would you like to host?</label>
+                <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">(could be anything from a regular workout slot or meditation, a danceparty or a conversation on a topic that interests you)</div>
+                <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
+                <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
+
+            <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
+        </form>
     </div>
 </section>
