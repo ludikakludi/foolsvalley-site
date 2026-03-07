@@ -4,9 +4,9 @@
 // ============================================================
 
 // Configuration - Update these sheet names to match your Google Sheet
-const ROOMS_SHEET = 'Rooms';
-const BOOKINGS_SHEET = 'Bookings';
-const APPLICATIONS_SHEET = 'Applications';
+const ROOMS_SHEET = 'valley rooms';
+const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
+const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 
 // ============================================================
 // MAIN HANDLER
@@ -99,10 +99,37 @@ function handleAvailability(e) {
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const roomsSheet = ss.getSheetByName(ROOMS_SHEET);
-    const bookingsSheet = ss.getSheetByName(BOOKINGS_SHEET);
 
-    if (!roomsSheet || !bookingsSheet) {
-      return jsonResponse({ error: 'Required sheets not found' });
+    if (!roomsSheet) {
+      return jsonResponse({ error: 'Rooms sheet "' + ROOMS_SHEET + '" not found' });
+    }
+
+    // Get bookings sheet, or create it if it doesn't exist
+    let bookingsSheet = ss.getSheetByName(BOOKINGS_SHEET);
+    let bookings = [];
+
+    if (!bookingsSheet) {
+      // Create bookings sheet with headers
+      bookingsSheet = ss.insertSheet(BOOKINGS_SHEET);
+      bookingsSheet.appendRow(['Room ID', 'Arrival Date', 'Departure Date', 'Status']);
+      const headerRange = bookingsSheet.getRange(1, 1, 1, 4);
+      headerRange.setFontWeight('bold');
+      headerRange.setBackground('#f3f3f3');
+      // Add example row (optional - remove if you don't want it)
+      // bookingsSheet.appendRow(['oct-1', new Date('2026-03-01'), new Date('2026-03-15'), 'confirmed']);
+    } else {
+      // Parse bookings if sheet exists and has data
+      const bookingsData = bookingsSheet.getDataRange().getValues();
+      for (let i = 1; i < bookingsData.length; i++) {
+        const row = bookingsData[i];
+        if (!row[0]) continue;
+        bookings.push({
+          roomId: row[0],
+          arrivalDate: new Date(row[1]),
+          departureDate: new Date(row[2]),
+          status: row[3] || 'confirmed'
+        });
+      }
     }
 
     // Get all rooms data
@@ -131,23 +158,6 @@ function handleAvailability(e) {
       if (room.active) {
         rooms.push(room);
       }
-    }
-
-    // Get all bookings
-    const bookingsData = bookingsSheet.getDataRange().getValues();
-    const bookings = [];
-
-    // Parse bookings (skip header row)
-    for (let i = 1; i < bookingsData.length; i++) {
-      const row = bookingsData[i];
-      if (!row[0]) continue; // Skip empty rows
-
-      bookings.push({
-        roomId: row[0],
-        arrivalDate: new Date(row[1]),
-        departureDate: new Date(row[2]),
-        status: row[3] || 'confirmed'
-      });
     }
 
     // Check availability and calculate prices
@@ -272,10 +282,42 @@ function handleSubmission(data) {
   try {
     const app = data.application;
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const appSheet = ss.getSheetByName(APPLICATIONS_SHEET);
+    let appSheet = ss.getSheetByName(APPLICATIONS_SHEET);
 
+    // Create applications sheet if it doesn't exist
     if (!appSheet) {
-      return jsonResponse({ error: 'Applications sheet not found' });
+      appSheet = ss.insertSheet(APPLICATIONS_SHEET);
+      // Add headers
+      appSheet.appendRow([
+        'Timestamp',
+        'Name',
+        'Email',
+        'Visited Before',
+        'TC Interest',
+        'Main Quest',
+        'Past Quests',
+        'Reference',
+        'Use Time For',
+        'Contribute',
+        'Ideal Day',
+        'Questions',
+        'Arrival Date',
+        'Departure Date',
+        'Num Days',
+        'Room Name',
+        'Room ID',
+        'Building',
+        'Room Price',
+        'Price Breakdown',
+        'Daily Fee',
+        'Total Price',
+        'Room Preference',
+        'Status'
+      ]);
+      // Format header row
+      const headerRange = appSheet.getRange(1, 1, 1, 24);
+      headerRange.setFontWeight('bold');
+      headerRange.setBackground('#f3f3f3');
     }
 
     // Append application to sheet
@@ -327,7 +369,7 @@ function handleSubmission(data) {
 // SEND EMAIL NOTIFICATION (OPTIONAL)
 // ============================================================
 function sendApplicationNotification(app) {
-  const recipient = 'slowreply@foolsvalley.com'; // Update with your email
+  const recipient = 'theonlyfool@foolsvalley.com';
   const subject = 'New Residency Application: ' + app.name;
 
   const body = `
