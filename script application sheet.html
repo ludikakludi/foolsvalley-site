@@ -77,11 +77,28 @@ h1 {
   font-style: italic;
 }
 
+/* PROGRESS */
+.progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+.progress-step {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  transition: background 0.4s;
+}
+.progress-step.active { background: var(--text); }
+.progress-step.done { background: var(--text); }
 
-/* SECTIONS */
-.section {
+/* STEPS */
+.step {
+  display: none;
   animation: fadeIn 0.4s ease;
 }
+.step.active { display: block; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
@@ -532,25 +549,97 @@ footer a { color: var(--text); }
 </nav>
 
 <main>
-  <div style="margin-bottom: 2rem;">
-    <a href="residencies.html" style="font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--text-light); text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
-      ← back to residencies
-    </a>
+  <h1>apply</h1>
+  <p class="subtitle"></p>
+
+  <div class="progress">
+    <div class="progress-step active" data-step="1"></div>
+    <div class="progress-step" data-step="2"></div>
+    <div class="progress-step" data-step="3"></div>
+    <div class="progress-step" data-step="4"></div>
   </div>
 
-  <h1>choose dates & room</h1>
-  <p class="subtitle">select your stay dates and accommodation</p>
+  <!-- STEP 1: ABOUT YOU -->
+  <div class="step active" data-step="1">
+    <div class="step-label">001 / about you</div>
+    <h2>who are you & what are you up to?</h2>
 
-  <!-- DATES SECTION -->
-  <div class="section" id="dates-section">
-    <div class="step-label">001 / when</div>
+    <div class="field" data-required>
+      <label>what name shall we remember you by?</label>
+      <input type="text" id="f-name" placeholder="your name" />
+      <div class="error-msg">please tell us your name</div>
+    </div>
+
+    <div class="field" data-required>
+      <label>email</label>
+      <input type="email" id="f-email" placeholder="you@example.com" />
+      <div class="error-msg">we need a valid email to reach you</div>
+    </div>
+
+    <div class="field" data-required>
+      <label>current main quest</label>
+      <div class="hint">what's the big thing you're working on or moving through right now?</div>
+      <textarea id="f-quest" placeholder=""></textarea>
+      <div class="error-msg">tell us about your quest</div>
+    </div>
+
+    <div class="field">
+      <label>past quests you've been on</label>
+      <textarea id="f-past-quests" placeholder=""></textarea>
+    </div>
+
+    <div class="field">
+      <label>do you know anyone who's been to fools' valley who could be your reference person?</label>
+      <input type="text" id="f-reference" placeholder="" />
+    </div>
+
+    <div class="field" data-required>
+      <label>what would you like to use your time at fools' valley for?</label>
+      <textarea id="f-use-time" placeholder=""></textarea>
+      <div class="error-msg">please share what you'd use the time for</div>
+    </div>
+
+    <div class="field">
+      <label>what would you like to contribute? which sessions would you like to host?</label>
+      <textarea id="f-contribute" placeholder=""></textarea>
+    </div>
+
+    <div class="field">
+      <label>what would an ideal day at the residency include?</label>
+      <textarea id="f-ideal-day" placeholder=""></textarea>
+    </div>
+
+    <div class="field" data-required>
+      <label>are you interested in practicing transformational connection?</label>
+      <div class="radio-group" id="tc-group">
+        <label class="radio-option" onclick="selectRadio(this,'tc-primary')">
+          <input type="radio" name="tc" value="tc-primary" />
+          <span class="radio-label">yes, that's my primary interest &#8212; I'd like to join all sessions and stay in the TC hub</span>
+        </label>
+        <label class="radio-option" onclick="selectRadio(this,'tc-no')">
+          <input type="radio" name="tc" value="tc-no" />
+          <span class="radio-label">no, that's not my primary interest</span>
+        </label>
+      </div>
+      <div class="error-msg">please select one</div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" onclick="goToStep(2)">next — choose dates →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: DATES -->
+  <div class="step" data-step="2">
+    <div class="step-label">002 / when</div>
     <h2>when would you like to come?</h2>
 
     <p style="margin-bottom:0.3rem; color: var(--text-light);">
-      <span id="calendar-instruction">move-in is on Mondays. pick your arrival Monday, then your departure day.</span>
+      move-in is on Mondays (before 14:00). pick your arrival Monday, then your departure day.
     </p>
-    <p id="min-duration-container" style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic; display:none;">
-      <span id="min-duration-text">minimum recommended stay if you're coming for the first time: 2 weeks.</span>
+    <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic;">
+      minimum booking: 1 week
     </p>
 
     <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
@@ -564,23 +653,22 @@ footer a { color: var(--text); }
       <div class="calendar-grid" id="calendar-grid"></div>
     </div>
 
-    <div class="date-info" id="date-summary" style="display:none;">
+    <div class="date-info" id="date-summary" style="display:none;" onclick="resetDates()">
       <strong>Arrival:</strong> <span id="arrival-display"></span><br>
       <strong>Departure:</strong> <span id="departure-display"></span><br>
       <strong>Duration:</strong> <span id="duration-display"></span>
-      <button onclick="resetDates()" style="margin-top:0.8rem; padding:0.5rem 1rem; background:none; border:1px solid var(--border); border-radius:6px; cursor:pointer; font-family:'Inter',sans-serif; font-size:0.8rem; color:var(--text);">change dates</button>
+      <div style="font-size:0.8rem; color:var(--text-light); font-style:italic; margin-top:0.4rem;">click to change dates</div>
     </div>
 
-    <div style="margin-top:2rem; max-width:400px;">
-      <label style="display:block; font-size:0.9rem; margin-bottom:0.4rem; color:var(--text-light);">have a codeword?</label>
-      <input type="text" id="codeword-input" placeholder="enter codeword" style="width:100%; padding:0.7rem 1rem; font-family:'Inter',sans-serif; font-size:0.9rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); color:var(--text);" />
-      <div id="codeword-message" style="margin-top:0.5rem; font-size:0.85rem; display:none;"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(1)">← back</button>
+      <button class="btn btn-primary" id="btn-to-rooms" disabled onclick="goToStep(3)">next — choose room →</button>
     </div>
   </div>
 
-  <!-- ROOMS SECTION -->
-  <div class="section" id="rooms-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
-    <div class="step-label">002 / where</div>
+  <!-- STEP 3: ROOM -->
+  <div class="step" data-step="3">
+    <div class="step-label">003 / where</div>
     <h2>choose your room</h2>
     <p style="margin-bottom:0.5rem; color: var(--text-light);">
       showing rooms available for your full stay. the price per day depends on the length of stay (monthly prices are cheaper, <a href="#" onclick="showPriceList(event)" style="color:var(--text); text-decoration:underline;">full price list</a>).
@@ -603,11 +691,15 @@ footer a { color: var(--text); }
       </div>
     </div>
 
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(2)">← back</button>
+      <button class="btn btn-primary" id="btn-to-review" disabled onclick="goToStep(4)">review application →</button>
+    </div>
   </div>
 
-  <!-- REVIEW SECTION -->
-  <div class="section" id="review-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
-    <div class="step-label">003 / review</div>
+  <!-- STEP 4: REVIEW -->
+  <div class="step" data-step="4">
+    <div class="step-label">004 / review</div>
     <h2>review & submit</h2>
 
     <div class="review-section">
@@ -629,17 +721,32 @@ footer a { color: var(--text); }
     <div class="review-section" id="rev-pricing-section">
       <h3>pricing</h3>
       <div class="review-row"><span class="label">room</span><span class="value" id="rev-room-price"></span></div>
-      <div class="review-row" style="font-size: 0.85rem; color: var(--text-light);"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
+      <div class="review-row"><span class="label" id="rev-room-breakdown-label">breakdown</span><span class="value" id="rev-room-breakdown"></span></div>
+      <div class="review-row"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
+      <div class="review-total">
+        <div class="review-row">
+          <span class="label">total</span>
+          <span class="value" id="rev-total"></span>
+        </div>
+      </div>
     </div>
 
     <div class="btn-row">
-      <div></div>
+      <button class="btn btn-secondary" onclick="goToStep(3)">← back</button>
       <button class="btn btn-primary" id="btn-submit" onclick="submitApplication()">submit application</button>
     </div>
   </div>
 
   <!-- SUCCESS -->
-  <div class="section" id="success-section" style="display:none;"></div>
+  <div class="step" data-step="5">
+    <div class="success-screen">
+      <div class="checkmark">✓</div>
+      <h2>application sent</h2>
+      <p>thank you! we'll review your application and get back to you at the email you provided.</p>
+      <br><br>
+      <a href="https://foolsvalley.com" class="btn btn-secondary" style="display:inline-block; text-decoration:none;">back to fools' valley</a>
+    </div>
+  </div>
 
 </main>
 
@@ -651,12 +758,13 @@ footer a { color: var(--text); }
 // ============================================================
 // CONFIG — Replace this URL after deploying the Apps Script
 // ============================================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyY-vopjbgxz3Oy9ZqgPq017B-whAEW-eHge-B4A9vaqSg5PCzMbs3dBTE5SdXkFP7Yw/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZVjyZMsFA9nuRjKxcmy-8SNPeVLQopaqkPNAjsZpm2E58e_K0MQo4JcVqSOd0b7o1/exec';
 const ROOM_PHOTOS_BASE = 'https://foolsvalley.com/assets/rooms/';
 
 // ============================================================
 // STATE
 // ============================================================
+let currentStep = 1;
 let calendarMonth = new Date().getMonth();
 let calendarYear = new Date().getFullYear();
 let arrivalDate = null;
@@ -664,9 +772,8 @@ let departureDate = null;
 let selectingWhat = 'arrival'; // 'arrival' or 'departure'
 let availableRooms = [];
 let selectedRoom = null;
+let tcInterest = null;
 let fallbackMode = false;
-let formData = {}; // Store form data from previous page
-let hasShortStayCode = false; // Track if shortstay codeword is active
 
 // Advance to today or next month if we're past the 15th
 if (new Date().getDate() > 15) {
@@ -675,74 +782,97 @@ if (new Date().getDate() > 15) {
 }
 
 // ============================================================
-// FORM HANDLING - Load data from URL parameters
+// RADIO SELECT
 // ============================================================
-document.addEventListener('DOMContentLoaded', function() {
-  // Parse URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
+function selectRadio(el, val) {
+  document.querySelectorAll('#tc-group .radio-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  tcInterest = val;
+}
 
-  // Populate formData from URL parameters
-  formData = {
-    name: urlParams.get('name') || '',
-    email: urlParams.get('email') || '',
-    visited: urlParams.get('visited') || 'no',
-    quest: urlParams.get('quest') || '',
-    pastQuests: urlParams.get('pastQuests') || '',
-    reference: urlParams.get('reference') || '',
-    useTime: urlParams.get('useTime') || '',
-    contribute: urlParams.get('contribute') || '',
-    idealDay: urlParams.get('idealDay') || '',
-    tc: urlParams.get('tc') || '',
-    questions: urlParams.get('questions') || ''
-  };
-
-  // Show minimum duration text only for new visitors
-  const minDurationContainer = document.getElementById('min-duration-container');
-  if (formData.visited === 'no') {
-    minDurationContainer.style.display = 'block';
-  } else {
-    minDurationContainer.style.display = 'none';
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goToStep(step) {
+  // Validate current step before advancing
+  if (step > currentStep) {
+    if (currentStep === 1 && !validateStep1()) return;
+    if (currentStep === 2 && !validateStep2()) return;
+    if (currentStep === 3 && !validateStep3()) return;
   }
-});
 
+  // If moving to step 3, fetch availability
+  if (step === 3 && (currentStep === 2 || currentStep === 4)) {
+    fetchAvailability();
+  }
 
-// ============================================================
-// SHOW/HIDE SECTIONS
-// ============================================================
-function showRoomsSection() {
-  const roomsSection = document.getElementById('rooms-section');
-  roomsSection.style.display = 'block';
-  fetchAvailability();
-  // Scroll to rooms section
-  setTimeout(() => {
-    roomsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  currentStep = step;
+
+  // Update steps visibility
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${step}"]`).classList.add('active');
+
+  // Update progress
+  document.querySelectorAll('.progress-step').forEach(p => {
+    const s = parseInt(p.dataset.step);
+    p.classList.remove('active', 'done');
+    if (s === step) p.classList.add('active');
+    if (s < step) p.classList.add('done');
+  });
+
+  // If step 4, populate review
+  if (step === 4) populateReview();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function showReviewSection() {
-  const reviewSection = document.getElementById('review-section');
-  reviewSection.style.display = 'block';
-  populateReview();
-  // Scroll to review section
-  setTimeout(() => {
-    reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+// ============================================================
+// VALIDATION
+// ============================================================
+function validateStep1() {
+  let valid = true;
+  const fields = [
+    { id: 'f-name', type: 'text' },
+    { id: 'f-email', type: 'email' },
+    { id: 'f-quest', type: 'text' },
+    { id: 'f-use-time', type: 'text' }
+  ];
+
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const field = el.closest('.field');
+    const val = el.value.trim();
+    let ok = val.length > 0;
+    if (f.type === 'email') ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    
+    if (!ok && field.hasAttribute('data-required')) {
+      field.classList.add('error');
+      valid = false;
+    } else {
+      field.classList.remove('error');
+    }
+  });
+
+  // TC radio validation
+  const tcField = document.getElementById('tc-group').closest('.field');
+  if (!tcInterest) { tcField.classList.add('error'); valid = false; }
+  else { tcField.classList.remove('error'); }
+
+  return valid;
 }
 
-function showSuccessSection() {
-  document.getElementById('success-section').style.display = 'block';
-  document.getElementById('success-section').innerHTML = `
-    <div class="success-screen">
-      <div class="checkmark">✓</div>
-      <h2>application sent</h2>
-      <p>thank you! we'll review your application and get back to you at the email you provided.</p>
-      <br><br>
-      <a href="https://foolsvalley.com" class="btn btn-secondary" style="display:inline-block; text-decoration:none;">back to fools' valley</a>
-    </div>
-  `;
-  setTimeout(() => {
-    document.getElementById('success-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+function validateStep2() {
+  if (!arrivalDate || !departureDate) return false;
+  return departureDate > arrivalDate;
+}
+
+function validateStep3() {
+  if (fallbackMode) {
+    const pref = document.getElementById('f-room-preference');
+    return pref && pref.value.trim().length > 0;
+  }
+  return selectedRoom !== null;
 }
 
 // ============================================================
@@ -806,35 +936,19 @@ function renderCalendar() {
 
     // Selectable logic
     if (selectingWhat === 'arrival') {
-      // With shortstay code, allow any day; otherwise only Mondays
-      const isValidArrival = hasShortStayCode ? !isPast && !tooSoon : (isMonday && !isPast && !tooSoon);
-
-      if (isValidArrival) {
+      if (isMonday && !isPast && !tooSoon) {
         div.classList.add('selectable');
         div.addEventListener('click', () => selectArrival(date));
       } else {
         div.classList.add('disabled');
       }
-    } else if (selectingWhat === 'departure' || selectingWhat === 'done') {
-      // Always allow clicking the selected arrival date to unselect it
-      if (arrivalDate && date.getTime() === arrivalDate.getTime()) {
-        div.classList.add('selectable');
-        div.addEventListener('click', () => selectArrival(date));
-      } else if (departureDate && date.getTime() === departureDate.getTime()) {
-        // Allow clicking the selected departure date to unselect it
+    } else if (selectingWhat === 'departure') {
+      const minDep = new Date(arrivalDate.getTime() + 1*24*60*60*1000);
+      if (date >= minDep) {
         div.classList.add('selectable');
         div.addEventListener('click', () => selectDeparture(date));
       } else {
-        // With shortstay code, allow any duration; otherwise minimum 6 days
-        const minDays = hasShortStayCode ? 1 : 6;
-        const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
-
-        if (date >= minDep) {
-          div.classList.add('selectable');
-          div.addEventListener('click', () => selectDeparture(date));
-        } else {
-          div.classList.add('disabled');
-        }
+        div.classList.add('disabled');
       }
     }
 
@@ -843,64 +957,29 @@ function renderCalendar() {
 }
 
 function selectArrival(date) {
-  // If clicking the same arrival date, unselect it
-  if (arrivalDate && date.getTime() === arrivalDate.getTime()) {
-    arrivalDate = null;
-    departureDate = null;
-    selectedRoom = null;
-    fallbackMode = false;
-    selectingWhat = 'arrival';
-    document.getElementById('date-mode').textContent = 'select your arrival Monday';
-    document.getElementById('date-summary').style.display = 'none';
-    renderCalendar();
-    return;
-  }
-
   arrivalDate = date;
   departureDate = null;
   selectedRoom = null;
   fallbackMode = false;
   selectingWhat = 'departure';
-
-  // Update message based on whether shortstay code is active
-  const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
-  document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
+  document.getElementById('date-mode').textContent = 'now pick your departure day (min 2 weeks)';
   document.getElementById('date-summary').style.display = 'block';
   document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
   document.getElementById('departure-display').textContent = '—';
   document.getElementById('duration-display').textContent = '—';
+  document.getElementById('btn-to-rooms').disabled = true;
   renderCalendar();
 }
 
 function selectDeparture(date) {
-  // If clicking the same departure date, unselect it
-  if (departureDate && date.getTime() === departureDate.getTime()) {
-    departureDate = null;
-    selectedRoom = null;
-    selectingWhat = 'departure';
-    const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
-    document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
-    document.getElementById('departure-display').textContent = '—';
-    document.getElementById('duration-display').textContent = '—';
-
-    // Hide rooms and review sections
-    document.getElementById('rooms-section').style.display = 'none';
-    document.getElementById('review-section').style.display = 'none';
-
-    renderCalendar();
-    return;
-  }
-
   departureDate = date;
   selectingWhat = 'done';
   const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
   document.getElementById('date-mode').textContent = 'dates selected ✓';
   document.getElementById('departure-display').textContent = formatDate(departureDate);
   document.getElementById('duration-display').textContent = days + ' days' + (days >= 28 ? ' (~' + Math.round(days/30*10)/10 + ' months)' : days >= 7 ? ' (~' + Math.round(days/7*10)/10 + ' weeks)' : '');
+  document.getElementById('btn-to-rooms').disabled = false;
   renderCalendar();
-
-  // Automatically show rooms section
-  showRoomsSection();
 }
 
 function calendarPrev() {
@@ -923,11 +1002,7 @@ function resetDates() {
   fallbackMode = false;
   document.getElementById('date-mode').textContent = 'select your arrival Monday';
   document.getElementById('date-summary').style.display = 'none';
-
-  // Hide rooms and review sections
-  document.getElementById('rooms-section').style.display = 'none';
-  document.getElementById('review-section').style.display = 'none';
-
+  document.getElementById('btn-to-rooms').disabled = true;
   renderCalendar();
 }
 
@@ -940,6 +1015,12 @@ function formatDateISO(d) {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
+// Allow re-selecting dates
+document.addEventListener('click', function(e) {
+  if (selectingWhat === 'done' && e.target.id !== 'btn-to-rooms') {
+    // Click on the date summary to reset
+  }
+});
 
 // ============================================================
 // FETCH AVAILABILITY
@@ -949,25 +1030,15 @@ async function fetchAvailability() {
   container.innerHTML = '<div class="rooms-loading"><div class="spinner"></div><br>checking availability...</div>';
   selectedRoom = null;
   fallbackMode = false;
+  document.getElementById('btn-to-review').disabled = true;
 
   const from = formatDateISO(arrivalDate);
   const to = formatDateISO(departureDate);
 
   try {
     const url = APPS_SCRIPT_URL + '?action=availability&from=' + from + '&to=' + to;
-
-    // Add timeout to the fetch
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-    const resp = await fetch(url, { signal: controller.signal });
-    clearTimeout(timeoutId);
-
+    const resp = await fetch(url);
     const data = await resp.json();
-
-    // Debug logging
-    console.log('API Response:', data);
-    console.log('Rooms received:', data.rooms);
 
     if (data.error) {
       showFallback(container, "We couldn't check room availability right now: " + data.error);
@@ -983,8 +1054,7 @@ async function fetchAvailability() {
 
     renderRooms();
   } catch (err) {
-    console.error('Availability check error:', err);
-    showFallback(container, "Couldn't reach the availability system. Please describe what room you'd like below.");
+    showFallback(container, "Couldn't reach the availability system. This might be temporary.");
   }
 }
 
@@ -998,9 +1068,11 @@ function showFallback(container, msg) {
     '<p>no worries \u2014 just tell us what kind of accommodation you\'re interested in and we\'ll get back to you with options and pricing.</p>' +
     '<div class="field"><label>what type of accommodation are you interested in?</label>' +
     '<div class="hint">e.g. private room, dorm bed, own tent/van, a room in a specific house...</div>' +
-    '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>' +
-    '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) showReviewSection();">continue to review</button>';
+    '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>';
   container.appendChild(fb);
+  document.getElementById('f-room-preference').addEventListener('input', function() {
+    document.getElementById('btn-to-review').disabled = this.value.trim().length === 0;
+  });
 }
 
 // Clean up price breakdown display - ensure no cents shown
@@ -1022,13 +1094,7 @@ function renderRooms() {
   const container = document.getElementById('rooms-container');
   container.innerHTML = '';
 
-  const isTCPrimary = formData.tc === 'tc-primary';
-
-  // Debug logging
-  console.log('Rendering rooms. Total available:', availableRooms.length);
-  if (availableRooms.length > 0) {
-    console.log('First room structure:', availableRooms[0]);
-  }
+  const isTCPrimary = tcInterest === 'tc-primary';
 
   // Group by building
   const buildings = {};
@@ -1049,7 +1115,7 @@ function renderRooms() {
     const isTCBuilding = b === 'Blue House';
 
     const h3 = document.createElement('h3');
-    let title = b === 'Old House' ? 'the old house' : b === 'Octopus House' ? 'm / octopus house' : b === 'Blue House' ? 'TC HUB - five transformational connection session a week' : 'own tent / van';
+    let title = b === 'Old House' ? 'the old house' : b === 'Octopus House' ? 'm / octopus house' : b === 'Blue House' ? 'transformational connection hub' : 'own tent / van';
     h3.innerHTML = title;
     group.appendChild(h3);
 
@@ -1076,17 +1142,18 @@ function renderRooms() {
 
       const info = document.createElement('div');
       info.className = 'room-card-info';
-      // Clean display text - strip dorm bed/van spot counts
+      // Clean display text
       var displayName = room.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
-      // Description comes cleaned from the API - display as-is
-      var displayDesc = room.desc;
+      var displayDesc = room.desc.replace(/\s*5 min walk from main property\.?/g, '').trim();
+      if (displayDesc.endsWith('.')) displayDesc = displayDesc;
+      else if (displayDesc.length > 0 && !displayDesc.endsWith('.')) displayDesc += '';
 
       // Normalize price breakdown display based on stay duration
       var normalizedBreakdown = normalizePriceBreakdown(room.priceBreakdown, room.numDays);
 
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
-        '<div class="room-price">€' + room.roomPrice + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
+        '<div class="room-price">€' + room.totalPrice + ' total<span class="breakdown">room: €' + room.roomPrice + ' (' + normalizedBreakdown + ')<br>+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
       inner.appendChild(info);
 
       card.appendChild(inner);
@@ -1095,9 +1162,7 @@ function renderRooms() {
         document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         selectedRoom = room;
-
-        // Automatically show review section
-        showReviewSection();
+        document.getElementById('btn-to-review').disabled = false;
       });
 
       group.appendChild(card);
@@ -1111,15 +1176,15 @@ function renderRooms() {
 // REVIEW
 // ============================================================
 function populateReview() {
-  document.getElementById('rev-name').textContent = formData.name || '—';
-  document.getElementById('rev-email').textContent = formData.email || '—';
-  document.getElementById('rev-quest').textContent = formData.quest || '—';
+  document.getElementById('rev-name').textContent = document.getElementById('f-name').value;
+  document.getElementById('rev-email').textContent = document.getElementById('f-email').value;
+  document.getElementById('rev-quest').textContent = document.getElementById('f-quest').value;
 
   const tcLabels = {
     'tc-primary': 'Yes \u2014 primary interest, join all sessions, TC hub',
     'tc-no': "No, that's not my primary interest"
   };
-  document.getElementById('rev-tc').textContent = tcLabels[formData.tc] || '—';
+  document.getElementById('rev-tc').textContent = tcLabels[tcInterest] || '';
 
   document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
   document.getElementById('rev-departure').textContent = formatDate(departureDate);
@@ -1137,11 +1202,14 @@ function populateReview() {
     var cleanName = selectedRoom.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
     document.getElementById('rev-room').textContent = cleanName + ' \u2014 ' + bldg;
     pricingSection.style.display = 'block';
+    document.getElementById('rev-room-price').textContent = '\u20AC' + selectedRoom.roomPrice;
 
     // Use normalized price breakdown
     var normalizedBreakdown = normalizePriceBreakdown(selectedRoom.priceBreakdown, selectedRoom.numDays);
-    document.getElementById('rev-room-price').innerHTML = '\u20AC' + selectedRoom.roomPrice + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
+    document.getElementById('rev-room-breakdown').textContent = normalizedBreakdown;
+
     document.getElementById('rev-daily-fee').textContent = '\u20AC' + selectedRoom.dailyFee;
+    document.getElementById('rev-total').textContent = '\u20AC' + selectedRoom.totalPrice;
   }
 }
 
@@ -1158,17 +1226,15 @@ async function submitApplication() {
   const payload = {
     action: 'submit',
     application: {
-      name: formData.name,
-      email: formData.email,
-      visited: formData.visited,
-      tcInterest: formData.tc,
-      mainQuest: formData.quest,
-      pastQuests: formData.pastQuests,
-      reference: formData.reference,
-      useTimeFor: formData.useTime,
-      contribute: formData.contribute,
-      idealDay: formData.idealDay,
-      questions: formData.questions,
+      name: document.getElementById('f-name').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      tcInterest: tcInterest,
+      mainQuest: document.getElementById('f-quest').value.trim(),
+      pastQuests: document.getElementById('f-past-quests').value.trim(),
+      reference: document.getElementById('f-reference').value.trim(),
+      useTimeFor: document.getElementById('f-use-time').value.trim(),
+      contribute: document.getElementById('f-contribute').value.trim(),
+      idealDay: document.getElementById('f-ideal-day').value.trim(),
       arrivalDate: formatDate(arrivalDate),
       departureDate: formatDate(departureDate),
       numDays: days,
@@ -1192,7 +1258,7 @@ async function submitApplication() {
     const data = await resp.json();
 
     if (data.success) {
-      showSuccessSection();
+      goToStep(5);
     } else {
       alert('Something went wrong: ' + (data.error || 'Unknown error'));
       btn.disabled = false;
@@ -1260,9 +1326,7 @@ function buildPriceTable(container, rooms) {
     if (!buildings[b] || buildings[b].length === 0) return;
     html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + '</td></tr>';
     buildings[b].forEach(function(r) {
-      // Strip dorm bed/van spot counts from room names in price table
-      var cleanName = r.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
-      html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + cleanName + '</td>';
+      html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + r.name + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.daily + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.weekly + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.monthly + '</td></tr>';
@@ -1272,61 +1336,6 @@ function buildPriceTable(container, rooms) {
   html += '<p style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-light);">+ \u20AC20/day food &amp; expenses on top of all prices</p>';
   container.innerHTML = html;
 }
-
-// ============================================================
-// CODEWORD
-// ============================================================
-document.getElementById('codeword-input').addEventListener('input', function() {
-  const code = this.value.trim().toLowerCase();
-  const message = document.getElementById('codeword-message');
-  const instructionText = document.getElementById('calendar-instruction');
-  const minDurationText = document.getElementById('min-duration-text');
-  const minDurationContainer = document.getElementById('min-duration-container');
-
-  if (code === 'shortstay') {
-    hasShortStayCode = true;
-    message.style.display = 'block';
-    message.style.color = 'var(--success)';
-    message.textContent = '✓ Short stay unlocked: book any day, any duration';
-
-    // Update instructions
-    instructionText.textContent = 'pick your arrival day, then your departure day.';
-    minDurationContainer.style.display = 'block';
-    minDurationText.textContent = 'flexible booking enabled.';
-
-    renderCalendar(); // Re-render calendar with flexible rules
-  } else if (code.length > 0) {
-    hasShortStayCode = false;
-    message.style.display = 'block';
-    message.style.color = 'var(--error)';
-    message.textContent = 'Invalid codeword';
-
-    // Restore normal instructions
-    instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
-    if (formData.visited === 'no') {
-      minDurationContainer.style.display = 'block';
-      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
-    } else {
-      minDurationContainer.style.display = 'none';
-    }
-
-    renderCalendar(); // Re-render with normal rules
-  } else {
-    hasShortStayCode = false;
-    message.style.display = 'none';
-
-    // Restore normal instructions
-    instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
-    if (formData.visited === 'no') {
-      minDurationContainer.style.display = 'block';
-      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
-    } else {
-      minDurationContainer.style.display = 'none';
-    }
-
-    renderCalendar(); // Re-render with normal rules
-  }
-});
 
 // ============================================================
 // INIT
