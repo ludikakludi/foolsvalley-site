@@ -4,7 +4,7 @@
 // ============================================================
 
 // Configuration - Update these sheet names to match your Google Sheet
-const ROOMS_SHEET = 'valley rooms';
+const ROOMS_SHEET = 'prices';  // This has room data: IDs, names, buildings, daily/weekly/monthly rates
 const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 
@@ -142,26 +142,39 @@ function handleAvailability(e) {
     const rooms = [];
 
     // Parse rooms (skip header row)
+    // Prices sheet columns: room_id, name, building, monthly, weekly, daily, photo, description, columns, type, group_key
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
 
+      // Determine capacity based on room type
+      let capacity = 1;  // Default for private rooms
+      const roomName = row[1] || '';
+      const roomId = row[0] || '';
+
+      // Dorms have multiple beds
+      if (roomName.toLowerCase().includes('dorm') || roomId.includes('dorm')) {
+        capacity = 6;  // Adjust this number as needed for each dorm
+      }
+      // Camping spots can have multiple spaces
+      if (row[2] === 'Camping' || roomName.toLowerCase().includes('tent') || roomName.toLowerCase().includes('van')) {
+        capacity = 10;  // Multiple camping spots
+      }
+
       const room = {
-        id: row[0],
-        name: row[1],
-        building: row[2],
-        desc: row[3] || '',
-        photo: row[4] || '',
-        capacity: parseInt(row[5]) || 1,
-        daily: parseFloat(row[6]) || 0,
-        weekly: parseFloat(row[7]) || 0,
-        monthly: parseFloat(row[8]) || 0,
-        active: row[9] !== false && row[9] !== 'FALSE' // Active by default
+        id: row[0],           // Column A: room_id
+        name: row[1],         // Column B: name
+        building: row[2],     // Column C: building
+        desc: row[7] || '',   // Column H: description
+        photo: row[6] || '',  // Column G: photo
+        capacity: capacity,
+        daily: parseFloat(row[5]) || 0,    // Column F: daily
+        weekly: parseFloat(row[4]) || 0,   // Column E: weekly
+        monthly: parseFloat(row[3]) || 0,  // Column D: monthly
+        active: true  // All rooms in prices sheet are active
       };
 
-      if (room.active) {
-        rooms.push(room);
-      }
+      rooms.push(room);
     }
 
     // Check availability and calculate prices
@@ -255,6 +268,7 @@ function handlePrices(e) {
     const rooms = [];
 
     // Parse rooms (skip header row)
+    // Prices sheet columns: room_id, name, building, monthly, weekly, daily, photo, description
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
@@ -263,15 +277,13 @@ function handlePrices(e) {
         id: row[0],
         name: row[1],
         building: row[2],
-        daily: Math.round(parseFloat(row[6]) || 0),
-        weekly: Math.round(parseFloat(row[7]) || 0),
-        monthly: Math.round(parseFloat(row[8]) || 0),
-        active: row[9] !== false && row[9] !== 'FALSE'
+        daily: Math.round(parseFloat(row[5]) || 0),    // Column F
+        weekly: Math.round(parseFloat(row[4]) || 0),   // Column E
+        monthly: Math.round(parseFloat(row[3]) || 0),  // Column D
+        active: true
       };
 
-      if (room.active) {
-        rooms.push(room);
-      }
+      rooms.push(room);
     }
 
     return jsonResponse({ rooms: rooms });
