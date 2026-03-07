@@ -101,7 +101,11 @@ function handleAvailability(e) {
     const roomsSheet = ss.getSheetByName(ROOMS_SHEET);
 
     if (!roomsSheet) {
-      return jsonResponse({ error: 'Rooms sheet "' + ROOMS_SHEET + '" not found' });
+      // List all available sheets to help debug
+      const allSheets = ss.getSheets().map(s => s.getName()).join(', ');
+      return jsonResponse({
+        error: 'Rooms sheet "' + ROOMS_SHEET + '" not found. Available sheets: ' + allSheets
+      });
     }
 
     // Get bookings sheet, or create it if it doesn't exist
@@ -241,7 +245,10 @@ function handlePrices(e) {
     const roomsSheet = ss.getSheetByName(ROOMS_SHEET);
 
     if (!roomsSheet) {
-      return jsonResponse({ error: 'Rooms sheet not found' });
+      const allSheets = ss.getSheets().map(s => s.getName()).join(', ');
+      return jsonResponse({
+        error: 'Rooms sheet "' + ROOMS_SHEET + '" not found. Available sheets: ' + allSheets
+      });
     }
 
     const roomsData = roomsSheet.getDataRange().getValues();
