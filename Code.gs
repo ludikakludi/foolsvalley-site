@@ -108,35 +108,7 @@ function handleAvailability(e) {
       });
     }
 
-    // Get bookings sheet, or create it if it doesn't exist
-    let bookingsSheet = ss.getSheetByName(BOOKINGS_SHEET);
-    let bookings = [];
-
-    if (!bookingsSheet) {
-      // Create bookings sheet with headers
-      bookingsSheet = ss.insertSheet(BOOKINGS_SHEET);
-      bookingsSheet.appendRow(['Room ID', 'Arrival Date', 'Departure Date', 'Status']);
-      const headerRange = bookingsSheet.getRange(1, 1, 1, 4);
-      headerRange.setFontWeight('bold');
-      headerRange.setBackground('#f3f3f3');
-      // Add example row (optional - remove if you don't want it)
-      // bookingsSheet.appendRow(['oct-1', new Date('2026-03-01'), new Date('2026-03-15'), 'confirmed']);
-    } else {
-      // Parse bookings if sheet exists and has data
-      const bookingsData = bookingsSheet.getDataRange().getValues();
-      for (let i = 1; i < bookingsData.length; i++) {
-        const row = bookingsData[i];
-        if (!row[0]) continue;
-        bookings.push({
-          roomId: row[0],
-          arrivalDate: new Date(row[1]),
-          departureDate: new Date(row[2]),
-          status: row[3] || 'confirmed'
-        });
-      }
-    }
-
-    // Get all rooms data
+    // Get all rooms data first
     const roomsData = roomsSheet.getDataRange().getValues();
     const roomsHeaders = roomsData[0];
     const rooms = [];
@@ -175,6 +147,68 @@ function handleAvailability(e) {
       };
 
       rooms.push(room);
+    }
+
+    // Read calendar from "valley rooms" sheet
+    const valleySheet = ss.getSheetByName('valley rooms');
+    const bookings = [];
+
+    if (valleySheet) {
+      // Parse calendar format to extract bookings
+      const calendarData = valleySheet.getDataRange().getValues();
+
+      // Row 3 (index 2) has room names, starting from column F (index 5)
+      const roomRow = calendarData[2];
+      const roomColumnMap = {};  // Maps column index to room name
+
+      for (let col = 5; col < roomRow.length; col++) {
+        if (roomRow[col]) {
+          roomColumnMap[col] = String(roomRow[col]).toLowerCase().trim();
+        }
+      }
+
+      // Create room name to ID mapping from prices sheet
+      const roomNameToId = {};
+      for (const room of rooms) {
+        const roomNameLower = room.name.toLowerCase().trim();
+        roomNameToId[roomNameLower] = room.id;
+        // Also map simplified names for common variations
+        if (roomNameLower.includes('curve')) roomNameToId['m curve suite'] = room.id;
+        if (roomNameLower.includes('big suite')) roomNameToId['m big suite'] = room.id;
+        if (roomNameLower === 'm room') roomNameToId['m double'] = room.id;
+      }
+
+      // Read dates and bookings (starting from row 6, index 5)
+      for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+        const rowData = calendarData[row];
+
+        // Get date from column B, C, or D (indices 1, 2, 3)
+        let dateVal = null;
+        for (let col = 1; col <= 3; col++) {
+          if (rowData[col] instanceof Date) {
+            dateVal = new Date(rowData[col]);
+            break;
+          }
+        }
+
+        if (!dateVal) continue;
+
+        // Check each room column
+        for (const [colIdx, roomName] of Object.entries(roomColumnMap)) {
+          const cellValue = rowData[colIdx];
+          // If cell has content (guest name), room is booked that day
+          if (cellValue && String(cellValue).trim().length > 0) {
+            const roomId = roomNameToId[roomName];
+            if (roomId) {
+              // Record this as a single-day booking
+              bookings.push({
+                roomId: roomId,
+                date: dateVal
+              });
+            }
+          }
+        }
+      }
     }
 
     // Check availability and calculate prices
@@ -216,23 +250,34 @@ function handleAvailability(e) {
 }
 
 // ============================================================
-// CHECK ROOM AVAILABILITY
+// CHECK ROOM AVAILABILITY (Calendar format)
 // ============================================================
 function checkRoomAvailability(room, bookings, fromDate, toDate) {
-  // Count how many bookings conflict with this date range
-  let bookedCount = 0;
+  // For calendar format, bookings is an array of {roomId, date}
+  // Check if ANY day in the requested range is booked
 
+  // Get all dates in the requested range
+  const requestedDates = [];
+  for (let d = new Date(fromDate); d < toDate; d.setDate(d.getDate() + 1)) {
+    requestedDates.push(d.toISOString().split('T')[0]);
+  }
+
+  // Count how many of those dates are booked for this room
+  let bookedDays = 0;
   for (const booking of bookings) {
-    if (booking.roomId === room.id && booking.status !== 'cancelled') {
-      // Check if dates overlap
-      if (booking.arrivalDate < toDate && booking.departureDate > fromDate) {
-        bookedCount++;
+    if (booking.roomId === room.id) {
+      const bookingDate = new Date(booking.date).toISOString().split('T')[0];
+      if (requestedDates.includes(bookingDate)) {
+        bookedDays++;
       }
     }
   }
 
-  const availableCount = room.capacity - bookedCount;
-  const isAvailable = availableCount > 0;
+  // If the room has capacity > 1 (dorms), it might still be available
+  // For single-capacity rooms, any booked day means unavailable
+  const isFullyBooked = (room.capacity === 1 && bookedDays > 0);
+  const availableCount = isFullyBooked ? 0 : room.capacity;
+  const isAvailable = !isFullyBooked;
 
   // Generate display name for multi-capacity rooms
   let displayName = room.name;
