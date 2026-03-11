@@ -114,6 +114,14 @@ function handleAvailability(e) {
     const rooms = [];
 
     // Parse rooms (skip header row)
+    // First, log the header to understand the actual structure
+    if (roomsData.length > 0) {
+      Logger.log('Prices sheet headers: ' + roomsData[0].join(', '));
+      if (roomsData.length > 1) {
+        Logger.log('First room row: ' + roomsData[1].join(' | '));
+      }
+    }
+
     // Prices sheet columns: room_id, name, building, monthly, weekly, daily, photo, description, columns, type, group_key
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
@@ -137,8 +145,8 @@ function handleAvailability(e) {
         id: row[0],           // Column A: room_id
         name: row[1],         // Column B: name
         building: row[2],     // Column C: building
-        desc: row[7] || '',   // Column H: description
-        photo: row[6] || '',  // Column G: photo
+        desc: row[8] || '',   // Column I: description (moved)
+        photo: row[7] || '',  // Column H: photo (UPDATED)
         capacity: capacity,
         daily: parseFloat(row[5]) || 0,    // Column F: daily
         weekly: parseFloat(row[4]) || 0,   // Column E: weekly
