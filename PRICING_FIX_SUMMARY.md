@@ -84,6 +84,11 @@ System automatically maps variations:
 
 System counts bookings per day and shows room as unavailable when capacity is reached.
 
+### Checkout/Checkin Logic
+- **Checkout date is FREE**: When someone books April 1-5, only April 1,2,3,4 are marked as occupied
+- **April 5 is available**: Another guest can check in the same day as previous checkout
+- **Same-day turnaround**: This allows back-to-back bookings with checkout/checkin on the same day
+
 ### Automatic Calendar Recording
 When someone submits an application:
 - **Guest name** is automatically written to the "valley rooms" calendar
