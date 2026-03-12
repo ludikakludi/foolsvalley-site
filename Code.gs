@@ -200,10 +200,63 @@ function handleAvailability(e) {
       for (const room of rooms) {
         const roomNameLower = room.name.toLowerCase().trim();
         roomNameToId[roomNameLower] = room.id;
-        // Also map simplified names for common variations
-        if (roomNameLower.includes('curve')) roomNameToId['m curve suite'] = room.id;
-        if (roomNameLower.includes('big suite')) roomNameToId['m big suite'] = room.id;
-        if (roomNameLower === 'm room') roomNameToId['m double'] = room.id;
+
+        // Map calendar names to room IDs
+        // Octopus House
+        if (room.id === 'mcurve') roomNameToId['m curve suite'] = room.id;
+        if (room.id === 'mbig') roomNameToId['m big suite'] = room.id;
+        if (room.id === 'mdouble') roomNameToId['m double'] = room.id;
+
+        // Old House
+        if (room.id === 'studio') roomNameToId['studio'] = room.id;
+        if (room.id === 'galeria') roomNameToId['galeria'] = room.id;
+        if (room.id === 'chafariz') roomNameToId['chafariz suite'] = room.id;
+        if (room.id === 'library') roomNameToId['library suite'] = room.id;
+        if (room.id === 'isabel') roomNameToId['isabel'] = room.id;
+        if (room.id === 'dorm_oh') {
+          roomNameToId['master bunk 1'] = room.id;
+          roomNameToId['master bunk 2'] = room.id;
+          roomNameToId['master bunk 3'] = room.id;
+          roomNameToId['master bunk 4'] = room.id;
+          roomNameToId['master bunk 5'] = room.id;
+          roomNameToId['master bunk 6'] = room.id;
+        }
+
+        // Blue House
+        if (room.id === 'ensuite') roomNameToId['en suite'] = room.id;
+        if (room.id === 'sunny') roomNameToId['sunny'] = room.id;
+        if (room.id === 'normal_s') roomNameToId['normal south'] = room.id;
+        if (room.id === 'normal_m') roomNameToId['normal middle'] = room.id;
+        if (room.id === 'normal_n') roomNameToId['normal north'] = room.id;
+        if (room.id === 'pool') roomNameToId['pool'] = room.id;
+        if (room.id === 'downstairs') roomNameToId['downstairs'] = room.id;
+        if (room.id === 'apartment') roomNameToId['apartment'] = room.id;
+        if (room.id === 'dorm_bh') {
+          roomNameToId['bunk 1'] = room.id;
+          roomNameToId['bunk 2'] = room.id;
+          roomNameToId['bunk 3'] = room.id;
+          roomNameToId['bunk 4'] = room.id;
+        }
+
+        // Camping
+        if (room.id === 'van') {
+          roomNameToId['a'] = room.id;
+          roomNameToId['b'] = room.id;
+          roomNameToId['c'] = room.id;
+          roomNameToId['d'] = room.id;
+        }
+
+        // Tipi
+        if (room.id === 'tipi') {
+          roomNameToId['1'] = room.id;
+          roomNameToId['1.0'] = room.id;
+          roomNameToId['2'] = room.id;
+          roomNameToId['2.0'] = room.id;
+          roomNameToId['3'] = room.id;
+          roomNameToId['3.0'] = room.id;
+          roomNameToId['4'] = room.id;
+          roomNameToId['4.0'] = room.id;
+        }
       }
 
       // Read dates and bookings (starting from row 6, index 5)
