@@ -348,11 +348,29 @@ function checkRoomAvailability(room, bookings, fromDate, toDate) {
   // For each day in the requested range, count how many beds/spots are booked
   // If ANY day is fully booked, the room is unavailable for that date range
 
-  // Get all dates in the requested range
-  const requestedDates = [];
-  for (let d = new Date(fromDate); d < toDate; d.setDate(d.getDate() + 1)) {
-    requestedDates.push(d.toISOString().split('T')[0]);
+  // IMPORTANT: Checkout date is NOT occupied (guest leaves that morning)
+  // So for April 1-5 booking: April 1,2,3,4 are occupied, April 5 is FREE
+
+  // Helper function to get date string without timezone issues
+  function toDateString(dateObj) {
+    const d = new Date(dateObj);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
+
+  // Get all dates in the requested range (arrival inclusive, departure exclusive)
+  const requestedDates = [];
+  const current = new Date(fromDate);
+  const end = new Date(toDate);
+
+  while (current < end) {
+    requestedDates.push(toDateString(current));
+    current.setDate(current.getDate() + 1);
+  }
+
+  Logger.log('Checking availability for ' + room.id + ' for dates: ' + requestedDates.join(', '));
 
   // For each day, count bookings
   let maxBookedOnAnyDay = 0;
@@ -360,11 +378,14 @@ function checkRoomAvailability(room, bookings, fromDate, toDate) {
     let bookedOnThisDay = 0;
     for (const booking of bookings) {
       if (booking.roomId === room.id) {
-        const bookingDate = new Date(booking.date).toISOString().split('T')[0];
+        const bookingDate = toDateString(booking.date);
         if (bookingDate === dateStr) {
           bookedOnThisDay++;
         }
       }
+    }
+    if (bookedOnThisDay > 0) {
+      Logger.log('  ' + dateStr + ': ' + bookedOnThisDay + ' booking(s)');
     }
     maxBookedOnAnyDay = Math.max(maxBookedOnAnyDay, bookedOnThisDay);
   }
