@@ -1,64 +1,94 @@
-# Room Pricing Display Fix - Summary
+# Room Pricing & Availability System - Summary
 
-## Problem
-Room prices were displaying inconsistently - some showed daily rates, some weekly, some monthly, regardless of the actual stay duration and pricing tier being used for billing.
+## Problems Solved
+1. Room prices were displaying inconsistently - not showing the pricing tier actually used for billing
+2. All rooms were showing as available even when booked
+3. Multi-occupancy rooms (dorms) weren't tracking capacity correctly
 
 ## Solution
-Fixed the pricing calculation in the backend (Apps Script) to correctly implement your pricing rules and display the appropriate rate tier.
+- Backend (Apps Script) now calculates correct pricing with 4-tier system
+- Calendar-based availability reads from "valley rooms" sheet
+- Proper capacity tracking for dorms and camping spots
 
-## New Pricing Logic (Implemented in Code.gs)
+## Pricing Logic (Implemented in Code.gs)
 
 ### For stays ≥ 28 days:
 - **Calculation**: Monthly rate ÷ 30.5 × number of days
 - **Display**: "€X/month" (shows the monthly rate as reference)
 - **Example**: 35 days, monthly rate €600 → charges €687 (600 ÷ 30.5 × 35), shows "€600/month"
 
-### For stays < 28 days:
-Compare two options and use the cheaper one:
+### For stays 14-27 days:
+Compare three options and use the cheapest:
+1. **2-week pricing**: 2-week rate ÷ 14 × number of days → Display "€X/2 weeks"
+2. **Weekly pricing**: Weekly rate ÷ 7 × number of days → Display "€X/week"
+3. **Monthly pricing**: Full monthly rate (no proration) → Display "€X/month"
 
-**Option A - Monthly pricing:**
-- Full monthly rate (no proration)
-- Display: "€X/month"
-
-**Option B - Weekly pricing:**
-- Weekly rate ÷ 7 × number of days
-- Display: "€X/week"
-
-**Example 1**: 20 days, weekly €180, monthly €600
+**Example**: 20 days, 2-week €300, weekly €180, monthly €600
+- 2-week option: (300 ÷ 14 × 20) = €429
 - Weekly option: (180 ÷ 7 × 20) = €514
 - Monthly option: €600
-- **Result**: Charge €514, show "€180/week"
+- **Result**: Charge €429, show "€300/2 weeks"
 
-**Example 2**: 20 days, weekly €200, monthly €500
-- Weekly option: (200 ÷ 7 × 20) = €571
-- Monthly option: €500
-- **Result**: Charge €500, show "€500/month"
+### For stays < 14 days:
+Compare two options and use the cheaper one:
+1. **Weekly pricing**: Weekly rate ÷ 7 × number of days → Display "€X/week"
+2. **Monthly pricing**: Full monthly rate (no proration) → Display "€X/month"
+
+**Example**: 10 days, weekly €180, monthly €600
+- Weekly option: (180 ÷ 7 × 10) = €257
+- Monthly option: €600
+- **Result**: Charge €257, show "€180/week"
 
 ### All prices are rounded to whole numbers (no cents)
 
+## Availability System
+
+### Calendar-Based Booking
+- Reads from "valley rooms" sheet (calendar format)
+- Each column represents a room, rows are dates, cells contain guest names
+- Automatically maps room names between calendar and pricing sheets
+- Supports multi-capacity rooms (dorms, camping)
+
+### Room Name Mapping
+System automatically maps variations:
+- **Blue House**: "en suite" → "ensuite", "normal south" → "normal_s", etc.
+- **Old House**: "octopus 1" → "oct-1", "orange" → "orange", etc.
+- **Dorms**: "bunk 1-4" all map to "dorm_bh" (4 total beds)
+- **Camping**: "van 1-4" all map to "van" (4 total spots)
+
+### Capacity Tracking
+- **Single rooms**: Capacity = 1
+- **Blue House dorm**: Capacity = 4 beds
+- **Old House dorm**: Capacity = 6 beds
+- **Camping (van)**: Capacity = 4 spots
+- **Camping (tipi)**: Capacity = 4 spots
+
+System counts bookings per day and shows room as unavailable when capacity is reached.
+
 ## Files Changed
 
-### 1. **Code.gs** (NEW - Backend)
-- Complete rewrite of pricing calculation logic
-- Function `calculateRoomPrice()` implements the exact rules above
-- Ensures backend sends the correct price tier used for billing
+### 1. **Code.gs** (Backend - Apps Script)
+- `calculateRoomPrice()`: 4-tier pricing logic (daily/weekly/2-week/monthly)
+- Calendar parsing from "valley rooms" sheet
+- Room name mapping for all buildings
+- Multi-capacity availability tracking
+- Email notifications to theonlyfool@foolsvalley.com
+- Automatic saving to "applications" sheet
 
 ### 2. **apply.html** (Frontend)
-- Line ~1006-1020: Added `normalizePriceBreakdown()` function
-- Line ~1071: Apply normalized breakdown to room cards
-- Line ~1127: Apply normalized breakdown to review section
-- Function now just ensures no cents are displayed (backend does the heavy lifting)
+- Updated APPS_SCRIPT_URL to new deployment
+- Added 2-week column to pricing table
+- `normalizePriceBreakdown()`: Removes cents from display
+- Connects to Code.gs backend for room data and availability
 
-### 3. **script application sheet.html** (Frontend)
-- Line ~1078-1092: Added `normalizePriceBreakdown()` function
-- Line ~1138: Apply normalized breakdown to room cards
-- Line ~1188: Apply normalized breakdown to review section
-- Same cleanup as apply.html
+### 3. **script application sheet.html** (Alternative Frontend)
+- Same updates as apply.html for consistency
+- Alternative application form design
 
-### 4. **APPS_SCRIPT_DEPLOYMENT.md** (NEW - Documentation)
-- Step-by-step instructions for deploying the updated Apps Script
+### 4. **APPS_SCRIPT_DEPLOYMENT.md** (Documentation)
+- Step-by-step deployment instructions
 - Google Sheet structure requirements
-- Testing checklist
+- Troubleshooting guide
 
 ## Next Steps
 
@@ -83,21 +113,47 @@ Compare two options and use the cheaper one:
 Given a room with:
 - Daily: €35
 - Weekly: €180 (€25.71/day)
+- 2-week: €300 (€21.43/day)
 - Monthly: €600 (€19.67/day if prorated over 30.5 days)
 
-| Stay Duration | Calculation | Charge | Display |
-|--------------|-------------|--------|---------|
-| 7 days | (180 ÷ 7 × 7) = 180 vs 600 → weekly cheaper | €180 | €180/week |
-| 14 days | (180 ÷ 7 × 14) = 360 vs 600 → weekly cheaper | €360 | €180/week |
-| 21 days | (180 ÷ 7 × 21) = 540 vs 600 → weekly cheaper | €540 | €180/week |
-| 27 days | (180 ÷ 7 × 27) = 694 vs 600 → monthly cheaper | €600 | €600/month |
-| 28 days | (600 ÷ 30.5 × 28) = 551 | €551 | €600/month |
-| 35 days | (600 ÷ 30.5 × 35) = 689 | €689 | €600/month |
-| 60 days | (600 ÷ 30.5 × 60) = 1,180 | €1,180 | €600/month |
+| Stay Duration | Options Compared | Charge | Display |
+|--------------|------------------|--------|---------|
+| 7 days | Weekly: (180÷7×7)=180 vs Monthly: 600 → weekly | €180 | €180/week |
+| 14 days | 2wk: (300÷14×14)=300 vs Wk: 360 vs Mo: 600 → 2-week | €300 | €300/2 weeks |
+| 20 days | 2wk: (300÷14×20)=429 vs Wk: 514 vs Mo: 600 → 2-week | €429 | €300/2 weeks |
+| 27 days | 2wk: (300÷14×27)=579 vs Wk: 694 vs Mo: 600 → 2-week | €579 | €300/2 weeks |
+| 28 days | Monthly prorated: (600÷30.5×28) = 551 | €551 | €600/month |
+| 35 days | Monthly prorated: (600÷30.5×35) = 689 | €689 | €600/month |
+| 60 days | Monthly prorated: (600÷30.5×60) = 1,180 | €1,180 | €600/month |
+
+## Google Sheet Structure
+
+### "prices" Sheet (Room Pricing)
+- Column A: Room ID (e.g., "ensuite", "oct-1", "dorm_bh")
+- Column B: Room Name (e.g., "En Suite", "Octopus Room 1")
+- Column C: Building (e.g., "Blue House", "Old House")
+- Column D: Monthly Rate (€)
+- Column E: 2-Week Rate (€)
+- Column F: Weekly Rate (€)
+- Column G: Daily Rate (€)
+- Column H: Photo filename (e.g., "ensuite.jpg")
+- Column I: Description
+
+### "valley rooms" Sheet (Calendar/Bookings)
+- Row 1: Room names (header)
+- Row 2+: Dates in column A, guest names in room columns
+- Example: If "Agartha" appears in "bunk 1" column on April 5th, that bed is booked
+
+### "applications" Sheet
+- Auto-created when first application submitted
+- Stores all application form data
 
 ## Important Notes
 
 - The displayed rate (e.g., "€600/month") is the **base rate**, not the final charge
 - For ≥ 28 days, the final charge is prorated (base rate ÷ 30.5 × days)
-- For < 28 days, the system picks monthly OR weekly, whichever is cheaper
+- For 14-27 days, the system compares 2-week, weekly, and monthly rates
+- For < 14 days, the system compares weekly and monthly rates
 - All final prices are whole numbers (no cents)
+- Room availability is checked in real-time against the calendar
+- Dorms and camping spots track multiple occupants per day
