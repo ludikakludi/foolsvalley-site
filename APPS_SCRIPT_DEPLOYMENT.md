@@ -2,10 +2,11 @@
 
 ## What Changed
 
-### 1. 4-Tier Pricing System
-- **≥ 28 days**: Monthly price ÷ 30.5 × number of days (show as "€X/month")
-- **14-27 days**: Compare 2-week, weekly, and monthly rates - use cheapest
-- **< 14 days**: Compare weekly and monthly rates - use cheapest
+### 1. Daily Baseline + Tier Discount Pricing
+- **Daily rate is baseline**: Always calculated as numDays × daily rate
+- **Tier discounts**: Weekly, 2-week, and monthly rates act as discounts (full prices, not prorated)
+- **≥ 28 days**: Monthly rate is prorated (monthly ÷ 30.5 × days)
+- **System picks cheapest**: Automatically selects best price for the guest
 - All prices rounded to whole numbers (no cents)
 
 ### 2. Calendar-Based Availability
