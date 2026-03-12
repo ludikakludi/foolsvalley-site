@@ -500,6 +500,14 @@ function handleSubmission(data) {
       'pending'
     ]);
 
+    // Record booking in valley rooms calendar (in gray until approved)
+    try {
+      recordBookingInCalendar(app, ss);
+    } catch (calendarErr) {
+      Logger.log('Calendar recording failed: ' + calendarErr.message);
+      // Don't fail the submission if calendar recording fails
+    }
+
     // Optional: Send email notification
     try {
       sendApplicationNotification(app);
@@ -514,6 +522,156 @@ function handleSubmission(data) {
     Logger.log('Error in handleSubmission: ' + err.message);
     return jsonResponse({ error: err.message, success: false });
   }
+}
+
+// ============================================================
+// RECORD BOOKING IN CALENDAR (GRAY UNTIL APPROVED)
+// ============================================================
+function recordBookingInCalendar(app, ss) {
+  const valleySheet = ss.getSheetByName('valley rooms');
+  if (!valleySheet) {
+    Logger.log('valley rooms sheet not found, skipping calendar recording');
+    return;
+  }
+
+  const calendarData = valleySheet.getDataRange().getValues();
+
+  // Row 3 (index 2) has room names, starting from column F (index 5)
+  const roomRow = calendarData[2];
+
+  // Map room ID to calendar column name(s)
+  const roomIdToCalendarNames = getRoomIdToCalendarNameMapping(app.roomId);
+
+  if (!roomIdToCalendarNames || roomIdToCalendarNames.length === 0) {
+    Logger.log('No calendar mapping found for room ID: ' + app.roomId);
+    return;
+  }
+
+  // Find column indices for this room
+  const targetColumns = [];
+  for (let col = 5; col < roomRow.length; col++) {
+    const roomName = String(roomRow[col] || '').toLowerCase().trim();
+    if (roomIdToCalendarNames.includes(roomName)) {
+      targetColumns.push(col);
+    }
+  }
+
+  if (targetColumns.length === 0) {
+    Logger.log('Room columns not found in calendar for: ' + app.roomId);
+    return;
+  }
+
+  // For multi-capacity rooms, find first available column
+  let targetColumn = targetColumns[0];
+  if (targetColumns.length > 1) {
+    // Check which bed/spot is available during this date range
+    targetColumn = findAvailableColumn(calendarData, targetColumns, app.arrivalDate, app.departureDate);
+  }
+
+  // Find date rows and fill in booking
+  const arrivalDate = new Date(app.arrivalDate);
+  const departureDate = new Date(app.departureDate);
+
+  for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+    const rowData = calendarData[row];
+
+    // Get date from columns B, C, or D
+    let dateVal = null;
+    for (let col = 1; col <= 3; col++) {
+      if (rowData[col] instanceof Date) {
+        dateVal = new Date(rowData[col]);
+        break;
+      }
+    }
+
+    if (!dateVal) continue;
+
+    // Check if this date is within booking range (arrival inclusive, departure exclusive)
+    if (dateVal >= arrivalDate && dateVal < departureDate) {
+      // Write guest name in gray
+      const cell = valleySheet.getRange(row + 1, targetColumn + 1); // +1 for 1-based indexing
+      cell.setValue(app.name);
+      cell.setFontColor('#999999'); // Light gray text
+      cell.setNote('Pending approval - from application form');
+    }
+  }
+
+  Logger.log('Booking recorded in calendar for ' + app.name + ' in column ' + targetColumn);
+}
+
+// Map room IDs to calendar column names
+function getRoomIdToCalendarNameMapping(roomId) {
+  const mapping = {
+    // Blue House
+    'ensuite': ['en suite'],
+    'sunny': ['sunny'],
+    'normal_s': ['normal south'],
+    'normal_m': ['normal middle'],
+    'normal_n': ['normal north'],
+    'pool': ['pool'],
+    'downstairs': ['downstairs'],
+    'apartment': ['apartment'],
+    'dorm_bh': ['bunk 1', 'bunk 2', 'bunk 3', 'bunk 4'],
+
+    // Old House / Octopus
+    'mcurve': ['m curve suite'],
+    'mbig': ['m big suite'],
+    'mdouble': ['m double'],
+    'studio': ['studio'],
+    'galeria': ['galeria'],
+    'chafariz': ['chafariz suite'],
+    'library': ['library suite'],
+    'isabel': ['isabel'],
+    'dorm_oh': ['master bunk 1', 'master bunk 2', 'master bunk 3', 'master bunk 4', 'master bunk 5', 'master bunk 6'],
+
+    // Camping
+    'van': ['a', 'b', 'c', 'd'],
+    'tipi': ['1', '2', '3', '4']
+  };
+
+  return mapping[roomId] || [];
+}
+
+// Find first available column for multi-capacity rooms
+function findAvailableColumn(calendarData, columnIndices, arrivalDate, departureDate) {
+  const arrival = new Date(arrivalDate);
+  const departure = new Date(departureDate);
+
+  // Check each column to see if it's available for the entire date range
+  for (const colIdx of columnIndices) {
+    let isAvailable = true;
+
+    for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+      const rowData = calendarData[row];
+
+      let dateVal = null;
+      for (let col = 1; col <= 3; col++) {
+        if (rowData[col] instanceof Date) {
+          dateVal = new Date(rowData[col]);
+          break;
+        }
+      }
+
+      if (!dateVal) continue;
+
+      // Check if this date is in booking range
+      if (dateVal >= arrival && dateVal < departure) {
+        // Check if this column/bed is already occupied
+        const cellValue = rowData[colIdx];
+        if (cellValue && String(cellValue).trim().length > 0) {
+          isAvailable = false;
+          break;
+        }
+      }
+    }
+
+    if (isAvailable) {
+      return colIdx; // Return first available column
+    }
+  }
+
+  // If no column is completely available, use first one (will overlap, but rare case)
+  return columnIndices[0];
 }
 
 // ============================================================
