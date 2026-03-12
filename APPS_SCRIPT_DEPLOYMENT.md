@@ -15,7 +15,7 @@
 - Tracks multi-occupancy rooms (dorms: 4-6 beds, camping: 4 spots each)
 
 ### 3. Application Processing
-- Sends emails to theonlyfool@foolsvalley.com
+- Sends **comprehensive emails** to theonlyfool@foolsvalley.com with ALL application responses
 - Saves submissions to "applications" sheet
 - **Automatically records bookings** in "valley rooms" calendar (gray text until approved)
 

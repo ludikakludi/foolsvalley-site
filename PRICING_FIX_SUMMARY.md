@@ -106,7 +106,7 @@ When someone submits an application:
 - Room name mapping for all buildings
 - Multi-capacity availability tracking
 - **Automatic calendar recording**: New bookings appear in gray text until approved
-- Email notifications to theonlyfool@foolsvalley.com
+- **Comprehensive email notifications**: Sends ALL application responses to theonlyfool@foolsvalley.com
 - Automatic saving to "applications" sheet
 
 ### 2. **apply.html** (Frontend)
