@@ -579,6 +579,7 @@ function recordBookingInCalendar(app, ss) {
   // Find date rows and fill in booking
   const arrivalDate = new Date(app.arrivalDate);
   const departureDate = new Date(app.departureDate);
+  let isFirstCell = true; // Track first cell to add note only once
 
   for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
     const rowData = calendarData[row];
@@ -600,7 +601,12 @@ function recordBookingInCalendar(app, ss) {
       const cell = valleySheet.getRange(row + 1, targetColumn + 1); // +1 for 1-based indexing
       cell.setValue(app.name);
       cell.setFontColor('#999999'); // Light gray text
-      cell.setNote('Pending approval - from application form');
+
+      // Only add note to the first cell
+      if (isFirstCell) {
+        cell.setNote('Pending approval - from application form');
+        isFirstCell = false;
+      }
     }
   }
 
