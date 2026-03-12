@@ -1320,7 +1320,7 @@ function buildPriceTable(container, rooms) {
   });
 
   var html = '<table style="width:100%; border-collapse:collapse;">';
-  html += '<tr style="border-bottom:2px solid var(--border); text-align:left;"><th style="padding:0.4rem 0.3rem;">room</th><th style="padding:0.4rem 0.3rem; text-align:right;">daily</th><th style="padding:0.4rem 0.3rem; text-align:right;">weekly</th><th style="padding:0.4rem 0.3rem; text-align:right;">monthly</th></tr>';
+  html += '<tr style="border-bottom:2px solid var(--border); text-align:left;"><th style="padding:0.4rem 0.3rem;">room</th><th style="padding:0.4rem 0.3rem; text-align:right;">daily</th><th style="padding:0.4rem 0.3rem; text-align:right;">weekly</th><th style="padding:0.4rem 0.3rem; text-align:right;">2 weeks</th><th style="padding:0.4rem 0.3rem; text-align:right;">monthly</th></tr>';
 
   order.forEach(function(b) {
     if (!buildings[b] || buildings[b].length === 0) return;
@@ -1329,6 +1329,7 @@ function buildPriceTable(container, rooms) {
       html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + r.name + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.daily + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.weekly + '</td>';
+      html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.twoWeek + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.monthly + '</td></tr>';
     });
   });

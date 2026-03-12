@@ -44,25 +44,44 @@ function doPost(e) {
 }
 
 // ============================================================
-// PRICING CALCULATION - CORRECTED LOGIC
+// PRICING CALCULATION - WITH 2-WEEK RATE
 // ============================================================
-function calculateRoomPrice(dailyRate, weeklyRate, monthlyRate, numDays) {
+function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, numDays) {
   let roomPrice, priceBreakdown;
 
-  // Pricing logic per requirements:
+  // Pricing logic:
   // >= 28 days: monthly rate ÷ 30.5 × days
-  // < 28 days: compare (monthly rate) vs (weekly daily rate × days), use cheaper
+  // >= 14 days and < 28 days: compare (2-week prorated) vs (weekly prorated) vs (monthly flat)
+  // < 14 days: compare (weekly prorated) vs (monthly flat)
 
   if (numDays >= 28) {
     // Use monthly rate, prorated by 30.5 days per month
     roomPrice = Math.round((monthlyRate / 30.5) * numDays);
     priceBreakdown = '€' + monthlyRate + '/month';
-  } else {
-    // Calculate what it would cost using weekly rate
+  } else if (numDays >= 14) {
+    // Calculate all three options
+    const twoWeekDailyRate = twoWeekRate / 14;
+    const twoWeekTotal = Math.round(twoWeekDailyRate * numDays);
+
     const weeklyDailyRate = weeklyRate / 7;
     const weeklyTotal = Math.round(weeklyDailyRate * numDays);
 
-    // Compare monthly vs weekly pricing
+    // Compare all three: two-week prorated, weekly prorated, monthly flat
+    const options = [
+      { price: twoWeekTotal, breakdown: '€' + twoWeekRate + '/2 weeks', rate: twoWeekRate },
+      { price: weeklyTotal, breakdown: '€' + weeklyRate + '/week', rate: weeklyRate },
+      { price: monthlyRate, breakdown: '€' + monthlyRate + '/month', rate: monthlyRate }
+    ];
+
+    // Find the cheapest option
+    const cheapest = options.reduce((min, opt) => opt.price < min.price ? opt : min);
+    roomPrice = cheapest.price;
+    priceBreakdown = cheapest.breakdown;
+  } else {
+    // < 14 days: compare weekly vs monthly
+    const weeklyDailyRate = weeklyRate / 7;
+    const weeklyTotal = Math.round(weeklyDailyRate * numDays);
+
     if (monthlyRate <= weeklyTotal) {
       // Monthly is cheaper or equal - charge full monthly price
       roomPrice = monthlyRate;
@@ -145,12 +164,13 @@ function handleAvailability(e) {
         id: row[0],           // Column A: room_id
         name: row[1],         // Column B: name
         building: row[2],     // Column C: building
-        desc: row[8] || '',   // Column I: description (moved)
-        photo: row[7] || '',  // Column H: photo (UPDATED)
+        desc: row[8] || '',   // Column I: description
+        photo: row[7] || '',  // Column H: photo
         capacity: capacity,
-        daily: parseFloat(row[5]) || 0,    // Column F: daily
-        weekly: parseFloat(row[4]) || 0,   // Column E: weekly
-        monthly: parseFloat(row[3]) || 0,  // Column D: monthly
+        daily: parseFloat(row[6]) || 0,      // Column G: daily (UPDATED)
+        weekly: parseFloat(row[5]) || 0,     // Column F: weekly (UPDATED)
+        twoWeek: parseFloat(row[4]) || 0,    // Column E: two weeks (NEW)
+        monthly: parseFloat(row[3]) || 0,    // Column D: monthly
         active: true  // All rooms in prices sheet are active
       };
 
@@ -227,7 +247,7 @@ function handleAvailability(e) {
 
       if (available.isAvailable) {
         // Calculate pricing using correct logic
-        const pricing = calculateRoomPrice(room.daily, room.weekly, room.monthly, numDays);
+        const pricing = calculateRoomPrice(room.daily, room.weekly, room.twoWeek, room.monthly, numDays);
 
         // Calculate daily fee (€20/day per person)
         const dailyFee = numDays * 20;
@@ -321,7 +341,7 @@ function handlePrices(e) {
     const rooms = [];
 
     // Parse rooms (skip header row)
-    // Prices sheet columns: room_id, name, building, monthly, weekly, daily, photo, description
+    // Prices sheet columns: room_id, name, building, monthly, twoWeek, weekly, daily, photo, description
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
@@ -330,9 +350,10 @@ function handlePrices(e) {
         id: row[0],
         name: row[1],
         building: row[2],
-        daily: Math.round(parseFloat(row[5]) || 0),    // Column F
-        weekly: Math.round(parseFloat(row[4]) || 0),   // Column E
-        monthly: Math.round(parseFloat(row[3]) || 0),  // Column D
+        daily: Math.round(parseFloat(row[6]) || 0),      // Column G
+        weekly: Math.round(parseFloat(row[5]) || 0),     // Column F
+        twoWeek: Math.round(parseFloat(row[4]) || 0),    // Column E (NEW)
+        monthly: Math.round(parseFloat(row[3]) || 0),    // Column D
         active: true
       };
 
