@@ -65,6 +65,15 @@ System automatically maps variations:
 
 System counts bookings per day and shows room as unavailable when capacity is reached.
 
+### Automatic Calendar Recording
+When someone submits an application:
+- **Guest name** is automatically written to the "valley rooms" calendar
+- **Gray text** (#999999) indicates pending approval
+- **Cell note** says "Pending approval - from application form"
+- **Date range** covers arrival to departure (arrival inclusive, departure exclusive)
+- **Multi-capacity rooms** (dorms/camping): System finds first available bed/spot
+- **Manual approval**: Change text from gray to black to confirm booking
+
 ## Files Changed
 
 ### 1. **Code.gs** (Backend - Apps Script)
@@ -72,6 +81,7 @@ System counts bookings per day and shows room as unavailable when capacity is re
 - Calendar parsing from "valley rooms" sheet
 - Room name mapping for all buildings
 - Multi-capacity availability tracking
+- **Automatic calendar recording**: New bookings appear in gray text until approved
 - Email notifications to theonlyfool@foolsvalley.com
 - Automatic saving to "applications" sheet
 

@@ -16,6 +16,7 @@
 ### 3. Application Processing
 - Sends emails to theonlyfool@foolsvalley.com
 - Saves submissions to "applications" sheet
+- **Automatically records bookings** in "valley rooms" calendar (gray text until approved)
 
 ## How to Deploy
 
@@ -125,6 +126,13 @@ After deployment, test these scenarios:
 1. Fill out and submit an application
 2. Check email arrives at theonlyfool@foolsvalley.com
 3. Verify data appears in "applications" sheet
+4. **Check "valley rooms" calendar**:
+   - Guest name should appear in correct room column(s)
+   - Text should be **gray** (#999999)
+   - Cell should have a note: "Pending approval - from application form"
+   - Booking should cover all dates from arrival to departure
+   - For dorms/camping: Check it used an available bed/spot
+5. **Manual approval**: Change text color from gray to black to confirm booking
 
 ## Troubleshooting
 
