@@ -146,18 +146,20 @@ function handleAvailability(e) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
 
-      // Determine capacity based on room type
+      // Determine capacity based on room type and specific room ID
       let capacity = 1;  // Default for private rooms
       const roomName = row[1] || '';
       const roomId = row[0] || '';
 
-      // Dorms have multiple beds
-      if (roomName.toLowerCase().includes('dorm') || roomId.includes('dorm')) {
-        capacity = 6;  // Adjust this number as needed for each dorm
-      }
-      // Camping spots can have multiple spaces
-      if (row[2] === 'Camping' || roomName.toLowerCase().includes('tent') || roomName.toLowerCase().includes('van')) {
-        capacity = 10;  // Multiple camping spots
+      // Set specific capacities for multi-bed rooms
+      if (roomId === 'dorm_oh') {
+        capacity = 6;  // Old House dorm has 6 bunks
+      } else if (roomId === 'dorm_bh') {
+        capacity = 4;  // Blue House dorm has 4 bunks
+      } else if (roomId === 'van') {
+        capacity = 4;  // 4 camping spots (A, B, C, D)
+      } else if (roomId === 'tipi') {
+        capacity = 4;  // 4 tipi spots
       }
 
       const room = {
@@ -335,7 +337,8 @@ function handleAvailability(e) {
 // ============================================================
 function checkRoomAvailability(room, bookings, fromDate, toDate) {
   // For calendar format, bookings is an array of {roomId, date}
-  // Check if ANY day in the requested range is booked
+  // For each day in the requested range, count how many beds/spots are booked
+  // If ANY day is fully booked, the room is unavailable for that date range
 
   // Get all dates in the requested range
   const requestedDates = [];
@@ -343,26 +346,28 @@ function checkRoomAvailability(room, bookings, fromDate, toDate) {
     requestedDates.push(d.toISOString().split('T')[0]);
   }
 
-  // Count how many of those dates are booked for this room
-  let bookedDays = 0;
-  for (const booking of bookings) {
-    if (booking.roomId === room.id) {
-      const bookingDate = new Date(booking.date).toISOString().split('T')[0];
-      if (requestedDates.includes(bookingDate)) {
-        bookedDays++;
+  // For each day, count bookings
+  let maxBookedOnAnyDay = 0;
+  for (const dateStr of requestedDates) {
+    let bookedOnThisDay = 0;
+    for (const booking of bookings) {
+      if (booking.roomId === room.id) {
+        const bookingDate = new Date(booking.date).toISOString().split('T')[0];
+        if (bookingDate === dateStr) {
+          bookedOnThisDay++;
+        }
       }
     }
+    maxBookedOnAnyDay = Math.max(maxBookedOnAnyDay, bookedOnThisDay);
   }
 
-  // If the room has capacity > 1 (dorms), it might still be available
-  // For single-capacity rooms, any booked day means unavailable
-  const isFullyBooked = (room.capacity === 1 && bookedDays > 0);
-  const availableCount = isFullyBooked ? 0 : room.capacity;
-  const isAvailable = !isFullyBooked;
+  // Calculate available capacity (minimum across all days)
+  const availableCount = Math.max(0, room.capacity - maxBookedOnAnyDay);
+  const isAvailable = availableCount > 0;
 
   // Generate display name for multi-capacity rooms
   let displayName = room.name;
-  if (room.capacity > 1) {
+  if (room.capacity > 1 && isAvailable) {
     const unitType = room.building === 'Camping' ? 'spot' : 'bed';
     const plural = availableCount !== 1 ? 's' : '';
     displayName = room.name + ' (' + availableCount + ' ' + unitType + plural + ' available)';
