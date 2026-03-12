@@ -719,19 +719,67 @@ function sendApplicationNotification(app) {
   const body = `
 New residency application received:
 
+============================================================
+APPLICANT INFORMATION
+============================================================
+
 Name: ${app.name}
 Email: ${app.email}
-Arrival: ${app.arrivalDate}
-Departure: ${app.departureDate}
+
+============================================================
+DATES & ACCOMMODATION
+============================================================
+
+Arrival Date: ${app.arrivalDate}
+Departure Date: ${app.departureDate}
 Duration: ${app.numDays} days
 
 Room: ${app.roomName}
 Building: ${app.building}
+Room Preference: ${app.roomPreference || 'None specified'}
+
+============================================================
+PRICING
+============================================================
+
+Room Price: €${app.roomPrice} (${app.priceBreakdown})
+Daily Fee (€20/day): €${app.dailyFee}
 Total Price: €${app.totalPrice}
 
-Main Quest: ${app.mainQuest}
+============================================================
+APPLICATION RESPONSES
+============================================================
 
-View full application in the Applications sheet.
+Have you visited Fools' Valley before?
+${app.visited || 'no'}
+
+Are you interested in joining our Temporary Community (TC)?
+${app.tcInterest || 'Not specified'}
+
+What is your main quest?
+${app.mainQuest || 'Not specified'}
+
+What were your past quests?
+${app.pastQuests || 'Not specified'}
+
+How did you hear about us / Who referred you?
+${app.reference || 'Not specified'}
+
+What will you use your time at Fools' Valley for?
+${app.useTimeFor || 'Not specified'}
+
+How do you want to contribute to the community and the place?
+${app.contribute || 'Not specified'}
+
+What would your ideal day at Fools' Valley look like?
+${app.idealDay || 'Not specified'}
+
+Do you have any questions for us?
+${app.questions || 'No questions'}
+
+============================================================
+
+View full application in the Applications sheet of your Google Spreadsheet.
 `;
 
   MailApp.sendEmail(recipient, subject, body);
