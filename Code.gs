@@ -44,65 +44,38 @@ function doPost(e) {
 }
 
 // ============================================================
-// PRICING CALCULATION - DAILY BASELINE WITH TIER DISCOUNTS
+// PRICING CALCULATION - SIMPLE TIER BREAKPOINTS
 // ============================================================
 function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, numDays) {
-  // New pricing logic:
-  // 1. Daily rate is the baseline: numDays × daily rate
-  // 2. For stays < 28 days: Tier prices (weekly/2-week/monthly) give discounts if cheaper
-  // 3. For stays >= 28 days: Only monthly rate (prorated) vs daily
-  // 4. Tier prices are FULL prices (not prorated), except monthly for >= 28 days
+  // Simple tier pricing:
+  // 1-6 days: Daily rate (numDays × daily)
+  // 7-13 days: Weekly flat rate
+  // 14-29 days: 2-week flat rate
+  // 30+ days: Monthly rate prorated (monthly ÷ 30.5 × numDays)
 
-  const options = [];
+  let roomPrice, priceBreakdown;
 
-  // Option 1: Daily rate (always available)
-  const dailyTotal = Math.round(numDays * dailyRate);
-  options.push({
-    price: dailyTotal,
-    breakdown: '€' + dailyRate + '/day'
-  });
-
-  if (numDays >= 28) {
-    // For stays >= 28 days, ONLY offer monthly rate (prorated)
-    const monthlyProrated = Math.round((monthlyRate / 30.5) * numDays);
-    options.push({
-      price: monthlyProrated,
-      breakdown: '€' + monthlyRate + '/month'
-    });
+  if (numDays >= 30) {
+    // 30+ days: Prorated monthly rate
+    roomPrice = Math.round((monthlyRate / 30.5) * numDays);
+    priceBreakdown = '€' + monthlyRate + '/month';
+  } else if (numDays >= 14) {
+    // 14-29 days: Flat 2-week rate
+    roomPrice = twoWeekRate;
+    priceBreakdown = '€' + twoWeekRate + '/2 weeks';
+  } else if (numDays >= 7) {
+    // 7-13 days: Flat weekly rate
+    roomPrice = weeklyRate;
+    priceBreakdown = '€' + weeklyRate + '/week';
   } else {
-    // For stays < 28 days, offer weekly, 2-week, and monthly as flat-rate discounts
-
-    // Option 2: Weekly rate (full week price, if cheaper than daily)
-    if (weeklyRate && weeklyRate < dailyTotal) {
-      options.push({
-        price: weeklyRate,
-        breakdown: '€' + weeklyRate + '/week'
-      });
-    }
-
-    // Option 3: 2-week rate (full 2-week price, if cheaper)
-    if (twoWeekRate && twoWeekRate < dailyTotal) {
-      options.push({
-        price: twoWeekRate,
-        breakdown: '€' + twoWeekRate + '/2 weeks'
-      });
-    }
-
-    // Option 4: Monthly rate (full month price, if cheaper)
-    if (monthlyRate && monthlyRate < dailyTotal) {
-      options.push({
-        price: monthlyRate,
-        breakdown: '€' + monthlyRate + '/month'
-      });
-    }
+    // 1-6 days: Daily rate
+    roomPrice = Math.round(numDays * dailyRate);
+    priceBreakdown = '€' + dailyRate + '/day';
   }
 
-  // Find the cheapest option
-  const cheapest = options.reduce((min, opt) => opt.price < min.price ? opt : min);
-
   return {
-    roomPrice: cheapest.price,
-    priceBreakdown: cheapest.breakdown
+    roomPrice: roomPrice,
+    priceBreakdown: priceBreakdown
   };
 }
 
