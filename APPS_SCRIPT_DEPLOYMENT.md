@@ -19,6 +19,12 @@
 - Saves submissions to "applications" sheet
 - **Automatically records bookings** in "valley rooms" calendar (gray text until approved)
 
+### 4. Event Blocking
+- **Block all rooms** during special events/retreats
+- Configured at top of Code.gs in `EVENT_BLOCKS` array
+- Currently: July 4 - August 2, 2026 blocked for Summer Event
+- To add more events, edit the EVENT_BLOCKS array in Code.gs
+
 ## How to Deploy
 
 ### Option 1: Update Existing Apps Script
@@ -101,6 +107,34 @@ Example:
 ### 3. **"applications"** Sheet
 Auto-created on first submission. Stores all application form data.
 
+## Managing Event Blocks
+
+To block all rooms during special events (retreats, workshops, etc.):
+
+1. Open Code.gs in Apps Script editor
+2. Find the `EVENT_BLOCKS` array near the top (around line 12)
+3. Add/edit/remove event blocks:
+
+```javascript
+const EVENT_BLOCKS = [
+  {
+    name: 'Summer Event 2026',
+    startDate: '2026-07-04',  // July 4, 2026 (inclusive)
+    endDate: '2026-08-02'     // August 2, 2026 (exclusive - Aug 2 is free)
+  },
+  {
+    name: 'Winter Retreat',
+    startDate: '2026-12-20',
+    endDate: '2027-01-05'
+  }
+];
+```
+
+4. Save and redeploy
+5. All rooms will automatically be unavailable during these periods
+
+**Note:** Use format `YYYY-MM-DD` for dates. End date is exclusive (checkout day is free).
+
 ## Testing
 
 After deployment, test these scenarios:
@@ -122,6 +156,11 @@ After deployment, test these scenarios:
    - Blue House dorm (4 beds): Should disappear when all 4 bunks booked
    - Old House dorm (6 beds): Should disappear when all 6 bunks booked
 4. Test multi-day bookings: Room should be unavailable if ANY day in range is booked
+5. **Test event blocking**:
+   - Try booking dates July 4 - August 2, 2026
+   - ALL rooms should be unavailable (Summer Event 2026)
+   - Try dates that overlap partially (e.g., July 1-10)
+   - Should also show no rooms available
 
 ### Application Submission Tests
 1. Fill out and submit an application

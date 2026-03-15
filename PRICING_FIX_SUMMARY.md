@@ -98,6 +98,13 @@ System counts bookings per day and shows room as unavailable when capacity is re
 - **April 5 is available**: Another guest can check in the same day as previous checkout
 - **Same-day turnaround**: This allows back-to-back bookings with checkout/checkin on the same day
 
+### Event Blocking
+- **Special events**: All rooms can be blocked during specific date ranges
+- **Configured in Code.gs**: `EVENT_BLOCKS` array at top of file
+- **Currently blocked**: July 4 - August 2, 2026 (Summer Event 2026)
+- **Easy to manage**: Add/remove/edit event blocks in the array
+- Rooms automatically show as unavailable during blocked periods
+
 ### Automatic Calendar Recording
 When someone submits an application:
 - **Guest name** is automatically written to the "valley rooms" calendar
