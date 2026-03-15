@@ -8,6 +8,18 @@ const ROOMS_SHEET = 'prices';  // This has room data: IDs, names, buildings, dai
 const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 
+// Event Blocking - Block ALL rooms during special events
+// Add date ranges here to make all rooms unavailable
+const EVENT_BLOCKS = [
+  {
+    name: 'Summer Event 2026',
+    startDate: '2026-07-04',  // July 4, 2026
+    endDate: '2026-08-02'     // August 2, 2026 (exclusive - Aug 2 is free)
+  }
+  // Add more event blocks here as needed:
+  // { name: 'Winter Retreat', startDate: '2026-12-20', endDate: '2027-01-05' }
+];
+
 // ============================================================
 // MAIN HANDLER
 // ============================================================
@@ -346,6 +358,25 @@ function checkRoomAvailability(room, bookings, fromDate, toDate) {
   }
 
   Logger.log('Checking availability for ' + room.id + ' for dates: ' + requestedDates.join(', '));
+
+  // Check if any requested date falls within an event block
+  for (const eventBlock of EVENT_BLOCKS) {
+    const blockStart = new Date(eventBlock.startDate);
+    const blockEnd = new Date(eventBlock.endDate);
+
+    for (const dateStr of requestedDates) {
+      const checkDate = new Date(dateStr);
+      if (checkDate >= blockStart && checkDate < blockEnd) {
+        // Room is blocked due to event
+        Logger.log('  Room blocked by event: ' + eventBlock.name);
+        return {
+          isAvailable: false,
+          availableCount: 0,
+          displayName: room.name
+        };
+      }
+    }
+  }
 
   // For each day, count bookings
   let maxBookedOnAnyDay = 0;
