@@ -16,14 +16,20 @@
 **Daily rate is the baseline.** Tier prices (weekly/2-week/monthly) act as discounts and are only used when they're cheaper.
 
 ### The Algorithm:
-For any stay duration, the system compares:
 
-1. **Daily option** (always calculated): `numDays × daily rate`
+**For stays ≥ 28 days:**
+The system ONLY compares:
+1. **Daily option**: `numDays × daily rate`
+2. **Monthly option**: Monthly rate prorated (`monthly ÷ 30.5 × numDays`)
+
+Weekly and 2-week rates are NOT offered for long stays.
+
+**For stays < 28 days:**
+The system compares ALL options:
+1. **Daily option**: `numDays × daily rate`
 2. **Weekly option**: Full weekly rate (not prorated) - only if cheaper than daily total
 3. **2-week option**: Full 2-week rate (not prorated) - only if cheaper than daily total
-4. **Monthly option**:
-   - If ≥ 28 days: Monthly rate prorated (`monthly ÷ 30.5 × numDays`)
-   - If < 28 days: Full monthly rate - only if cheaper than daily total
+4. **Monthly option**: Full monthly rate - only if cheaper than daily total
 
 The system picks the **cheapest option** and displays which tier was used.
 
@@ -55,9 +61,16 @@ The system picks the **cheapest option** and displays which tier was used.
 - Monthly: €600 (not cheaper than 2-week)
 - **Result**: Charge €300, show "€300/2 weeks"
 
+**28-day stay** (same rates):
+- Daily: 28 × 35 = €980
+- Monthly prorated: (600 ÷ 30.5 × 28) = €551
+- Weekly/2-week NOT offered for stays ≥ 28 days
+- **Result**: Charge €551, show "€600/month"
+
 **30-day stay** (same rates):
 - Daily: 30 × 35 = €1,050
-- Weekly: €180, 2-week: €300, Monthly prorated: (600 ÷ 30.5 × 30) = €590
+- Monthly prorated: (600 ÷ 30.5 × 30) = €590
+- Weekly/2-week NOT offered for stays ≥ 28 days
 - **Result**: Charge €590, show "€600/month"
 
 ## Availability System
@@ -160,11 +173,13 @@ Given a room with:
 | 14 days | 14×35 = €490 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
 | 20 days | 20×35 = €700 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
 | 27 days | 27×35 = €945 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
-| 28 days | 28×35 = €980 | - | - | **€551*** | Monthly | €600/month |
-| 35 days | 35×35 = €1,225 | - | - | **€689*** | Monthly | €600/month |
-| 60 days | 60×35 = €2,100 | - | - | **€1,180*** | Monthly | €600/month |
+| **28 days** | 28×35 = €980 | N/A* | N/A* | **€551** | Monthly | €600/month |
+| **35 days** | 35×35 = €1,225 | N/A* | N/A* | **€689** | Monthly | €600/month |
+| **60 days** | 60×35 = €2,100 | N/A* | N/A* | **€1,180** | Monthly | €600/month |
 
-*Monthly rate for ≥28 days is prorated: (600 ÷ 30.5 × days)
+\* For stays ≥ 28 days, only daily and monthly (prorated) options are compared. Weekly/2-week rates do not apply.
+
+Monthly rate for ≥28 days is prorated: (monthly ÷ 30.5 × days)
 
 ## Google Sheet Structure
 
