@@ -49,8 +49,9 @@ function doPost(e) {
 function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, numDays) {
   // New pricing logic:
   // 1. Daily rate is the baseline: numDays × daily rate
-  // 2. Tier prices (weekly/2-week/monthly) give discounts if cheaper
-  // 3. Tier prices are FULL prices (not prorated), except monthly for >= 28 days
+  // 2. For stays < 28 days: Tier prices (weekly/2-week/monthly) give discounts if cheaper
+  // 3. For stays >= 28 days: Only monthly rate (prorated) vs daily
+  // 4. Tier prices are FULL prices (not prorated), except monthly for >= 28 days
 
   const options = [];
 
@@ -61,32 +62,33 @@ function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, num
     breakdown: '€' + dailyRate + '/day'
   });
 
-  // Option 2: Weekly rate (full week price, if cheaper than daily)
-  if (weeklyRate && weeklyRate < dailyTotal) {
-    options.push({
-      price: weeklyRate,
-      breakdown: '€' + weeklyRate + '/week'
-    });
-  }
-
-  // Option 3: 2-week rate (full 2-week price, if cheaper)
-  if (twoWeekRate && twoWeekRate < dailyTotal) {
-    options.push({
-      price: twoWeekRate,
-      breakdown: '€' + twoWeekRate + '/2 weeks'
-    });
-  }
-
-  // Option 4: Monthly rate
   if (numDays >= 28) {
-    // For stays >= 28 days, prorate the monthly rate
+    // For stays >= 28 days, ONLY offer monthly rate (prorated)
     const monthlyProrated = Math.round((monthlyRate / 30.5) * numDays);
     options.push({
       price: monthlyProrated,
       breakdown: '€' + monthlyRate + '/month'
     });
   } else {
-    // For stays < 28 days, offer full monthly rate if cheaper
+    // For stays < 28 days, offer weekly, 2-week, and monthly as flat-rate discounts
+
+    // Option 2: Weekly rate (full week price, if cheaper than daily)
+    if (weeklyRate && weeklyRate < dailyTotal) {
+      options.push({
+        price: weeklyRate,
+        breakdown: '€' + weeklyRate + '/week'
+      });
+    }
+
+    // Option 3: 2-week rate (full 2-week price, if cheaper)
+    if (twoWeekRate && twoWeekRate < dailyTotal) {
+      options.push({
+        price: twoWeekRate,
+        breakdown: '€' + twoWeekRate + '/2 weeks'
+      });
+    }
+
+    // Option 4: Monthly rate (full month price, if cheaper)
     if (monthlyRate && monthlyRate < dailyTotal) {
       options.push({
         price: monthlyRate,
