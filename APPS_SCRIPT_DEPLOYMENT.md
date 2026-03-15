@@ -2,11 +2,11 @@
 
 ## What Changed
 
-### 1. Daily Baseline + Tier Discount Pricing
-- **Daily rate is baseline**: Always calculated as numDays × daily rate
-- **Tier discounts**: Weekly, 2-week, and monthly rates act as discounts (full prices, not prorated)
-- **≥ 28 days**: Monthly rate is prorated (monthly ÷ 30.5 × days)
-- **System picks cheapest**: Automatically selects best price for the guest
+### 1. Simple Tier Breakpoint Pricing
+- **1-6 days**: Daily rate (numDays × daily)
+- **7-13 days**: Weekly flat rate
+- **14-29 days**: 2-week flat rate
+- **30+ days**: Monthly rate prorated (monthly ÷ 30.5 × days)
 - All prices rounded to whole numbers (no cents)
 
 ### 2. Calendar-Based Availability

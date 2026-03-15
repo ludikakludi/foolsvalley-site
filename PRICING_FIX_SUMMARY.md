@@ -13,65 +13,61 @@
 ## Pricing Logic (Implemented in Code.gs)
 
 ### How It Works:
-**Daily rate is the baseline.** Tier prices (weekly/2-week/monthly) act as discounts and are only used when they're cheaper.
+**Simple tier breakpoints** - your stay duration determines which pricing tier applies.
 
 ### The Algorithm:
 
-**For stays ≥ 28 days:**
-The system ONLY compares:
-1. **Daily option**: `numDays × daily rate`
-2. **Monthly option**: Monthly rate prorated (`monthly ÷ 30.5 × numDays`)
+**1-6 days:** Daily rate
+- Calculation: `numDays × daily rate`
+- Display: "€X/day"
 
-Weekly and 2-week rates are NOT offered for long stays.
+**7-13 days:** Weekly flat rate
+- Price: Full weekly rate (same price whether 7, 10, or 13 days)
+- Display: "€X/week"
 
-**For stays < 28 days:**
-The system compares ALL options:
-1. **Daily option**: `numDays × daily rate`
-2. **Weekly option**: Full weekly rate (not prorated) - only if cheaper than daily total
-3. **2-week option**: Full 2-week rate (not prorated) - only if cheaper than daily total
-4. **Monthly option**: Full monthly rate - only if cheaper than daily total
+**14-29 days:** 2-week flat rate
+- Price: Full 2-week rate (same price whether 14, 20, or 29 days)
+- Display: "€X/2 weeks"
 
-The system picks the **cheapest option** and displays which tier was used.
+**30+ days:** Monthly prorated
+- Calculation: `monthly ÷ 30.5 × numDays`
+- Display: "€X/month"
 
 ### All prices are rounded to whole numbers (no cents)
 
 ### Examples:
 
-**4-day stay** (daily €35, weekly €180, 2-week €300, monthly €600):
-- Daily: 4 × 35 = €140
-- Weekly: €180 (not cheaper)
-- **Result**: Charge €140, show "€35/day"
+Given a room with: Daily €35, Weekly €180, 2-Week €300, Monthly €600
 
-**6-day stay** (same rates):
-- Daily: 6 × 35 = €210
-- Weekly: €180 (cheaper!)
-- **Result**: Charge €180, show "€180/week"
+**4-day stay:**
+- Falls in **1-6 days tier** → Daily rate
+- Calculation: 4 × €35 = €140
+- Display: "€35/day"
 
-**10-day stay** (same rates):
-- Daily: 10 × 35 = €350
-- Weekly: €180 (cheaper!)
-- 2-week: €300 (not cheaper than weekly)
-- Monthly: €600 (not cheaper)
-- **Result**: Charge €180, show "€180/week"
+**10-day stay:**
+- Falls in **7-13 days tier** → Weekly flat rate
+- Price: €180 (same whether 7, 10, or 13 days)
+- Display: "€180/week"
 
-**20-day stay** (same rates):
-- Daily: 20 × 35 = €700
-- Weekly: €180 (cheaper!)
-- 2-week: €300 (cheaper than weekly!)
-- Monthly: €600 (not cheaper than 2-week)
-- **Result**: Charge €300, show "€300/2 weeks"
+**20-day stay:**
+- Falls in **14-29 days tier** → 2-week flat rate
+- Price: €300 (same whether 14, 20, or 29 days)
+- Display: "€300/2 weeks"
 
-**28-day stay** (same rates):
-- Daily: 28 × 35 = €980
-- Monthly prorated: (600 ÷ 30.5 × 28) = €551
-- Weekly/2-week NOT offered for stays ≥ 28 days
-- **Result**: Charge €551, show "€600/month"
+**28-day stay:**
+- Falls in **14-29 days tier** → 2-week flat rate
+- Price: €300
+- Display: "€300/2 weeks"
 
-**30-day stay** (same rates):
-- Daily: 30 × 35 = €1,050
-- Monthly prorated: (600 ÷ 30.5 × 30) = €590
-- Weekly/2-week NOT offered for stays ≥ 28 days
-- **Result**: Charge €590, show "€600/month"
+**35-day stay:**
+- Falls in **30+ days tier** → Monthly prorated
+- Calculation: (€600 ÷ 30.5) × 35 = €689
+- Display: "€600/month"
+
+**60-day stay:**
+- Falls in **30+ days tier** → Monthly prorated
+- Calculation: (€600 ÷ 30.5) × 60 = €1,180
+- Display: "€600/month"
 
 ## Availability System
 
@@ -163,23 +159,23 @@ Given a room with:
 - 2-week: €300
 - Monthly: €600
 
-| Stay Duration | Daily Calc | Weekly | 2-Week | Monthly | **Winner** | Display |
-|--------------|------------|--------|--------|---------|------------|---------|
-| 3 days | 3×35 = **€105** | €180 | €300 | €600 | Daily | €35/day |
-| 4 days | 4×35 = **€140** | €180 | €300 | €600 | Daily | €35/day |
-| 6 days | 6×35 = €210 | **€180** | €300 | €600 | Weekly | €180/week |
-| 7 days | 7×35 = €245 | **€180** | €300 | €600 | Weekly | €180/week |
-| 10 days | 10×35 = €350 | **€180** | €300 | €600 | Weekly | €180/week |
-| 14 days | 14×35 = €490 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
-| 20 days | 20×35 = €700 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
-| 27 days | 27×35 = €945 | €180 | **€300** | €600 | 2-Week | €300/2 weeks |
-| **28 days** | 28×35 = €980 | N/A* | N/A* | **€551** | Monthly | €600/month |
-| **35 days** | 35×35 = €1,225 | N/A* | N/A* | **€689** | Monthly | €600/month |
-| **60 days** | 60×35 = €2,100 | N/A* | N/A* | **€1,180** | Monthly | €600/month |
+| Stay Duration | Tier Applied | Price Calculation | **Charge** | Display |
+|--------------|--------------|-------------------|-----------|---------|
+| 3 days | 1-6 days | 3 × €35 | **€105** | €35/day |
+| 5 days | 1-6 days | 5 × €35 | **€175** | €35/day |
+| 6 days | 1-6 days | 6 × €35 | **€210** | €35/day |
+| 7 days | 7-13 days | Flat weekly rate | **€180** | €180/week |
+| 10 days | 7-13 days | Flat weekly rate | **€180** | €180/week |
+| 13 days | 7-13 days | Flat weekly rate | **€180** | €180/week |
+| 14 days | 14-29 days | Flat 2-week rate | **€300** | €300/2 weeks |
+| 20 days | 14-29 days | Flat 2-week rate | **€300** | €300/2 weeks |
+| 28 days | 14-29 days | Flat 2-week rate | **€300** | €300/2 weeks |
+| 29 days | 14-29 days | Flat 2-week rate | **€300** | €300/2 weeks |
+| 30 days | 30+ days | (€600 ÷ 30.5) × 30 | **€590** | €600/month |
+| 35 days | 30+ days | (€600 ÷ 30.5) × 35 | **€689** | €600/month |
+| 60 days | 30+ days | (€600 ÷ 30.5) × 60 | **€1,180** | €600/month |
 
-\* For stays ≥ 28 days, only daily and monthly (prorated) options are compared. Weekly/2-week rates do not apply.
-
-Monthly rate for ≥28 days is prorated: (monthly ÷ 30.5 × days)
+**Note:** Monthly rate for 30+ days is prorated: (monthly ÷ 30.5 × days)
 
 ## Google Sheet Structure
 
@@ -205,10 +201,12 @@ Monthly rate for ≥28 days is prorated: (monthly ÷ 30.5 × days)
 
 ## Important Notes
 
-- **Daily rate is the baseline** - tier prices are discounts that apply when cheaper
-- The displayed rate (e.g., "€180/week") shows which tier discount was applied
-- For ≥ 28 days, monthly rate is prorated (monthly ÷ 30.5 × days)
-- For < 28 days, tier prices are FULL prices (not prorated)
+- **Simple tier breakpoints** - your stay duration determines which pricing tier applies
+- The displayed rate (e.g., "€180/week") shows which tier was applied
+- **1-6 days:** Daily rate (multiplied by number of days)
+- **7-13 days:** Weekly flat rate (same price for all durations in this range)
+- **14-29 days:** 2-week flat rate (same price for all durations in this range)
+- **30+ days:** Monthly rate prorated (monthly ÷ 30.5 × days)
 - All final prices are whole numbers (no cents)
 - Room availability is checked in real-time against the calendar
 - Dorms and camping spots track multiple occupants per day
