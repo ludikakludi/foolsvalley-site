@@ -577,35 +577,53 @@ footer a { color: var(--text); }
     </div>
 
     <div class="field" data-required>
+      <label>have you been to fools' valley before?</label>
+      <div class="radio-group" id="visited-group">
+        <label class="radio-option" onclick="selectVisited(this,'yes')">
+          <input type="radio" name="visited" value="yes" />
+          <span class="radio-label">yes, I've visited before</span>
+        </label>
+        <label class="radio-option" onclick="selectVisited(this,'no')">
+          <input type="radio" name="visited" value="no" />
+          <span class="radio-label">no, this would be my first time</span>
+        </label>
+      </div>
+      <div class="error-msg">please select one</div>
+    </div>
+
+    <div class="field" data-required data-conditional>
       <label>current main quest</label>
       <div class="hint">what's the big thing you're working on or moving through right now?</div>
       <textarea id="f-quest" placeholder=""></textarea>
       <div class="error-msg">tell us about your quest</div>
     </div>
 
-    <div class="field">
+    <div class="field" data-required data-conditional>
       <label>past quests you've been on</label>
       <textarea id="f-past-quests" placeholder=""></textarea>
+      <div class="error-msg">please share your past quests</div>
     </div>
 
-    <div class="field">
+    <div class="field" data-required data-conditional>
       <label>do you know anyone who's been to fools' valley who could be your reference person?</label>
       <input type="text" id="f-reference" placeholder="" />
+      <div class="error-msg">please provide a reference if you know someone</div>
     </div>
 
-    <div class="field" data-required>
+    <div class="field" data-required data-conditional>
       <label>what would you like to use your time at fools' valley for?</label>
       <textarea id="f-use-time" placeholder=""></textarea>
       <div class="error-msg">please share what you'd use the time for</div>
     </div>
 
-    <div class="field">
-      <label>what would you like to contribute? which sessions would you like to host?</label>
+    <div class="field" data-required data-conditional>
+      <label>would you like to host any workshops / activities / talks?</label>
       <textarea id="f-contribute" placeholder=""></textarea>
+      <div class="error-msg">please let us know if you'd like to host anything</div>
     </div>
 
     <div class="field">
-      <label>what would an ideal day at the residency include?</label>
+      <label>any questions for us?</label>
       <textarea id="f-ideal-day" placeholder=""></textarea>
     </div>
 
@@ -658,6 +676,12 @@ footer a { color: var(--text); }
       <strong>Departure:</strong> <span id="departure-display"></span><br>
       <strong>Duration:</strong> <span id="duration-display"></span>
       <div style="font-size:0.8rem; color:var(--text-light); font-style:italic; margin-top:0.4rem;">click to change dates</div>
+    </div>
+
+    <div style="margin-top:2rem; max-width:400px;">
+      <label style="display:block; font-size:0.9rem; margin-bottom:0.4rem; color:var(--text-light);">have a codeword?</label>
+      <input type="text" id="codeword-input" placeholder="enter codeword" style="width:100%; padding:0.7rem 1rem; font-family:'Inter',sans-serif; font-size:0.9rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); color:var(--text);" />
+      <div id="codeword-message" style="margin-top:0.5rem; font-size:0.85rem; display:none;"></div>
     </div>
 
     <div class="btn-row">
@@ -773,7 +797,9 @@ let selectingWhat = 'arrival'; // 'arrival' or 'departure'
 let availableRooms = [];
 let selectedRoom = null;
 let tcInterest = null;
+let visitedBefore = null;
 let fallbackMode = false;
+let hasTcMayCode = false; // Track if tcmay codeword is active
 
 // Advance to today or next month if we're past the 15th
 if (new Date().getDate() > 15) {
@@ -789,6 +815,13 @@ function selectRadio(el, val) {
   el.classList.add('selected');
   el.querySelector('input').checked = true;
   tcInterest = val;
+}
+
+function selectVisited(el, val) {
+  document.querySelectorAll('#visited-group .radio-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  visitedBefore = val;
 }
 
 // ============================================================
@@ -836,7 +869,10 @@ function validateStep1() {
     { id: 'f-name', type: 'text' },
     { id: 'f-email', type: 'email' },
     { id: 'f-quest', type: 'text' },
-    { id: 'f-use-time', type: 'text' }
+    { id: 'f-past-quests', type: 'text' },
+    { id: 'f-reference', type: 'text' },
+    { id: 'f-use-time', type: 'text' },
+    { id: 'f-contribute', type: 'text' }
   ];
 
   fields.forEach(f => {
@@ -845,14 +881,24 @@ function validateStep1() {
     const val = el.value.trim();
     let ok = val.length > 0;
     if (f.type === 'email') ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-    
-    if (!ok && field.hasAttribute('data-required')) {
+
+    // Check if field is required
+    // Conditional fields are only required if visitedBefore === 'no'
+    const isRequired = field.hasAttribute('data-required') &&
+                      (!field.hasAttribute('data-conditional') || visitedBefore === 'no');
+
+    if (!ok && isRequired) {
       field.classList.add('error');
       valid = false;
     } else {
       field.classList.remove('error');
     }
   });
+
+  // Visited radio validation
+  const visitedField = document.getElementById('visited-group').closest('.field');
+  if (!visitedBefore) { visitedField.classList.add('error'); valid = false; }
+  else { visitedField.classList.remove('error'); }
 
   // TC radio validation
   const tcField = document.getElementById('tc-group').closest('.field');
@@ -936,19 +982,47 @@ function renderCalendar() {
 
     // Selectable logic
     if (selectingWhat === 'arrival') {
-      if (isMonday && !isPast && !tooSoon) {
-        div.classList.add('selectable');
-        div.addEventListener('click', () => selectArrival(date));
+      // With tcmay code, only allow May 8-11, 2026
+      if (hasTcMayCode) {
+        const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
+        const tcMayEnd = new Date(2026, 4, 11); // May 11, 2026
+        if (date >= tcMayStart && date <= tcMayEnd && !isPast) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectArrival(date));
+        } else {
+          div.classList.add('disabled');
+        }
       } else {
-        div.classList.add('disabled');
+        // Normal logic: only Mondays
+        if (isMonday && !isPast && !tooSoon) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectArrival(date));
+        } else {
+          div.classList.add('disabled');
+        }
       }
     } else if (selectingWhat === 'departure') {
-      const minDep = new Date(arrivalDate.getTime() + 1*24*60*60*1000);
-      if (date >= minDep) {
-        div.classList.add('selectable');
-        div.addEventListener('click', () => selectDeparture(date));
+      // With tcmay code, minimum 2 nights; otherwise minimum 1 day
+      const minNights = hasTcMayCode ? 2 : 1;
+      const minDep = new Date(arrivalDate.getTime() + minNights*24*60*60*1000);
+
+      // With tcmay code, restrict departure to May 8-11, 2026 range
+      if (hasTcMayCode) {
+        const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
+        const tcMayEnd = new Date(2026, 4, 12); // May 12, 2026 (departure on 12th = last night on 11th)
+        if (date >= minDep && date >= tcMayStart && date <= tcMayEnd) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectDeparture(date));
+        } else {
+          div.classList.add('disabled');
+        }
       } else {
-        div.classList.add('disabled');
+        if (date >= minDep) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectDeparture(date));
+        } else {
+          div.classList.add('disabled');
+        }
       }
     }
 
@@ -962,7 +1036,11 @@ function selectArrival(date) {
   selectedRoom = null;
   fallbackMode = false;
   selectingWhat = 'departure';
-  document.getElementById('date-mode').textContent = 'now pick your departure day (min 2 weeks)';
+
+  // Update message based on tcmay code
+  const minDuration = hasTcMayCode ? 'min 2 nights' : 'min 2 weeks';
+  document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
+
   document.getElementById('date-summary').style.display = 'block';
   document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
   document.getElementById('departure-display').textContent = '—';
@@ -1228,13 +1306,14 @@ async function submitApplication() {
     application: {
       name: document.getElementById('f-name').value.trim(),
       email: document.getElementById('f-email').value.trim(),
+      visited: visitedBefore,
       tcInterest: tcInterest,
       mainQuest: document.getElementById('f-quest').value.trim(),
       pastQuests: document.getElementById('f-past-quests').value.trim(),
       reference: document.getElementById('f-reference').value.trim(),
       useTimeFor: document.getElementById('f-use-time').value.trim(),
       contribute: document.getElementById('f-contribute').value.trim(),
-      idealDay: document.getElementById('f-ideal-day').value.trim(),
+      questions: document.getElementById('f-ideal-day').value.trim(),
       arrivalDate: formatDate(arrivalDate),
       departureDate: formatDate(departureDate),
       numDays: days,
@@ -1337,6 +1416,42 @@ function buildPriceTable(container, rooms) {
   html += '<p style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-light);">+ \u20AC20/day food &amp; expenses on top of all prices</p>';
   container.innerHTML = html;
 }
+
+// ============================================================
+// CODEWORD HANDLER
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  const codewordInput = document.getElementById('codeword-input');
+  if (codewordInput) {
+    codewordInput.addEventListener('input', function() {
+      const code = this.value.trim().toLowerCase();
+      const message = document.getElementById('codeword-message');
+
+      if (code === 'tcmay') {
+        hasTcMayCode = true;
+        message.style.display = 'block';
+        message.style.color = 'var(--success)';
+        message.textContent = '✓ TC May special booking unlocked: May 8-11, 2026, minimum 2 nights';
+
+        // Set calendar to May 2026
+        calendarMonth = 4; // May (0-indexed)
+        calendarYear = 2026;
+
+        renderCalendar();
+      } else if (code.length > 0) {
+        hasTcMayCode = false;
+        message.style.display = 'block';
+        message.style.color = 'var(--error)';
+        message.textContent = 'Invalid codeword';
+        renderCalendar();
+      } else {
+        hasTcMayCode = false;
+        message.style.display = 'none';
+        renderCalendar();
+      }
+    });
+  }
+});
 
 // ============================================================
 // INIT
