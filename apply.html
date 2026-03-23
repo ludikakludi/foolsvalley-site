@@ -667,6 +667,7 @@ let selectedRoom = null;
 let fallbackMode = false;
 let formData = {}; // Store form data from previous page
 let hasShortStayCode = false; // Track if shortstay codeword is active
+let hasTcMayCode = false; // Track if tcmay codeword is active
 
 // Advance to today or next month if we're past the 15th
 if (new Date().getDate() > 15) {
@@ -806,14 +807,26 @@ function renderCalendar() {
 
     // Selectable logic
     if (selectingWhat === 'arrival') {
-      // With shortstay code, allow any day; otherwise only Mondays
-      const isValidArrival = hasShortStayCode ? !isPast && !tooSoon : (isMonday && !isPast && !tooSoon);
-
-      if (isValidArrival) {
-        div.classList.add('selectable');
-        div.addEventListener('click', () => selectArrival(date));
+      // With tcmay code, only allow May 8-11, 2026
+      if (hasTcMayCode) {
+        const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
+        const tcMayEnd = new Date(2026, 4, 11); // May 11, 2026
+        if (date >= tcMayStart && date <= tcMayEnd && !isPast) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectArrival(date));
+        } else {
+          div.classList.add('disabled');
+        }
       } else {
-        div.classList.add('disabled');
+        // With shortstay code, allow any day; otherwise only Mondays
+        const isValidArrival = hasShortStayCode ? !isPast && !tooSoon : (isMonday && !isPast && !tooSoon);
+
+        if (isValidArrival) {
+          div.classList.add('selectable');
+          div.addEventListener('click', () => selectArrival(date));
+        } else {
+          div.classList.add('disabled');
+        }
       }
     } else if (selectingWhat === 'departure' || selectingWhat === 'done') {
       // Always allow clicking the selected arrival date to unselect it
@@ -825,15 +838,29 @@ function renderCalendar() {
         div.classList.add('selectable');
         div.addEventListener('click', () => selectDeparture(date));
       } else {
-        // With shortstay code, allow any duration; otherwise minimum 6 days
-        const minDays = hasShortStayCode ? 1 : 6;
-        const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
-
-        if (date >= minDep) {
-          div.classList.add('selectable');
-          div.addEventListener('click', () => selectDeparture(date));
+        // With tcmay code, minimum 2 nights and restrict to May 8-12, 2026
+        if (hasTcMayCode) {
+          const minNights = 2;
+          const minDep = new Date(arrivalDate.getTime() + minNights*24*60*60*1000);
+          const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
+          const tcMayEnd = new Date(2026, 4, 12); // May 12, 2026 (departure = last night May 11)
+          if (date >= minDep && date >= tcMayStart && date <= tcMayEnd) {
+            div.classList.add('selectable');
+            div.addEventListener('click', () => selectDeparture(date));
+          } else {
+            div.classList.add('disabled');
+          }
         } else {
-          div.classList.add('disabled');
+          // With shortstay code, allow any duration; otherwise minimum 6 days
+          const minDays = hasShortStayCode ? 1 : 6;
+          const minDep = new Date(arrivalDate.getTime() + minDays*24*60*60*1000);
+
+          if (date >= minDep) {
+            div.classList.add('selectable');
+            div.addEventListener('click', () => selectDeparture(date));
+          } else {
+            div.classList.add('disabled');
+          }
         }
       }
     }
@@ -862,8 +889,15 @@ function selectArrival(date) {
   fallbackMode = false;
   selectingWhat = 'departure';
 
-  // Update message based on whether shortstay code is active
-  const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
+  // Update message based on active code
+  let minDuration;
+  if (hasTcMayCode) {
+    minDuration = 'min 2 nights';
+  } else if (hasShortStayCode) {
+    minDuration = 'any duration';
+  } else {
+    minDuration = 'min 2 weeks';
+  }
   document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
   document.getElementById('date-summary').style.display = 'block';
   document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
@@ -1286,6 +1320,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
 
   if (code === 'shortstay') {
     hasShortStayCode = true;
+    hasTcMayCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
     message.textContent = '✓ Short stay unlocked: book any day, any duration';
@@ -1296,8 +1331,26 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     minDurationText.textContent = 'flexible booking enabled.';
 
     renderCalendar(); // Re-render calendar with flexible rules
+  } else if (code === 'tcmay') {
+    hasTcMayCode = true;
+    hasShortStayCode = false;
+    message.style.display = 'block';
+    message.style.color = 'var(--success)';
+    message.textContent = '✓ TC May special booking unlocked: May 8-11, 2026, minimum 2 nights';
+
+    // Update instructions
+    instructionText.textContent = 'pick your arrival day (May 8-11, 2026), then your departure day.';
+    minDurationContainer.style.display = 'block';
+    minDurationText.textContent = 'TC May booking: daily pricing, minimum 2 nights.';
+
+    // Set calendar to May 2026
+    calendarMonth = 4; // May (0-indexed)
+    calendarYear = 2026;
+
+    renderCalendar(); // Re-render calendar with tcmay rules
   } else if (code.length > 0) {
     hasShortStayCode = false;
+    hasTcMayCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--error)';
     message.textContent = 'Invalid codeword';
@@ -1314,6 +1367,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     renderCalendar(); // Re-render with normal rules
   } else {
     hasShortStayCode = false;
+    hasTcMayCode = false;
     message.style.display = 'none';
 
     // Restore normal instructions
