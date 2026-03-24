@@ -847,11 +847,10 @@ function renderCalendar() {
           const isTcMayArrival = arrivalDate >= tcMayStart && arrivalDate <= tcMayArrival;
 
           if (isTcMayArrival) {
-            // Special May 8-9 arrival: minimum 2 nights, can depart up to May 12
+            // Special May 8-9 arrival: minimum 2 nights, can depart any day
             const minNights = 2;
             const minDep = new Date(arrivalDate.getTime() + minNights*24*60*60*1000);
-            const tcMayEnd = new Date(2026, 4, 12); // May 12, 2026
-            if (date >= minDep && date <= tcMayEnd) {
+            if (date >= minDep) {
               div.classList.add('selectable');
               div.addEventListener('click', () => selectDeparture(date));
             } else {
