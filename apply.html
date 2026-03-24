@@ -550,7 +550,7 @@ footer a { color: var(--text); }
       <span id="calendar-instruction">move-in is on Mondays. pick your arrival Monday, then your departure day.</span>
     </p>
     <p id="min-duration-container" style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic; display:none;">
-      <span id="min-duration-text">minimum recommended stay if you're coming for the first time: 2 weeks.</span>
+      <span id="min-duration-text">2 weeks min recommended stay if you're coming for the first time.</span>
     </p>
 
     <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
@@ -630,6 +630,7 @@ footer a { color: var(--text); }
       <h3>pricing</h3>
       <div class="review-row"><span class="label">room</span><span class="value" id="rev-room-price"></span></div>
       <div class="review-row" style="font-size: 0.85rem; color: var(--text-light);"><span class="label">daily fee (food & expenses)</span><span class="value" id="rev-daily-fee"></span></div>
+      <div class="review-row" style="font-weight: 600; padding-top: 0.5rem; margin-top: 0.5rem; border-top: 1px solid var(--border);"><span class="label">total</span><span class="value" id="rev-total-price"></span></div>
     </div>
 
     <div class="btn-row">
@@ -1064,13 +1065,30 @@ function renderRooms() {
     console.log('First room structure:', availableRooms[0]);
   }
 
+  // Filter rooms if TC is primary interest
+  let filteredRooms = availableRooms;
+  if (isTCPrimary) {
+    filteredRooms = availableRooms.filter(r => r.building === 'Blue House');
+
+    // If no TC rooms available, show contact message
+    if (filteredRooms.length === 0) {
+      const contactDiv = document.createElement('div');
+      contactDiv.className = 'rooms-fallback';
+      contactDiv.innerHTML = '<h4>no TC rooms available</h4>' +
+        '<p>unfortunately, there are no rooms available in the TC Hub (Blue House) for your selected dates.</p>' +
+        '<p>please email us at <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a> to discuss availability and options.</p>';
+      container.appendChild(contactDiv);
+      return;
+    }
+  }
+
   // Group by building
   const buildings = {};
   const normalOrder = ['Octopus House', 'Old House', 'Blue House', 'Camping'];
   const tcOrder = ['Blue House', 'Octopus House', 'Old House', 'Camping'];
   const order = isTCPrimary ? tcOrder : normalOrder;
 
-  availableRooms.forEach(r => {
+  filteredRooms.forEach(r => {
     if (!buildings[r.building]) buildings[r.building] = [];
     buildings[r.building].push(r);
   });
@@ -1176,6 +1194,10 @@ function populateReview() {
     var normalizedBreakdown = normalizePriceBreakdown(selectedRoom.priceBreakdown, selectedRoom.numDays);
     document.getElementById('rev-room-price').innerHTML = '\u20AC' + selectedRoom.roomPrice + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
     document.getElementById('rev-daily-fee').textContent = '\u20AC' + selectedRoom.dailyFee;
+
+    // Calculate and display total with daily rate annotation
+    var totalPrice = selectedRoom.roomPrice + selectedRoom.dailyFee;
+    document.getElementById('rev-total-price').innerHTML = '\u20AC' + totalPrice + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(20 euros/day)</span>';
   }
 }
 
@@ -1359,7 +1381,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
     if (formData.visited === 'no') {
       minDurationContainer.style.display = 'block';
-      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
+      minDurationText.textContent = '2 weeks min recommended stay if you\'re coming for the first time.';
     } else {
       minDurationContainer.style.display = 'none';
     }
@@ -1374,7 +1396,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     instructionText.textContent = 'move-in is on Mondays. pick your arrival Monday, then your departure day.';
     if (formData.visited === 'no') {
       minDurationContainer.style.display = 'block';
-      minDurationText.textContent = 'minimum recommended stay if you\'re coming for the first time: 2 weeks.';
+      minDurationText.textContent = '2 weeks min recommended stay if you\'re coming for the first time.';
     } else {
       minDurationContainer.style.display = 'none';
     }
