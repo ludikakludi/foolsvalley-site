@@ -410,6 +410,24 @@
             z-index: 1;
         }
 
+        /* Card flip hint */
+        .card-flip-hint {
+            position: absolute;
+            top: 65%;
+            right: 2%;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-light);
+            opacity: 0.5;
+            z-index: 1;
+            animation: subtlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.7; }
+        }
+
         @media (max-width: 900px) {
             .hero-card {
                 width: 100px;
@@ -422,7 +440,7 @@
             .hero-card-5 { top: 40%; right: 22%; }
             .hero-card-6 { top: 58%; right: 15%; }
             .hero-back-text { font-size: 0.6rem; }
-            .card-hint { font-size: 0.8rem; }
+            .card-flip-hint { font-size: 0.65rem; top: 62%; }
             .hero-background-text { font-size: 0.85rem; max-width: 160px; }
         }
 
@@ -441,6 +459,7 @@
             .hero-back-text { font-size: 0.5rem; line-height: 1.3; }
             .hero-back-label { font-size: 5px; margin-top: 0.4rem; }
             .hero-background-text { display: none; }
+            .card-flip-hint { font-size: 0.6rem; top: 60%; right: 5%; }
 
             .hero-card-back.text-back {
                 padding: 0.5rem;
@@ -764,7 +783,8 @@
         </div>
 
         <div class="hero-background-text">unburdened by knowing where the road leads</div>
-        
+        <div class="card-flip-hint">← hover to flip</div>
+
         <div class="hero-content">
             <div class="hero-eyebrow">a place near lisbon</div>
             <h1 class="hero-title">
@@ -923,8 +943,37 @@
     (function() {
         const cards = document.querySelectorAll('.hero-card');
         const isMobile = window.innerWidth <= 600;
+        const flipHint = document.querySelector('.card-flip-hint');
+
+        // Function to play video when card is flipped
+        function playVideoOnFlip(card) {
+            const video = card.querySelector('video');
+            if (video) {
+                video.play().catch(err => console.log('Video autoplay failed:', err));
+            }
+        }
+
+        // Function to pause video when card is unflipped
+        function pauseVideoOnUnflip(card) {
+            const video = card.querySelector('video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+        }
+
+        // Hide hint after first interaction
+        function hideHint() {
+            if (flipHint) {
+                flipHint.style.opacity = '0';
+                flipHint.style.transition = 'opacity 0.5s';
+            }
+        }
 
         if (isMobile) {
+            // Update hint text for mobile
+            if (flipHint) flipHint.textContent = '← tap to flip';
+
             // Mobile: draggable cards, tap to toggle flip
             let activeCard = null;
             let startX, startY, startLeft, startTop;
@@ -971,7 +1020,15 @@
                     this.style.zIndex = '';
 
                     if (!hasMoved) {
+                        const wasFlipped = this.classList.contains('flipped');
                         this.classList.toggle('flipped');
+
+                        if (!wasFlipped) {
+                            playVideoOnFlip(this);
+                        } else {
+                            pauseVideoOnUnflip(this);
+                        }
+                        hideHint();
                     }
 
                     activeCard = null;
@@ -981,12 +1038,17 @@
             // Desktop: hover flips card, only one at a time
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
-                    // Unflip all other cards
+                    // Unflip all other cards and pause their videos
                     cards.forEach(c => {
-                        if (c !== this) c.classList.remove('flipped');
+                        if (c !== this) {
+                            c.classList.remove('flipped');
+                            pauseVideoOnUnflip(c);
+                        }
                     });
-                    // Flip this card
+                    // Flip this card and play its video
                     this.classList.add('flipped');
+                    playVideoOnFlip(this);
+                    hideHint();
                 });
             });
         }
