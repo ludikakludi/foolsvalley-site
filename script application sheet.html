@@ -865,27 +865,49 @@ function goToStep(step) {
 // ============================================================
 function validateStep1() {
   let valid = true;
+
+  // First check if visited is selected
+  if (!visitedBefore) {
+    const visitedField = document.getElementById('visited-group').closest('.field');
+    visitedField.classList.add('error');
+    valid = false;
+  } else {
+    const visitedField = document.getElementById('visited-group').closest('.field');
+    visitedField.classList.remove('error');
+  }
+
+  // Check TC interest
+  if (!tcInterest) {
+    const tcField = document.getElementById('tc-group').closest('.field');
+    tcField.classList.add('error');
+    valid = false;
+  } else {
+    const tcField = document.getElementById('tc-group').closest('.field');
+    tcField.classList.remove('error');
+  }
+
   const fields = [
-    { id: 'f-name', type: 'text' },
-    { id: 'f-email', type: 'email' },
-    { id: 'f-quest', type: 'text' },
-    { id: 'f-past-quests', type: 'text' },
-    { id: 'f-reference', type: 'text' },
-    { id: 'f-use-time', type: 'text' },
-    { id: 'f-contribute', type: 'text' }
+    { id: 'f-name', type: 'text', required: true, conditional: false },
+    { id: 'f-email', type: 'email', required: true, conditional: false },
+    { id: 'f-quest', type: 'text', required: true, conditional: true },
+    { id: 'f-past-quests', type: 'text', required: true, conditional: true },
+    { id: 'f-reference', type: 'text', required: true, conditional: true },
+    { id: 'f-use-time', type: 'text', required: true, conditional: true },
+    { id: 'f-contribute', type: 'text', required: true, conditional: true }
   ];
 
   fields.forEach(f => {
     const el = document.getElementById(f.id);
+    if (!el) return;
+
     const field = el.closest('.field');
     const val = el.value.trim();
     let ok = val.length > 0;
     if (f.type === 'email') ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
-    // Check if field is required
-    // Conditional fields are only required if visitedBefore === 'no'
-    const isRequired = field.hasAttribute('data-required') &&
-                      (!field.hasAttribute('data-conditional') || visitedBefore === 'no');
+    // Determine if field is required
+    // Conditional fields are ONLY required if visitedBefore === 'no'
+    const isRequired = f.required && (!f.conditional || visitedBefore === 'no');
 
     if (!ok && isRequired) {
       field.classList.add('error');
@@ -894,16 +916,6 @@ function validateStep1() {
       field.classList.remove('error');
     }
   });
-
-  // Visited radio validation
-  const visitedField = document.getElementById('visited-group').closest('.field');
-  if (!visitedBefore) { visitedField.classList.add('error'); valid = false; }
-  else { visitedField.classList.remove('error'); }
-
-  // TC radio validation
-  const tcField = document.getElementById('tc-group').closest('.field');
-  if (!tcInterest) { tcField.classList.add('error'); valid = false; }
-  else { tcField.classList.remove('error'); }
 
   return valid;
 }
