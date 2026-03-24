@@ -59,28 +59,28 @@ function doPost(e) {
 // PRICING CALCULATION - SIMPLE TIER BREAKPOINTS
 // ============================================================
 function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, numDays) {
-  // Simple tier pricing:
-  // 1-6 days: Daily rate (numDays × daily)
-  // 7-13 days: Weekly flat rate
-  // 14-29 days: 2-week flat rate
-  // 30+ days: Monthly rate prorated (monthly ÷ 30.5 × numDays)
+  // Tier breakpoint pricing:
+  // 1-5 days: Daily rate (numDays × daily)
+  // 6-13 days: Weekly rate prorated (weekly ÷ 7 × numDays)
+  // 14-27 days: 2-week rate prorated (twoWeek ÷ 14 × numDays)
+  // 28+ days: Monthly rate prorated (monthly ÷ 30.5 × numDays)
 
   let roomPrice, priceBreakdown;
 
-  if (numDays >= 30) {
-    // 30+ days: Prorated monthly rate
+  if (numDays >= 28) {
+    // 28+ days: Prorated monthly rate
     roomPrice = Math.round((monthlyRate / 30.5) * numDays);
     priceBreakdown = '€' + monthlyRate + '/month';
   } else if (numDays >= 14) {
-    // 14-29 days: Flat 2-week rate
-    roomPrice = twoWeekRate;
+    // 14-27 days: Prorated 2-week rate
+    roomPrice = Math.round((twoWeekRate / 14) * numDays);
     priceBreakdown = '€' + twoWeekRate + '/2 weeks';
-  } else if (numDays >= 7) {
-    // 7-13 days: Flat weekly rate
-    roomPrice = weeklyRate;
+  } else if (numDays >= 6) {
+    // 6-13 days: Prorated weekly rate
+    roomPrice = Math.round((weeklyRate / 7) * numDays);
     priceBreakdown = '€' + weeklyRate + '/week';
   } else {
-    // 1-6 days: Daily rate
+    // 1-5 days: Daily rate
     roomPrice = Math.round(numDays * dailyRate);
     priceBreakdown = '€' + dailyRate + '/day';
   }
