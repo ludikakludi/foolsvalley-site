@@ -83,6 +83,16 @@ custom_css: |
     background: var(--moss); color: var(--cream); opacity: 1;
   }
 
+  .rooms-link {
+    display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem;
+    border: 1px solid rgba(26,26,26,0.2); color: var(--gray); text-decoration: none;
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    transition: all 0.2s; background: transparent; border-radius: 4px;
+  }
+  .rooms-link:hover {
+    background: rgba(26,26,26,0.05); opacity: 1;
+  }
+
   .float { position: absolute; font-family: 'Instrument Serif', serif; font-style: italic; color: var(--gray-light); pointer-events: none; opacity: 0.6; }
   .float-1 { top: 15%; right: 10%; font-size: 0.9rem; transform: rotate(12deg); }
   .float-2 { bottom: 20%; right: 5%; font-size: 0.75rem; transform: rotate(-8deg); }
@@ -96,6 +106,85 @@ custom_css: |
   .how-section { max-width: 520px; font-size: 1.15rem; line-height: 1.7; color: var(--gray); }
   .how-section p { margin-bottom: 1rem; }
   .how-section p:first-child { color: var(--black); font-style: italic; font-size: 1.3rem; line-height: 1.55; }
+
+  .section-ornament {
+    text-align: center;
+    color: var(--moss);
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+    margin-bottom: 2rem;
+    opacity: 0.4;
+  }
+
+  /* Schedule section */
+  .schedule-section { background: var(--black); color: var(--cream); border-top: none; padding-top: 3rem; }
+  .schedule-section .section-label { color: var(--gray-light); }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 900px;
+  }
+
+  .split-left {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--cream);
+  }
+
+  .split-right {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--gray-light);
+  }
+
+  .schedule-intro {
+    font-size: 0.9rem;
+    color: var(--gray-light);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .schedule-table {
+    font-size: 1rem;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .schedule-row {
+    display: flex;
+    border-bottom: 1px solid #333;
+    padding: 0.75rem 0;
+  }
+
+  .schedule-time {
+    width: 80px;
+    color: var(--gray-light);
+    flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  .schedule-activity {
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  .schedule-activity strong {
+    color: var(--moss);
+    font-weight: 500;
+  }
+
+  .schedule-note {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: var(--gray-light);
+    max-width: 450px;
+    line-height: 1.7;
+  }
 
   /* TC section */
   .tc-section { background: var(--tc-bg); color: var(--cream); position: relative; overflow: hidden; }
@@ -283,6 +372,8 @@ custom_css: |
   @media (max-width: 768px) {
     .hero-title { font-size: 2.8rem; }
     .intro-lead { font-size: 1.25rem; }
+    .split { grid-template-columns: 1fr; gap: 2rem; }
+    .split-left { font-size: 1.6rem; }
     .rooms-grid { flex-direction: column; }
     .room-box:first-child { border-right: 1.5px solid rgba(255,254,248,0.5); border-bottom: none; }
     .facilities-list { columns: 1; }
@@ -294,16 +385,34 @@ custom_js: |
   // Handle conditional questions visibility
   const visitedRadios = document.querySelectorAll('input[name="visited"]');
   const questionsDiv = document.getElementById('new-visitor-questions');
+  const newVisitorFields = questionsDiv.querySelectorAll('textarea, input[type="text"]');
 
   visitedRadios.forEach(radio => {
     radio.addEventListener('change', function() {
       if (this.value === 'no') {
         questionsDiv.style.display = 'block';
+        // Make all fields in new-visitor-questions required
+        newVisitorFields.forEach(field => {
+          field.setAttribute('required', 'required');
+        });
       } else {
         questionsDiv.style.display = 'none';
+        // Remove required attribute when hidden
+        newVisitorFields.forEach(field => {
+          field.removeAttribute('required');
+        });
       }
     });
   });
+
+  // Set initial state based on checked radio
+  const checkedRadio = document.querySelector('input[name="visited"]:checked');
+  if (checkedRadio && checkedRadio.value === 'no') {
+    questionsDiv.style.display = 'block';
+    newVisitorFields.forEach(field => {
+      field.setAttribute('required', 'required');
+    });
+  }
 
   // Handle form submission to pass data to apply.html
   const form = document.getElementById('apply-form');
@@ -367,16 +476,84 @@ custom_js: |
 </section>
 
 <section id="how-it-works">
+    <div class="section-ornament">✧ · ✧ · ✧</div>
     <div class="section-label">002 / how it works</div>
     <div class="how-section">
         <p>schedule is co-created. we encourage everyone to host practices, workshops, salons — on what you know and what you don't know about.</p>
-        <p>three meals a day by our chef, with 1-3 cooking and cleaning shifts by the residents. arrival day is monday. minimum recommended stay: 2 weeks.</p>
-        <p>€20/day for food and bills. private rooms from €150-525/week, dorms from €70/week. <a href="rooms.html">room options →</a></p>
+        <p>arrival day is monday. minimum recommended stay: 2 weeks.</p>
+        <p>private rooms from €150-525/week, dorms from €70/week. plus €20/day per person includes three meals a day.</p>
+        <a href="rooms.html" class="rooms-link">rooms and facilities</a>
+    </div>
+</section>
+
+<section id="schedule" class="schedule-section">
+    <div class="split">
+        <div class="split-left">
+            daily rhythm<br>
+            <span style="font-size: 0.45em; font-family: 'Space Mono', monospace; color: var(--gray-light);">times approximate, activities optional and cocreated. host what you want to see. join what serves you.</span>
+        </div>
+        <div class="split-right">
+            <div class="schedule-table">
+                <div class="schedule-row">
+                    <span class="schedule-time">7</span>
+                    <span class="schedule-activity">morning practice?</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">8</span>
+                    <span class="schedule-activity">breakfast</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">10</span>
+                    <span class="schedule-activity">work / cowork / workshops / TC</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">12</span>
+                    <span class="schedule-activity">collective workout?</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">13</span>
+                    <span class="schedule-activity">lunch</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">15</span>
+                    <span class="schedule-activity">work / cowork / workshops / TC</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">18</span>
+                    <span class="schedule-activity">dinner</span>
+                </div>
+                <div class="schedule-row">
+                    <span class="schedule-time">20</span>
+                    <span class="schedule-activity"><strong>after dinner:</strong> circles, salons, music nights, sauna</span>
+                </div>
+            </div>
+
+            <p class="schedule-note">
+                1-2 cooking/space care shifts a week. sunday - collective cleanup. monday/tuesday - community meeting.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="tc-section" id="tc">
+    <div class="section-ornament" style="color: var(--cream); opacity: 0.25;">◇ ─── ◇ ─── ◇</div>
+    <div class="section-label">003 / TRANSFORMATIONAL CONNECTION HUB FOOLS' EDITION: MAY, JUNE, SEPTEMBER AND OCTOBER ONLY.</div>
+    <div class="tc-content">
+        <div class="tc-body">
+            <p>for those interested to bring the practice out of retreat and workshop spaces and into a co-created co-living environment.</p>
+        </div>
+        <h2 class="tc-title">
+            five facilitated <span class="struck">circling</span> <a href="https://www.transformationalconnection.com/what-is-transformational-connection">transformational connection</a> sessions a week at transformational connection hub and at the dancehall.
+        </h2>
+        <div class="tc-body">
+            <p>for those coming primarily for transformational connection who expect to join most sessions and are interested to practice throughout the day, you can choose to stay in the transformational connection hub</p>
+        </div>
     </div>
 </section>
 
 <section id="calendar">
-    <div class="section-label">003 / 2026 calendar</div>
+    <div class="section-ornament">☽ ── ✧ ── ☾</div>
+    <div class="section-label">004 / 2026 calendar</div>
     <div style="max-width: 900px;">
         <div class="calendar-grid">
             <!-- April -->
@@ -434,7 +611,7 @@ custom_js: |
                 <div class="month-status status-maybe">
                     <span class="status-badge maybe">apply if interested</span>
                     <div class="status-item">
-                        will open if enough interest
+                        open for events hosting
                     </div>
                 </div>
             </div>
@@ -486,28 +663,14 @@ custom_js: |
 
         <div style="margin-top: 3rem; padding: 2rem; border: 1px solid rgba(26,26,26,0.15); border-radius: 8px; background: rgba(255,254,248,0.3);">
             <p style="font-size: 1rem; line-height: 1.8;">
-                want to host your own residency or event? → <a href="venue.html" style="color: var(--moss); font-weight: 500; text-decoration: underline;">venue page</a>
+                want to host your own residency or event? → message <a href="mailto:theonlyfool@foolsvalley.com" style="color: var(--moss); font-weight: 500; text-decoration: underline;">theonlyfool@foolsvalley.com</a> and check out <a href="venue.html" style="color: var(--moss); font-weight: 500; text-decoration: underline;">venue page</a>
             </p>
         </div>
     </div>
 </section>
 
-<section class="tc-section" id="tc">
-    <div class="section-label">004 / TRANSFORMATIONAL CONNECTION HUB FOOLS' EDITION: MAY, JUNE, SEPTEMBER AND OCTOBER ONLY.</div>
-    <div class="tc-content">
-        <div class="tc-body">
-            <p>for those interested to bring the practice out of retreat and workshop spaces and into a co-created co-living environment.</p>
-        </div>
-        <h2 class="tc-title">
-            five facilitated <span class="struck">circling</span> <a href="https://www.transformationalconnection.com/what-is-transformational-connection">transformational connection</a> sessions a week at transformational connection hub and at the dancehall.
-        </h2>
-        <div class="tc-body">
-            <p>for those coming primarily for transformational connection who expect to join most sessions and are interested to practice throughout the day, you can choose to stay in the transformational connection hub</p>
-        </div>
-    </div>
-</section>
-
 <section id="facilities">
+    <div class="section-ornament">✧ ─ ✧ ─ ✧</div>
     <div class="section-label">005 / facilities</div>
     <ul class="facilities-list">
         <li>200sqm dancehall (vinyl floor)</li>
@@ -531,6 +694,7 @@ custom_js: |
 
 <section class="apply-section" id="apply">
     <div style="max-width: 720px; margin: 0 auto;">
+        <div class="section-ornament" style="color: var(--moss); opacity: 0.3;">☽ ✧ ☾</div>
         <div class="section-label">006 / apply</div>
         <h2 style="font-family: 'EB Garamond', serif; font-size: 3rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: -0.02em;">who are you & what are you up to?</h2>
         <p style="font-size: 1rem; color: var(--gray); max-width: 450px; margin-bottom: 3rem; line-height: 1.7;">we curate each month's group. the application has some practical questions and some fun ones.</p>
@@ -616,7 +780,7 @@ custom_js: |
 
             <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
 
-            <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:slowreply@foolsvalley.com" style="color: var(--gray);">slowreply@foolsvalley.com</a></p>
+            <p style="margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gray);">questions → <a href="mailto:theonlyfool@foolsvalley.com" style="color: var(--gray);">theonlyfool@foolsvalley.com</a></p>
         </form>
     </div>
 </section>
