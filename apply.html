@@ -541,6 +541,19 @@ footer a { color: var(--text); }
   <h1>choose dates & room</h1>
   <p class="subtitle">select your stay dates and accommodation</p>
 
+  <!-- NAME/EMAIL SECTION (for direct visitors) -->
+  <div class="section" id="contact-info-section" style="display:none; background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:1.5rem 2rem; margin-bottom:2rem;">
+    <p style="margin-bottom:1.2rem; color:var(--text-light); font-size:0.95rem;">please provide your contact info to continue</p>
+    <div class="field">
+      <label>name *</label>
+      <input type="text" id="direct-name" required placeholder="your name">
+    </div>
+    <div class="field">
+      <label>email *</label>
+      <input type="email" id="direct-email" required placeholder="your@email.com">
+    </div>
+  </div>
+
   <!-- DATES SECTION -->
   <div class="section" id="dates-section">
     <div class="step-label">001 / when</div>
@@ -743,6 +756,23 @@ document.addEventListener('DOMContentLoaded', function() {
     tc: urlParams.get('tc') || '',
     questions: urlParams.get('questions') || ''
   };
+
+  // Show contact info section if name/email are missing
+  const contactInfoSection = document.getElementById('contact-info-section');
+  const directNameInput = document.getElementById('direct-name');
+  const directEmailInput = document.getElementById('direct-email');
+
+  if (!formData.name || !formData.email) {
+    contactInfoSection.style.display = 'block';
+
+    // Update formData when fields are filled
+    directNameInput.addEventListener('input', function() {
+      formData.name = this.value.trim();
+    });
+    directEmailInput.addEventListener('input', function() {
+      formData.email = this.value.trim();
+    });
+  }
 
   // Show minimum duration text only for new visitors
   const minDurationContainer = document.getElementById('min-duration-container');
@@ -1281,6 +1311,12 @@ function populateReview() {
 // SUBMIT
 // ============================================================
 async function submitApplication() {
+  // Validate required fields
+  if (!formData.name || !formData.email) {
+    alert('Please provide your name and email to continue.');
+    return;
+  }
+
   const btn = document.getElementById('btn-submit');
   btn.disabled = true;
   btn.textContent = 'submitting...';
