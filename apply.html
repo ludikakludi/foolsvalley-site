@@ -553,6 +553,10 @@ footer a { color: var(--text); }
       <span id="min-duration-text">2 weeks min recommended stay if you're coming for the first time.</span>
     </p>
 
+    <p style="margin-bottom:1.5rem; padding:1rem; background:rgba(74, 93, 58, 0.08); border-left:3px solid #4a5d3a; font-size:0.95rem; line-height:1.6;">
+      Please don't book the cheapest room if you don't have to - this is our way to keep the space affordable.
+    </p>
+
     <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
 
     <div class="calendar-container">
@@ -603,6 +607,53 @@ footer a { color: var(--text); }
       </div>
     </div>
 
+  </div>
+
+  <!-- FAQ SECTION -->
+  <div class="section" id="faq-section" style="border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <h2 style="margin-bottom:2rem;">Foolishly Answered Questions</h2>
+
+    <div style="max-width:680px;">
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">1. Pricing</h3>
+        <p style="color:var(--text-light); line-height:1.7;">The price = accommodation (depends on type) + daily fee (covers food and per-person costs).</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">2. Reservations</h3>
+        <p style="color:var(--text-light); line-height:1.7;">Your spot is secured once paid in full.</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">3. Refunds</h3>
+        <p style="color:var(--text-light); line-height:1.7;">6+ weeks out: 100% refund on accommodation. 2–6 weeks: 50%. Under 2 weeks: no refund. Daily fee is always fully refundable.</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">4. Long-stay rates</h3>
+        <p style="color:var(--text-light); line-height:1.7;">Weekly, two-week, and monthly rates kick in when you book for at least that period. Extra days beyond the minimum are charged at the same per-day rate — e.g. if you book 10 days, you can get the weekly rate for all 10.</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">5. What's per person vs. per room?</h3>
+        <p style="color:var(--text-light); line-height:1.7;">Room rate = per room. Daily fee, camping, and van spots = per person (since it covers mainly the use of communal facilities, not the accommodation itself).</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">6. Can I opt out of food?</h3>
+        <p style="color:var(--text-light); line-height:1.7;">Not fully. The daily fee also covers water, electricity, and kitchen fixed running costs. If our kitchen can't meet your dietary needs, we can offer you cooking and fridge space — and reduce a small part of the fee if needed.</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">7. Can I volunteer part-time?</h3>
+        <p style="color:var(--text-light); line-height:1.7;">Ask us about it, sometimes we have discounted helper spots, especially for people with building/carpentry/electrics/gardening skills.</p>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">8. Kitchen & clean-up</h3>
+        <p style="color:var(--text-light); line-height:1.7;">We have a chef, but we ask everyone to help with 1–2 cooking shifts per week. Clean-up after meals and of communal spaces is shared by all.</p>
+      </div>
+    </div>
   </div>
 
   <!-- REVIEW SECTION -->
@@ -1129,7 +1180,7 @@ function renderRooms() {
     const isTCBuilding = b === 'Blue House';
 
     const h3 = document.createElement('h3');
-    let title = b === 'Old House' ? 'the old house' : b === 'Octopus House' ? 'm / octopus house' : b === 'Blue House' ? 'TC HUB - five transformational connection session a week' : 'own tent / van';
+    let title = b === 'Old House' ? 'the old house' : b === 'Octopus House' ? 'm / octopus house' : b === 'Blue House' ? 'TC HUB - five transformational connection session a week' : 'own tent / van <span style="font-weight:400; font-style:italic; font-size:0.9rem;">(per person)</span>';
     h3.innerHTML = title;
     group.appendChild(h3);
 
@@ -1344,7 +1395,8 @@ function buildPriceTable(container, rooms) {
 
   order.forEach(function(b) {
     if (!buildings[b] || buildings[b].length === 0) return;
-    html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + '</td></tr>';
+    var labelSuffix = (b === 'Camping') ? ' <span style="font-weight:400; font-style:italic;">(per person)</span>' : '';
+    html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + labelSuffix + '</td></tr>';
     buildings[b].forEach(function(r) {
       // Strip dorm bed/van spot counts from room names in price table
       var cleanName = r.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
