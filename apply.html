@@ -541,19 +541,6 @@ footer a { color: var(--text); }
   <h1>choose dates & room</h1>
   <p class="subtitle">select your stay dates and accommodation</p>
 
-  <!-- NAME/EMAIL SECTION (for direct visitors) -->
-  <div class="section" id="contact-info-section" style="display:none; background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:1.5rem 2rem; margin-bottom:2rem;">
-    <p style="margin-bottom:1.2rem; color:var(--text-light); font-size:0.95rem;">please provide your contact info to continue</p>
-    <div class="field">
-      <label>name *</label>
-      <input type="text" id="direct-name" required placeholder="your name">
-    </div>
-    <div class="field">
-      <label>email *</label>
-      <input type="email" id="direct-email" required placeholder="your@email.com">
-    </div>
-  </div>
-
   <!-- DATES SECTION -->
   <div class="section" id="dates-section">
     <div class="step-label">001 / when</div>
@@ -669,12 +656,59 @@ footer a { color: var(--text); }
     <div class="step-label">003 / review</div>
     <h2>review & submit</h2>
 
+    <p style="margin-bottom:1.5rem; font-size:0.95rem; color:var(--text-light); font-style:italic;">
+      please fill or review your information below. fields marked with * are required.
+    </p>
+
     <div class="review-section">
       <h3>about you</h3>
-      <div class="review-row"><span class="label">name</span><span class="value" id="rev-name"></span></div>
-      <div class="review-row"><span class="label">email</span><span class="value" id="rev-email"></span></div>
-      <div class="review-row"><span class="label">main quest</span><span class="value" id="rev-quest"></span></div>
-      <div class="review-row"><span class="label">TC interest</span><span class="value" id="rev-tc"></span></div>
+
+      <div class="field">
+        <label>name *</label>
+        <input type="text" id="rev-name" required>
+      </div>
+
+      <div class="field">
+        <label>email *</label>
+        <input type="email" id="rev-email" required>
+      </div>
+
+      <div class="field">
+        <label>main quest (optional)</label>
+        <div class="hint">what brings you to fools' valley?</div>
+        <textarea id="rev-quest" rows="2"></textarea>
+      </div>
+
+      <div class="field">
+        <label>past quests (optional)</label>
+        <div class="hint">past quests you've been on that have influenced who you are right now</div>
+        <textarea id="rev-past-quests" rows="2"></textarea>
+      </div>
+
+      <div class="field">
+        <label>what would you like to contribute? (optional)</label>
+        <div class="hint">would you like to host any workshops / activities / talks? what else would you like to contribute?</div>
+        <textarea id="rev-contribute" rows="2"></textarea>
+      </div>
+
+      <div class="field">
+        <label>TC interest (optional)</label>
+        <div class="radio-group">
+          <label class="radio-option" id="tc-primary-option">
+            <input type="radio" name="tc-interest" value="tc-primary">
+            <span class="radio-label">Yes — primary interest, join all sessions, TC hub</span>
+          </label>
+          <label class="radio-option" id="tc-no-option">
+            <input type="radio" name="tc-interest" value="tc-no">
+            <span class="radio-label">No, that's not my primary interest</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>any questions? (optional)</label>
+        <textarea id="rev-questions" rows="2"></textarea>
+      </div>
     </div>
 
     <div class="review-section">
@@ -756,23 +790,6 @@ document.addEventListener('DOMContentLoaded', function() {
     tc: urlParams.get('tc') || '',
     questions: urlParams.get('questions') || ''
   };
-
-  // Show contact info section if name/email are missing
-  const contactInfoSection = document.getElementById('contact-info-section');
-  const directNameInput = document.getElementById('direct-name');
-  const directEmailInput = document.getElementById('direct-email');
-
-  if (!formData.name || !formData.email) {
-    contactInfoSection.style.display = 'block';
-
-    // Update formData when fields are filled
-    directNameInput.addEventListener('input', function() {
-      formData.name = this.value.trim();
-    });
-    directEmailInput.addEventListener('input', function() {
-      formData.email = this.value.trim();
-    });
-  }
 
   // Show minimum duration text only for new visitors
   const minDurationContainer = document.getElementById('min-duration-container');
@@ -1267,15 +1284,52 @@ function renderRooms() {
 // REVIEW
 // ============================================================
 function populateReview() {
-  document.getElementById('rev-name').textContent = formData.name || '—';
-  document.getElementById('rev-email').textContent = formData.email || '—';
-  document.getElementById('rev-quest').textContent = formData.quest || '—';
+  // Populate editable form fields
+  document.getElementById('rev-name').value = formData.name || '';
+  document.getElementById('rev-email').value = formData.email || '';
+  document.getElementById('rev-quest').value = formData.quest || '';
+  document.getElementById('rev-past-quests').value = formData.pastQuests || '';
+  document.getElementById('rev-contribute').value = formData.contribute || '';
+  document.getElementById('rev-questions').value = formData.questions || '';
 
-  const tcLabels = {
-    'tc-primary': 'Yes \u2014 primary interest, join all sessions, TC hub',
-    'tc-no': "No, that's not my primary interest"
-  };
-  document.getElementById('rev-tc').textContent = tcLabels[formData.tc] || '—';
+  // Set TC interest radio buttons
+  if (formData.tc === 'tc-primary') {
+    document.querySelector('input[name="tc-interest"][value="tc-primary"]').checked = true;
+    document.getElementById('tc-primary-option').classList.add('selected');
+  } else if (formData.tc === 'tc-no') {
+    document.querySelector('input[name="tc-interest"][value="tc-no"]').checked = true;
+    document.getElementById('tc-no-option').classList.add('selected');
+  }
+
+  // Add event listeners to update formData when fields change
+  document.getElementById('rev-name').addEventListener('input', function() {
+    formData.name = this.value.trim();
+  });
+  document.getElementById('rev-email').addEventListener('input', function() {
+    formData.email = this.value.trim();
+  });
+  document.getElementById('rev-quest').addEventListener('input', function() {
+    formData.quest = this.value.trim();
+  });
+  document.getElementById('rev-past-quests').addEventListener('input', function() {
+    formData.pastQuests = this.value.trim();
+  });
+  document.getElementById('rev-contribute').addEventListener('input', function() {
+    formData.contribute = this.value.trim();
+  });
+  document.getElementById('rev-questions').addEventListener('input', function() {
+    formData.questions = this.value.trim();
+  });
+
+  // TC interest radio button listeners
+  document.querySelectorAll('input[name="tc-interest"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      formData.tc = this.value;
+      // Update visual selection
+      document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+      this.closest('.radio-option').classList.add('selected');
+    });
+  });
 
   document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
   document.getElementById('rev-departure').textContent = formatDate(departureDate);
@@ -1312,8 +1366,26 @@ function populateReview() {
 // ============================================================
 async function submitApplication() {
   // Validate required fields
-  if (!formData.name || !formData.email) {
-    alert('Please provide your name and email to continue.');
+  const nameField = document.getElementById('rev-name');
+  const emailField = document.getElementById('rev-email');
+
+  if (!formData.name || formData.name.length === 0) {
+    alert('Please enter your name before submitting.');
+    nameField.focus();
+    return;
+  }
+
+  if (!formData.email || formData.email.length === 0) {
+    alert('Please enter your email before submitting.');
+    emailField.focus();
+    return;
+  }
+
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email)) {
+    alert('Please enter a valid email address.');
+    emailField.focus();
     return;
   }
 
