@@ -363,6 +363,10 @@ custom_css: |
 
   .struck { text-decoration: line-through; opacity: 0.4; }
 
+  /* Hide asterisks for returning visitors */
+  .new-visitor-required { display: inline; }
+  .returning-visitor .new-visitor-required { display: none; }
+
   /* Footer overrides */
   footer {
     font-family: 'Space Mono', monospace;
@@ -382,22 +386,27 @@ custom_css: |
     .calendar-month { border-right: none !important; }
   }
 custom_js: |
-  // Handle conditional questions visibility
+  // Handle conditional questions visibility and required fields
   const visitedRadios = document.querySelectorAll('input[name="visited"]');
   const questionsDiv = document.getElementById('new-visitor-questions');
-  const newVisitorFields = questionsDiv.querySelectorAll('textarea, input[type="text"]');
+  const newVisitorFields = document.querySelectorAll('.new-visitor-field');
+  const applyForm = document.getElementById('apply-form');
 
   visitedRadios.forEach(radio => {
     radio.addEventListener('change', function() {
       if (this.value === 'no') {
+        // New visitor
         questionsDiv.style.display = 'block';
-        // Make all fields in new-visitor-questions required
+        applyForm.classList.remove('returning-visitor');
+        // Make all new-visitor-field elements required
         newVisitorFields.forEach(field => {
           field.setAttribute('required', 'required');
         });
       } else {
+        // Returning visitor
         questionsDiv.style.display = 'none';
-        // Remove required attribute when hidden
+        applyForm.classList.add('returning-visitor');
+        // Remove required attribute from all new-visitor-field elements
         newVisitorFields.forEach(field => {
           field.removeAttribute('required');
         });
@@ -409,8 +418,63 @@ custom_js: |
   const checkedRadio = document.querySelector('input[name="visited"]:checked');
   if (checkedRadio && checkedRadio.value === 'no') {
     questionsDiv.style.display = 'block';
+    applyForm.classList.remove('returning-visitor');
     newVisitorFields.forEach(field => {
       field.setAttribute('required', 'required');
+    });
+  } else if (checkedRadio && checkedRadio.value === 'yes') {
+    applyForm.classList.add('returning-visitor');
+  }
+
+  // Handle codeword on the residencies form
+  var questionsWrapper = document.getElementById('questions-wrapper');
+  var codewordInput = document.getElementById('codeword-input');
+  var codewordMessage = document.getElementById('codeword-message');
+  var hiddenRequiredFields = [];
+
+  function applyFormCodeword(code) {
+    if (code === 'tcmay' || code === 'agartha') {
+      if (questionsWrapper) {
+        hiddenRequiredFields = [];
+        questionsWrapper.querySelectorAll('[required]').forEach(function(el) {
+          hiddenRequiredFields.push(el);
+          el.removeAttribute('required');
+        });
+        questionsWrapper.style.display = 'none';
+      }
+      codewordMessage.style.display = 'block';
+      codewordMessage.style.color = 'var(--moss)';
+      if (code === 'tcmay') {
+        codewordMessage.textContent = '✓ welcome — just your name and email needed';
+      } else {
+        codewordMessage.textContent = '✓ agartha — just your name and email needed. 10% discount on accommodation for 2+ week stays will be applied.';
+      }
+    } else if (code.length > 0) {
+      restoreFormQuestions();
+      codewordMessage.style.display = 'block';
+      codewordMessage.style.color = 'var(--gray)';
+      codewordMessage.textContent = 'unrecognized codeword';
+    } else {
+      restoreFormQuestions();
+      codewordMessage.style.display = 'none';
+    }
+  }
+
+  function restoreFormQuestions() {
+    if (questionsWrapper) {
+      questionsWrapper.style.display = '';
+      hiddenRequiredFields.forEach(function(el) {
+        el.setAttribute('required', 'required');
+      });
+      hiddenRequiredFields = [];
+      var checkedVisited = document.querySelector('input[name="visited"]:checked');
+      if (checkedVisited) checkedVisited.dispatchEvent(new Event('change'));
+    }
+  }
+
+  if (codewordInput) {
+    codewordInput.addEventListener('input', function() {
+      applyFormCodeword(this.value.trim().toLowerCase());
     });
   }
 
@@ -575,8 +639,17 @@ custom_js: |
             <!-- May -->
             <div class="calendar-month">
                 <div class="month-name">May</div>
-                <div class="month-status status-open">
+                <div class="month-status status-mixed">
                     <span class="status-badge open">open</span>
+                    <div class="status-item">
+                        5–6 vibecoding intensive: learn the basics of building up agent architecture
+                    </div>
+                    <div class="status-item">
+                        8–10 transformational connection (circling) intensive
+                    </div>
+                    <div class="status-item">
+                        21–24 gaga and yoga retreat
+                    </div>
                     <div class="status-item">
                         <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
                     </div>
@@ -630,8 +703,14 @@ custom_js: |
             <!-- October -->
             <div class="calendar-month">
                 <div class="month-name">October</div>
-                <div class="month-status status-open">
+                <div class="month-status status-mixed">
                     <span class="status-badge open">open</span>
+                    <div class="status-item">
+                        21–25 contact improv intensive workshop by Nita Little
+                    </div>
+                    <div class="status-item">
+                        25 oct – 30 nov art + movement immersion
+                    </div>
                     <div class="status-item">
                         <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
                     </div>
@@ -641,10 +720,13 @@ custom_js: |
             <!-- November -->
             <div class="calendar-month">
                 <div class="month-name">November</div>
-                <div class="month-status status-maybe">
-                    <span class="status-badge maybe">apply if interested</span>
+                <div class="month-status status-mixed">
+                    <span class="status-badge open">open</span>
                     <div class="status-item">
-                        open for events hosting
+                        –30 art + movement immersion (from oct 25)
+                    </div>
+                    <div class="status-item">
+                        1–8 vipassana & authentic movement retreat
                     </div>
                 </div>
             </div>
@@ -652,10 +734,10 @@ custom_js: |
             <!-- December -->
             <div class="calendar-month">
                 <div class="month-name">December</div>
-                <div class="month-status status-maybe">
-                    <span class="status-badge maybe">apply if interested</span>
+                <div class="month-status status-mixed">
+                    <span class="status-badge open">open</span>
                     <div class="status-item">
-                        open for events hosting
+                        28 dec – 11 jan new year CI festival & intensive
                     </div>
                 </div>
             </div>
@@ -701,13 +783,26 @@ custom_js: |
 
         <form id="apply-form" action="apply.html" method="get">
             <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name?</label>
-                <input type="text" name="name" placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what's your name? *</label>
+                <input type="text" name="name" required placeholder="your name" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
             </div>
 
             <div style="margin-bottom: 2rem;">
                 <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">email *</label>
                 <input type="email" name="email" required placeholder="you@example.com" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">codeword <span style="font-weight: 400; color: var(--gray); font-size: 0.9rem;">(optional)</span></label>
+                <input type="text" name="codeword" id="codeword-input" autocomplete="off" placeholder="enter if you have one" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                <div id="codeword-message" style="margin-top: 0.5rem; font-size: 0.85rem; display: none;"></div>
+            </div>
+
+            <div id="questions-wrapper">
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">links to your website / social media <span class="new-visitor-required">*</span></label>
+                <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">help us get to know you better</div>
+                <input type="text" name="links" required placeholder="instagram, linkedin, website, etc." class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
             </div>
 
             <div style="margin-bottom: 2rem;">
@@ -741,37 +836,53 @@ custom_js: |
             <!-- Questions only for new visitors -->
             <div id="new-visitor-questions">
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest</label>
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">current quest *</label>
                     <div style="font-size: 0.85rem; color: var(--gray); font-style: italic; margin-bottom: 0.4rem;">what's the big thing you're working on or moving through right now?</div>
-                    <textarea name="quest" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    <textarea name="quest" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
                 </div>
 
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on that have influenced who you are right now</label>
-                    <textarea name="past-quests" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">past quests you've been on that have influenced who you are right now *</label>
+                    <textarea name="past-quests" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
                 </div>
 
                 <div style="margin-bottom: 2rem;">
-                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person?</label>
-                    <input type="text" name="reference" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
+                    <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">do you know anyone who's been to fools' valley who could be your reference person? *</label>
+                    <input type="text" name="reference" required class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6;" />
                 </div>
             </div>
 
             <!-- Questions for everyone (including returning visitors) -->
             <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for?</label>
-                <textarea name="use-time" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">what would you like to use your time at fools' valley for? <span class="new-visitor-required">*</span></label>
+                <textarea name="use-time" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
             </div>
 
             <div style="margin-bottom: 2rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">would you like to host any workshops / activities / talks? what else would you like to contribute?</label>
-                <textarea name="contribute" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">would you like to host any workshops / activities / talks? what else would you like to contribute? <span class="new-visitor-required">*</span></label>
+                <textarea name="contribute" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about? <span class="new-visitor-required">*</span></label>
+                <textarea name="questions" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
             </div>
 
             <div style="margin-bottom: 3rem;">
-                <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about?</label>
-                <textarea name="questions" rows="3" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
+                <label style="display: block; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 500;">do you agree to do 1-2 cleaning/cooking shifts a week, and generally keep the spaces clean and participate in collective cleanup? *</label>
+                <div style="display: flex; gap: 1.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="cleanup-agreement" value="yes" required style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">yes</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="radio" name="cleanup-agreement" value="no" style="accent-color: var(--black);" />
+                        <span style="font-size: 0.95rem;">no</span>
+                    </label>
+                </div>
             </div>
+
+            </div><!-- end questions-wrapper -->
 
             <button type="submit" style="display: inline-block; padding: 1rem 2rem; border: 1px solid var(--black); background: var(--black); color: var(--bg); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; transition: all 0.2s; cursor: pointer;">continue to dates & rooms →</button>
 

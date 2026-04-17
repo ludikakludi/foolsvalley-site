@@ -763,6 +763,7 @@ let fallbackMode = false;
 let formData = {}; // Store form data from previous page
 let hasShortStayCode = false; // Track if shortstay codeword is active
 let hasTcMayCode = false; // Track if tcmay codeword is active
+let hasAgarthaCode = false; // Track if agartha codeword is active
 
 // Advance to today or next month if we're past the 15th
 if (new Date().getDate() > 15) {
@@ -791,6 +792,16 @@ document.addEventListener('DOMContentLoaded', function() {
     tc: urlParams.get('tc') || '',
     questions: urlParams.get('questions') || ''
   };
+
+  // Auto-apply codeword passed from residencies form
+  var codewordParam = urlParams.get('codeword') || '';
+  if (codewordParam) {
+    var codewordInputEl = document.getElementById('codeword-input');
+    if (codewordInputEl) {
+      codewordInputEl.value = codewordParam;
+      codewordInputEl.dispatchEvent(new Event('input'));
+    }
+  }
 
   // Show minimum duration text only for new visitors
   const minDurationContainer = document.getElementById('min-duration-container');
@@ -1161,6 +1172,13 @@ function showFallback(container, msg) {
 }
 
 // Clean up price breakdown display - ensure no cents shown
+function getEffectiveRoomPrice(room) {
+  if (hasAgarthaCode && room.numDays >= 14) {
+    return Math.round(room.roomPrice * 0.9);
+  }
+  return room.roomPrice;
+}
+
 function normalizePriceBreakdown(breakdown, numDays) {
   // The backend now sends the correct pricing tier based on stay duration
   // We just need to ensure prices are displayed as whole numbers (no cents)
@@ -1258,9 +1276,11 @@ function renderRooms() {
       // Normalize price breakdown display based on stay duration
       var normalizedBreakdown = normalizePriceBreakdown(room.priceBreakdown, room.numDays);
 
+      var effectiveRoomPrice = getEffectiveRoomPrice(room);
+      var agarthaNote = (hasAgarthaCode && room.numDays >= 14) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
-        '<div class="room-price">€' + room.roomPrice + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
+        '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
       inner.appendChild(info);
 
       card.appendChild(inner);
@@ -1351,13 +1371,15 @@ function populateReview() {
 
     // Use normalized price breakdown
     var normalizedBreakdown = normalizePriceBreakdown(selectedRoom.priceBreakdown, selectedRoom.numDays);
-    document.getElementById('rev-room-price').innerHTML = '\u20AC' + selectedRoom.roomPrice + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
+    var effectiveRoomPrice = getEffectiveRoomPrice(selectedRoom);
+    var revAgarthaNote = (hasAgarthaCode && selectedRoom.numDays >= 14) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
+    document.getElementById('rev-room-price').innerHTML = '\u20AC' + effectiveRoomPrice + revAgarthaNote + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
 
     // Show daily fee with (20 euros/day) annotation
     document.getElementById('rev-daily-fee').innerHTML = '\u20AC' + selectedRoom.dailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(20 euros/day)</span>';
 
     // Calculate and display total
-    var totalPrice = selectedRoom.roomPrice + selectedRoom.dailyFee;
+    var totalPrice = effectiveRoomPrice + selectedRoom.dailyFee;
     document.getElementById('rev-total').textContent = '\u20AC' + totalPrice;
   }
 }
@@ -1542,6 +1564,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
   } else if (code === 'tcmay') {
     hasTcMayCode = true;
     hasShortStayCode = false;
+    hasAgarthaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
     message.textContent = '✓ TC May special: book May 8-9 with 2 night minimum, OR normal Monday bookings';
@@ -1556,9 +1579,19 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     calendarYear = 2026;
 
     renderCalendar(); // Re-render calendar with tcmay rules
+  } else if (code === 'agartha') {
+    hasAgarthaCode = true;
+    hasShortStayCode = false;
+    hasTcMayCode = false;
+    message.style.display = 'block';
+    message.style.color = 'var(--success)';
+    message.textContent = '✓ Agartha: 10% discount on accommodation for 2+ week stays';
+
+    renderCalendar();
   } else if (code.length > 0) {
     hasShortStayCode = false;
     hasTcMayCode = false;
+    hasAgarthaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--error)';
     message.textContent = 'Invalid codeword';
@@ -1576,6 +1609,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
   } else {
     hasShortStayCode = false;
     hasTcMayCode = false;
+    hasAgarthaCode = false;
     message.style.display = 'none';
 
     // Restore normal instructions
