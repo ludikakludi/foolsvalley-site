@@ -1173,7 +1173,7 @@ function showFallback(container, msg) {
 
 // Clean up price breakdown display - ensure no cents shown
 function getEffectiveRoomPrice(room) {
-  if (hasAgarthaCode && room.numDays >= 14) {
+  if (hasAgarthaCode) {
     return Math.round(room.roomPrice * 0.9);
   }
   return room.roomPrice;
@@ -1277,7 +1277,7 @@ function renderRooms() {
       var normalizedBreakdown = normalizePriceBreakdown(room.priceBreakdown, room.numDays);
 
       var effectiveRoomPrice = getEffectiveRoomPrice(room);
-      var agarthaNote = (hasAgarthaCode && room.numDays >= 14) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
+      var agarthaNote = (hasAgarthaCode) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
         '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
@@ -1585,7 +1585,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     hasTcMayCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
-    message.textContent = '✓ Agartha: 10% discount on accommodation for 2+ week stays';
+    message.textContent = '✓ Agartha: 10% discount on accommodation';
 
     renderCalendar();
   } else if (code.length > 0) {
