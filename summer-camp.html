@@ -1,0 +1,416 @@
+---
+layout: default
+title: summer camp
+custom_css: |
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  :root {
+    --paper: #F3F1EA;
+    --ink: #1B1B1A;
+    --muted: #8d8d83;
+    --line: rgba(27,27,26,0.13);
+    --accent: #EBC23B;
+    --accent-deep: #C99B1E;
+  }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.62;
+  }
+  ::selection { background: var(--accent); color: var(--ink); }
+  a { color: var(--ink); transition: all 0.15s ease; }
+
+  /* nav / footer */
+  nav {
+    border-bottom: 1px solid var(--line);
+    background: rgba(243,241,234,0.92);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    font-family: 'Space Mono', monospace;
+  }
+  nav a { color: var(--muted); letter-spacing: 0.04em; text-decoration: none; }
+  nav a:hover { color: var(--ink); background: none; }
+  .nav-logo svg { transition: transform 0.6s ease; }
+  .nav-logo:hover svg { transform: rotate(360deg); }
+  .nav-logo span { color: var(--ink); }
+  footer { font-family: 'Space Mono', monospace; border-top: 1px solid var(--line); background: var(--paper); }
+
+  /* ---------- the post column ---------- */
+  .post { max-width: 660px; margin: 0 auto; padding: 0 1.5rem 6rem; }
+
+  .post section { margin-top: 2.6rem; padding-top: 2.6rem; border-top: 1px solid var(--line); }
+
+  .label {
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1.2rem;
+  }
+  .label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  .post p { margin-bottom: 1rem; }
+  .post p:last-child { margin-bottom: 0; }
+  strong { font-weight: 400; background: linear-gradient(transparent 60%, var(--accent) 60%); }
+  em { font-style: italic; }
+
+  .textlink {
+    display: inline-block; margin-top: 1rem;
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink);
+    border-bottom: 1px solid var(--accent); padding-bottom: 2px; text-decoration: none;
+  }
+  .textlink:hover { background: var(--accent); }
+
+  /* ---------- hero / header ---------- */
+  .hero { padding: 6.5rem 0 0.5rem; }
+  .hero-kicker {
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 1.4rem;
+  }
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: clamp(2.6rem, 8vw, 4.2rem); line-height: 0.92; letter-spacing: -0.03em;
+    text-transform: lowercase; margin-bottom: 0.3rem;
+  }
+  .hero-title .camp { position: relative; display: inline-block; }
+  .hero-title .camp svg { position: absolute; left: 0; bottom: -0.12em; width: 100%; height: 0.2em; overflow: visible; }
+  .hero-lead { font-style: italic; font-size: 1.28rem; line-height: 1.45; margin: 1.6rem 0 1.3rem; }
+  .hero-meta {
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .hero-meta b { color: var(--ink); font-weight: 400; }
+  .btn {
+    display: inline-block; margin-top: 1.8rem; padding: 0.75rem 1.6rem;
+    background: var(--accent); color: var(--ink); border: 1px solid var(--ink);
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; border-radius: 100px; text-decoration: none; transition: all 0.18s ease;
+  }
+  .btn:hover { background: var(--ink); color: var(--accent); }
+
+  /* ---------- inline images ---------- */
+  figure.img { margin: 1.8rem 0 0.4rem; }
+  figure.img img { width: 100%; display: block; border-radius: 2px; }
+  figure.img figcaption {
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    text-transform: lowercase; color: var(--muted); margin-top: 0.55rem;
+  }
+
+  /* ---------- facilities ---------- */
+  .facilities-list { columns: 2; column-gap: 2.5rem; list-style: none; font-size: 1rem; }
+  .facilities-list li { margin-bottom: 0.4rem; break-inside: avoid; padding-left: 1.1rem; position: relative; }
+  .facilities-list li::before { content: '·'; position: absolute; left: 0; color: var(--accent-deep); font-weight: 700; }
+
+  /* ---------- daily rhythm ---------- */
+  .r-row { display: flex; gap: 1.2rem; padding: 0.55rem 0; border-bottom: 1px solid var(--line); }
+  .r-row:first-of-type { border-top: 1px solid var(--line); }
+  .r-time { width: 84px; flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 0.28rem; }
+  .r-act { font-size: 1.05rem; line-height: 1.45; }
+  .r-act b { font-weight: 400; background: linear-gradient(transparent 60%, var(--accent) 60%); }
+  .r-note { margin-top: 1.1rem; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.03em; color: var(--muted); line-height: 1.7; }
+
+  /* ---------- definition lists (when / staying) ---------- */
+  .dl { border-top: 1px solid var(--line); }
+  .dl .row { display: flex; gap: 1.2rem; padding: 0.85rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .dl .term { width: 84px; flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-deep); padding-top: 0.15rem; }
+  .dl .desc { font-size: 1.05rem; line-height: 1.5; }
+  .dl .desc small { display: block; color: var(--muted); font-size: 0.92rem; margin-top: 0.15rem; }
+  .dl .desc b { font-weight: 400; background: linear-gradient(transparent 60%, var(--accent) 60%); }
+  .reach { margin-top: 1.2rem; font-style: italic; color: var(--muted); }
+
+  /* ---------- curator ---------- */
+  .curator-name { background: linear-gradient(transparent 58%, var(--accent) 58%); }
+
+  /* ---------- apply ---------- */
+  .apply-title { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.4rem); letter-spacing: -0.02em; line-height: 1.05; margin: 0.4rem 0 0.8rem; text-transform: lowercase; }
+  .apply-sub { color: var(--muted); line-height: 1.55; margin-bottom: 0.5rem; }
+  .apply-sub.fine { font-style: italic; font-size: 0.95rem; margin-bottom: 2.2rem; }
+  .field { margin-bottom: 1.7rem; }
+  .field > label { display: block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .field .hint { font-style: italic; color: var(--muted); font-size: 0.95rem; margin-bottom: 0.45rem; }
+  .field input[type=text], .field input[type=email], .field textarea {
+    width: 100%; padding: 0.5rem 0; font-family: 'EB Garamond', serif; font-size: 1.1rem;
+    border: none; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink);
+    line-height: 1.6; border-radius: 0; transition: border-color 0.15s ease;
+  }
+  .field textarea { resize: vertical; }
+  .field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--ink); }
+  .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.6; }
+  .radio-row { display: flex; gap: 1.6rem; flex-wrap: wrap; }
+  .radio-opt { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 1.05rem; }
+  .radio-opt input { accent-color: var(--accent-deep); }
+  #codeword-message { margin-top: 0.5rem; font-family: 'Space Mono', monospace; font-size: 11px; display: none; }
+  .submit-btn {
+    margin-top: 0.6rem; padding: 0.85rem 1.9rem; background: var(--ink); color: var(--accent); border: 1px solid var(--ink);
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 100px; cursor: pointer; transition: all 0.18s ease;
+  }
+  .submit-btn:hover { background: var(--accent); color: var(--ink); }
+  .new-visitor-required { display: inline; }
+  .returning-visitor .new-visitor-required { display: none; }
+
+  @media (max-width: 600px) {
+    .facilities-list { columns: 1; }
+    .hero-title { font-size: 2.6rem; }
+  }
+custom_js: |
+  const visitedRadios = document.querySelectorAll('input[name="visited"]');
+  const questionsDiv = document.getElementById('new-visitor-questions');
+  const newVisitorFields = document.querySelectorAll('.new-visitor-field');
+  const applyForm = document.getElementById('apply-form');
+
+  visitedRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'no') {
+        questionsDiv.style.display = 'block';
+        applyForm.classList.remove('returning-visitor');
+        newVisitorFields.forEach(field => field.setAttribute('required', 'required'));
+      } else {
+        questionsDiv.style.display = 'none';
+        applyForm.classList.add('returning-visitor');
+        newVisitorFields.forEach(field => field.removeAttribute('required'));
+      }
+    });
+  });
+
+  const checkedRadio = document.querySelector('input[name="visited"]:checked');
+  if (checkedRadio && checkedRadio.value === 'no') {
+    questionsDiv.style.display = 'block';
+    applyForm.classList.remove('returning-visitor');
+    newVisitorFields.forEach(field => field.setAttribute('required', 'required'));
+  } else if (checkedRadio && checkedRadio.value === 'yes') {
+    applyForm.classList.add('returning-visitor');
+  }
+
+  var questionsWrapper = document.getElementById('questions-wrapper');
+  var codewordInput = document.getElementById('codeword-input');
+  var codewordMessage = document.getElementById('codeword-message');
+  var hiddenRequiredFields = [];
+
+  function applyFormCodeword(code) {
+    if (code === 'tcmay' || code === 'agartha') {
+      if (questionsWrapper) {
+        hiddenRequiredFields = [];
+        questionsWrapper.querySelectorAll('[required]').forEach(function(el) {
+          hiddenRequiredFields.push(el);
+          el.removeAttribute('required');
+        });
+        questionsWrapper.style.display = 'none';
+      }
+      codewordMessage.style.display = 'block';
+      codewordMessage.style.color = 'var(--accent-deep)';
+      if (code === 'tcmay') {
+        codewordMessage.textContent = '✓ welcome — just your name and email needed';
+      } else {
+        codewordMessage.textContent = '✓ agartha — just your name and email needed. 10% discount on accommodation will be applied.';
+      }
+    } else if (code.length > 0) {
+      restoreFormQuestions();
+      codewordMessage.style.display = 'block';
+      codewordMessage.style.color = 'var(--muted)';
+      codewordMessage.textContent = 'unrecognized codeword';
+    } else {
+      restoreFormQuestions();
+      codewordMessage.style.display = 'none';
+    }
+  }
+
+  function restoreFormQuestions() {
+    if (questionsWrapper) {
+      questionsWrapper.style.display = '';
+      hiddenRequiredFields.forEach(function(el) { el.setAttribute('required', 'required'); });
+      hiddenRequiredFields = [];
+      var checkedVisited = document.querySelector('input[name="visited"]:checked');
+      if (checkedVisited) checkedVisited.dispatchEvent(new Event('change'));
+    }
+  }
+
+  if (codewordInput) {
+    codewordInput.addEventListener('input', function() {
+      applyFormCodeword(this.value.trim().toLowerCase());
+    });
+  }
+
+  const form = document.getElementById('apply-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        if (value) params.append(key, value);
+      }
+      window.location.href = 'apply.html?' + params.toString();
+    });
+  }
+---
+
+<div class="post">
+
+    <header class="hero">
+        <div class="hero-kicker">a residency curated by katya selenkina</div>
+        <h1 class="hero-title">summer <span class="camp">camp<svg viewBox="0 0 200 12" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8 C 45 3, 80 3, 110 6 C 140 9, 170 4, 198 7" stroke="#EBC23B" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span></h1>
+        <p class="hero-lead">in august, we gather in a warm, attentive community, held by beautiful nature — to rest, work and play together and apart.</p>
+        <div class="hero-meta"><b>3 august – 1 september 2026</b> <span style="text-transform: none;">(longer stay also possible)</span> &nbsp;·&nbsp; fools' valley, near lisbon</div>
+        <a href="#apply" class="btn">apply to come →</a>
+    </header>
+
+    <section id="about">
+        <div class="label">the place</div>
+        <p>fools' valley is just 35 minutes north of lisbon and 30 minutes from the ocean. it holds multiple houses scattered across the land, each with its own character — some for sleeping, some for working, some for movement, some for stillness.</p>
+        <p>if you'd like to <strong>rest in a nurturing community</strong> or <strong>work on a project surrounded by nature</strong> — taking long walks, swimming in a pond, going to the ocean, and offering attention to body and mind — this is a place to do so.</p>
+        <figure class="img">
+            <img src="assets/sc-pond.jpg" alt="The swimming pond">
+        </figure>
+        <p>we'll offer a soft structure: morning meditation or movement, curated conversations, collective rituals, and meals prepared by a chef. the rest we'll curate together depending on the needs and desires of the group — workshops, feedback circles, co-working, beach days, dance parties, listening sessions, screenings, collective cooking. everything is possible.</p>
+    </section>
+
+    <section id="facilities">
+        <div class="label">facilities</div>
+        <ul class="facilities-list">
+            <li>16 hectares of land</li>
+            <li>200sqm dancehall (vinyl floor)</li>
+            <li>meditation room</li>
+            <li>small gym + weights</li>
+            <li>swimming pond</li>
+            <li>wood-burning sauna</li>
+            <li>library</li>
+            <li>fast wifi</li>
+            <li>1000sqm warehouse for creative projects</li>
+        </ul>
+        <a href="rooms.html" class="textlink">more about rooms &amp; spaces →</a>
+        <figure class="img">
+            <img src="assets/sc-library.jpg" alt="The library">
+        </figure>
+    </section>
+
+    <section id="rhythm">
+        <div class="label">a day, loosely</div>
+        <p style="color: var(--muted); margin-bottom: 1.3rem;">activities are optional and co-created. host what you want to see, join what serves you.</p>
+        <div class="r-row"><span class="r-time">morning</span><span class="r-act">meditation / movement practice</span></div>
+        <div class="r-row"><span class="r-time">—</span><span class="r-act">breakfast</span></div>
+        <div class="r-row"><span class="r-time">daytime</span><span class="r-act">work / workshop / beach</span></div>
+        <div class="r-row"><span class="r-time">—</span><span class="r-act">lunch</span></div>
+        <div class="r-row"><span class="r-time">afternoon</span><span class="r-act">circling / hiking / artist talk / feedback session / rest</span></div>
+        <div class="r-row"><span class="r-time">—</span><span class="r-act">dinner</span></div>
+        <div class="r-row"><span class="r-time">evening</span><span class="r-act"><b>after dinner:</b> dance party / screening / sauna</span></div>
+        <p class="r-note">1–2 cooking / space-care shifts a week. sunday — collective cleaning.</p>
+    </section>
+
+    <section id="when-where">
+        <div class="label">the shape of it</div>
+        <div class="dl">
+            <div class="row"><span class="term">when</span><span class="desc">3 august – 1 september 2026 <small>arrival day is monday. recommended stay: one month — shorter or longer stays also possible.</small></span></div>
+            <div class="row"><span class="term">where</span><span class="desc">fools' valley, near lisbon, portugal <small>35 min from the city, 30 min from the ocean.</small></span></div>
+            <div class="row"><span class="term">format</span><span class="desc">four houses, one shared territory <small>residents live together — rest, play, work together or alone. offer events if you'd like. step into solitude when you need it, or into shared practice when you want company.</small></span></div>
+        </div>
+        <figure class="img">
+            <img src="assets/sc-aerial.jpg" alt="Aerial view of the land">
+        </figure>
+    </section>
+
+    <section id="accommodation">
+        <div class="label">staying</div>
+        <div class="dl">
+            <div class="row"><span class="term">private</span><span class="desc">from <b>€150–525</b> / week</span></div>
+            <div class="row"><span class="term">dorms</span><span class="desc">from <b>€70</b> / week</span></div>
+            <div class="row"><span class="term">meals</span><span class="desc">+ €20 / day per person — three meals a day</span></div>
+        </div>
+        <p class="reach">if you are in a difficult financial situation, please reach out — we may be able to find a solution.</p>
+        <a href="apply.html" class="textlink">see accommodation prices →</a>
+    </section>
+
+    <section id="food">
+        <div class="label">food</div>
+        <p>breakfast is self-served using provided ingredients. lunch and dinner are prepared by a <strong>professional chef</strong>, monday to friday.</p>
+        <p>on weekends, lunch and dinner are cooked collectively by the community using pantry ingredients.</p>
+        <figure class="img">
+            <img src="assets/sc-meditation.jpg" alt="The meditation room">
+        </figure>
+    </section>
+
+    <section id="curator">
+        <div class="label">curated by</div>
+        <p><span class="curator-name">katya selenkina</span> is an artist, curator, educator, and psychoanalytic psychotherapist in training.</p>
+        <p>she has co-curated the artist lab Extracurricular Practices and the residency Adrift, and has taught Directing Actors, Experimental Filmmaking, and the Politics of Cinema — mentoring on pitching and film funding at Catalyst Institute for Creative Arts and Technology, California Institute of the Arts, Women Watch Uzbekistan, Artists in Exile Residency, and other programs.</p>
+        <p>her feature film <em>Detours</em> premiered at Venice Critics' Week and received multiple international awards.</p>
+    </section>
+
+    <section id="apply">
+        <h2 class="apply-title">apply</h2>
+        <p class="apply-sub">summer camp is part of the fools' valley residency — the application is the same. some practical questions and some fun ones.</p>
+        <p class="apply-sub fine">your application will be reviewed within 7 days of submission.</p>
+
+        <form id="apply-form" action="apply.html" method="get">
+            <input type="hidden" name="event" value="summer-camp">
+
+            <div class="field">
+                <label>what's your name? *</label>
+                <input type="text" name="name" required placeholder="your name" />
+            </div>
+
+            <div class="field">
+                <label>email *</label>
+                <input type="email" name="email" required placeholder="you@example.com" />
+            </div>
+
+            <div class="field">
+                <label>codeword (optional)</label>
+                <input type="text" name="codeword" id="codeword-input" autocomplete="off" placeholder="enter if you have one" />
+                <div id="codeword-message"></div>
+            </div>
+
+            <div id="questions-wrapper">
+                <div class="field">
+                    <label>links to your website / social media <span class="new-visitor-required">*</span></label>
+                    <div class="hint">help us get to know you better</div>
+                    <input type="text" name="links" required placeholder="instagram, website, etc." class="new-visitor-field" />
+                </div>
+
+                <div class="field">
+                    <label>have you already visited?</label>
+                    <div class="radio-row">
+                        <label class="radio-opt"><input type="radio" name="visited" value="yes"> <span>yes</span></label>
+                        <label class="radio-opt"><input type="radio" name="visited" value="no" checked> <span>no</span></label>
+                    </div>
+                </div>
+
+                <div id="new-visitor-questions">
+                    <div class="field">
+                        <label>anyone who's been to fools' valley who could be your reference? *</label>
+                        <input type="text" name="reference" required class="new-visitor-field" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>what would you like to use your time at fools' valley for? <span class="new-visitor-required">*</span></label>
+                    <textarea name="use-time" required rows="3" class="new-visitor-field"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>would you like to host workshops / activities / talks? what else might you contribute? <span class="new-visitor-required">*</span></label>
+                    <textarea name="contribute" required rows="3" class="new-visitor-field"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>anything you'd like to ask or let us know? <span class="new-visitor-required">*</span></label>
+                    <textarea name="questions" required rows="3" class="new-visitor-field"></textarea>
+                </div>
+
+                <div class="field">
+                    <label>do you agree to 1–2 cleaning/cooking shifts a week, keeping spaces clean, and joining collective cleanup? *</label>
+                    <div class="radio-row">
+                        <label class="radio-opt"><input type="radio" name="cleanup-agreement" value="yes" required> <span>yes</span></label>
+                        <label class="radio-opt"><input type="radio" name="cleanup-agreement" value="no"> <span>no</span></label>
+                    </div>
+                </div>
+            </div><!-- end questions-wrapper -->
+
+            <button type="submit" class="submit-btn">continue to dates &amp; rooms →</button>
+
+            <p style="margin-top: 2.5rem; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted);">questions → <a href="mailto:theonlyfool@foolsvalley.com" style="color: var(--muted);">theonlyfool@foolsvalley.com</a></p>
+        </form>
+    </section>
+
+</div>
