@@ -765,11 +765,6 @@ let hasShortStayCode = false; // Track if shortstay codeword is active
 let hasTcMayCode = false; // Track if tcmay codeword is active
 let hasAgarthaCode = false; // Track if agartha codeword is active
 
-// Advance to today or next month if we're past the 15th
-if (new Date().getDate() > 15) {
-  calendarMonth++;
-  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
-}
 
 // ============================================================
 // FORM HANDLING - Load data from URL parameters
@@ -896,7 +891,7 @@ function renderCalendar() {
 
     const isMonday = date.getDay() === 1;
     const isPast = date < today;
-    const tooSoon = date < new Date(today.getTime() + 7*24*60*60*1000); // at least a week out
+    const tooSoon = false;
 
     if (isMonday) div.classList.add('monday');
 
