@@ -254,6 +254,23 @@
             font-style: italic;
         }
 
+        /* Gallery indicator badge */
+        .photo-item[data-group] .gallery-badge {
+            display: none;
+        }
+        .photo-item.has-gallery .gallery-badge {
+            display: block;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(10,10,10,0.7);
+            color: var(--bg);
+            font-size: 10px;
+            font-family: 'Space Mono', monospace;
+            padding: 0.2rem 0.45rem;
+            border-radius: 3px;
+        }
+
         /* Dark section */
         .dark-section {
             background: var(--black);
@@ -355,7 +372,7 @@
 
         .lightbox-content img {
             max-width: 100%;
-            max-height: 85vh;
+            max-height: 75vh;
             object-fit: contain;
             display: block;
         }
@@ -365,8 +382,18 @@
             font-style: italic;
             color: var(--bg);
             font-size: 1.2rem;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             text-align: center;
+        }
+
+        .lightbox-description {
+            font-family: 'Space Mono', monospace;
+            color: var(--gray-light);
+            font-size: 0.75rem;
+            margin-top: 0.4rem;
+            text-align: center;
+            max-width: 560px;
+            line-height: 1.6;
         }
 
         .lightbox-close,
@@ -444,6 +471,11 @@
                 font-size: 1rem;
                 padding: 0 1rem;
             }
+
+            .lightbox-description {
+                font-size: 0.7rem;
+                padding: 0 1rem;
+            }
         }
     </style>
 </head>
@@ -507,53 +539,56 @@
                 living room — kitchen — mushroom lounge — small gym with weights — meditation/yoga room (workshops up to 12 people)
             </p>
 
-            <div style="margin-bottom: 2rem; font-size: 12px; line-height: 1.8; color: var(--gray); max-width: 700px;">
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Chafariz Suite:</strong> Large suite with private bathroom and office area. Most spacious in the Old House. Queen bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Isabel:</strong> Bright quiet room in the most zen wing of the house. Bathroom shared only with the zen room. Double bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Library Suite:</strong> Intimate room tucked into the old library. Simple and quiet. Own bathroom. No direct sunlight. Double bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Studio:</strong> Compact room in the heart of the Old House with a loft bed, nice views and a standing desk. Double bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Galeria:</strong> Cozy room overlooking the inner courtyard. Double bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--black);">Old House Dorm:</strong> Plush dorm with individual curtains. Spacious bathroom with a bathtub.</p>
-            </div>
-
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-courtyard">
                     <img src="assets/rooms/Copy-of-IMG_7464-1-1024x768.webp" alt="Inner courtyard">
                     <div class="photo-label">inner courtyard</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-meditation">
                     <img src="assets/rooms/2024-01-10-19.59.41-1-1024x770.webp" alt="Meditation room">
                     <div class="photo-label">meditation room</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_1314-1024x768.webp" alt="Library">
-                    <div class="photo-label">library</div>
+                <div class="photo-item" data-group="old-house-library-room"
+                     data-description="Intimate room tucked into the old library. Simple and quiet. Own bathroom. No direct sunlight. Double bed."
+                     data-room-name="Library Suite">
+                    <img src="assets/rooms/IMG_1314-1024x768.webp" alt="Library suite">
+                    <div class="photo-label">library suite</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/Copy-of-photo_2024-05-20_10-34-26-4-1-1024x576.webp" alt="Library">
-                    <div class="photo-label">library</div>
+                <div class="photo-item" data-group="old-house-library-room">
+                    <img src="assets/rooms/Copy-of-photo_2024-05-20_10-34-26-4-1-1024x576.webp" alt="Library suite">
+                    <div class="photo-label">library suite</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-galeria"
+                     data-description="Cozy room overlooking the inner courtyard. Double bed."
+                     data-room-name="Galeria">
                     <img src="assets/rooms/IMG_3211_1-893x1024.webp" alt="Galeria room">
-                    <div class="photo-label">galeria room</div>
+                    <div class="photo-label">galeria</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-dorm"
+                     data-description="Plush dorm with individual curtains. Spacious bathroom with a bathtub."
+                     data-room-name="Old House Dorm">
                     <img src="assets/rooms/IMG_1326-1-1024x768.webp" alt="Dorm">
                     <div class="photo-label">dorm</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_3325-806x1024.webp" alt="Chafariz">
-                    <div class="photo-label">chafariz</div>
+                <div class="photo-item" data-group="old-house-chafariz"
+                     data-description="Large suite with private bathroom and office area. Most spacious in the Old House. Queen bed."
+                     data-room-name="Chafariz Suite">
+                    <img src="assets/rooms/IMG_3325-806x1024.webp" alt="Chafariz suite">
+                    <div class="photo-label">chafariz suite</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-isabel"
+                     data-description="Bright quiet room in the most zen wing of the house. Bathroom shared only with the zen room. Double bed."
+                     data-room-name="Isabel">
                     <img src="assets/rooms/IMG_3374_1-1-768x1024.webp" alt="Isabel">
                     <div class="photo-label">isabel</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_3264_2-880x1024.webp" alt="Library room">
-                    <div class="photo-label">library room</div>
+                <div class="photo-item" data-group="old-house-library-room">
+                    <img src="assets/rooms/IMG_3264_2-880x1024.webp" alt="Library suite">
+                    <div class="photo-label">library suite</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="old-house-studio"
+                     data-description="Compact room in the heart of the Old House with a loft bed, nice views and a standing desk. Double bed."
+                     data-room-name="Studio">
                     <img src="assets/rooms/IMG_3298-1-1-768x1024.webp" alt="Studio">
                     <div class="photo-label">studio</div>
                 </div>
@@ -579,28 +614,48 @@
                 Contemporary residence with full-wall walk-in windows and underfloor heating. Main living room-kitchen-lounge space flows into three distinct bedrooms.
             </p>
 
-            <div style="margin-bottom: 2rem; font-size: 12px; line-height: 1.8; color: var(--gray-light); max-width: 700px;">
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">M Curve Suite:</strong> Suite with walk-in full wall window, long curved wall, spacious shower and bathroom, king or two single beds. Underfloor heating.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">M Big Suite:</strong> Biggest room, enormous window, en-suite bathroom and shower. King bed or up to three single beds. Underfloor heating.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">M Room:</strong> Modern room with a full wall window. Two single beds or one king bed. Underfloor heating.</p>
-            </div>
-
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="m-living">
                     <img src="assets/rooms/IMG_1351-1024x768.webp" alt="Living room">
                     <div class="photo-label">living room</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_1037-2-1024x768.webp" alt="M-big suite">
-                    <div class="photo-label">M-big suite</div>
+                <div class="photo-item" data-group="m-big-suite"
+                     data-description="Biggest room, enormous window, en-suite bathroom and shower. King bed or up to three single beds. Underfloor heating."
+                     data-room-name="M Big Suite">
+                    <img src="assets/rooms/IMG_1037-2-1024x768.webp" alt="M big suite">
+                    <div class="photo-label">M big suite</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_0071-1024x768.webp" alt="M-curve suite">
-                    <div class="photo-label">M-curve suite</div>
+                <div class="photo-item" data-group="m-big-suite">
+                    <img src="assets/rooms/big-suite-m.png" alt="M big suite">
+                    <div class="photo-label">M big suite</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/IMG_1036_1-1024x768.webp" alt="M-room">
-                    <div class="photo-label">M-room</div>
+                <div class="photo-item" data-group="m-big-suite">
+                    <img src="assets/rooms/big-suite-m-2.png" alt="M big suite">
+                    <div class="photo-label">M big suite</div>
+                </div>
+                <div class="photo-item" data-group="m-big-suite">
+                    <img src="assets/rooms/big-suite-m-3.png" alt="M big suite">
+                    <div class="photo-label">M big suite</div>
+                </div>
+                <div class="photo-item" data-group="m-big-suite">
+                    <img src="assets/rooms/big-suite-m-bathroom.jpg" alt="M big suite bathroom">
+                    <div class="photo-label">M big suite bathroom</div>
+                </div>
+                <div class="photo-item" data-group="m-big-suite">
+                    <img src="assets/rooms/big-suite-m-bathroom-2.jpg" alt="M big suite bathroom">
+                    <div class="photo-label">M big suite bathroom</div>
+                </div>
+                <div class="photo-item" data-group="m-curve"
+                     data-description="Suite with walk-in full wall window, long curved wall, spacious shower and bathroom, king or two single beds. Underfloor heating."
+                     data-room-name="M Curve Suite">
+                    <img src="assets/rooms/IMG_0071-1024x768.webp" alt="M curve suite">
+                    <div class="photo-label">M curve suite</div>
+                </div>
+                <div class="photo-item" data-group="m-room"
+                     data-description="Modern room with a full wall window. Two single beds or one king bed. Underfloor heating."
+                     data-room-name="M Room">
+                    <img src="assets/rooms/IMG_1036_1-1024x768.webp" alt="M room">
+                    <div class="photo-label">M room</div>
                 </div>
             </div>
         </div>
@@ -624,12 +679,13 @@
             </p>
 
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="dancehall">
                     <img src="assets/rooms/IMG_1777-1-1024x768.webp" alt="Dancehall">
                     <div class="photo-label">dancehall</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="dancehall">
                     <img src="assets/rooms/IMG_1822-1024x768.webp" alt="Dancehall">
+                    <div class="photo-label">dancehall</div>
                 </div>
             </div>
         </div>
@@ -653,19 +709,19 @@
             </p>
 
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="small-house-cowork">
                     <img src="assets/rooms/IMG_0057-1-1024x768.webp" alt="Coworking space">
                     <div class="photo-label">coworking space</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="small-house-cowork">
                     <img src="assets/rooms/IMG_1052-1024x768.webp" alt="Coworking space">
                     <div class="photo-label">coworking space</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="small-house-bedroom">
                     <img src="assets/rooms/IMG_1050-1-1024x768.webp" alt="Bedroom">
                     <div class="photo-label">bedroom</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="small-house-living">
                     <img src="assets/rooms/IMG_0140-1024x768.webp" alt="Living room">
                     <div class="photo-label">living room</div>
                 </div>
@@ -673,14 +729,15 @@
         </div>
     </section>
 
-    <!-- The Blue House -->
-    <section class="dark-section" id="blue-house">
-        <div class="section-label">005 / the blue house</div>
+    <!-- The Villa -->
+    <section class="dark-section" id="villa">
+        <div class="section-label">005 / the villa</div>
 
         <div class="space-block">
             <div class="space-header">
-                <h2 class="space-name">The Blue House</h2>
+                <h2 class="space-name">The Villa</h2>
                 <div class="space-rooms">
+                    <span>apartment</span>
                     <span>2 big bedrooms</span>
                     <span>3 small bedrooms</span>
                     <span>dorm</span>
@@ -697,52 +754,86 @@
                 7 bedrooms — basement movement space — 5 min walk from main property
             </p>
 
-            <div style="margin-bottom: 2rem; font-size: 12px; line-height: 1.8; color: var(--gray-light); max-width: 700px;">
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Apartment:</strong> Separate little house with its own bedroom, living room and kitchen. Great for families.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Big Bedroom 1 (en suite):</strong> Spacious bedroom. Double bed + single bed. Private bathroom.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Big Bedroom 2 (sunny):</strong> Spacious sunny bedroom. Double bed + single bed.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Small Bedroom (south):</strong> Compact bedroom facing south. One or two single beds.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Small Bedroom (middle):</strong> Compact bedroom facing north. One or two single beds.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Small Bedroom (north):</strong> Compact bedroom facing north. One or two single beds.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Pool Room:</strong> Simple room in the separate little house next to the pool.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Ground Floor Room:</strong> Simple ground floor room.</p>
-                <p style="margin-bottom: 0.75rem;"><strong style="color: var(--bg);">Blue House Dorm:</strong> Simple dorm bed.</p>
-            </div>
-
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-common">
                     <img src="assets/rooms/photo_2026-01-03-14.58.46-768x1024.webp" alt="Living room">
                     <div class="photo-label">living room</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-common">
                     <img src="assets/rooms/photo_2026-01-03-14.59.00-768x1024.webp" alt="Kitchen">
                     <div class="photo-label">kitchen</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-common">
                     <img src="assets/rooms/photo_2026-01-03-14.58.56-768x1024.webp" alt="Terrace">
                     <div class="photo-label">terrace</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-apartment"
+                     data-description="Separate little house with its own bedroom, living room and kitchen. Great for families."
+                     data-room-name="Apartment">
+                    <img src="assets/rooms/apartment.png" alt="Apartment">
+                    <div class="photo-label">apartment</div>
+                </div>
+                <div class="photo-item" data-group="villa-apartment">
+                    <img src="assets/rooms/apartment-2.jpg" alt="Apartment">
+                    <div class="photo-label">apartment</div>
+                </div>
+                <div class="photo-item" data-group="villa-apartment">
+                    <img src="assets/rooms/apartment-3.jpg" alt="Apartment">
+                    <div class="photo-label">apartment</div>
+                </div>
+                <div class="photo-item" data-group="villa-apartment">
+                    <img src="assets/rooms/apartment-4.jpg" alt="Apartment">
+                    <div class="photo-label">apartment</div>
+                </div>
+                <div class="photo-item" data-group="villa-big-1"
+                     data-description="Spacious bedroom. Double bed + single bed. Private bathroom."
+                     data-room-name="Big Bedroom 1">
                     <img src="assets/rooms/photo_2026-01-03-14.59.17-1024x768.webp" alt="Big bedroom 1">
                     <div class="photo-label">big bedroom 1</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-big-2"
+                     data-description="Spacious sunny bedroom. Double bed + single bed."
+                     data-room-name="Big Bedroom 2">
                     <img src="assets/rooms/photo_2026-01-03-14.59.03-1024x768.webp" alt="Big bedroom 2">
                     <div class="photo-label">big bedroom 2</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-small-middle"
+                     data-description="Compact bedroom. One or two single beds."
+                     data-room-name="Small Bedroom (middle)">
+                    <img src="assets/rooms/photo_2026-01-03-14.59.13-1-768x1024.webp" alt="Small bedroom middle">
+                    <div class="photo-label">small middle</div>
+                </div>
+                <div class="photo-item" data-group="villa-small-south"
+                     data-description="Compact bedroom facing south. One or two single beds."
+                     data-room-name="Small Bedroom (south)">
+                    <img src="assets/rooms/small-south.jpg" alt="Small bedroom south">
+                    <div class="photo-label">small south</div>
+                </div>
+                <div class="photo-item" data-group="villa-small-south">
+                    <img src="assets/rooms/small-south-2.jpg" alt="Small bedroom south">
+                    <div class="photo-label">small south</div>
+                </div>
+                <div class="photo-item" data-group="villa-small-north"
+                     data-description="Compact bedroom facing north. One or two single beds."
+                     data-room-name="Small Bedroom (north)">
+                    <img src="assets/rooms/small-north.png" alt="Small bedroom north">
+                    <div class="photo-label">small north</div>
+                </div>
+                <div class="photo-item" data-group="villa-pool"
+                     data-description="Simple room in the separate little house next to the pool."
+                     data-room-name="Pool Room">
                     <img src="assets/rooms/photo_2026-01-03-15.04.38-1024x768.webp" alt="Pool room">
                     <div class="photo-label">pool room</div>
                 </div>
-                <div class="photo-item">
-                    <img src="assets/rooms/photo_2026-01-03-14.59.13-1-768x1024.webp" alt="Small bedroom">
-                    <div class="photo-label">small bedroom</div>
-                </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-dorm"
+                     data-description="Simple dorm bed."
+                     data-room-name="Villa Dorm">
                     <img src="assets/rooms/photo_2026-01-03-15.04.51-1024x768.webp" alt="Dorm">
                     <div class="photo-label">dorm</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="villa-ground"
+                     data-description="Simple ground floor room."
+                     data-room-name="Ground Floor Room">
                     <img src="assets/rooms/photo_2026-01-03-15.04.23-1024x768.webp" alt="Ground floor room">
                     <div class="photo-label">ground floor room</div>
                 </div>
@@ -764,19 +855,19 @@
             </p>
 
             <div class="photo-grid">
-                <div class="photo-item">
+                <div class="photo-item" data-group="pond-sauna">
                     <img src="assets/rooms/Copy-of-photo_2024-07-18_14-11-12-1-768x1024.webp" alt="Pond">
                     <div class="photo-label">pond</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="pond-sauna">
                     <img src="assets/rooms/IMG_1440-768x1024.webp" alt="Pond and sauna">
                     <div class="photo-label">pond and sauna</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="pond-sauna">
                     <img src="assets/rooms/2024-01-10-19.59.14-1-1-1024x768.webp" alt="Nature">
                     <div class="photo-label">nature</div>
                 </div>
-                <div class="photo-item">
+                <div class="photo-item" data-group="pond-sauna">
                     <img src="assets/danceparty.webp" alt="Warehouse">
                     <div class="photo-label">1000 sqm warehouse</div>
                 </div>
@@ -798,6 +889,7 @@
         <div class="lightbox-content">
             <img id="lightbox-img" src="" alt="">
             <div id="lightbox-caption" class="lightbox-caption"></div>
+            <div id="lightbox-description" class="lightbox-description"></div>
         </div>
         <div class="lightbox-counter"></div>
     </div>
@@ -818,30 +910,54 @@
             });
         });
 
-        // Lightbox functionality
+        // Build gallery groups: map group id → array of photo-items in DOM order
+        const groupMap = {};
+        document.querySelectorAll('.photo-item[data-group]').forEach(item => {
+            const g = item.dataset.group;
+            if (!groupMap[g]) groupMap[g] = [];
+            groupMap[g].push(item);
+        });
+
+        // Mark items that are part of a multi-photo group with a count badge
+        Object.entries(groupMap).forEach(([g, items]) => {
+            if (items.length > 1) {
+                items.forEach((item, i) => {
+                    item.classList.add('has-gallery');
+                    const badge = document.createElement('span');
+                    badge.className = 'gallery-badge';
+                    badge.textContent = `${i + 1} / ${items.length}`;
+                    item.appendChild(badge);
+                });
+            }
+        });
+
+        // Lightbox state
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxDesc = document.getElementById('lightbox-description');
         const lightboxCounter = document.querySelector('.lightbox-counter');
         const closeBtn = document.querySelector('.lightbox-close');
         const prevBtn = document.querySelector('.lightbox-prev');
         const nextBtn = document.querySelector('.lightbox-next');
 
-        let currentImages = [];
+        let currentGroup = [];
         let currentIndex = 0;
 
-        // Collect all photo items
-        const photoItems = Array.from(document.querySelectorAll('.photo-item'));
-
-        // Add click handlers to photos
-        photoItems.forEach((item, index) => {
-            item.addEventListener('click', () => {
-                openLightbox(index);
-            });
+        // Add click handlers to all photo items
+        document.querySelectorAll('.photo-item').forEach(item => {
+            item.addEventListener('click', () => openLightbox(item));
         });
 
-        function openLightbox(index) {
-            currentIndex = index;
+        function openLightbox(clickedItem) {
+            const g = clickedItem.dataset.group;
+            if (g && groupMap[g]) {
+                currentGroup = groupMap[g];
+            } else {
+                currentGroup = [clickedItem];
+            }
+            currentIndex = currentGroup.indexOf(clickedItem);
+            if (currentIndex === -1) currentIndex = 0;
             updateLightbox();
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -853,49 +969,56 @@
         }
 
         function updateLightbox() {
-            const item = photoItems[currentIndex];
+            const item = currentGroup[currentIndex];
             const img = item.querySelector('img');
             const label = item.querySelector('.photo-label');
 
             lightboxImg.src = img.src;
             lightboxImg.alt = img.alt;
             lightboxCaption.textContent = label ? label.textContent : img.alt;
-            lightboxCounter.textContent = `${currentIndex + 1} / ${photoItems.length}`;
+
+            // Description: from first item in group that has it
+            const descItem = currentGroup.find(i => i.dataset.description);
+            const desc = descItem ? descItem.dataset.description : '';
+            const roomName = descItem ? (descItem.dataset.roomName || '') : '';
+            lightboxDesc.textContent = roomName ? `${roomName} — ${desc}` : desc;
+            lightboxDesc.style.display = desc ? '' : 'none';
+
+            // Counter and nav buttons
+            if (currentGroup.length > 1) {
+                lightboxCounter.textContent = `${currentIndex + 1} / ${currentGroup.length}`;
+                prevBtn.style.display = '';
+                nextBtn.style.display = '';
+            } else {
+                lightboxCounter.textContent = '';
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
         }
 
         function showNext() {
-            currentIndex = (currentIndex + 1) % photoItems.length;
+            currentIndex = (currentIndex + 1) % currentGroup.length;
             updateLightbox();
         }
 
         function showPrev() {
-            currentIndex = (currentIndex - 1 + photoItems.length) % photoItems.length;
+            currentIndex = (currentIndex - 1 + currentGroup.length) % currentGroup.length;
             updateLightbox();
         }
 
-        // Event listeners
         closeBtn.addEventListener('click', closeLightbox);
         nextBtn.addEventListener('click', showNext);
         prevBtn.addEventListener('click', showPrev);
 
-        // Close on background click
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-            }
+            if (e.target === lightbox) closeLightbox();
         });
 
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (!lightbox.classList.contains('active')) return;
-
-            if (e.key === 'Escape') {
-                closeLightbox();
-            } else if (e.key === 'ArrowRight') {
-                showNext();
-            } else if (e.key === 'ArrowLeft') {
-                showPrev();
-            }
+            if (e.key === 'Escape') closeLightbox();
+            else if (e.key === 'ArrowRight') showNext();
+            else if (e.key === 'ArrowLeft') showPrev();
         });
     })();
     </script>
