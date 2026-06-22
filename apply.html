@@ -778,14 +778,16 @@ document.addEventListener('DOMContentLoaded', function() {
     name: urlParams.get('name') || '',
     email: urlParams.get('email') || '',
     visited: urlParams.get('visited') || 'no',
+    links: urlParams.get('links') || '',
     quest: urlParams.get('quest') || '',
-    pastQuests: urlParams.get('pastQuests') || '',
+    pastQuests: urlParams.get('past-quests') || '',
     reference: urlParams.get('reference') || '',
-    useTime: urlParams.get('useTime') || '',
+    useTime: urlParams.get('use-time') || '',
     contribute: urlParams.get('contribute') || '',
     idealDay: urlParams.get('idealDay') || '',
     tc: urlParams.get('tc') || '',
-    questions: urlParams.get('questions') || ''
+    questions: urlParams.get('questions') || '',
+    cleanupAgreement: urlParams.get('cleanup-agreement') || ''
   };
 
   // Auto-apply codeword passed from residencies form
@@ -1419,6 +1421,7 @@ async function submitApplication() {
       name: formData.name,
       email: formData.email,
       visited: formData.visited,
+      links: formData.links,
       tcInterest: formData.tc,
       mainQuest: formData.quest,
       pastQuests: formData.pastQuests,
@@ -1427,6 +1430,7 @@ async function submitApplication() {
       contribute: formData.contribute,
       idealDay: formData.idealDay,
       questions: formData.questions,
+      cleanupAgreement: formData.cleanupAgreement,
       arrivalDate: formatDate(arrivalDate),
       departureDate: formatDate(departureDate),
       numDays: days,

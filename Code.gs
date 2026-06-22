@@ -61,7 +61,8 @@ function doPost(e) {
 function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, numDays) {
   // Tier breakpoint pricing:
   // 1-5 days: Daily rate (numDays × daily)
-  // 6-13 days: Weekly rate prorated (weekly ÷ 7 × numDays)
+  // 6 days: min(full weekly rate, 6 × daily)
+  // 7-13 days: Weekly rate prorated (weekly ÷ 7 × numDays)
   // 14-27 days: 2-week rate prorated (twoWeek ÷ 14 × numDays)
   // 28+ days: Monthly rate prorated (monthly ÷ 30.5 × numDays)
 
@@ -75,10 +76,20 @@ function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, num
     // 14-27 days: Prorated 2-week rate
     roomPrice = Math.round((twoWeekRate / 14) * numDays);
     priceBreakdown = '€' + twoWeekRate + '/2 weeks';
-  } else if (numDays >= 6) {
-    // 6-13 days: Prorated weekly rate
+  } else if (numDays >= 7) {
+    // 7-13 days: Prorated weekly rate
     roomPrice = Math.round((weeklyRate / 7) * numDays);
     priceBreakdown = '€' + weeklyRate + '/week';
+  } else if (numDays === 6) {
+    // 6 days: Choose lower of full weekly rate or 6 × daily rate
+    const dailyPrice = Math.round(6 * dailyRate);
+    if (weeklyRate < dailyPrice) {
+      roomPrice = weeklyRate;
+      priceBreakdown = '€' + weeklyRate + '/week';
+    } else {
+      roomPrice = dailyPrice;
+      priceBreakdown = '€' + dailyRate + '/day';
+    }
   } else {
     // 1-5 days: Daily rate
     roomPrice = Math.round(numDays * dailyRate);
@@ -478,6 +489,7 @@ function handleSubmission(data) {
         'Timestamp',
         'Name',
         'Email',
+        'Links',
         'Visited Before',
         'TC Interest',
         'Main Quest',
@@ -485,8 +497,8 @@ function handleSubmission(data) {
         'Reference',
         'Use Time For',
         'Contribute',
-        'Ideal Day',
         'Questions',
+        'Cleanup Agreement',
         'Arrival Date',
         'Departure Date',
         'Num Days',
@@ -497,7 +509,6 @@ function handleSubmission(data) {
         'Price Breakdown',
         'Daily Fee',
         'Total Price',
-        'Room Preference',
         'Status'
       ]);
       // Format header row
@@ -512,6 +523,7 @@ function handleSubmission(data) {
       timestamp,
       app.name,
       app.email,
+      app.links || '',
       app.visited || 'no',
       app.tcInterest,
       app.mainQuest,
@@ -519,8 +531,8 @@ function handleSubmission(data) {
       app.reference || '',
       app.useTimeFor,
       app.contribute || '',
-      app.idealDay || '',
       app.questions || '',
+      app.cleanupAgreement || '',
       app.arrivalDate,
       app.departureDate,
       app.numDays,
@@ -531,7 +543,6 @@ function handleSubmission(data) {
       app.priceBreakdown,
       app.dailyFee,
       app.totalPrice,
-      app.roomPreference || '',
       'pending'
     ]);
 
@@ -722,6 +733,10 @@ function sendApplicationNotification(app) {
   const recipient = 'theonlyfool@foolsvalley.com';
   const subject = 'New Residency Application: ' + app.name;
 
+  const tcLabel = app.tcInterest === 'tc-primary' ? 'Yes — primary interest, joining all sessions' :
+                  app.tcInterest === 'tc-no' ? 'No, not primary interest' :
+                  (app.tcInterest || 'Not specified');
+
   const body = `
 New residency application received:
 
@@ -731,6 +746,7 @@ APPLICANT INFORMATION
 
 Name: ${app.name}
 Email: ${app.email}
+Links: ${app.links || 'Not provided'}
 
 ============================================================
 DATES & ACCOMMODATION
@@ -756,32 +772,32 @@ Total Price: €${app.totalPrice}
 APPLICATION RESPONSES
 ============================================================
 
-Have you visited Fools' Valley before?
+Have you already visited Fools' Valley?
 ${app.visited || 'no'}
 
-Are you interested in joining our Temporary Community (TC)?
-${app.tcInterest || 'Not specified'}
+Are you interested in practicing transformational connection?
+${tcLabel}
 
-What is your main quest?
+Current quest (what are you working on or moving through right now?):
 ${app.mainQuest || 'Not specified'}
 
-What were your past quests?
+Past quests you've been on that have influenced who you are right now:
 ${app.pastQuests || 'Not specified'}
 
-How did you hear about us / Who referred you?
+Do you know anyone who's been to Fools' Valley who could be your reference person?
 ${app.reference || 'Not specified'}
 
-What will you use your time at Fools' Valley for?
+What would you like to use your time at Fools' Valley for?
 ${app.useTimeFor || 'Not specified'}
 
-How do you want to contribute to the community and the place?
+Would you like to host any workshops / activities / talks? What else would you like to contribute?
 ${app.contribute || 'Not specified'}
 
-What would your ideal day at Fools' Valley look like?
-${app.idealDay || 'Not specified'}
+Anything you'd like to ask or let us know about?
+${app.questions || 'Nothing'}
 
-Do you have any questions for us?
-${app.questions || 'No questions'}
+Do you agree to do 1-2 cleaning/cooking shifts a week, and generally keep the spaces clean and participate in collective cleanup?
+${app.cleanupAgreement || 'Not specified'}
 
 ============================================================
 
@@ -792,9 +808,310 @@ View full application in the Applications sheet of your Google Spreadsheet.
 }
 
 // ============================================================
+// ON EDIT TRIGGER - UPDATE CALENDAR WHEN STATUS CHANGES
+// ============================================================
+function onEdit(e) {
+  try {
+    // Add debug logging
+    Logger.log('onEdit triggered');
+
+    const sheet = e.source.getActiveSheet();
+    const range = e.range;
+
+    Logger.log('Sheet name: ' + sheet.getName());
+    Logger.log('APPLICATIONS_SHEET constant: ' + APPLICATIONS_SHEET);
+    Logger.log('Edited column: ' + range.getColumn());
+    Logger.log('Edited row: ' + range.getRow());
+    Logger.log('New value: ' + range.getValue());
+
+    // Only process edits to the applications sheet
+    if (sheet.getName() !== APPLICATIONS_SHEET) {
+      Logger.log('Not applications sheet, exiting');
+      return;
+    }
+
+    // Check if the Status column (column 24 = X) was edited
+    const statusColumn = 24;
+    if (range.getColumn() !== statusColumn) {
+      Logger.log('Not status column (expected ' + statusColumn + '), exiting');
+      return;
+    }
+
+    const row = range.getRow();
+    if (row === 1) {
+      Logger.log('Header row, exiting');
+      return;
+    }
+
+    const newStatus = range.getValue().toString().toLowerCase().trim();
+    Logger.log('Status value (trimmed): "' + newStatus + '"');
+
+    // Get application data from this row
+    const appData = sheet.getRange(row, 1, 1, 24).getValues()[0];
+    const applicantName = appData[1]; // Column B: Name
+    const arrivalDate = appData[12]; // Column M: Arrival Date
+    const departureDate = appData[13]; // Column N: Departure Date
+    const roomId = appData[16]; // Column Q: Room ID
+
+    Logger.log('Applicant: ' + applicantName);
+    Logger.log('Arrival: ' + arrivalDate);
+    Logger.log('Departure: ' + departureDate);
+    Logger.log('Room ID (column Q): ' + roomId);
+
+    if (!applicantName || !arrivalDate || !departureDate || !roomId) {
+      Logger.log('Missing required data for calendar update');
+      return;
+    }
+
+    const ss = e.source;
+
+    if (newStatus === 'yes') {
+      // Approve booking: Change text color to black
+      Logger.log('Approving booking...');
+      updateBookingColor(ss, applicantName, arrivalDate, departureDate, roomId, '#000000');
+      Logger.log('Booking approved for ' + applicantName);
+    } else if (newStatus === 'no') {
+      // Reject booking: Remove from calendar
+      Logger.log('Removing booking...');
+      removeBookingFromCalendar(ss, applicantName, arrivalDate, departureDate, roomId);
+      Logger.log('Booking removed for ' + applicantName);
+    } else {
+      Logger.log('Status is neither yes nor no: "' + newStatus + '"');
+    }
+
+  } catch (err) {
+    Logger.log('ERROR in onEdit trigger: ' + err.message);
+    Logger.log('Stack trace: ' + err.stack);
+  }
+}
+
+// ============================================================
+// UPDATE BOOKING COLOR IN CALENDAR
+// ============================================================
+function updateBookingColor(ss, applicantName, arrivalDate, departureDate, roomId, color) {
+  Logger.log('=== updateBookingColor START ===');
+  Logger.log('Looking for: ' + applicantName);
+  Logger.log('Room ID: ' + roomId);
+  Logger.log('Dates: ' + arrivalDate + ' to ' + departureDate);
+
+  const valleySheet = ss.getSheetByName('valley rooms');
+  if (!valleySheet) {
+    Logger.log('ERROR: valley rooms sheet not found');
+    return;
+  }
+
+  const calendarData = valleySheet.getDataRange().getValues();
+  const roomRow = calendarData[2];
+
+  // Map room ID to calendar column name(s)
+  const roomIdToCalendarNames = getRoomIdToCalendarNameMapping(roomId);
+  Logger.log('Expected calendar column names: ' + JSON.stringify(roomIdToCalendarNames));
+
+  if (!roomIdToCalendarNames || roomIdToCalendarNames.length === 0) {
+    Logger.log('ERROR: No calendar mapping found for room ID: ' + roomId);
+    return;
+  }
+
+  // Find column indices for this room
+  const targetColumns = [];
+  for (let col = 5; col < roomRow.length; col++) {
+    const roomName = String(roomRow[col] || '').toLowerCase().trim();
+    if (roomIdToCalendarNames.includes(roomName)) {
+      targetColumns.push(col);
+      Logger.log('Found matching column at index ' + col + ': ' + roomName);
+    }
+  }
+
+  if (targetColumns.length === 0) {
+    Logger.log('ERROR: Room columns not found in calendar');
+    Logger.log('Available columns: ' + roomRow.slice(5, 30).join(', '));
+    return;
+  }
+
+  // Convert dates to Date objects
+  const arrival = new Date(arrivalDate);
+  const departure = new Date(departureDate);
+  Logger.log('Date range: ' + arrival.toDateString() + ' to ' + departure.toDateString());
+
+  let cellsUpdated = 0;
+
+  // Find and update cells with matching name and dates
+  for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+    const rowData = calendarData[row];
+
+    // Get date from columns B, C, or D
+    let dateVal = null;
+    for (let col = 1; col <= 3; col++) {
+      if (rowData[col] instanceof Date) {
+        dateVal = new Date(rowData[col]);
+        break;
+      }
+    }
+
+    if (!dateVal) continue;
+
+    // Check if this date is within booking range
+    if (dateVal >= arrival && dateVal < departure) {
+      // Check each target column for matching name
+      for (const colIdx of targetColumns) {
+        const cellValue = String(rowData[colIdx] || '').trim();
+        if (cellValue === applicantName) {
+          // Update color and clear note
+          const cell = valleySheet.getRange(row + 1, colIdx + 1);
+          cell.setFontColor(color);
+          cell.clearNote();
+          cellsUpdated++;
+          Logger.log('Updated cell at row ' + (row + 1) + ', col ' + (colIdx + 1) + ' (' + dateVal.toDateString() + ')');
+        }
+      }
+    }
+  }
+
+  Logger.log('Total cells updated: ' + cellsUpdated);
+  if (cellsUpdated === 0) {
+    Logger.log('WARNING: No cells were updated. Name might not match exactly.');
+    Logger.log('Looking for exact match: "' + applicantName + '"');
+  }
+  Logger.log('=== updateBookingColor END ===');
+}
+
+// ============================================================
+// REMOVE BOOKING FROM CALENDAR
+// ============================================================
+function removeBookingFromCalendar(ss, applicantName, arrivalDate, departureDate, roomId) {
+  Logger.log('=== removeBookingFromCalendar START ===');
+  Logger.log('Looking for: ' + applicantName);
+  Logger.log('Room ID: ' + roomId);
+  Logger.log('Dates: ' + arrivalDate + ' to ' + departureDate);
+
+  const valleySheet = ss.getSheetByName('valley rooms');
+  if (!valleySheet) {
+    Logger.log('ERROR: valley rooms sheet not found');
+    return;
+  }
+
+  const calendarData = valleySheet.getDataRange().getValues();
+  const roomRow = calendarData[2];
+
+  // Map room ID to calendar column name(s)
+  const roomIdToCalendarNames = getRoomIdToCalendarNameMapping(roomId);
+  Logger.log('Expected calendar column names: ' + JSON.stringify(roomIdToCalendarNames));
+
+  if (!roomIdToCalendarNames || roomIdToCalendarNames.length === 0) {
+    Logger.log('ERROR: No calendar mapping found for room ID: ' + roomId);
+    return;
+  }
+
+  // Find column indices for this room
+  const targetColumns = [];
+  for (let col = 5; col < roomRow.length; col++) {
+    const roomName = String(roomRow[col] || '').toLowerCase().trim();
+    if (roomIdToCalendarNames.includes(roomName)) {
+      targetColumns.push(col);
+      Logger.log('Found matching column at index ' + col + ': ' + roomName);
+    }
+  }
+
+  if (targetColumns.length === 0) {
+    Logger.log('ERROR: Room columns not found in calendar');
+    Logger.log('Available columns: ' + roomRow.slice(5, 30).join(', '));
+    return;
+  }
+
+  // Convert dates to Date objects
+  const arrival = new Date(arrivalDate);
+  const departure = new Date(departureDate);
+  Logger.log('Date range: ' + arrival.toDateString() + ' to ' + departure.toDateString());
+
+  let cellsCleared = 0;
+
+  // Find and clear cells with matching name and dates
+  for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+    const rowData = calendarData[row];
+
+    // Get date from columns B, C, or D
+    let dateVal = null;
+    for (let col = 1; col <= 3; col++) {
+      if (rowData[col] instanceof Date) {
+        dateVal = new Date(rowData[col]);
+        break;
+      }
+    }
+
+    if (!dateVal) continue;
+
+    // Check if this date is within booking range
+    if (dateVal >= arrival && dateVal < departure) {
+      // Check each target column for matching name
+      for (const colIdx of targetColumns) {
+        const cellValue = String(rowData[colIdx] || '').trim();
+        if (cellValue === applicantName) {
+          // Clear the cell
+          const cell = valleySheet.getRange(row + 1, colIdx + 1);
+          cell.clear();
+          cellsCleared++;
+          Logger.log('Cleared cell at row ' + (row + 1) + ', col ' + (colIdx + 1) + ' (' + dateVal.toDateString() + ')');
+        }
+      }
+    }
+  }
+
+  Logger.log('Total cells cleared: ' + cellsCleared);
+  if (cellsCleared === 0) {
+    Logger.log('WARNING: No cells were cleared. Name might not match exactly.');
+    Logger.log('Looking for exact match: "' + applicantName + '"');
+  }
+  Logger.log('=== removeBookingFromCalendar END ===');
+}
+
+// ============================================================
 // UTILITY FUNCTIONS
 // ============================================================
 function jsonResponse(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ============================================================
+// DEBUG FUNCTION - Run this manually to test the trigger logic
+// ============================================================
+function testStatusUpdate() {
+  // INSTRUCTIONS:
+  // 1. Update the values below to match a real application in your sheet
+  // 2. Run this function from the Apps Script editor
+  // 3. Check the Execution log (View → Logs or Ctrl+Enter after running)
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const appSheet = ss.getSheetByName(APPLICATIONS_SHEET);
+
+  // Get the first application row (row 2, assuming row 1 is header)
+  const testRow = 2;
+  const appData = appSheet.getRange(testRow, 1, 1, 24).getValues()[0];
+
+  Logger.log('=== TEST STATUS UPDATE ===');
+  Logger.log('Testing with row ' + testRow);
+  Logger.log('Name: ' + appData[1]);
+  Logger.log('Arrival: ' + appData[13]);
+  Logger.log('Departure: ' + appData[14]);
+  Logger.log('Room ID: ' + appData[17]);
+
+  const applicantName = appData[1];
+  const arrivalDate = appData[13];
+  const departureDate = appData[14];
+  const roomId = appData[17];
+
+  if (!applicantName || !arrivalDate || !departureDate || !roomId) {
+    Logger.log('ERROR: Missing required data in row ' + testRow);
+    return;
+  }
+
+  // Test approval (change to black)
+  Logger.log('Testing APPROVAL (black text)...');
+  updateBookingColor(ss, applicantName, arrivalDate, departureDate, roomId, '#000000');
+  Logger.log('Approval test complete. Check valley rooms sheet.');
+
+  // Uncomment below to test rejection (removal)
+  // Logger.log('Testing REJECTION (remove booking)...');
+  // removeBookingFromCalendar(ss, applicantName, arrivalDate, departureDate, roomId);
+  // Logger.log('Rejection test complete. Check valley rooms sheet.');
 }
