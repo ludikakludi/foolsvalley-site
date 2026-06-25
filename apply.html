@@ -749,6 +749,30 @@ footer a { color: var(--text); }
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZQ6gWYvnMVnRdjPEsvlDNIkyFxSm3fe1c0r1HbHOKrOhsaapVLWrZKWxp-Np_YVSWAA/exec';
 const ROOM_PHOTOS_BASE = 'https://foolsvalley.com/assets/rooms/';
 
+const ROOM_PHOTO_MAP = {
+  // Old House
+  chafariz:  'IMG_3325-806x1024.webp',
+  isabel:    'IMG_3374_1-1-768x1024.webp',
+  library:   'IMG_1314-1024x768.webp',
+  studio:    'IMG_3298-1-1-768x1024.webp',
+  galeria:   'IMG_3211_1-893x1024.webp',
+  dorm_oh:   'IMG_1326-1-1024x768.webp',
+  // M / Octopus House
+  mbig:      'IMG_1037-2-1024x768.webp',
+  mcurve:    'IMG_0071-1024x768.webp',
+  mdouble:   'IMG_1036_1-1024x768.webp',
+  // The Villa
+  apartment: 'apartment-3.jpg',
+  ensuite:   'photo_2026-01-03-14.59.17-1024x768.webp',
+  sunny:     'photo_2026-01-03-14.59.03-1024x768.webp',
+  normal_s:  'small-south.jpg',
+  normal_m:  'photo_2026-01-03-14.59.13-1-768x1024.webp',
+  normal_n:  'small-north.png',
+  pool:      'photo_2026-01-03-15.04.38-1024x768.webp',
+  downstairs:'photo_2026-01-03-15.04.23-1024x768.webp',
+  dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
+};
+
 // ============================================================
 // STATE
 // ============================================================
@@ -1250,9 +1274,10 @@ function renderRooms() {
       const inner = document.createElement('div');
       inner.className = 'room-card-inner';
 
-      if (room.photo) {
+      const photoFile = ROOM_PHOTO_MAP[room.id] || room.photo;
+      if (photoFile) {
         const img = document.createElement('img');
-        img.src = ROOM_PHOTOS_BASE + room.photo;
+        img.src = ROOM_PHOTOS_BASE + photoFile;
         img.alt = room.name;
         img.loading = 'lazy';
         inner.appendChild(img);
