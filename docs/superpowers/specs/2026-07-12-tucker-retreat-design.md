@@ -46,7 +46,7 @@ Adapted clone of `apply.html`, same Apps Script URL. Sections in order:
 **B. Calendar** — restricted:
 - Selectable window: Jan 20 – Feb 10, 2027 only.
 - Arrival must be Jan 20–29; departure must be Feb 5–10 (stay always includes the retreat).
-- Default pre-selection: Jan 29 → Feb 5 (7 nights).
+- Default pre-selection: Jan 29 → Feb 7 (9 nights, includes the extension weekend).
 - No Monday rule, no codewords.
 
 **C. Room selection** — fetched via `?action=availability&from=…&to=…&event=tucker`:
@@ -87,7 +87,7 @@ Adapted clone of `apply.html`, same Apps Script URL. Sections in order:
 
 ## Testing
 
-- Local: open pages in browser; verify calendar restrictions (can't arrive after Jan 29, can't leave before Feb 5, window bounded Jan 20/Feb 10), pricing math for default week (dorm: 100 + 245 = €345) and pro-rata cases (e.g. 9 nights dorm: round(100/7×9)=129 + 315 = €444).
+- Local: open pages in browser; verify calendar restrictions (can't arrive after Jan 29, can't leave before Feb 5, window bounded Jan 20/Feb 10), pricing math for the retreat week alone (7 nights dorm: 100 + 245 = €345) and the default pre-selection with weekend (9 nights dorm: round(100/7×9)=129 + 315 = €444).
 - After redeploy: one test submission end-to-end — sheet row appears in `tucker applications`, gray name in `valley rooms`, all three emails arrive; verify main `apply.html` shows no rooms for dates overlapping Jan 29 – Feb 5 2027.
 
 ## Deployment
