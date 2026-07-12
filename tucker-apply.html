@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tucker peck retreat — apply — fools' valley</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #f5f2ed;
+  --text: #1a1a1a;
+  --text-light: #666;
+  --accent: #1a1a1a;
+  --border: #d4d0c8;
+  --card-bg: #fff;
+  --highlight: #e8e4dc;
+  --error: #c44;
+  --success: #2a7a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 18px;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+nav .logo {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+nav .links { display: flex; gap: 1.5rem; }
+nav .links a:hover { opacity: 0.6; }
+
+/* MAIN */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+
+/* SECTIONS */
+.section {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.step h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+}
+
+/* FORM FIELDS */
+.field {
+  margin-bottom: 2rem;
+}
+.field label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+.field .hint {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="date"],
+.field textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  transition: border-color 0.2s;
+  line-height: 1.6;
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--text);
+}
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.field.error input,
+.field.error textarea {
+  border-color: var(--error);
+}
+.field .error-msg {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  display: none;
+}
+.field.error .error-msg { display: block; }
+
+/* DATE PICKER */
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.date-info {
+  background: var(--highlight);
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.date-info strong { font-weight: 600; }
+
+/* CALENDAR WIDGET */
+.calendar-container {
+  margin-bottom: 2rem;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.calendar-header h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.calendar-header button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.calendar-header button:hover { background: var(--highlight); }
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+.calendar-grid .day-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  padding: 0.5rem 0;
+}
+.calendar-grid .day {
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: default;
+  font-size: 0.95rem;
+  position: relative;
+  transition: all 0.15s;
+}
+.calendar-grid .day.selectable {
+  cursor: pointer;
+}
+.calendar-grid .day.selectable:hover {
+  background: var(--highlight);
+}
+.calendar-grid .day.disabled {
+  color: #ccc;
+}
+.calendar-grid .day.monday.selectable {
+  font-weight: 600;
+}
+.calendar-grid .day.selected-arrival {
+  background: var(--text);
+  color: #fff;
+  border-radius: 6px 0 0 6px;
+}
+.calendar-grid .day.selected-departure {
+  background: var(--text);
+  color: #fff;
+  border-radius: 0 6px 6px 0;
+}
+.calendar-grid .day.in-range {
+  background: var(--highlight);
+  border-radius: 0;
+}
+.calendar-grid .day.today {
+  border: 1px solid var(--border);
+}
+
+.date-selection-mode {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  min-height: 1.2em;
+}
+
+/* ROOMS */
+.rooms-loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+.rooms-loading .spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.rooms-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 1.2rem;
+  border-radius: 8px;
+  color: var(--error);
+  margin-bottom: 1.5rem;
+}
+
+.building-group {
+  margin-bottom: 2.5rem;
+}
+.building-group h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.room-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.room-card:hover {
+  border-color: var(--text);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.room-card.selected {
+  border-color: var(--text);
+  border-width: 2px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+}
+.room-card-inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+}
+.room-card img {
+  width: 200px;
+  height: 160px;
+  object-fit: cover;
+}
+.room-card .no-photo {
+  width: 200px;
+  height: 160px;
+  background: var(--highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.room-card-info {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.room-card-info h4 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.room-card-info .room-desc {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
+}
+.room-card-info .room-price {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.room-card-info .room-price .breakdown {
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* REVIEW */
+.review-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+}
+.review-section h3 {
+  font-size: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f0ede8;
+}
+.review-row:last-child { border-bottom: none; }
+.review-row .label {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+.review-row .value {
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+.review-total {
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-align: right;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid var(--text);
+}
+.review-total .label { font-size: 1rem; }
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  gap: 1rem;
+}
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-primary {
+  background: var(--text);
+  color: #fff;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover { background: var(--highlight); }
+
+/* SUCCESS */
+.success-screen {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.success-screen .checkmark {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 1.5rem;
+}
+.success-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.success-screen p {
+  color: var(--text-light);
+  font-size: 1.05rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--text); }
+
+/* RADIO GROUP */
+.radio-group { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+.radio-option { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; background: var(--card-bg); transition: all 0.2s; }
+.radio-option:hover { border-color: var(--text); }
+.radio-option.selected { border-color: var(--text); background: var(--highlight); }
+.radio-option input[type="radio"] { margin-top: 0.25rem; accent-color: var(--text); }
+.radio-option .radio-label { font-size: 0.95rem; line-height: 1.5; }
+
+/* TC BADGE */
+.building-group.tc-recommended h3 { color: var(--tc-accent); border-bottom-color: var(--tc-accent); }
+.tc-badge { display: inline-block; background: var(--tc-bg); color: var(--tc-accent); font-size: 0.7rem; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 0.04em; padding: 0.2rem 0.6rem; border-radius: 4px; margin-left: 0.5rem; vertical-align: middle; }
+
+/* FALLBACK */
+.rooms-fallback { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+.rooms-fallback h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.8rem; }
+.rooms-fallback p { font-size: 0.95rem; color: var(--text-light); margin-bottom: 1rem; }
+
+/* MOBILE */
+@media (max-width: 640px) {
+  nav { padding: 1rem; }
+  nav .links { gap: 0.8rem; font-size: 0.8rem; }
+  main { padding: 2rem 1.2rem 4rem; }
+  h1 { font-size: 2.2rem; }
+  .date-row { grid-template-columns: 1fr; }
+  .room-card-inner { grid-template-columns: 1fr; }
+  .room-card img, .room-card .no-photo { width: 100%; height: 180px; }
+  .review-row { flex-direction: column; gap: 0.2rem; }
+  .review-row .value { text-align: left; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://foolsvalley.com" class="logo">fools' valley</a>
+  <div class="links">
+    <a href="tucker-retreat.html">retreat info</a>
+    <a href="https://foolsvalley.com/events.html">events</a>
+    <a href="https://foolsvalley.com/rooms.html">rooms</a>
+  </div>
+</nav>
+
+<main>
+  <div style="margin-bottom: 2rem;">
+    <a href="tucker-retreat.html" style="font-family:'Inter',sans-serif; font-size:0.85rem; color:var(--text-light); text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem;">
+      ← back to retreat info
+    </a>
+  </div>
+
+  <h1>apply &amp; choose accommodation</h1>
+  <p class="subtitle">meditation retreat with Dr. Tucker Peck · 29 jan – 5 feb 2027</p>
+
+  <!-- QUESTIONS SECTION -->
+  <div class="section" id="questions-section">
+    <div class="step-label">001 / about you</div>
+    <h2>application</h2>
+
+    <div class="field" id="field-email">
+      <label>Email *</label>
+      <input type="email" id="q-email">
+      <div class="error-msg">please enter a valid email</div>
+    </div>
+
+    <div class="field" id="field-name">
+      <label>What's your name? *</label>
+      <input type="text" id="q-name">
+      <div class="error-msg">required</div>
+    </div>
+
+    <div class="field" id="field-phone">
+      <label>What's your phone number? *</label>
+      <input type="text" id="q-phone">
+      <div class="error-msg">required</div>
+    </div>
+
+    <div class="field" id="field-emergency">
+      <label>Who's an emergency contact, both name and number? *</label>
+      <input type="text" id="q-emergency">
+      <div class="error-msg">required</div>
+    </div>
+
+    <div class="field" id="field-heard">
+      <label>How did you learn about the retreat? *</label>
+      <div class="hint">if you haven't been on retreat with us before, tell us the name of the person you learned about the retreat from. don't just write "friend" or "colleague" — tell us that person's name.</div>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="heard" value="person">
+          <span class="radio-label">I learned about it from:
+            <input type="text" id="q-heard-person" placeholder="their name" style="margin-left:0.4rem; padding:0.3rem 0.6rem; font-family:'EB Garamond',serif; font-size:0.95rem; border:1px solid var(--border); border-radius:4px; background:var(--card-bg);">
+          </span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="heard" value="been-before">
+          <span class="radio-label">I've been on retreat with Tucker before.</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="heard" value="other">
+          <span class="radio-label">Other:
+            <input type="text" id="q-heard-other" style="margin-left:0.4rem; padding:0.3rem 0.6rem; font-family:'EB Garamond',serif; font-size:0.95rem; border:1px solid var(--border); border-radius:4px; background:var(--card-bg);">
+          </span>
+        </label>
+      </div>
+      <div class="error-msg">please answer this question</div>
+    </div>
+
+    <div class="field">
+      <label>Any food allergies or dietary restrictions?</label>
+      <div class="hint">if the chef is unable to accommodate a particular dietary need, you might need to pay her extra or possibly bring your own food — but she's usually very impressive at accommodating everyone.</div>
+      <textarea id="q-dietary" rows="2"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Do you currently have, or have you in the past been diagnosed with or treated for, any mental health conditions?</label>
+      <div class="hint">if you're certain we already know this info about you (eg you've been on a retreat with us in the past and this information hasn't changed), it's OK to leave this blank. if you'd rather talk about this privately, please leave it blank and contact Tucker. we do not usually exclude people based on this information, but it's helpful for us to know, as it can change the way meditation might affect you.</div>
+      <textarea id="q-mental" rows="3"></textarea>
+    </div>
+
+    <div class="field" id="field-conduct">
+      <label>Code of conduct *</label>
+      <label class="radio-option" style="margin-top:0.5rem;">
+        <input type="checkbox" id="q-conduct">
+        <span class="radio-label">Yes — I have actually read the retreat code of conduct and agree to abide by it. I won't contact Tucker asking if I can have an exception to these rules (something that occurs often enough that it got added to the registration form!).</span>
+      </label>
+      <div class="error-msg">required</div>
+    </div>
+
+    <div class="field" id="field-waiver">
+      <label>Waiver *</label>
+      <div class="hint">by typing my name below, I am electronically signing the waiver found at <a href="http://meditatewithtucker.com/retreat-waiver" target="_blank" rel="noopener" style="color:var(--text);">meditatewithtucker.com/retreat-waiver</a></div>
+      <input type="text" id="q-waiver" placeholder="type your full name">
+      <div class="error-msg">required</div>
+    </div>
+
+    <div class="field" id="field-payment">
+      <label>Payment *</label>
+      <div class="hint">I am going to send payment for the retreat within the next few minutes, or I've already sent it. (you'll see your total below once you've chosen accommodation)</div>
+      <div style="background:var(--highlight); border-radius:8px; padding:1rem 1.2rem; font-size:0.85rem; margin-bottom:0.8rem; font-family:'Inter',sans-serif; line-height:1.8;">
+        Name: Christopher William Wray<br>
+        IBAN: BE36 9671 7217 6881<br>
+        Swift/BIC: TRWIBEB1XXX <span style="color:var(--text-light);">(use when sending money from outside SEPA)</span><br>
+        Bank: Wise, Rue du Trône 100, 3rd floor, Brussels, 1050, Belgium
+      </div>
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="payment" value="paying">
+          <span class="radio-label">Of course, Tucker! It must be annoying when people sign up and don't pay. You'd need to reconcile the two registration lists and then contact people who only paid or only registered. What kind of person would do a thing like that?</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="payment" value="not-paying">
+          <span class="radio-label">No, Tucker. I'm not going to send payment. THAT KIND OF PERSON IS ME!</span>
+        </label>
+      </div>
+      <div class="error-msg">please choose one</div>
+    </div>
+  </div>
+
+  <!-- DATES SECTION -->
+  <div class="section" id="dates-section" style="border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">002 / when</div>
+    <h2>your dates</h2>
+
+    <p style="margin-bottom:0.3rem; color: var(--text-light);">
+      the retreat runs <strong>fri 29 jan – fri 5 feb 2027</strong>. you can arrive up to a week early (from jan 20) and stay longer (until feb 10). your stay must include the full retreat.
+    </p>
+    <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style:italic;">
+      feb 6–7 is the optional meditation weekend — the space stays reserved for us; Tucker leaves on the 5th.
+    </p>
+
+    <div class="date-selection-mode" id="date-mode">click a day jan 20–29 to change arrival · a day feb 5–10 to change departure</div>
+
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <button onclick="calendarPrev()">&larr;</button>
+        <h3 id="calendar-title"></h3>
+        <button onclick="calendarNext()">&rarr;</button>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+
+    <div class="date-info" id="date-summary">
+      <strong>Arrival:</strong> <span id="arrival-display"></span><br>
+      <strong>Departure:</strong> <span id="departure-display"></span><br>
+      <strong>Duration:</strong> <span id="duration-display"></span>
+    </div>
+  </div>
+
+  <!-- ROOMS SECTION -->
+  <div class="section" id="rooms-section" style="border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">003 / where</div>
+    <h2>choose your accommodation</h2>
+    <p style="margin-bottom:0.5rem; color: var(--text-light);">
+      showing accommodation available for your dates. dorm beds are €100/week, a bed in a shared room €200/week, private rooms at our normal weekly rates — all pro rata for extra days.
+    </p>
+    <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light);">
+      + &euro;35/day per person for food, facilities &amp; Tucker's travel expenses is added on top.
+    </p>
+
+    <div id="rooms-container">
+      <div class="rooms-loading">
+        <div class="spinner"></div><br>
+        checking availability...
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SECTION -->
+  <div class="section" id="review-section" style="display:none; border-top:1px solid var(--border); padding-top:3rem; margin-top:3rem;">
+    <div class="step-label">004 / review</div>
+    <h2>review &amp; submit</h2>
+
+    <div class="review-section">
+      <h3>stay details</h3>
+      <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
+      <div class="review-row"><span class="label">departure</span><span class="value" id="rev-departure"></span></div>
+      <div class="review-row"><span class="label">duration</span><span class="value" id="rev-duration"></span></div>
+      <div class="review-row"><span class="label">accommodation</span><span class="value" id="rev-room"></span></div>
+    </div>
+
+    <div class="review-section" id="rev-pricing-section">
+      <h3>pricing</h3>
+      <div class="review-row"><span class="label">accommodation</span><span class="value" id="rev-room-price"></span></div>
+      <div class="review-row" style="font-size: 0.85rem; color: var(--text-light);"><span class="label">daily fee (food, facilities &amp; travel)</span><span class="value" id="rev-daily-fee"></span></div>
+      <div class="review-row" style="font-weight: 600; padding-top: 0.5rem; margin-top: 0.5rem; border-top: 1px solid var(--border);"><span class="label">total</span><span class="value" id="rev-total"></span></div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" id="btn-submit" onclick="submitApplication()">submit application</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="section" id="success-section" style="display:none;"></div>
+
+</main>
+
+<footer>
+  fools' valley · 30 min north of lisbon · <a href="mailto:slowreply@foolsvalley.com">slowreply@foolsvalley.com</a>
+</footer>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZQ6gWYvnMVnRdjPEsvlDNIkyFxSm3fe1c0r1HbHOKrOhsaapVLWrZKWxp-Np_YVSWAA/exec';
+const ROOM_PHOTOS_BASE = 'https://foolsvalley.com/assets/rooms/';
+
+const ROOM_PHOTO_MAP = {
+  // Old House
+  chafariz:  'IMG_3325-806x1024.webp',
+  isabel:    'IMG_3374_1-1-768x1024.webp',
+  library:   'IMG_1314-1024x768.webp',
+  studio:    'IMG_3298-1-1-768x1024.webp',
+  galeria:   'IMG_3211_1-893x1024.webp',
+  dorm_oh:   'IMG_1326-1-1024x768.webp',
+  // M / Octopus House
+  mbig:      'IMG_1037-2-1024x768.webp',
+  mcurve:    'IMG_0071-1024x768.webp',
+  mdouble:   'IMG_1036_1-1024x768.webp',
+  // The Villa / TC House
+  apartment: 'apartment-3.jpg',
+  ensuite:   'photo_2026-01-03-14.59.17-1024x768.webp',
+  sunny:     'photo_2026-01-03-14.59.03-1024x768.webp',
+  normal_s:  'small-south.jpg',
+  normal_m:  'photo_2026-01-03-14.59.13-1-768x1024.webp',
+  normal_n:  'small-north.png',
+  pool:      'photo_2026-01-03-15.04.38-1024x768.webp',
+  downstairs:'photo_2026-01-03-15.04.23-1024x768.webp',
+  dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
+  // shared room: one of the small TC rooms
+  shared_tc: 'photo_2026-01-03-14.59.13-1-768x1024.webp',
+};
+
+// Booking window (months are 0-indexed)
+const WINDOW_START       = new Date(2027, 0, 20); // earliest arrival
+const LATEST_ARRIVAL     = new Date(2027, 0, 29); // retreat start
+const EARLIEST_DEPARTURE = new Date(2027, 1, 5);  // retreat end
+const WINDOW_END         = new Date(2027, 1, 10); // latest departure
+
+// ============================================================
+// STATE
+// ============================================================
+let calendarMonth = 0;    // January
+let calendarYear = 2027;
+let arrivalDate = new Date(2027, 0, 29);  // default: retreat start
+let departureDate = new Date(2027, 1, 7); // default: incl. extension weekend
+let availableRooms = [];
+let selectedRoom = null;
+let fallbackMode = false;
+
+// ============================================================
+// CALENDAR
+// ============================================================
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function renderCalendar() {
+  document.getElementById('calendar-title').textContent = MONTHS[calendarMonth] + ' ' + calendarYear;
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+
+  DAYS.forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'day-label';
+    div.textContent = d;
+    grid.appendChild(div);
+  });
+
+  const firstDay = new Date(calendarYear, calendarMonth, 1);
+  let startDow = firstDay.getDay();
+  startDow = startDow === 0 ? 6 : startDow - 1;
+  const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+
+  for (let i = 0; i < startDow; i++) {
+    const div = document.createElement('div');
+    div.className = 'day';
+    grid.appendChild(div);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(calendarYear, calendarMonth, d);
+    const div = document.createElement('div');
+    div.className = 'day';
+    div.textContent = d;
+
+    const isArrivalOption = date >= WINDOW_START && date <= LATEST_ARRIVAL;
+    const isDepartureOption = date >= EARLIEST_DEPARTURE && date <= WINDOW_END;
+
+    if (date.getTime() === arrivalDate.getTime()) div.classList.add('selected-arrival');
+    else if (date.getTime() === departureDate.getTime()) div.classList.add('selected-departure');
+    else if (date > arrivalDate && date < departureDate) div.classList.add('in-range');
+
+    if (isArrivalOption) {
+      div.classList.add('selectable');
+      div.addEventListener('click', () => { arrivalDate = date; updateDates(); });
+    } else if (isDepartureOption) {
+      div.classList.add('selectable');
+      div.addEventListener('click', () => { departureDate = date; updateDates(); });
+    } else {
+      div.classList.add('disabled');
+    }
+
+    grid.appendChild(div);
+  }
+}
+
+function calendarPrev() {
+  if (calendarYear === 2027 && calendarMonth === 0) return; // clamp to Jan 2027
+  calendarMonth--;
+  if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
+  renderCalendar();
+}
+
+function calendarNext() {
+  if (calendarYear === 2027 && calendarMonth === 1) return; // clamp to Feb 2027
+  calendarMonth++;
+  if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
+  renderCalendar();
+}
+
+function updateDates() {
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
+  document.getElementById('departure-display').textContent = formatDate(departureDate);
+  document.getElementById('duration-display').textContent = days + ' nights';
+  selectedRoom = null;
+  document.getElementById('review-section').style.display = 'none';
+  renderCalendar();
+  fetchAvailability();
+}
+
+function formatDate(d) {
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function formatDateISO(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+// ============================================================
+// FETCH AVAILABILITY
+// ============================================================
+async function fetchAvailability() {
+  const container = document.getElementById('rooms-container');
+  container.innerHTML = '<div class="rooms-loading"><div class="spinner"></div><br>checking availability...</div>';
+  selectedRoom = null;
+  fallbackMode = false;
+
+  const from = formatDateISO(arrivalDate);
+  const to = formatDateISO(departureDate);
+
+  try {
+    const url = APPS_SCRIPT_URL + '?action=availability&from=' + from + '&to=' + to + '&event=tucker';
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const resp = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    const data = await resp.json();
+
+    if (data.error) {
+      showFallback(container, "We couldn't check availability right now: " + data.error);
+      return;
+    }
+
+    availableRooms = data.rooms || [];
+    if (availableRooms.length === 0) {
+      showFallback(container, 'No rooms appear available for your selected dates, but this might be a data issue.');
+      return;
+    }
+
+    renderRooms();
+  } catch (err) {
+    console.error('Availability check error:', err);
+    showFallback(container, "Couldn't reach the availability system. Please describe what accommodation you'd like below.");
+  }
+}
+
+function showFallback(container, msg) {
+  fallbackMode = true;
+  container.innerHTML = '';
+  const fb = document.createElement('div');
+  fb.className = 'rooms-fallback';
+  fb.innerHTML = '<h4>room selection unavailable</h4>' +
+    '<p>' + msg + '</p>' +
+    '<p>no worries — just tell us what kind of accommodation you\'re interested in (dorm bed, shared room, private room) and we\'ll get back to you with options and pricing.</p>' +
+    '<div class="field"><label>what type of accommodation are you interested in?</label>' +
+    '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>' +
+    '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) showReviewSection();">continue to review</button>';
+  container.appendChild(fb);
+}
+
+// ============================================================
+// ROOMS
+// ============================================================
+function renderRooms() {
+  const container = document.getElementById('rooms-container');
+  container.innerHTML = '';
+
+  const retreatIds = ['dorm_oh', 'dorm_bh', 'shared_tc'];
+  const retreatRooms = availableRooms.filter(r => retreatIds.includes(r.id));
+  const privateRooms = availableRooms.filter(r => !retreatIds.includes(r.id));
+
+  if (retreatRooms.length > 0) {
+    container.appendChild(buildGroup('dorms & shared room', retreatRooms));
+  }
+
+  const buildingLabels = {
+    'Octopus House': 'private rooms — m / octopus house',
+    'Old House': 'private rooms — the old house',
+    'Blue House': 'private rooms — the villa'
+  };
+  ['Octopus House', 'Old House', 'Blue House'].forEach(b => {
+    const rs = privateRooms.filter(r => r.building === b);
+    if (rs.length > 0) container.appendChild(buildGroup(buildingLabels[b], rs));
+  });
+}
+
+function buildGroup(title, rooms) {
+  const group = document.createElement('div');
+  group.className = 'building-group';
+  const h3 = document.createElement('h3');
+  h3.innerHTML = title;
+  group.appendChild(h3);
+
+  rooms.forEach(room => {
+    const card = document.createElement('div');
+    card.className = 'room-card';
+    card.dataset.roomId = room.id;
+
+    const inner = document.createElement('div');
+    inner.className = 'room-card-inner';
+
+    const photoFile = ROOM_PHOTO_MAP[room.id] || room.photo;
+    if (photoFile) {
+      const img = document.createElement('img');
+      img.src = ROOM_PHOTOS_BASE + photoFile;
+      img.alt = room.name;
+      img.loading = 'lazy';
+      inner.appendChild(img);
+    } else {
+      const noPhoto = document.createElement('div');
+      noPhoto.className = 'no-photo';
+      noPhoto.textContent = 'photo coming';
+      inner.appendChild(noPhoto);
+    }
+
+    const info = document.createElement('div');
+    info.className = 'room-card-info';
+    var displayName = room.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
+    info.innerHTML = '<h4>' + displayName + '</h4>' +
+      '<div class="room-desc">' + (room.desc || '') + '</div>' +
+      '<div class="room-price">€' + room.roomPrice + ' <span style="font-weight:400;">(' + room.priceBreakdown + ')</span>' +
+      '<span class="breakdown">+ €' + room.dailyFee + ' food, facilities & travel (' + room.numDays + ' days × €35)</span></div>';
+    inner.appendChild(info);
+
+    card.appendChild(inner);
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedRoom = room;
+      showReviewSection();
+    });
+
+    group.appendChild(card);
+  });
+
+  return group;
+}
+
+// ============================================================
+// REVIEW
+// ============================================================
+function showReviewSection() {
+  const reviewSection = document.getElementById('review-section');
+  reviewSection.style.display = 'block';
+  populateReview();
+  setTimeout(() => {
+    reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function populateReview() {
+  document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
+  document.getElementById('rev-departure').textContent = formatDate(departureDate);
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  document.getElementById('rev-duration').textContent = days + ' nights';
+
+  const pricingSection = document.getElementById('rev-pricing-section');
+
+  if (fallbackMode) {
+    const pref = document.getElementById('f-room-preference');
+    document.getElementById('rev-room').textContent = 'Preference: ' + (pref ? pref.value : 'not specified');
+    pricingSection.style.display = 'none';
+  } else if (selectedRoom) {
+    var cleanName = selectedRoom.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
+    document.getElementById('rev-room').textContent = cleanName;
+    pricingSection.style.display = 'block';
+    document.getElementById('rev-room-price').innerHTML = '€' + selectedRoom.roomPrice + ' <span style="font-weight:400; font-size:0.9rem;">(' + selectedRoom.priceBreakdown + ')</span>';
+    document.getElementById('rev-daily-fee').innerHTML = '€' + selectedRoom.dailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(' + days + ' days × €35)</span>';
+    document.getElementById('rev-total').textContent = '€' + (selectedRoom.roomPrice + selectedRoom.dailyFee);
+  }
+}
+
+// ============================================================
+// VALIDATION + SUBMIT
+// ============================================================
+function getHeardFrom() {
+  const checked = document.querySelector('input[name="heard"]:checked');
+  if (!checked) return '';
+  if (checked.value === 'been-before') return "I've been on retreat with Tucker before.";
+  if (checked.value === 'person') {
+    const name = document.getElementById('q-heard-person').value.trim();
+    return name ? 'Learned about the retreat from: ' + name : '';
+  }
+  const other = document.getElementById('q-heard-other').value.trim();
+  return other ? 'Other: ' + other : '';
+}
+
+function validateForm() {
+  let firstError = null;
+
+  function check(fieldId, ok) {
+    const field = document.getElementById(fieldId);
+    if (!ok) {
+      field.classList.add('error');
+      if (!firstError) firstError = field;
+    } else {
+      field.classList.remove('error');
+    }
+  }
+
+  const email = document.getElementById('q-email').value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  check('field-email', emailRegex.test(email));
+  check('field-name', document.getElementById('q-name').value.trim().length > 0);
+  check('field-phone', document.getElementById('q-phone').value.trim().length > 0);
+  check('field-emergency', document.getElementById('q-emergency').value.trim().length > 0);
+  check('field-heard', getHeardFrom().length > 0);
+  check('field-conduct', document.getElementById('q-conduct').checked);
+  check('field-waiver', document.getElementById('q-waiver').value.trim().length > 0);
+  check('field-payment', !!document.querySelector('input[name="payment"]:checked'));
+
+  if (firstError) {
+    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return false;
+  }
+  return true;
+}
+
+async function submitApplication() {
+  if (!validateForm()) return;
+
+  if (!fallbackMode && !selectedRoom) {
+    alert('Please choose your accommodation first.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'submitting...';
+
+  const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  const paymentChecked = document.querySelector('input[name="payment"]:checked');
+
+  const payload = {
+    action: 'submit',
+    application: {
+      eventType: 'tucker',
+      name: document.getElementById('q-name').value.trim(),
+      email: document.getElementById('q-email').value.trim(),
+      phone: document.getElementById('q-phone').value.trim(),
+      emergencyContact: document.getElementById('q-emergency').value.trim(),
+      heardFrom: getHeardFrom(),
+      dietary: document.getElementById('q-dietary').value.trim(),
+      mentalHealth: document.getElementById('q-mental').value.trim(),
+      codeOfConduct: 'yes',
+      waiverSignature: document.getElementById('q-waiver').value.trim(),
+      paymentCommitment: paymentChecked ? paymentChecked.closest('.radio-option').querySelector('.radio-label').textContent.trim() : '',
+      arrivalDate: formatDate(arrivalDate),
+      departureDate: formatDate(departureDate),
+      arrivalDateISO: formatDateISO(arrivalDate),
+      departureDateISO: formatDateISO(departureDate),
+      numDays: days,
+      roomName: fallbackMode ? 'none' : selectedRoom.name.replace(/ \(\d+ beds? available\)/, ''),
+      roomId: fallbackMode ? 'none' : selectedRoom.id,
+      building: fallbackMode ? '' : (selectedRoom.building || ''),
+      roomPrice: fallbackMode ? 0 : selectedRoom.roomPrice,
+      priceBreakdown: fallbackMode ? '' : selectedRoom.priceBreakdown,
+      dailyFee: fallbackMode ? 0 : selectedRoom.dailyFee,
+      totalPrice: fallbackMode ? 0 : (selectedRoom.roomPrice + selectedRoom.dailyFee),
+      roomPreference: fallbackMode ? (document.getElementById('f-room-preference') ? document.getElementById('f-room-preference').value.trim() : '') : ''
+    }
+  };
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+
+    if (data.success) {
+      document.getElementById('success-section').style.display = 'block';
+      document.getElementById('success-section').innerHTML = `
+        <div class="success-screen">
+          <div class="checkmark">✓</div>
+          <h2>application sent</h2>
+          <p>thank you! you'll receive a confirmation email with your booking details. we'll be in touch to confirm your spot.</p>
+          <br><br>
+          <a href="tucker-retreat.html" class="btn btn-secondary" style="display:inline-block; text-decoration:none;">back to retreat info</a>
+        </div>
+      `;
+      setTimeout(() => {
+        document.getElementById('success-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    } else {
+      alert('Something went wrong: ' + (data.error || 'Unknown error'));
+      btn.disabled = false;
+      btn.textContent = 'submit application';
+    }
+  } catch (err) {
+    alert('Could not submit. Please check your connection and try again.\n\n' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'submit application';
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderCalendar();
+updateDates();
+</script>
+
+</body></html>
