@@ -705,6 +705,26 @@ footer a { color: var(--text); }
       <div class="review-row"><span class="label">accommodation</span><span class="value" id="rev-room"></span></div>
     </div>
 
+    <div class="review-section" id="shared-room-section" style="display:none;">
+      <h3>shared room</h3>
+      <div class="field" id="field-shared" style="margin-bottom:0;">
+        <label>who would you like to share with? *</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="shared-pref" value="gender">
+            <span class="radio-label">put me in a gender-segregated room</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="shared-pref" value="friend">
+            <span class="radio-label">I'm sharing with a friend:
+              <input type="text" id="q-shared-friend" placeholder="friend's name" style="margin-left:0.4rem; padding:0.3rem 0.6rem; font-family:'EB Garamond',serif; font-size:0.95rem; border:1px solid var(--border); border-radius:4px; background:var(--card-bg);">
+            </span>
+          </label>
+        </div>
+        <div class="error-msg">please choose one (and name your friend if sharing)</div>
+      </div>
+    </div>
+
     <div class="review-section" id="rev-pricing-section">
       <h3>pricing</h3>
       <div class="review-row"><span class="label">accommodation</span><span class="value" id="rev-room-price"></span></div>
@@ -1037,6 +1057,10 @@ function populateReview() {
 
   const pricingSection = document.getElementById('rev-pricing-section');
 
+  // Extra question only for the shared room: gender-segregated or with a friend
+  const isSharedRoom = !fallbackMode && selectedRoom && selectedRoom.id === 'shared_tc';
+  document.getElementById('shared-room-section').style.display = isSharedRoom ? 'block' : 'none';
+
   if (fallbackMode) {
     const pref = document.getElementById('f-room-preference');
     document.getElementById('rev-room').textContent = 'Preference: ' + (pref ? pref.value : 'not specified');
@@ -1066,6 +1090,14 @@ function getHeardFrom() {
   return other ? 'Other: ' + other : '';
 }
 
+function getSharedRoomPreference() {
+  const checked = document.querySelector('input[name="shared-pref"]:checked');
+  if (!checked) return '';
+  if (checked.value === 'gender') return 'gender-segregated room';
+  const friend = document.getElementById('q-shared-friend').value.trim();
+  return friend ? 'sharing with a friend: ' + friend : '';
+}
+
 function validateForm() {
   let firstError = null;
 
@@ -1089,6 +1121,10 @@ function validateForm() {
   check('field-conduct', document.getElementById('q-conduct').checked);
   check('field-waiver', document.getElementById('q-waiver').value.trim().length > 0);
   check('field-payment', !!document.querySelector('input[name="payment"]:checked'));
+
+  if (!fallbackMode && selectedRoom && selectedRoom.id === 'shared_tc') {
+    check('field-shared', getSharedRoomPreference().length > 0);
+  }
 
   if (firstError) {
     firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1138,7 +1174,8 @@ async function submitApplication() {
       priceBreakdown: fallbackMode ? '' : selectedRoom.priceBreakdown,
       dailyFee: fallbackMode ? 0 : selectedRoom.dailyFee,
       totalPrice: fallbackMode ? 0 : (selectedRoom.roomPrice + selectedRoom.dailyFee),
-      roomPreference: fallbackMode ? (document.getElementById('f-room-preference') ? document.getElementById('f-room-preference').value.trim() : '') : ''
+      roomPreference: fallbackMode ? (document.getElementById('f-room-preference') ? document.getElementById('f-room-preference').value.trim() : '') : '',
+      sharedRoomPreference: (!fallbackMode && selectedRoom && selectedRoom.id === 'shared_tc') ? getSharedRoomPreference() : ''
     }
   };
 
@@ -1181,7 +1218,7 @@ async function submitApplication() {
 // ============================================================
 
 // Typing in the nested text inputs selects their radio
-['q-heard-person', 'q-heard-other'].forEach(inputId => {
+['q-heard-person', 'q-heard-other', 'q-shared-friend'].forEach(inputId => {
   const input = document.getElementById(inputId);
   const radio = input.closest('.radio-option').querySelector('input[type="radio"]');
   ['focus', 'input'].forEach(evt => input.addEventListener(evt, () => {
@@ -1196,7 +1233,7 @@ function syncRadioHighlight(radio) {
     r.closest('.radio-option').classList.toggle('selected', r.checked);
   });
 }
-document.querySelectorAll('input[name="heard"], input[name="payment"]').forEach(radio => {
+document.querySelectorAll('input[name="heard"], input[name="payment"], input[name="shared-pref"]').forEach(radio => {
   radio.addEventListener('change', () => syncRadioHighlight(radio));
 });
 

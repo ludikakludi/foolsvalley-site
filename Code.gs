@@ -892,9 +892,10 @@ function handleTuckerSubmission(app, ss) {
       'Price Breakdown',      // R
       'Daily Fee',            // S
       'Total Price',          // T
-      'Status'                // U (column 21)
+      'Status',               // U (column 21 — onEdit depends on this position)
+      'Shared Room Preference' // V
     ]);
-    const headerRange = sheet.getRange(1, 1, 1, 21);
+    const headerRange = sheet.getRange(1, 1, 1, 22);
     headerRange.setFontWeight('bold');
     headerRange.setBackground('#f3f3f3');
   }
@@ -920,7 +921,8 @@ function handleTuckerSubmission(app, ss) {
     app.priceBreakdown,
     app.dailyFee,
     app.totalPrice,
-    'pending'
+    'pending',
+    app.sharedRoomPreference || ''
   ]);
 
   // Record in valley rooms calendar — except the virtual shared room (assigned manually)
@@ -969,6 +971,7 @@ Duration: ${app.numDays} nights
 (retreat runs Jan 29 - Feb 5, 2027; optional meditation weekend Feb 6-7)
 
 Accommodation: ${app.roomName}${app.roomId === 'shared_tc' ? ' (room to be assigned manually)' : ''}
+${app.sharedRoomPreference ? 'Shared room preference: ' + app.sharedRoomPreference : ''}
 ${app.roomPreference ? 'Accommodation preference (room selection was unavailable): ' + app.roomPreference : ''}
 
 ============================================================
