@@ -778,6 +778,7 @@ let departureDate = new Date(2027, 1, 7); // default: incl. extension weekend
 let availableRooms = [];
 let selectedRoom = null;
 let fallbackMode = false;
+let fetchSeq = 0; // guards against stale availability responses
 
 // ============================================================
 // CALENDAR
@@ -873,6 +874,7 @@ function formatDateISO(d) {
 // FETCH AVAILABILITY
 // ============================================================
 async function fetchAvailability() {
+  const seq = ++fetchSeq;
   const container = document.getElementById('rooms-container');
   container.innerHTML = '<div class="rooms-loading"><div class="spinner"></div><br>checking availability...</div>';
   selectedRoom = null;
@@ -888,6 +890,7 @@ async function fetchAvailability() {
     const resp = await fetch(url, { signal: controller.signal });
     clearTimeout(timeoutId);
     const data = await resp.json();
+    if (seq !== fetchSeq) return; // a newer request superseded this one
 
     if (data.error) {
       showFallback(container, "We couldn't check availability right now: " + data.error);
@@ -903,6 +906,7 @@ async function fetchAvailability() {
     renderRooms();
   } catch (err) {
     console.error('Availability check error:', err);
+    if (seq !== fetchSeq) return;
     showFallback(container, "Couldn't reach the availability system. Please describe what accommodation you'd like below.");
   }
 }
@@ -917,7 +921,7 @@ function showFallback(container, msg) {
     '<p>no worries — just tell us what kind of accommodation you\'re interested in (dorm bed, shared room, private room) and we\'ll get back to you with options and pricing.</p>' +
     '<div class="field"><label>what type of accommodation are you interested in?</label>' +
     '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>' +
-    '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) showReviewSection();">continue to review</button>';
+    '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) { showReviewSection(); } else { alert(\'please describe what accommodation you would like\'); }">continue to review</button>';
   container.appendChild(fb);
 }
 
@@ -1113,7 +1117,7 @@ async function submitApplication() {
       arrivalDateISO: formatDateISO(arrivalDate),
       departureDateISO: formatDateISO(departureDate),
       numDays: days,
-      roomName: fallbackMode ? 'none' : selectedRoom.name.replace(/ \(\d+ beds? available\)/, ''),
+      roomName: fallbackMode ? 'none' : selectedRoom.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, ''),
       roomId: fallbackMode ? 'none' : selectedRoom.id,
       building: fallbackMode ? '' : (selectedRoom.building || ''),
       roomPrice: fallbackMode ? 0 : selectedRoom.roomPrice,
@@ -1161,6 +1165,27 @@ async function submitApplication() {
 // ============================================================
 // INIT
 // ============================================================
+
+// Typing in the nested text inputs selects their radio
+['q-heard-person', 'q-heard-other'].forEach(inputId => {
+  const input = document.getElementById(inputId);
+  const radio = input.closest('.radio-option').querySelector('input[type="radio"]');
+  ['focus', 'input'].forEach(evt => input.addEventListener(evt, () => {
+    radio.checked = true;
+    syncRadioHighlight(radio);
+  }));
+});
+
+// Highlight the selected radio option (matches apply.html behaviour)
+function syncRadioHighlight(radio) {
+  document.querySelectorAll('input[name="' + radio.name + '"]').forEach(r => {
+    r.closest('.radio-option').classList.toggle('selected', r.checked);
+  });
+}
+document.querySelectorAll('input[name="heard"], input[name="payment"]').forEach(radio => {
+  radio.addEventListener('change', () => syncRadioHighlight(radio));
+});
+
 renderCalendar();
 updateDates();
 </script>
