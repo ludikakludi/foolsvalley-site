@@ -368,7 +368,7 @@ function handleAvailability(e) {
         id: 'shared_tc',
         name: 'Shared room (2 people)',
         building: 'Blue House',
-        desc: "a bed in a double room shared with one other retreatant — we'll assign the specific room",
+        desc: "a bed in a double room shared with one other retreatant (gender segregated or share with a friend) — we'll assign the specific room",
         photo: '',
         roomPrice: sharedPrice,
         priceBreakdown: '€200/week',
@@ -976,7 +976,7 @@ PRICE BREAKDOWN
 ============================================================
 
 Accommodation: €${app.roomPrice} (${app.priceBreakdown}, ${app.numDays} nights pro rata)
-Daily fee (food, facilities & Tucker's travel): €${app.dailyFee} (${app.numDays} days × €35)
+Daily fee (food, facilities & travel expenses of the teacher): €${app.dailyFee} (${app.numDays} days × €35)
 TOTAL: €${app.totalPrice}
 
 ============================================================

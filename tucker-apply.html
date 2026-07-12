@@ -610,7 +610,7 @@ footer a { color: var(--text); }
       <label>Code of conduct *</label>
       <label class="radio-option" style="margin-top:0.5rem;">
         <input type="checkbox" id="q-conduct">
-        <span class="radio-label">Yes — I have actually read the retreat code of conduct and agree to abide by it. I won't contact Tucker asking if I can have an exception to these rules (something that occurs often enough that it got added to the registration form!).</span>
+        <span class="radio-label">Yes — I have actually read the <a href="https://meditatewithtucker.com/retreat-code-of-conduct/" target="_blank" rel="noopener" style="color:var(--text);">retreat code of conduct</a> and agree to abide by it. I won't contact Tucker asking if I can have an exception to these rules (something that occurs often enough that it got added to the registration form!).</span>
       </label>
       <div class="error-msg">required</div>
     </div>
@@ -643,6 +643,10 @@ footer a { color: var(--text); }
       </div>
       <div class="error-msg">please choose one</div>
     </div>
+
+    <p style="margin-top:2rem; font-size:0.9rem; color:var(--text-light);">
+      questions? <a href="https://meditatewithtucker.com/contact/" target="_blank" rel="noopener" style="color:var(--text);">contact Tucker</a> · contact fools' valley at <a href="mailto:theonlyfool@foolsvalley.com" style="color:var(--text);">theonlyfool@foolsvalley.com</a>
+    </p>
   </div>
 
   <!-- DATES SECTION -->
@@ -654,7 +658,7 @@ footer a { color: var(--text); }
       the retreat runs <strong>fri 29 jan – fri 5 feb 2027</strong>. you can arrive up to a week early (from jan 20) and stay longer (until feb 10). your stay must include the full retreat.
     </p>
     <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style:italic;">
-      feb 6–7 is the optional meditation weekend — the space stays reserved for us; Tucker leaves on the 5th.
+      feb 6–7 is the optional meditation weekend — the space stays reserved for meditation; Tucker leaves on the 5th.
     </p>
 
     <div class="date-selection-mode" id="date-mode">click a day jan 20–29 to change arrival · a day feb 5–10 to change departure</div>
@@ -680,10 +684,10 @@ footer a { color: var(--text); }
     <div class="step-label">003 / where</div>
     <h2>choose your accommodation</h2>
     <p style="margin-bottom:0.5rem; color: var(--text-light);">
-      showing accommodation available for your dates. dorm beds are €100/week, a bed in a shared room €200/week, private rooms at our normal weekly rates — all pro rata for extra days.
+      showing accommodation available for your dates. dorm beds are €100/week, a bed in a shared room €200/week, private rooms from €320/week — all pro rata for extra days.
     </p>
     <p style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light);">
-      + &euro;35/day per person for food, facilities &amp; Tucker's travel expenses is added on top.
+      + &euro;35/day per person for food, facilities &amp; travel expenses of the teacher is added on top.
     </p>
 
     <div id="rooms-container">
@@ -898,9 +902,25 @@ async function fetchAvailability() {
     }
 
     availableRooms = data.rooms || [];
-    if (availableRooms.length === 0) {
-      showFallback(container, 'No rooms appear available for your selected dates, but this might be a data issue.');
-      return;
+
+    // The shared room is always offered (we assign it manually), so make sure
+    // it's present even if the backend doesn't send it
+    if (!availableRooms.some(r => r.id === 'shared_tc')) {
+      const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+      const sharedPrice = Math.round((200 / 7) * days);
+      availableRooms.push({
+        id: 'shared_tc',
+        name: 'Shared room (2 people)',
+        building: 'Blue House',
+        desc: "a bed in a double room shared with one other retreatant (gender segregated or share with a friend) — we'll assign the specific room",
+        photo: '',
+        roomPrice: sharedPrice,
+        priceBreakdown: '€200/week',
+        dailyFee: days * 35,
+        totalPrice: sharedPrice + days * 35,
+        numDays: days,
+        availableCount: 2
+      });
     }
 
     renderRooms();
