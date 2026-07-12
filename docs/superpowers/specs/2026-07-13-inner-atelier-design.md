@@ -65,7 +65,13 @@ Replace the "art + movement immersion" upcoming card (currently Oct 25 – Nov 3
 - Verify `residencies.html#apply` scrolls to the form.
 - No backend changes → no Apps Script redeploy needed.
 
+## Residencies calendar rename
+
+In `residencies.html`, rename the two calendar entries (dates updated to Oct 25 start, linking to the new page):
+- Line 715: `26 oct – 1 nov art + movement immersion` → `25 oct – 1 nov <a href="inner-atelier.html" class="calendar-link">the inner atelier</a>`
+- Line 729: `1 nov art + movement immersion (from oct 26)` → `1 nov <a href="inner-atelier.html" class="calendar-link">the inner atelier</a> (from oct 25)`
+
 ## Out of scope
 
-- No changes to residencies.html calendar (its "art + movement immersion" calendar entry, if any, is separate — only the events.html card is replaced).
 - No booking window enforcement — the residency flow handles dates/rooms as usual.
+- No backend/Apps Script changes.
