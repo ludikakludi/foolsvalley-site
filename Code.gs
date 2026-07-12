@@ -15,9 +15,14 @@ const EVENT_BLOCKS = [
     name: 'Summer Event 2026',
     startDate: '2026-07-04',  // July 4, 2026
     endDate: '2026-08-02'     // August 2, 2026 (exclusive - Aug 2 is free)
+  },
+  {
+    name: 'Tucker Peck Retreat 2027',
+    startDate: '2027-01-29',  // Jan 29, 2027
+    endDate: '2027-02-05',    // Feb 5, 2027 (exclusive - Feb 5 checkout morning stays free)
+    exceptEvent: 'tucker'     // requests with ?event=tucker bypass this block
   }
-  // Add more event blocks here as needed:
-  // { name: 'Winter Retreat', startDate: '2026-12-20', endDate: '2027-01-05' }
+  // Add more event blocks here as needed
 ];
 
 // ============================================================
@@ -109,6 +114,7 @@ function handleAvailability(e) {
   try {
     const from = e.parameter.from; // ISO format: YYYY-MM-DD
     const to = e.parameter.to;
+    const eventParam = e.parameter.event || '';
 
     if (!from || !to) {
       return jsonResponse({ error: 'Missing date parameters' });
@@ -300,18 +306,41 @@ function handleAvailability(e) {
       }
     }
 
+    // Tucker retreat: dorms are offered as gendered dorms
+    if (eventParam === 'tucker') {
+      for (const room of rooms) {
+        if (room.id === 'dorm_oh') room.name = 'Female dorm';
+        if (room.id === 'dorm_bh') room.name = 'Male dorm';
+      }
+    }
+
     // Check availability and calculate prices
     const availableRooms = [];
 
     for (const room of rooms) {
-      const available = checkRoomAvailability(room, bookings, fromDate, toDate);
+      // Tucker retreat: no camping/tipi/van in January
+      if (eventParam === 'tucker' && (room.building === 'Camping' || room.id === 'van' || room.id === 'tipi')) {
+        continue;
+      }
+
+      const available = checkRoomAvailability(room, bookings, fromDate, toDate, eventParam);
 
       if (available.isAvailable) {
-        // Calculate pricing using correct logic
-        const pricing = calculateRoomPrice(room.daily, room.weekly, room.twoWeek, room.monthly, numDays);
+        let pricing, dailyFee;
 
-        // Calculate daily fee (€20/day per person)
-        const dailyFee = numDays * 20;
+        if (eventParam === 'tucker') {
+          // Retreat pricing: weekly rate pro rata, dorms €100/week, fee €35/day
+          const weeklyRate = (room.id === 'dorm_oh' || room.id === 'dorm_bh') ? 100 : room.weekly;
+          pricing = {
+            roomPrice: Math.round((weeklyRate / 7) * numDays),
+            priceBreakdown: '€' + weeklyRate + '/week'
+          };
+          dailyFee = numDays * 35;
+        } else {
+          pricing = calculateRoomPrice(room.daily, room.weekly, room.twoWeek, room.monthly, numDays);
+          dailyFee = numDays * 20;
+        }
+
         const totalPrice = pricing.roomPrice + dailyFee;
 
         availableRooms.push({
@@ -330,6 +359,25 @@ function handleAvailability(e) {
       }
     }
 
+    // Tucker retreat: virtual "shared room" option, assigned manually — always offered
+    if (eventParam === 'tucker') {
+      const sharedPrice = Math.round((200 / 7) * numDays);
+      const sharedFee = numDays * 35;
+      availableRooms.push({
+        id: 'shared_tc',
+        name: 'Shared room (2 people)',
+        building: 'Blue House',
+        desc: "a bed in a double room shared with one other retreatant — we'll assign the specific room",
+        photo: '',
+        roomPrice: sharedPrice,
+        priceBreakdown: '€200/week',
+        dailyFee: sharedFee,
+        totalPrice: sharedPrice + sharedFee,
+        numDays: numDays,
+        availableCount: 2
+      });
+    }
+
     return jsonResponse({ rooms: availableRooms });
 
   } catch (err) {
@@ -341,7 +389,7 @@ function handleAvailability(e) {
 // ============================================================
 // CHECK ROOM AVAILABILITY (Calendar format)
 // ============================================================
-function checkRoomAvailability(room, bookings, fromDate, toDate) {
+function checkRoomAvailability(room, bookings, fromDate, toDate, eventParam) {
   // For calendar format, bookings is an array of {roomId, date}
   // For each day in the requested range, count how many beds/spots are booked
   // If ANY day is fully booked, the room is unavailable for that date range
@@ -372,6 +420,8 @@ function checkRoomAvailability(room, bookings, fromDate, toDate) {
 
   // Check if any requested date falls within an event block
   for (const eventBlock of EVENT_BLOCKS) {
+    // Blocks can be bypassed for their own event's booking page
+    if (eventBlock.exceptEvent && eventBlock.exceptEvent === eventParam) continue;
     const blockStart = new Date(eventBlock.startDate);
     const blockEnd = new Date(eventBlock.endDate);
 
