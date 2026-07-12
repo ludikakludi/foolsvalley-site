@@ -926,6 +926,8 @@ function handleTuckerSubmission(app, ss) {
   // Record in valley rooms calendar — except the virtual shared room (assigned manually)
   if (app.roomId && app.roomId !== 'shared_tc' && app.roomId !== 'none') {
     try {
+      // ISO dates parse as UTC midnight — matches the sheet's local midnight only because
+      // Jan/Feb Portugal is WET (UTC+0). Don't copy this pattern for a summer event.
       recordBookingInCalendar({
         name: app.name,
         roomId: app.roomId,
@@ -992,7 +994,7 @@ ${app.mentalHealth || 'Left blank'}
 
 Code of conduct agreed: ${app.codeOfConduct || 'no'}
 
-Waiver signed (typed name): ${app.waiverSignature}
+Waiver signed (typed name): ${app.waiverSignature || 'Not provided'}
 (waiver: http://meditatewithtucker.com/retreat-waiver)
 
 Payment commitment:
@@ -1004,23 +1006,31 @@ function sendTuckerNotification(app) {
   const summary = buildTuckerSummary(app);
 
   // To fools' valley + Tucker
-  MailApp.sendEmail(
-    'theonlyfool@foolsvalley.com,tucker.peck@gmail.com',
-    'Tucker Retreat registration: ' + app.name,
-    'New registration for the meditation retreat with Tucker Peck (Jan 29 - Feb 5, 2027):\n' + summary +
-    '\nFull record in the "tucker applications" tab of the booking spreadsheet.'
-  );
+  try {
+    MailApp.sendEmail(
+      'theonlyfool@foolsvalley.com,tucker.peck@gmail.com',
+      'Tucker Retreat registration: ' + app.name,
+      'New registration for the meditation retreat with Tucker Peck (Jan 29 - Feb 5, 2027):\n' + summary +
+      '\nFull record in the "tucker applications" tab of the booking spreadsheet.'
+    );
+  } catch (err) {
+    Logger.log('Tucker staff email failed: ' + err.message);
+  }
 
   // Confirmation to the participant
-  MailApp.sendEmail(
-    app.email,
-    "Your registration — meditation retreat with Tucker Peck at fools' valley",
-    'Dear ' + app.name + ',\n\n' +
-    'Thank you for registering for the meditation retreat with Dr. Tucker Peck at fools\' valley (Jan 29 - Feb 5, 2027). ' +
-    'Here is a copy of your registration:\n' + summary +
-    '\nIf anything looks wrong, or you have any questions, just reply to this email.\n\n' +
-    "fools' valley\n"
-  );
+  try {
+    MailApp.sendEmail(
+      app.email,
+      "Your registration — meditation retreat with Tucker Peck at fools' valley",
+      'Dear ' + app.name + ',\n\n' +
+      'Thank you for registering for the meditation retreat with Dr. Tucker Peck at fools\' valley (Jan 29 - Feb 5, 2027). ' +
+      'Here is a copy of your registration:\n' + summary +
+      '\nIf anything looks wrong, or you have any questions, just reply to this email.\n\n' +
+      "fools' valley\n"
+    );
+  } catch (err) {
+    Logger.log('Tucker participant email failed: ' + err.message);
+  }
 }
 
 // ============================================================
