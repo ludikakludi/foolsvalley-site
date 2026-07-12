@@ -114,21 +114,17 @@
         .teacher-row { display: flex; gap: 2.5rem; align-items: flex-start; flex-wrap: wrap; }
         .teacher-row .headshot { width: 320px; max-width: 100%; border: 1px solid var(--black); filter: saturate(0.9); }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            max-width: 900px;
-            margin-top: 2rem;
-        }
-        .photo-grid img {
+        .section-photo {
+            display: block;
             width: 100%;
+            max-width: 620px;
+            margin-top: 2rem;
             aspect-ratio: 4 / 3;
             object-fit: cover;
             border: 1px solid var(--black);
             filter: saturate(0.9);
         }
-        @media (max-width: 700px) { .photo-grid { grid-template-columns: 1fr; } }
+        .section-photo.wide { max-width: 900px; aspect-ratio: 16 / 7; margin-top: 0; }
 
         .price-list { max-width: 620px; }
         .price-row {
@@ -203,11 +199,6 @@
             </div>
             <img class="headshot" src="https://meditatewithtucker.com/wp-content/uploads/2017/11/Headshot-1-676x450.png" alt="Dr. Tucker Peck">
         </div>
-        <div class="photo-grid">
-            <img src="assets/tucker%20first.png" alt="Tucker Peck retreat">
-            <img src="assets/tucker%20second.png" alt="Tucker Peck retreat">
-            <img src="assets/tucker%20third.png" alt="Tucker Peck retreat">
-        </div>
     </section>
 
     <section>
@@ -217,6 +208,7 @@
             <p>if you'd like to keep meditating, it's possible to stay two extra days over the weekend of <strong>february 6–7</strong> — the space stays reserved for meditation — though Tucker himself leaves on the 5th.</p>
             <p>you can also arrive up to a week early (from january 20) or stay a few days longer (until february 10).</p>
         </div>
+        <img class="section-photo" src="assets/tucker%20first.png" alt="meditation retreat at fools' valley">
     </section>
 
     <section>
@@ -224,7 +216,7 @@
         <div class="price-list">
             <div class="price-row">
                 <div class="price-amount">€35<span style="font-size:0.9rem;">/day</span><span style="display:block; font-size:0.85rem; color:var(--gray);">€245/week</span></div>
-                <div class="price-desc">food, facilities &amp; travel expenses of the teacher — everyone pays this</div>
+                <div class="price-desc">food, facilities &amp; travel expenses of the teacher</div>
             </div>
             <div class="price-row">
                 <div class="price-amount">€100<span style="font-size:0.9rem;">/week</span></div>
@@ -241,7 +233,13 @@
         </div>
         <p class="price-note">arriving earlier or staying later: accommodation and daily fee are charged pro rata.</p>
 
+        <img class="section-photo" src="assets/tucker%20second.png" alt="meditation retreat at fools' valley">
+
         <a class="apply-btn" href="tucker-apply.html">apply &amp; choose accommodation →</a>
+    </section>
+
+    <section>
+        <img class="section-photo wide" src="assets/tucker%20third.png" alt="fools' valley">
     </section>
 
     <footer>
