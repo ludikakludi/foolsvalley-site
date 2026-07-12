@@ -7,6 +7,7 @@
 const ROOMS_SHEET = 'prices';  // This has room data: IDs, names, buildings, daily/weekly/monthly rates
 const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
+const TUCKER_APPLICATIONS_SHEET = 'tucker applications';
 
 // Event Blocking - Block ALL rooms during special events
 // Add date ranges here to make all rooms unavailable
@@ -529,6 +530,11 @@ function handleSubmission(data) {
   try {
     const app = data.application;
     const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (app.eventType === 'tucker') {
+      return handleTuckerSubmission(app, ss);
+    }
+
     let appSheet = ss.getSheetByName(APPLICATIONS_SHEET);
 
     // Create applications sheet if it doesn't exist
@@ -858,6 +864,166 @@ View full application in the Applications sheet of your Google Spreadsheet.
 }
 
 // ============================================================
+// TUCKER PECK RETREAT SUBMISSION
+// ============================================================
+function handleTuckerSubmission(app, ss) {
+  let sheet = ss.getSheetByName(TUCKER_APPLICATIONS_SHEET);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(TUCKER_APPLICATIONS_SHEET);
+    sheet.appendRow([
+      'Timestamp',            // A
+      'Name',                 // B
+      'Email',                // C
+      'Phone',                // D
+      'Emergency Contact',    // E
+      'Heard From',           // F
+      'Dietary',              // G
+      'Mental Health',        // H
+      'Code of Conduct',      // I
+      'Waiver Signature',     // J
+      'Payment Commitment',   // K
+      'Arrival Date',         // L
+      'Departure Date',       // M
+      'Num Nights',           // N
+      'Room Name',            // O
+      'Room ID',              // P
+      'Room Price',           // Q
+      'Price Breakdown',      // R
+      'Daily Fee',            // S
+      'Total Price',          // T
+      'Status'                // U (column 21)
+    ]);
+    const headerRange = sheet.getRange(1, 1, 1, 21);
+    headerRange.setFontWeight('bold');
+    headerRange.setBackground('#f3f3f3');
+  }
+
+  sheet.appendRow([
+    new Date(),
+    app.name,
+    app.email,
+    app.phone || '',
+    app.emergencyContact || '',
+    app.heardFrom || '',
+    app.dietary || '',
+    app.mentalHealth || '',
+    app.codeOfConduct || '',
+    app.waiverSignature || '',
+    app.paymentCommitment || '',
+    app.arrivalDateISO,
+    app.departureDateISO,
+    app.numDays,
+    app.roomName,
+    app.roomId,
+    app.roomPrice,
+    app.priceBreakdown,
+    app.dailyFee,
+    app.totalPrice,
+    'pending'
+  ]);
+
+  // Record in valley rooms calendar — except the virtual shared room (assigned manually)
+  if (app.roomId && app.roomId !== 'shared_tc' && app.roomId !== 'none') {
+    try {
+      recordBookingInCalendar({
+        name: app.name,
+        roomId: app.roomId,
+        arrivalDate: app.arrivalDateISO,
+        departureDate: app.departureDateISO
+      }, ss);
+    } catch (calendarErr) {
+      Logger.log('Tucker calendar recording failed: ' + calendarErr.message);
+    }
+  }
+
+  try {
+    sendTuckerNotification(app);
+  } catch (emailErr) {
+    Logger.log('Tucker email notification failed: ' + emailErr.message);
+  }
+
+  return jsonResponse({ success: true });
+}
+
+function buildTuckerSummary(app) {
+  return `
+============================================================
+PARTICIPANT
+============================================================
+
+Name: ${app.name}
+Email: ${app.email}
+Phone: ${app.phone || 'Not provided'}
+Emergency contact: ${app.emergencyContact || 'Not provided'}
+
+============================================================
+DATES & ACCOMMODATION
+============================================================
+
+Arrival: ${app.arrivalDate}
+Departure: ${app.departureDate}
+Duration: ${app.numDays} nights
+(retreat runs Jan 29 - Feb 5, 2027; optional meditation weekend Feb 6-7)
+
+Accommodation: ${app.roomName}${app.roomId === 'shared_tc' ? ' (room to be assigned manually)' : ''}
+${app.roomPreference ? 'Accommodation preference (room selection was unavailable): ' + app.roomPreference : ''}
+
+============================================================
+PRICE BREAKDOWN
+============================================================
+
+Accommodation: €${app.roomPrice} (${app.priceBreakdown}, ${app.numDays} nights pro rata)
+Daily fee (food, facilities & Tucker's travel): €${app.dailyFee} (${app.numDays} days × €35)
+TOTAL: €${app.totalPrice}
+
+============================================================
+APPLICATION ANSWERS
+============================================================
+
+How did you learn about the retreat?
+${app.heardFrom || 'Not specified'}
+
+Food allergies or dietary restrictions:
+${app.dietary || 'None given'}
+
+Mental health conditions:
+${app.mentalHealth || 'Left blank'}
+
+Code of conduct agreed: ${app.codeOfConduct || 'no'}
+
+Waiver signed (typed name): ${app.waiverSignature}
+(waiver: http://meditatewithtucker.com/retreat-waiver)
+
+Payment commitment:
+${app.paymentCommitment || 'Not specified'}
+`;
+}
+
+function sendTuckerNotification(app) {
+  const summary = buildTuckerSummary(app);
+
+  // To fools' valley + Tucker
+  MailApp.sendEmail(
+    'theonlyfool@foolsvalley.com,tucker.peck@gmail.com',
+    'Tucker Retreat registration: ' + app.name,
+    'New registration for the meditation retreat with Tucker Peck (Jan 29 - Feb 5, 2027):\n' + summary +
+    '\nFull record in the "tucker applications" tab of the booking spreadsheet.'
+  );
+
+  // Confirmation to the participant
+  MailApp.sendEmail(
+    app.email,
+    "Your registration — meditation retreat with Tucker Peck at fools' valley",
+    'Dear ' + app.name + ',\n\n' +
+    'Thank you for registering for the meditation retreat with Dr. Tucker Peck at fools\' valley (Jan 29 - Feb 5, 2027). ' +
+    'Here is a copy of your registration:\n' + summary +
+    '\nIf anything looks wrong, or you have any questions, just reply to this email.\n\n' +
+    "fools' valley\n"
+  );
+}
+
+// ============================================================
 // ON EDIT TRIGGER - UPDATE CALENDAR WHEN STATUS CHANGES
 // ============================================================
 function onEdit(e) {
@@ -874,14 +1040,16 @@ function onEdit(e) {
     Logger.log('Edited row: ' + range.getRow());
     Logger.log('New value: ' + range.getValue());
 
-    // Only process edits to the applications sheet
-    if (sheet.getName() !== APPLICATIONS_SHEET) {
-      Logger.log('Not applications sheet, exiting');
+    const sheetName = sheet.getName();
+    if (sheetName !== APPLICATIONS_SHEET && sheetName !== TUCKER_APPLICATIONS_SHEET) {
+      Logger.log('Not an applications sheet, exiting');
       return;
     }
 
-    // Check if the Status column (column 24 = X) was edited
-    const statusColumn = 24;
+    const isTucker = sheetName === TUCKER_APPLICATIONS_SHEET;
+
+    // Status column: X (24) for residency applications, U (21) for tucker applications
+    const statusColumn = isTucker ? 21 : 24;
     if (range.getColumn() !== statusColumn) {
       Logger.log('Not status column (expected ' + statusColumn + '), exiting');
       return;
@@ -897,16 +1065,22 @@ function onEdit(e) {
     Logger.log('Status value (trimmed): "' + newStatus + '"');
 
     // Get application data from this row
-    const appData = sheet.getRange(row, 1, 1, 24).getValues()[0];
-    const applicantName = appData[1]; // Column B: Name
-    const arrivalDate = appData[12]; // Column M: Arrival Date
-    const departureDate = appData[13]; // Column N: Departure Date
-    const roomId = appData[16]; // Column Q: Room ID
+    const appData = sheet.getRange(row, 1, 1, statusColumn).getValues()[0];
+    const applicantName = appData[1];                        // Column B: Name (both sheets)
+    const arrivalDate = isTucker ? appData[11] : appData[12];   // tucker: L / residency: M
+    const departureDate = isTucker ? appData[12] : appData[13]; // tucker: M / residency: N
+    const roomId = isTucker ? appData[15] : appData[16];        // tucker: P / residency: Q
 
     Logger.log('Applicant: ' + applicantName);
     Logger.log('Arrival: ' + arrivalDate);
     Logger.log('Departure: ' + departureDate);
     Logger.log('Room ID (column Q): ' + roomId);
+
+    // Shared room isn't in the calendar — nothing to update
+    if (isTucker && roomId === 'shared_tc') {
+      Logger.log('Shared room booking - no calendar entry to update');
+      return;
+    }
 
     if (!applicantName || !arrivalDate || !departureDate || !roomId) {
       Logger.log('Missing required data for calendar update');
