@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>diana oliferova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+    --ink: #0d0c12;
+    --ink-soft: #17151f;
+    --cream: #ece7da;
+    --muted: #8f897b;
+    --gold: #c9b98a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'EB Garamond', serif;
+    background-color: var(--ink);
+    background-image: linear-gradient(180deg, #16131f 0%, #0d0c12 55%, #08070c 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* starfield */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1.4px 1.4px at 40px 60px, rgba(236,231,218,0.5) 50%, transparent 55%),
+        radial-gradient(1px 1px at 190px 150px, rgba(236,231,218,0.35) 50%, transparent 55%),
+        radial-gradient(1.8px 1.8px at 320px 40px, rgba(201,185,138,0.45) 50%, transparent 55%),
+        radial-gradient(1px 1px at 460px 220px, rgba(236,231,218,0.3) 50%, transparent 55%),
+        radial-gradient(1.2px 1.2px at 110px 280px, rgba(236,231,218,0.4) 50%, transparent 55%),
+        radial-gradient(1.5px 1.5px at 520px 120px, rgba(236,231,218,0.35) 50%, transparent 55%);
+    background-size: 560px 400px;
+    background-repeat: repeat;
+}
+
+body > * { position: relative; z-index: 1; }
+
+header { text-align: center; padding: 13vh 2rem 6vh; }
+
+.over-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.1rem;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: clamp(2rem, 5.5vw, 3rem);
+    letter-spacing: 0.05em;
+}
+
+.sub {
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.7rem;
+    font-size: 1.05rem;
+}
+
+/* ---------- cards ---------- */
+.deck {
+    display: flex;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 2rem;
+    max-width: 1150px;
+}
+
+.card {
+    perspective: 1200px;
+    width: 190px;
+    height: 300px;
+    cursor: pointer;
+}
+.card:nth-child(1) { transform: rotate(-2.5deg); }
+.card:nth-child(2) { transform: rotate(1.5deg) translateY(14px); }
+.card:nth-child(3) { transform: rotate(-1.2deg) translateY(-8px); }
+.card:nth-child(4) { transform: rotate(2.6deg) translateY(8px); }
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card.flipped .card-inner { transform: rotateY(180deg); }
+
+.face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.front {
+    background: var(--ink-soft);
+    border: 1px solid rgba(201, 185, 138, 0.55);
+    box-shadow: inset 0 0 0 5px var(--ink-soft), inset 0 0 0 6px rgba(201, 185, 138, 0.35), 0 12px 34px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+.card:hover .front {
+    box-shadow: inset 0 0 0 5px var(--ink-soft), inset 0 0 0 6px rgba(201, 185, 138, 0.55), 0 16px 44px rgba(0,0,0,0.6), 0 0 24px rgba(201, 185, 138, 0.12);
+}
+
+.corner {
+    position: absolute;
+    font-size: 9px;
+    color: var(--gold);
+    opacity: 0.8;
+}
+.corner.tl { top: 9px; left: 12px; }
+.corner.tr { top: 9px; right: 12px; }
+.corner.bl { bottom: 9px; left: 12px; }
+.corner.br { bottom: 9px; right: 12px; }
+
+.numeral {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+}
+
+.glyph { width: 44px; height: 44px; color: var(--gold); }
+
+.card-name {
+    font-style: italic;
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+}
+
+.back {
+    transform: rotateY(180deg);
+    background: var(--ink-soft);
+    border: 1px solid rgba(201, 185, 138, 0.55);
+    padding: 7px;
+}
+.back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    filter: saturate(0.85) brightness(0.94);
+}
+.back .plate {
+    position: absolute;
+    left: 7px; right: 7px; bottom: 7px;
+    padding: 1rem 0.9rem 0.85rem;
+    background: linear-gradient(transparent, rgba(8,7,12,0.9));
+    color: var(--cream);
+    text-align: center;
+    border-radius: 0 0 4px 4px;
+}
+.back .plate .word { font-style: italic; font-size: 1.08rem; }
+.back .plate .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.3rem;
+}
+.back a { color: inherit; text-decoration: none; }
+.back a:hover .tag { text-decoration: underline; }
+
+.hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 5.5vh 0 0;
+    animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+
+/* ---------- about ---------- */
+.about {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 580px;
+    margin: 10vh 2rem 8vh;
+}
+.about img {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(201, 185, 138, 0.5);
+    filter: saturate(0.85);
+}
+.about p {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+footer {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(143, 137, 123, 0.5);
+    padding-bottom: 2.5rem;
+}
+
+@media (max-width: 640px) {
+    header { padding-top: 9vh; }
+    .deck { gap: 1.5rem; }
+    .card { width: 152px; height: 240px; }
+    .about { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="over-title">a small deck</div>
+    <h1>diana oliferova</h1>
+    <div class="sub">the art of presence</div>
+</header>
+
+<main class="deck">
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">I</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="7" y="12" width="30" height="20" rx="1.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="5.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="1.4" fill="currentColor"/>
+                </svg>
+                <div class="card-name">the moving image</div>
+            </div>
+            <div class="face back">
+                <a href="https://didi.film" target="_blank" rel="noopener">
+                    <img src="../assets/inner-atelier/atelier-2.jpg" alt="cinematography">
+                    <div class="plate">
+                        <div class="word">the moving image</div>
+                        <div class="tag">cinematography · didi.film ↗</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">II</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 26 Q14 17 22 26 T36 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M8 18 Q14 9 22 18 T36 18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <div class="card-name">the breath</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-3.jpg" alt="yoga and embodiment">
+                <div class="plate">
+                    <div class="word">the breath</div>
+                    <div class="tag">yoga &amp; embodiment</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">III</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="22" r="2" fill="currentColor"/>
+                    <circle cx="22" cy="22" r="11" stroke="currentColor" stroke-width="1.1" opacity="0.55"/>
+                    <circle cx="22" cy="22" r="17" stroke="currentColor" stroke-width="0.8" opacity="0.25"/>
+                </svg>
+                <div class="card-name">the stillness</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-1.jpg" alt="photography">
+                <div class="plate">
+                    <div class="word">the stillness</div>
+                    <div class="tag">photography</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">IIII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="17" cy="19" r="8.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="27" cy="25" r="8.5" stroke="currentColor" stroke-width="1.1"/>
+                </svg>
+                <div class="card-name">the circle</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-4.jpg" alt="community">
+                <div class="plate">
+                    <div class="word">the circle</div>
+                    <div class="tag">community</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<div class="hint">pick a card</div>
+
+<div class="about">
+    <img src="../assets/inner-atelier/diana.jpg" alt="Diana Oliferova">
+    <p>filmmaker, photographer, and embodiment facilitator — exploring how movement, creativity, and attention become pathways back to ourselves and to one another.</p>
+</div>
+
+<footer>© diana oliferova</footer>
+
+<script>
+document.querySelectorAll('[data-card]').forEach(card => {
+    card.addEventListener('click', (e) => {
+        if (card.classList.contains('flipped') && e.target.closest('a')) return;
+        card.classList.toggle('flipped');
+    });
+});
+</script>
+
+</body>
+</html>
