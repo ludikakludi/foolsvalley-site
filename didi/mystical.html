@@ -77,11 +77,8 @@ h1 {
 /* ---------- cards ---------- */
 .deck {
     display: flex;
-    gap: 2.4rem;
-    flex-wrap: wrap;
     justify-content: center;
-    padding: 0 2rem;
-    max-width: 1150px;
+    padding: 1.5rem 2rem 1rem;
 }
 
 .card {
@@ -89,11 +86,27 @@ h1 {
     width: 190px;
     height: 300px;
     cursor: pointer;
+    margin: 0 -1.5rem;
+    transform-origin: 50% 135%;
+    transform: var(--fan);
+    animation: deal 1s cubic-bezier(0.25, 0.8, 0.3, 1) both;
 }
-.card:nth-child(1) { transform: rotate(-2.5deg); }
-.card:nth-child(2) { transform: rotate(1.5deg) translateY(14px); }
-.card:nth-child(3) { transform: rotate(-1.2deg) translateY(-8px); }
-.card:nth-child(4) { transform: rotate(2.6deg) translateY(8px); }
+/* dealt from the middle of the deck, one by one, into a fan */
+.card:nth-child(1) { --dx: 108%;  --fan: rotate(-10.5deg); animation-delay: 0.4s;  z-index: 1; }
+.card:nth-child(2) { --dx: 36%;   --fan: rotate(-3.5deg);  animation-delay: 0.58s; z-index: 2; }
+.card:nth-child(3) { --dx: -36%;  --fan: rotate(3.5deg);   animation-delay: 0.76s; z-index: 3; }
+.card:nth-child(4) { --dx: -108%; --fan: rotate(10.5deg);  animation-delay: 0.94s; z-index: 4; }
+.card:hover, .card.flipped { z-index: 10; }
+
+@keyframes deal {
+    0%   { transform: translate(var(--dx), -12vh) rotate(0deg) scale(0.94); opacity: 0; }
+    30%  { opacity: 1; }
+    100% { transform: var(--fan); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+}
 
 .card-inner {
     position: relative;
@@ -234,8 +247,7 @@ footer {
 
 @media (max-width: 640px) {
     header { padding-top: 9vh; }
-    .deck { gap: 1.5rem; }
-    .card { width: 152px; height: 240px; }
+    .card { width: 140px; height: 221px; margin: 0 -2.7rem; }
     .about { flex-direction: column; text-align: center; }
 }
 </style>
