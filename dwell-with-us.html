@@ -21,11 +21,39 @@ h2 { font-size: 1.4rem; margin-top: 2rem; }
 li { margin-bottom: 0.4rem; }
 .photo { width: 420px; border: 1px solid #999; }
 .small { font-size: 0.8rem; color: #555; }
+
+/* pen doodles next to headings */
+.doodle {
+    width: 30px;
+    height: 30px;
+    vertical-align: -7px;
+    margin-right: 9px;
+    stroke: #000;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+h1 .doodle { width: 38px; height: 38px; vertical-align: -8px; }
+
+/* two-column sections, old-table style */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; }
+.grid2 > div { padding: 0 1.2rem 0 0; }
+.grid2 > div + div { border-left: 1px solid #bbb; padding: 0 0 0 1.2rem; }
+
+.gridcells { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #bbb; }
+.gridcells > div { padding: 0.7rem 0.9rem; border: 1px solid #bbb; margin: -0.5px; }
+
+@media (max-width: 560px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .grid2 > div + div { border-left: none; border-top: 1px solid #bbb; padding: 0.8rem 0 0 0; margin-top: 0.8rem; }
+    .gridcells { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<h1>Dwell with us</h1>
+<h1><svg class="doodle" viewBox="0 0 30 30"><path d="M5 15 L5 26 L25 26 L25 15"/><path d="M2.5 16 L15 4.5 L27.5 16"/><path d="M12 26 L12 19 L18 19 L18 26"/></svg>Dwell with us</h1>
 <p class="small">Liza &amp; Adam — last updated July 2026</p>
 
 <hr>
@@ -51,34 +79,40 @@ li { margin-bottom: 0.4rem; }
 
 <p><img class="photo" src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea"></p>
 
-<h2 id="who">Who are we?</h2>
+<h2 id="who"><svg class="doodle" viewBox="0 0 30 30"><circle cx="9" cy="7" r="3.5"/><path d="M9 10.5 L9 20 M9 13.5 L4.5 17.5 M9 13.5 L13.5 17.5 M9 20 L5.5 27 M9 20 L12.5 27"/><circle cx="21" cy="7" r="3.5"/><path d="M21 10.5 L21 20 M21 13.5 L16.5 17.5 M21 13.5 L25.5 17.5 M21 20 L17.5 27 M21 20 L24.5 27"/></svg>Who are we?</h2>
+<div class="grid2">
+<div>
 <p><b>Liza Simonova</b> (35) is an entrepreneur, dancer (contact improv, butoh), facilitator (circling, other relational practices) and community builder. She cofounded the <a href="https://foolsvalley.com">foolsvalley.com</a> project, a residency, retreat, and research center near Lisbon. Fluent in Russian, English and German, and working on Portuguese. Originally from Russia, more recently based in London, Portugal, and Berlin. Works as a facilitator and coach, as well as remotely supporting Fools' Valley.</p>
+</div>
+<div>
 <p><b>Adam McKenty</b> (42) is an inventor of things spiritual and technical. He grew up on a homestead in the Canadian wilderness and has worked as a software developer, writer, photographer, non-profit director, scuba diver, gardener, stone mason and musician. After moving to Berlin in 2020, he founded the church of interbeing, an experiment in non-religious community ritual, based in Schillerkiez. Speaks English and some French, working on German. Currently working as an independent software developer and entrepreneur.</p>
+</div>
+</div>
 
-<h2 id="looking">What we're looking for</h2>
+<h2 id="looking"><svg class="doodle" viewBox="0 0 30 30"><circle cx="12" cy="12" r="7"/><path d="M17.5 17.5 L26 26"/></svg>What we're looking for</h2>
 <p>We're looking for a home with others in the proximity of Berlin, ideally close to nature. This could be an existing project, or a new community we create in an existing building. We are quite flexible about the number of people and specific area, if it's a good fit in other ways.</p>
 <p>There are two timelines for this. If we find a place soon, we would move there this year. Otherwise, next spring or summer.</p>
 
-<h2 id="bring">What we bring</h2>
-<ul>
-    <li><b>Governance and community structure experience.</b> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</li>
-    <li><b>Financial capacity.</b> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</li>
-    <li><b>Practical skills.</b> Adam grew up building, designing and fixing things, with experience in construction, landscaping and gardening, electronics, etc. Can bring practical knowledge useful to most community projects.</li>
-    <li><b>Leadership and entrepreneurial skills.</b> We've both been in multiple organisational leadership positions. Liza cofounded a business and grew it to 500+ employees.</li>
-    <li><b>Relational practice and communication skills.</b> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</li>
-    <li><b>Play.</b> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</li>
-</ul>
+<h2 id="bring"><svg class="doodle" viewBox="0 0 30 30"><path d="M6 7 L19 7 L19 12.5 L6 12.5 Z"/><path d="M19 8.5 L23.5 6.5 L23.5 13 L19 11"/><path d="M11.5 12.5 L11.5 27 L14.5 27 L14.5 12.5"/></svg>What we bring</h2>
+<div class="gridcells">
+    <div><b>Governance and community structure experience.</b> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</div>
+    <div><b>Financial capacity.</b> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</div>
+    <div><b>Practical skills.</b> Adam grew up building, designing and fixing things, with experience in construction, landscaping and gardening, electronics, etc. Can bring practical knowledge useful to most community projects.</div>
+    <div><b>Leadership and entrepreneurial skills.</b> We've both been in multiple organisational leadership positions. Liza cofounded a business and grew it to 500+ employees.</div>
+    <div><b>Relational practice and communication skills.</b> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</div>
+    <div><b>Play.</b> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</div>
+</div>
 
 <p><img class="photo" src="assets/dwell/dwell-moss.jpg" alt="Liza and Adam on a mossy hillside"></p>
 
-<h2 id="live">How would we like to live?</h2>
+<h2 id="live"><svg class="doodle" viewBox="0 0 30 30"><circle cx="15" cy="15" r="5.5"/><path d="M15 2.5 L15 6.5 M15 23.5 L15 27.5 M2.5 15 L6.5 15 M23.5 15 L27.5 15 M6 6 L9 9 M21 21 L24 24 M24 6 L21 9 M6 24 L9 21"/></svg>How would we like to live?</h2>
 <p>Our ideal balance of shared and private space: you see others naturally and spontaneously by default, but there's enough space you can be alone when you want. This could look like separate flats with shared common areas, multiple houses with a few people/families in each, or some other configuration.</p>
 <p>Room to dance. Space for gardening. Sauna. Hot tub?</p>
 <p>We like beautiful and simple spaces. The aesthetics of our environment are important!</p>
 <p>What's the vibe of people we'd like to live with? Ambitious explorers of the internal and external world. People who seek living community, understanding that it takes a village to raise a child (as well as to raise an adult).</p>
 <p>We imagine at least some shared meals each week, and a few structured touchpoints like a community/house meeting as often as needed (probably between weekly and monthly).</p>
 
-<h2 id="values">Some values</h2>
+<h2 id="values"><svg class="doodle" viewBox="0 0 30 30"><path d="M15 25.5 C4.5 17 6 6.5 15 11.5 C24 6.5 25.5 17 15 25.5 Z"/></svg>Some values</h2>
 <ul>
     <li>We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</li>
     <li>We want to live in a way that is aligned with ecological harmony and social sustainability.</li>
@@ -88,7 +122,7 @@ li { margin-bottom: 0.4rem; }
     <li>We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</li>
 </ul>
 
-<h2 id="kids">Kids</h2>
+<h2 id="kids"><svg class="doodle" viewBox="0 0 30 30"><path d="M15 2.5 L22.5 11 L15 19.5 L7.5 11 Z"/><path d="M15 2.5 L15 19.5 M7.5 11 L22.5 11"/><path d="M15 19.5 Q12.5 23 15 25 Q17.5 27 15.5 29.5"/></svg>Kids</h2>
 <p>We don't know how raising children will look in practice! But, here are some thoughts and questions about it.</p>
 <ul>
     <li>Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</li>
@@ -100,12 +134,12 @@ li { margin-bottom: 0.4rem; }
 
 <p><img class="photo" src="assets/dwell/dwell-forest.jpg" alt="Liza and Adam in the redwoods"></p>
 
-<h2 id="longterm">Long term plan (beyond Germany!)</h2>
+<h2 id="longterm"><svg class="doodle" viewBox="0 0 30 30"><path d="M1.5 26 L10.5 9 L16 19 M12 26 L20 11.5 L28.5 26"/><circle cx="7" cy="6" r="2.5"/></svg>Long term plan (beyond Germany!)</h2>
 <p>In the longer term we want to live in a larger community or village, in nature or in very close proximity to very beautiful nature - old forest, rivers, mountains. This could be in the EU, in Canada, or somewhere else in the world. A big city nearby (&lt;2h) is a bonus.</p>
 
 <hr>
 
-<h2 id="touch">Be in touch</h2>
+<h2 id="touch"><svg class="doodle" viewBox="0 0 30 30"><path d="M3.5 8 L26.5 8 L26.5 23 L3.5 23 Z"/><path d="M3.5 8.5 L15 17 L26.5 8.5"/></svg>Be in touch</h2>
 <p>If this sounds interesting, please <a href="mailto:elizaveta.simonova@gmail.com?subject=Dwell%20with%20us">be in touch</a>!</p>
 
 </body>
