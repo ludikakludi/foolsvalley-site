@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIANA OLIFIROVA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+    --black: #0a0a0b;
+    --card: #101013;
+    --silver: #e8e8e6;
+    --dim: #8e8e88;
+    --gold: #cfc0a0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Jost', 'Futura', 'Helvetica Neue', sans-serif;
+    background-color: var(--black);
+    background-image: linear-gradient(180deg, #101014 0%, #0a0a0b 50%, #070708 100%);
+    color: var(--silver);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* faint starfield */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1.3px 1.3px at 40px 60px, rgba(232,232,230,0.4) 50%, transparent 55%),
+        radial-gradient(1px 1px at 190px 150px, rgba(232,232,230,0.28) 50%, transparent 55%),
+        radial-gradient(1.6px 1.6px at 320px 40px, rgba(207,192,160,0.35) 50%, transparent 55%),
+        radial-gradient(1px 1px at 460px 220px, rgba(232,232,230,0.22) 50%, transparent 55%),
+        radial-gradient(1.1px 1.1px at 110px 280px, rgba(232,232,230,0.3) 50%, transparent 55%),
+        radial-gradient(1.4px 1.4px at 520px 120px, rgba(207,192,160,0.28) 50%, transparent 55%);
+    background-size: 560px 400px;
+    background-repeat: repeat;
+}
+
+body > * { position: relative; z-index: 1; }
+
+header { text-align: center; padding: 12vh 2rem 6vh; }
+
+h1 {
+    font-weight: 200;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    margin-right: -0.38em; /* balance the trailing tracking */
+}
+
+.sub {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--dim);
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+}
+
+/* ---------- the fan ---------- */
+.deck {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 2rem 3rem;
+}
+
+.card {
+    perspective: 1200px;
+    width: 150px;
+    height: 237px;
+    cursor: pointer;
+    margin: 0 -1.6rem;
+    transform-origin: 50% 165%;
+    transform: var(--fan);
+    animation: fanOpen 1s cubic-bezier(0.3, 0.7, 0.25, 1) both;
+}
+/* stacked in the middle, then the fan opens outward from the center */
+.card:nth-child(1) { --dx: 231%;  --fan: rotate(-16deg);   animation-delay: 0.7s;  z-index: 1; }
+.card:nth-child(2) { --dx: 165%;  --fan: rotate(-11.5deg); animation-delay: 0.62s; z-index: 2; }
+.card:nth-child(3) { --dx: 99%;   --fan: rotate(-7deg);    animation-delay: 0.54s; z-index: 3; }
+.card:nth-child(4) { --dx: 33%;   --fan: rotate(-2.5deg);  animation-delay: 0.46s; z-index: 4; }
+.card:nth-child(5) { --dx: -33%;  --fan: rotate(2.5deg);   animation-delay: 0.46s; z-index: 5; }
+.card:nth-child(6) { --dx: -99%;  --fan: rotate(7deg);     animation-delay: 0.54s; z-index: 6; }
+.card:nth-child(7) { --dx: -165%; --fan: rotate(11.5deg);  animation-delay: 0.62s; z-index: 7; }
+.card:nth-child(8) { --dx: -231%; --fan: rotate(16deg);    animation-delay: 0.7s;  z-index: 8; }
+.card:hover, .card.flipped { z-index: 20; }
+@media (max-width: 980px) {
+    .card { margin: 0 -2.4rem; }
+}
+
+@keyframes fanOpen {
+    0%   { transform: translateX(var(--dx)) rotate(0deg); }
+    100% { transform: var(--fan); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card.flipped .card-inner { transform: rotateY(180deg); }
+
+.face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.front {
+    background: var(--card);
+    border: 1px solid rgba(232, 232, 230, 0.28);
+    box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(232, 232, 230, 0.12), 0 12px 34px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.15rem;
+    transition: box-shadow 0.5s ease, border-color 0.5s ease;
+}
+.card:hover .front {
+    border-color: rgba(207, 192, 160, 0.55);
+    box-shadow: inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(207, 192, 160, 0.25), 0 16px 44px rgba(0,0,0,0.65);
+}
+
+.numeral {
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    margin-right: -0.45em;
+}
+
+.glyph { width: 32px; height: 32px; color: var(--silver); opacity: 0.85; }
+
+.card-name {
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-right: -0.3em;
+}
+
+.back {
+    transform: rotateY(180deg);
+    background: var(--card);
+    border: 1px solid rgba(232, 232, 230, 0.28);
+    padding: 6px;
+}
+.back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    filter: saturate(0.8) brightness(0.92) contrast(1.04);
+}
+.back .plate {
+    position: absolute;
+    left: 6px; right: 6px; bottom: 6px;
+    padding: 0.95rem 0.6rem 0.75rem;
+    background: linear-gradient(transparent, rgba(7,7,8,0.92));
+    color: var(--silver);
+    text-align: center;
+    border-radius: 0 0 2px 2px;
+}
+.back .plate .word {
+    font-size: 0.58rem;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-right: -0.28em;
+}
+.back .plate .tag {
+    font-size: 0.48rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.35rem;
+}
+.back a { color: inherit; text-decoration: none; display: block; width: 100%; height: 100%; }
+.back a:hover .tag { text-decoration: underline; }
+
+/* backs without a photo yet */
+.back.text-back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+}
+.back.text-back .glyph { width: 44px; height: 44px; }
+.back.text-back .word {
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-right: -0.3em;
+}
+
+.hint {
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 3.5vh 0 0;
+    margin-right: -0.45em;
+    animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+
+/* ---------- about ---------- */
+.about {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 580px;
+    margin: 9vh 2rem 8vh;
+}
+.about img {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(232, 232, 230, 0.3);
+    filter: saturate(0.8);
+}
+.about p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--dim);
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+}
+
+footer {
+    font-size: 0.52rem;
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(142, 142, 136, 0.45);
+    padding-bottom: 2.5rem;
+}
+
+@media (max-width: 680px) {
+    header { padding-top: 8vh; }
+    .card { width: 96px; height: 152px; margin: 0 -1.9rem; }
+    .front { gap: 0.6rem; }
+    .glyph { width: 20px; height: 20px; }
+    .numeral { font-size: 0.42rem; }
+    .card-name { font-size: 0.4rem; letter-spacing: 0.22em; }
+    .back .plate { padding: 0.5rem 0.3rem 0.4rem; }
+    .back .plate .word { font-size: 0.4rem; }
+    .back .plate .tag { font-size: 0.34rem; }
+    .back.text-back .glyph { width: 26px; height: 26px; }
+    .back.text-back .word { font-size: 0.42rem; }
+    .about { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Diana Olifirova</h1>
+    <div class="sub">the art of presence</div>
+</header>
+
+<main class="deck">
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">I</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="22" r="6.5" stroke="currentColor" stroke-width="1"/>
+                    <g stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                        <path d="M22 7v5"/><path d="M22 32v5"/><path d="M7 22h5"/><path d="M32 22h5"/>
+                        <path d="M11.5 11.5l3.5 3.5"/><path d="M29 29l3.5 3.5"/><path d="M32.5 11.5L29 15"/><path d="M11.5 32.5L15 29"/>
+                    </g>
+                </svg>
+                <div class="card-name">Light</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-2.jpg" alt="light">
+                <div class="plate"><div class="word">Light</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">II</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 7 Q16.5 12 22 17 Q27.5 22 22 27 Q16.5 32 22 37" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+                <div class="card-name">Body</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-3.jpg" alt="body">
+                <div class="plate"><div class="word">Body</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">III</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="22" r="2" fill="currentColor"/>
+                    <circle cx="22" cy="22" r="10" stroke="currentColor" stroke-width="1" opacity="0.55"/>
+                </svg>
+                <div class="card-name">Still</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-1.jpg" alt="still">
+                <div class="plate"><div class="word">Still</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">IIII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 26 Q14 17 22 26 T36 26" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M8 18 Q14 9 22 18 T36 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <div class="card-name">Motion</div>
+            </div>
+            <div class="face back">
+                <a href="https://didi.film" target="_blank" rel="noopener">
+                    <img src="../assets/inner-atelier/atelier-5.jpg" alt="motion">
+                    <div class="plate"><div class="word">Motion</div><div class="tag">didi.film ↗</div></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">V</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 22 a3 3 0 1 0 3 -3 a7 7 0 1 0 -7 7 a11 11 0 1 0 11 -11" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+                <div class="card-name">Research</div>
+            </div>
+            <div class="face back text-back">
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 22 a3 3 0 1 0 3 -3 a7 7 0 1 0 -7 7 a11 11 0 1 0 11 -11" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+                <div class="word">Research</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">VI</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="17" cy="19" r="8.5" stroke="currentColor" stroke-width="1"/>
+                    <circle cx="27" cy="25" r="8.5" stroke="currentColor" stroke-width="1"/>
+                </svg>
+                <div class="card-name">Community</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/inner-atelier/atelier-4.jpg" alt="community">
+                <div class="plate"><div class="word">Community</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">VII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="28" r="1.8" fill="currentColor"/>
+                    <path d="M15 23 a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M11 18 a16 16 0 0 1 22 0" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M7.5 13.5 a21 21 0 0 1 29 0" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+                <div class="card-name">Transmission</div>
+            </div>
+            <div class="face back text-back">
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="28" r="1.8" fill="currentColor"/>
+                    <path d="M15 23 a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <path d="M11 18 a16 16 0 0 1 22 0" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M7.5 13.5 a21 21 0 0 1 29 0" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+                <div class="word">Transmission</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <div class="numeral">VIII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="7" y="12" width="30" height="20" rx="1.5" stroke="currentColor" stroke-width="1"/>
+                    <circle cx="22" cy="22" r="5.5" stroke="currentColor" stroke-width="1"/>
+                    <circle cx="22" cy="22" r="1.4" fill="currentColor"/>
+                </svg>
+                <div class="card-name">Cinematography</div>
+            </div>
+            <div class="face back">
+                <a href="https://www.dianaolifirova.com" target="_blank" rel="noopener">
+                    <img src="../assets/inner-atelier/diana.jpg" alt="cinematography">
+                    <div class="plate"><div class="word">Cinematography</div><div class="tag">dianaolifirova.com ↗</div></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<div class="hint">pick a card</div>
+
+<div class="about">
+    <img src="../assets/inner-atelier/diana.jpg" alt="Diana Olifirova">
+    <p>filmmaker, photographer, and embodiment facilitator — exploring how movement, creativity, and attention become pathways back to ourselves and to one another.</p>
+</div>
+
+<footer>© Diana Olifirova</footer>
+
+<script>
+document.querySelectorAll('[data-card]').forEach(card => {
+    card.addEventListener('click', (e) => {
+        if (card.classList.contains('flipped') && e.target.closest('a')) return;
+        card.classList.toggle('flipped');
+    });
+});
+</script>
+
+</body>
+</html>
