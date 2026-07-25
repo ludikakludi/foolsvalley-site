@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dwell with us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper: #f7f4ec;
+    --ink: #23201a;
+    --soft: #6e6a5f;
+    --oxford: #002147;
+    --rule: #c9c3b4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'EB Garamond', Garamond, Georgia, serif;
+    font-size: 19.5px;
+    line-height: 1.72;
+    color: var(--ink);
+    background: var(--paper);
+    padding: 5rem 1.5rem 6rem;
+}
+
+.sheet { max-width: 620px; margin: 0 auto; }
+
+/* ---------- title ---------- */
+header { text-align: center; margin-bottom: 3rem; }
+
+h1 {
+    font-weight: 500;
+    font-size: clamp(2.3rem, 6vw, 3.1rem);
+    letter-spacing: 0.02em;
+}
+
+.byline {
+    font-variant: small-caps;
+    letter-spacing: 0.22em;
+    font-size: 0.85rem;
+    color: var(--soft);
+    margin-top: 0.9rem;
+}
+
+.headrule {
+    width: 140px;
+    border: none;
+    border-top: 1px solid var(--ink);
+    margin: 1.6rem auto 0;
+}
+.headrule + .headrule { width: 90px; margin-top: 4px; }
+
+/* ---------- contents ---------- */
+.contents { text-align: center; margin: 2.8rem 0 3.4rem; }
+.contents h3 {
+    font-variant: small-caps;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    font-size: 0.9rem;
+    margin-bottom: 1.1rem;
+}
+.contents ol { list-style: none; }
+.contents li { margin-bottom: 0.25rem; }
+.contents .n {
+    display: inline-block;
+    width: 2.2em;
+    text-align: right;
+    margin-right: 0.7em;
+    color: var(--soft);
+    font-variant: small-caps;
+}
+.contents a { color: var(--ink); text-decoration: none; }
+.contents a:hover { color: var(--oxford); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- body ---------- */
+a { color: var(--oxford); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 0.6px; }
+a:hover { color: var(--ink); }
+
+p { margin-bottom: 1.05rem; }
+
+h2 {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: 1.15rem;
+    letter-spacing: 0.24em;
+    text-align: center;
+    margin: 3.2rem 0 1.4rem;
+}
+h2 .num { color: var(--soft); margin-right: 0.8em; }
+
+.asterism {
+    text-align: center;
+    color: var(--soft);
+    font-size: 1.1rem;
+    letter-spacing: 0.6em;
+    margin: 2.8rem 0;
+}
+
+b, strong { font-weight: 600; }
+.lead { font-variant: small-caps; font-weight: 500; letter-spacing: 0.04em; }
+
+ul { list-style: none; }
+ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.85rem;
+}
+ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--soft);
+}
+
+/* ---------- photo ---------- */
+.photofig { text-align: center; margin: 2.6rem 0; }
+.photofig img {
+    width: min(430px, 86%);
+    border: 1px solid var(--ink);
+    padding: 6px;
+    background: #fffdf6;
+}
+.photofig figcaption {
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--soft);
+    margin-top: 0.6rem;
+}
+
+/* ---------- closing ---------- */
+.touch { text-align: center; margin-top: 3.4rem; }
+.touch p { font-size: 1.2rem; font-style: italic; }
+.fleuron { text-align: center; font-size: 1.3rem; color: var(--oxford); margin-top: 2.2rem; }
+
+footer {
+    text-align: center;
+    font-variant: small-caps;
+    letter-spacing: 0.3em;
+    font-size: 0.78rem;
+    color: var(--soft);
+    margin-top: 3rem;
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+<header>
+    <h1>Dwell with us</h1>
+    <div class="byline">Liza Simonova &amp; Adam McKenty · July MMXXVI</div>
+    <hr class="headrule">
+    <hr class="headrule">
+</header>
+
+<p>Hi,</p>
+<p>We're Liza Simonova and Adam McKenty, a couple in the process of starting a family.</p>
+<p>Our ideal setting for raising children is to live with or near other families and friends, in a community or village-like environment.</p>
+<p>This doc is a starting point for conversations with other families, couples or singles who also want to live in that kind of context, or who already do and are open to new participants.</p>
+
+<nav class="contents">
+    <h3>Contents</h3>
+    <ol>
+        <li><span class="n">i.</span><a href="#who">Who are we?</a></li>
+        <li><span class="n">ii.</span><a href="#looking">What we're looking for</a></li>
+        <li><span class="n">iii.</span><a href="#bring">What we bring</a></li>
+        <li><span class="n">iv.</span><a href="#live">How would we like to live?</a></li>
+        <li><span class="n">v.</span><a href="#values">Some values</a></li>
+        <li><span class="n">vi.</span><a href="#kids">Kids</a></li>
+        <li><span class="n">vii.</span><a href="#longterm">Long term plan</a></li>
+        <li><span class="n">viii.</span><a href="#touch">Be in touch</a></li>
+    </ol>
+</nav>
+
+<figure class="photofig">
+    <img src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea">
+</figure>
+
+<h2 id="who"><span class="num">i.</span>Who are we?</h2>
+<p><span class="lead">Liza Simonova</span> (35) is an entrepreneur, dancer (contact improv, butoh), facilitator (circling, other relational practices) and community builder. She cofounded the <a href="https://foolsvalley.com">foolsvalley.com</a> project, a residency, retreat, and research center near Lisbon. Fluent in Russian, English and German, and working on Portuguese. Originally from Russia, more recently based in London, Portugal, and Berlin. Works as a facilitator and coach, as well as remotely supporting Fools' Valley.</p>
+<p><span class="lead">Adam McKenty</span> (42) is an inventor of things spiritual and technical. He grew up on a homestead in the Canadian wilderness and has worked as a software developer, writer, photographer, non-profit director, scuba diver, gardener, stone mason and musician. After moving to Berlin in 2020, he founded the church of interbeing, an experiment in non-religious community ritual, based in Schillerkiez. Speaks English and some French, working on German. Currently working as an independent software developer and entrepreneur.</p>
+
+<h2 id="looking"><span class="num">ii.</span>What we're looking for</h2>
+<p>We're looking for a home with others in the proximity of Berlin, ideally close to nature. This could be an existing project, or a new community we create in an existing building. We are quite flexible about the number of people and specific area, if it's a good fit in other ways.</p>
+<p>There are two timelines for this. If we find a place soon, we would move there this year. Otherwise, next spring or summer.</p>
+
+<h2 id="bring"><span class="num">iii.</span>What we bring</h2>
+<ul>
+    <li><span class="lead">Governance and community structure experience.</span> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</li>
+    <li><span class="lead">Financial capacity.</span> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</li>
+    <li><span class="lead">Practical skills.</span> Adam grew up building, designing and fixing things, with experience in construction, landscaping and gardening, electronics, etc. Can bring practical knowledge useful to most community projects.</li>
+    <li><span class="lead">Leadership and entrepreneurial skills.</span> We've both been in multiple organisational leadership positions. Liza cofounded a business and grew it to 500+ employees.</li>
+    <li><span class="lead">Relational practice and communication skills.</span> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</li>
+    <li><span class="lead">Play.</span> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</li>
+</ul>
+
+<h2 id="live"><span class="num">iv.</span>How would we like to live?</h2>
+<p>Our ideal balance of shared and private space: you see others naturally and spontaneously by default, but there's enough space you can be alone when you want. This could look like separate flats with shared common areas, multiple houses with a few people/families in each, or some other configuration.</p>
+<p style="text-align:center; font-style:italic;">Room to dance. Space for gardening. Sauna. Hot tub?</p>
+<p>We like beautiful and simple spaces. The aesthetics of our environment are important!</p>
+<p>What's the vibe of people we'd like to live with? Ambitious explorers of the internal and external world. People who seek living community, understanding that it takes a village to raise a child (as well as to raise an adult).</p>
+<p>We imagine at least some shared meals each week, and a few structured touchpoints like a community/house meeting as often as needed (probably between weekly and monthly).</p>
+
+<div class="asterism">⁂</div>
+
+<h2 id="values"><span class="num">v.</span>Some values</h2>
+<ul>
+    <li>We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</li>
+    <li>We want to live in a way that is aligned with ecological harmony and social sustainability.</li>
+    <li>We're both spiritual and empirical. We want to take science and evidence and reason seriously, while not making them the boundary of what's allowed to be real, or cause for closed-mindedness.</li>
+    <li>We're both ambitious about our own growth, and about creating projects that make a difference in the world.</li>
+    <li>We're more interested in integrating or playing with polarities than being embedded in them. If you're very strongly identified with the political left or right to a degree that limits conversation or makes topics, ideas, or ways of being impossible to talk about, we're probably not your ideal housemates.</li>
+    <li>We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</li>
+</ul>
+
+<h2 id="kids"><span class="num">vi.</span>Kids</h2>
+<p>We don't know how raising children will look in practice! But, here are some thoughts and questions about it.</p>
+<ul>
+    <li>Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</li>
+    <li>Careful relationship with technology: phones, AI, and digital devices are super useful, and also hazards to cognitive freedom and wellbeing. How do we raise children with fluency in using them, and immunity to being used by them?</li>
+    <li>Nature is the original playground and classroom. We want our children to grow up in it!</li>
+    <li>Authority and self-responsibility: we want to balance necessary authority as parents with giving space for children to learn and grow and discover their own strengths and limits, not micromanaging.</li>
+    <li>Many parents lie to their kids, or pretend to know things when they don't because it's convenient. We don't want to do this.</li>
+</ul>
+
+<h2 id="longterm"><span class="num">vii.</span>Long term plan (beyond Germany!)</h2>
+<p>In the longer term we want to live in a larger community or village, in nature or in very close proximity to very beautiful nature - old forest, rivers, mountains. This could be in the EU, in Canada, or somewhere else in the world. A big city nearby (&lt;2h) is a bonus.</p>
+
+<div class="asterism">⁂</div>
+
+<div class="touch" id="touch">
+    <p>If this sounds interesting, please <a href="mailto:elizaveta.simonova@gmail.com?subject=Dwell%20with%20us">be in touch</a>!</p>
+</div>
+
+<div class="fleuron">❦</div>
+
+<footer>L &amp; A · Berlin · MMXXVI</footer>
+
+</div>
+
+</body>
+</html>
