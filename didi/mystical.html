@@ -50,7 +50,7 @@ body::before {
 
 body > * { position: relative; z-index: 1; }
 
-header { text-align: center; padding: 13vh 2rem 6vh; }
+header { text-align: center; padding: 11vh 2rem 6vh; }
 
 .over-title {
     font-family: 'Space Mono', monospace;
@@ -74,34 +74,37 @@ h1 {
     font-size: 1.05rem;
 }
 
-/* ---------- cards ---------- */
+/* ---------- the fan ---------- */
 .deck {
     display: flex;
     justify-content: center;
-    padding: 1.5rem 2rem 1rem;
+    padding: 2rem 2rem 3rem;
 }
 
 .card {
     perspective: 1200px;
-    width: 190px;
-    height: 300px;
+    width: 150px;
+    height: 237px;
     cursor: pointer;
-    margin: 0 -1.5rem;
-    transform-origin: 50% 135%;
+    margin: 0 -2.9rem;
+    transform-origin: 50% 160%;
     transform: var(--fan);
-    animation: deal 1s cubic-bezier(0.25, 0.8, 0.3, 1) both;
+    animation: fanOpen 1s cubic-bezier(0.3, 0.7, 0.25, 1) both;
 }
-/* dealt from the middle of the deck, one by one, into a fan */
-.card:nth-child(1) { --dx: 108%;  --fan: rotate(-10.5deg); animation-delay: 0.4s;  z-index: 1; }
-.card:nth-child(2) { --dx: 36%;   --fan: rotate(-3.5deg);  animation-delay: 0.58s; z-index: 2; }
-.card:nth-child(3) { --dx: -36%;  --fan: rotate(3.5deg);   animation-delay: 0.76s; z-index: 3; }
-.card:nth-child(4) { --dx: -108%; --fan: rotate(10.5deg);  animation-delay: 0.94s; z-index: 4; }
-.card:hover, .card.flipped { z-index: 10; }
+/* stacked in the middle, then the fan opens outward from the center */
+.card:nth-child(1) { --dx: 135%;  --fan: rotate(-14deg); animation-delay: 0.75s; z-index: 1; }
+.card:nth-child(2) { --dx: 96%;   --fan: rotate(-10deg); animation-delay: 0.67s; z-index: 2; }
+.card:nth-child(3) { --dx: 58%;   --fan: rotate(-6deg);  animation-delay: 0.59s; z-index: 3; }
+.card:nth-child(4) { --dx: 19%;   --fan: rotate(-2deg);  animation-delay: 0.5s;  z-index: 4; }
+.card:nth-child(5) { --dx: -19%;  --fan: rotate(2deg);   animation-delay: 0.5s;  z-index: 5; }
+.card:nth-child(6) { --dx: -58%;  --fan: rotate(6deg);   animation-delay: 0.59s; z-index: 6; }
+.card:nth-child(7) { --dx: -96%;  --fan: rotate(10deg);  animation-delay: 0.67s; z-index: 7; }
+.card:nth-child(8) { --dx: -135%; --fan: rotate(14deg);  animation-delay: 0.75s; z-index: 8; }
+.card:hover, .card.flipped { z-index: 20; }
 
-@keyframes deal {
-    0%   { transform: translate(var(--dx), -12vh) rotate(0deg) scale(0.94); opacity: 0; }
-    30%  { opacity: 1; }
-    100% { transform: var(--fan); opacity: 1; }
+@keyframes fanOpen {
+    0%   { transform: translateX(var(--dx)) rotate(0deg); }
+    100% { transform: var(--fan); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,41 +132,41 @@ h1 {
 .front {
     background: var(--ink-soft);
     border: 1px solid rgba(201, 185, 138, 0.55);
-    box-shadow: inset 0 0 0 5px var(--ink-soft), inset 0 0 0 6px rgba(201, 185, 138, 0.35), 0 12px 34px rgba(0,0,0,0.45);
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(201, 185, 138, 0.35), 0 12px 34px rgba(0,0,0,0.45);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.2rem;
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    gap: 1rem;
+    transition: box-shadow 0.5s ease;
 }
 .card:hover .front {
-    box-shadow: inset 0 0 0 5px var(--ink-soft), inset 0 0 0 6px rgba(201, 185, 138, 0.55), 0 16px 44px rgba(0,0,0,0.6), 0 0 24px rgba(201, 185, 138, 0.12);
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(201, 185, 138, 0.55), 0 16px 44px rgba(0,0,0,0.6), 0 0 24px rgba(201, 185, 138, 0.12);
 }
 
 .corner {
     position: absolute;
-    font-size: 9px;
+    font-size: 8px;
     color: var(--gold);
     opacity: 0.8;
 }
-.corner.tl { top: 9px; left: 12px; }
-.corner.tr { top: 9px; right: 12px; }
-.corner.bl { bottom: 9px; left: 12px; }
-.corner.br { bottom: 9px; right: 12px; }
+.corner.tl { top: 8px; left: 10px; }
+.corner.tr { top: 8px; right: 10px; }
+.corner.bl { bottom: 8px; left: 10px; }
+.corner.br { bottom: 8px; right: 10px; }
 
 .numeral {
     font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.6rem;
     letter-spacing: 0.4em;
     color: var(--gold);
 }
 
-.glyph { width: 44px; height: 44px; color: var(--gold); }
+.glyph { width: 34px; height: 34px; color: var(--gold); }
 
 .card-name {
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1.02rem;
     letter-spacing: 0.04em;
     color: var(--cream);
 }
@@ -172,7 +175,7 @@ h1 {
     transform: rotateY(180deg);
     background: var(--ink-soft);
     border: 1px solid rgba(201, 185, 138, 0.55);
-    padding: 7px;
+    padding: 6px;
 }
 .back img {
     width: 100%;
@@ -183,24 +186,35 @@ h1 {
 }
 .back .plate {
     position: absolute;
-    left: 7px; right: 7px; bottom: 7px;
-    padding: 1rem 0.9rem 0.85rem;
+    left: 6px; right: 6px; bottom: 6px;
+    padding: 0.9rem 0.6rem 0.7rem;
     background: linear-gradient(transparent, rgba(8,7,12,0.9));
     color: var(--cream);
     text-align: center;
     border-radius: 0 0 4px 4px;
 }
-.back .plate .word { font-style: italic; font-size: 1.08rem; }
+.back .plate .word { font-style: italic; font-size: 0.98rem; }
 .back .plate .tag {
     font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.25em;
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-top: 0.3rem;
+    margin-top: 0.28rem;
 }
-.back a { color: inherit; text-decoration: none; }
+.back a { color: inherit; text-decoration: none; display: block; width: 100%; height: 100%; }
 .back a:hover .tag { text-decoration: underline; }
+
+/* backs without a photo yet */
+.back.text-back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+}
+.back.text-back .glyph { width: 46px; height: 46px; }
+.back.text-back .word { font-style: italic; font-size: 1.05rem; color: var(--cream); }
 
 .hint {
     font-family: 'Space Mono', monospace;
@@ -208,7 +222,7 @@ h1 {
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--muted);
-    margin: 5.5vh 0 0;
+    margin: 3.5vh 0 0;
     animation: breathe 4s ease-in-out infinite;
 }
 @keyframes breathe { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
@@ -219,7 +233,7 @@ h1 {
     align-items: center;
     gap: 1.5rem;
     max-width: 580px;
-    margin: 10vh 2rem 8vh;
+    margin: 9vh 2rem 8vh;
 }
 .about img {
     width: 78px;
@@ -245,9 +259,19 @@ footer {
     padding-bottom: 2.5rem;
 }
 
-@media (max-width: 640px) {
-    header { padding-top: 9vh; }
-    .card { width: 140px; height: 221px; margin: 0 -2.7rem; }
+@media (max-width: 680px) {
+    header { padding-top: 8vh; }
+    .card { width: 96px; height: 152px; margin: 0 -1.9rem; }
+    .front { gap: 0.55rem; }
+    .glyph { width: 22px; height: 22px; }
+    .numeral { font-size: 0.48rem; }
+    .card-name { font-size: 0.66rem; }
+    .corner { font-size: 6px; }
+    .back .plate { padding: 0.5rem 0.3rem 0.4rem; }
+    .back .plate .word { font-size: 0.6rem; }
+    .back .plate .tag { font-size: 0.35rem; }
+    .back.text-back .glyph { width: 28px; height: 28px; }
+    .back.text-back .word { font-size: 0.68rem; }
     .about { flex-direction: column; text-align: center; }
 }
 </style>
@@ -268,20 +292,17 @@ footer {
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">I</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="7" y="12" width="30" height="20" rx="1.5" stroke="currentColor" stroke-width="1.1"/>
-                    <circle cx="22" cy="22" r="5.5" stroke="currentColor" stroke-width="1.1"/>
-                    <circle cx="22" cy="22" r="1.4" fill="currentColor"/>
+                    <circle cx="22" cy="22" r="6.5" stroke="currentColor" stroke-width="1.1"/>
+                    <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+                        <path d="M22 7v5"/><path d="M22 32v5"/><path d="M7 22h5"/><path d="M32 22h5"/>
+                        <path d="M11.5 11.5l3.5 3.5"/><path d="M29 29l3.5 3.5"/><path d="M32.5 11.5L29 15"/><path d="M11.5 32.5L15 29"/>
+                    </g>
                 </svg>
-                <div class="card-name">the moving image</div>
+                <div class="card-name">light</div>
             </div>
             <div class="face back">
-                <a href="https://didi.film" target="_blank" rel="noopener">
-                    <img src="../assets/inner-atelier/atelier-2.jpg" alt="cinematography">
-                    <div class="plate">
-                        <div class="word">the moving image</div>
-                        <div class="tag">cinematography · didi.film ↗</div>
-                    </div>
-                </a>
+                <img src="../assets/inner-atelier/atelier-2.jpg" alt="light">
+                <div class="plate"><div class="word">light</div></div>
             </div>
         </div>
     </div>
@@ -292,17 +313,13 @@ footer {
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">II</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 26 Q14 17 22 26 T36 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-                    <path d="M8 18 Q14 9 22 18 T36 18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+                    <path d="M22 7 Q16.5 12 22 17 Q27.5 22 22 27 Q16.5 32 22 37" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
                 </svg>
-                <div class="card-name">the breath</div>
+                <div class="card-name">body</div>
             </div>
             <div class="face back">
-                <img src="../assets/inner-atelier/atelier-3.jpg" alt="yoga and embodiment">
-                <div class="plate">
-                    <div class="word">the breath</div>
-                    <div class="tag">yoga &amp; embodiment</div>
-                </div>
+                <img src="../assets/inner-atelier/atelier-3.jpg" alt="body">
+                <div class="plate"><div class="word">body</div></div>
             </div>
         </div>
     </div>
@@ -314,17 +331,13 @@ footer {
                 <div class="numeral">III</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="22" cy="22" r="2" fill="currentColor"/>
-                    <circle cx="22" cy="22" r="11" stroke="currentColor" stroke-width="1.1" opacity="0.55"/>
-                    <circle cx="22" cy="22" r="17" stroke="currentColor" stroke-width="0.8" opacity="0.25"/>
+                    <circle cx="22" cy="22" r="10" stroke="currentColor" stroke-width="1.1" opacity="0.55"/>
                 </svg>
-                <div class="card-name">the stillness</div>
+                <div class="card-name">still</div>
             </div>
             <div class="face back">
-                <img src="../assets/inner-atelier/atelier-1.jpg" alt="photography">
-                <div class="plate">
-                    <div class="word">the stillness</div>
-                    <div class="tag">photography</div>
-                </div>
+                <img src="../assets/inner-atelier/atelier-1.jpg" alt="still">
+                <div class="plate"><div class="word">still</div></div>
             </div>
         </div>
     </div>
@@ -335,17 +348,99 @@ footer {
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">IIII</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 26 Q14 17 22 26 T36 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M8 18 Q14 9 22 18 T36 18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <div class="card-name">motion</div>
+            </div>
+            <div class="face back">
+                <a href="https://didi.film" target="_blank" rel="noopener">
+                    <img src="../assets/inner-atelier/atelier-5.jpg" alt="motion">
+                    <div class="plate"><div class="word">motion</div><div class="tag">didi.film ↗</div></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">V</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 22 a3 3 0 1 0 3 -3 a7 7 0 1 0 -7 7 a11 11 0 1 0 11 -11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                </svg>
+                <div class="card-name">research</div>
+            </div>
+            <div class="face back text-back">
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 22 a3 3 0 1 0 3 -3 a7 7 0 1 0 -7 7 a11 11 0 1 0 11 -11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                </svg>
+                <div class="word">research</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">VI</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="17" cy="19" r="8.5" stroke="currentColor" stroke-width="1.1"/>
                     <circle cx="27" cy="25" r="8.5" stroke="currentColor" stroke-width="1.1"/>
                 </svg>
-                <div class="card-name">the circle</div>
+                <div class="card-name">community</div>
             </div>
             <div class="face back">
                 <img src="../assets/inner-atelier/atelier-4.jpg" alt="community">
-                <div class="plate">
-                    <div class="word">the circle</div>
-                    <div class="tag">community</div>
-                </div>
+                <div class="plate"><div class="word">community</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">VII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="28" r="1.8" fill="currentColor"/>
+                    <path d="M15 23 a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M11 18 a16 16 0 0 1 22 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M7.5 13.5 a21 21 0 0 1 29 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+                <div class="card-name">transmission</div>
+            </div>
+            <div class="face back text-back">
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="28" r="1.8" fill="currentColor"/>
+                    <path d="M15 23 a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M11 18 a16 16 0 0 1 22 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M7.5 13.5 a21 21 0 0 1 29 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+                <div class="word">transmission</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">VIII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="7" y="12" width="30" height="20" rx="1.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="5.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="1.4" fill="currentColor"/>
+                </svg>
+                <div class="card-name">cinematography</div>
+            </div>
+            <div class="face back">
+                <a href="https://www.dianaolifirova.com" target="_blank" rel="noopener">
+                    <img src="../assets/inner-atelier/diana.jpg" alt="cinematography">
+                    <div class="plate"><div class="word">cinematography</div><div class="tag">dianaolifirova.com ↗</div></div>
+                </a>
             </div>
         </div>
     </div>
