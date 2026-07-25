@@ -6,7 +6,7 @@
 <title>dwell_with_us</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
     --paper: #f0edda;
@@ -14,7 +14,6 @@
     --ink: #1e3323;
     --leaf: #3f7d4e;
     --sun: #c98a2d;
-    --sky: #4e7d8f;
     --crt: #0e2214;
     --phosphor: #8fd9a0;
 }
@@ -23,26 +22,25 @@
 html { scroll-behavior: smooth; }
 
 body {
-    font-family: 'VT323', monospace;
-    font-size: 21px;
-    line-height: 1.5;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    line-height: 1.65;
     color: var(--ink);
     background: var(--paper);
-    /* faint terminal grid */
     background-image:
-        linear-gradient(rgba(30, 51, 35, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(30, 51, 35, 0.045) 1px, transparent 1px);
+        linear-gradient(rgba(30, 51, 35, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 51, 35, 0.04) 1px, transparent 1px);
     background-size: 26px 26px;
     padding: 3rem 1rem 5rem;
 }
 
 /* ---------- the window ---------- */
 .window {
-    max-width: 760px;
+    max-width: 780px;
     margin: 0 auto;
     background: var(--panel);
     border: 2px solid var(--ink);
-    box-shadow: 8px 8px 0 rgba(30, 51, 35, 0.25);
+    box-shadow: 8px 8px 0 rgba(30, 51, 35, 0.22);
     position: relative;
 }
 
@@ -58,15 +56,14 @@ body {
 .titlebar .btn.leafy { background: var(--leaf); }
 .titlebar .btn.sunny { background: var(--sun); }
 .titlebar .title {
-    font-family: 'Silkscreen', monospace;
     font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     background: var(--panel);
     padding: 0 10px;
     margin: 0 auto;
-    letter-spacing: 0.05em;
 }
 
-/* a vine escapes the window frame */
 .vine-top {
     position: absolute;
     top: -74px;
@@ -76,15 +73,14 @@ body {
     pointer-events: none;
 }
 
-.inner { padding: 2.4rem 2.6rem 3rem; }
-@media (max-width: 620px) { .inner { padding: 1.6rem 1.1rem 2rem; } }
+.inner { padding: 2.2rem 2.4rem 3rem; }
+@media (max-width: 620px) { .inner { padding: 1.5rem 0.9rem 2rem; } }
 
 /* ---------- header ---------- */
 h1 {
-    font-family: 'Silkscreen', monospace;
-    font-size: clamp(1.3rem, 4.5vw, 2rem);
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-size: clamp(1.35rem, 4.5vw, 1.9rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
 }
 h1 .cursor {
     display: inline-block;
@@ -92,102 +88,254 @@ h1 .cursor {
     height: 1em;
     background: var(--leaf);
     vertical-align: -0.12em;
-    margin-left: 6px;
+    margin-left: 8px;
     animation: blink 1.1s steps(1) infinite;
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-.byline { color: var(--leaf); margin-top: 0.5rem; }
+.byline { color: var(--leaf); margin: 0.4rem 0 2rem; font-size: 13.5px; }
 
-/* ---------- links ---------- */
-a { color: var(--leaf); text-decoration: underline; }
+a { color: var(--leaf); }
 a:hover { background: var(--ink); color: var(--panel); text-decoration: none; }
 
 /* ---------- contents: file tree ---------- */
-.contents { margin: 1.6rem 0; }
-.contents .tree-root { font-family: 'Silkscreen', monospace; font-size: 11px; display: block; margin-bottom: 0.4rem; }
+.contents { margin: 0 0 2rem; font-size: 13.5px; }
+.contents .tree-root { font-weight: 600; display: block; margin-bottom: 0.2rem; }
 .contents a { display: block; text-decoration: none; color: var(--ink); }
 .contents a b { font-weight: 400; color: #9a947e; }
 .contents a:hover { background: var(--ink); color: var(--panel); }
 .contents a:hover b { color: var(--panel); }
 
-@media (min-width: 1220px) {
+@media (min-width: 1240px) {
     .contents {
         position: fixed;
         top: 6rem;
-        left: calc(50% - 380px - 250px);
-        width: 220px;
+        left: calc(50% - 390px - 250px);
+        width: 225px;
         margin: 0;
-        font-size: 19px;
     }
 }
 
-/* ---------- many-worlds divider ---------- */
-.divider { display: block; margin: 2.4rem auto; width: 240px; }
+/* ---------- the scheme trunk ---------- */
+.flow { position: relative; padding-left: 30px; }
+.flow::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--ink);
+}
+/* trunk start + end markers */
+.flow > .term { position: relative; margin-bottom: 1.6rem; font-size: 13px; color: var(--leaf); font-weight: 600; }
+.flow > .term::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--ink);
+    background: var(--sun);
+    border-radius: 50%;
+}
 
-/* ---------- sections ---------- */
-section { margin-bottom: 2.6rem; }
+/* section nodes on the trunk */
+.node {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: var(--panel);
+    box-shadow: 5px 5px 0 rgba(30, 51, 35, 0.16);
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 2.2rem;
+}
+.node::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 24px;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+}
+.node::after {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 20px;
+    width: 6px;
+    height: 6px;
+    border: 2px solid var(--ink);
+    background: var(--leaf);
+}
 
 h2 {
-    font-family: 'Silkscreen', monospace;
-    font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    margin: 2.2rem 0 0.9rem;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
+    margin-bottom: 0.9rem;
 }
-h2 .icon { width: 30px; height: 30px; flex: none; }
+h2 .icon { width: 26px; height: 26px; flex: none; }
 
 p { margin-bottom: 0.9rem; }
+.node > :last-child, .node p:last-child { margin-bottom: 0; }
 
-ul { list-style: none; }
-ul li { position: relative; padding-left: 1.3rem; margin-bottom: 0.65rem; }
-ul li::before { content: '▚'; position: absolute; left: 0; color: var(--leaf); }
+b { font-weight: 600; }
 
-b { color: var(--ink); }
+/* ---------- inner schemes ---------- */
+/* branching (two timelines / many worlds) */
+.branches { position: relative; margin: 0.9rem 0 0.2rem 10px; padding-left: 26px; }
+.branches::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 26px;
+    width: 2px;
+    background: var(--ink);
+}
+.branch {
+    position: relative;
+    border: 2px solid var(--leaf);
+    background: #eef2df;
+    padding: 0.45rem 0.9rem;
+    margin-bottom: 0.8rem;
+    font-size: 14px;
+}
+.branch::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    margin-top: -1px;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+}
+.branch::after {
+    content: '▶';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-52%);
+    font-size: 8px;
+    color: var(--ink);
+}
 
-/* ---------- grids ---------- */
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; }
-.grid2 > div { padding-right: 1.2rem; }
-.grid2 > div + div { border-left: 2px solid var(--ink); padding: 0 0 0 1.2rem; }
-
+/* hub grid (what we bring) */
+.gridwrap { position: relative; padding-top: 16px; }
+.gridwrap::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 16px;
+    background: var(--ink);
+}
 .gridcells { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--ink); background: var(--ink); gap: 2px; }
-.gridcells > div { padding: 0.7rem 0.9rem; background: var(--panel); font-size: 19px; }
+.gridcells > div { padding: 0.7rem 0.9rem; background: var(--panel); font-size: 14px; }
 .gridcells b { color: var(--leaf); }
+
+/* two profiles joined (who are we) */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+.grid2 > div { padding-right: 1.1rem; }
+.grid2 > div + div { border-left: 2px solid var(--ink); padding: 0 0 0 1.1rem; }
+.grid2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: var(--sun);
+    border: 2px solid var(--ink);
+}
+
+/* chips (room to dance...) */
+.chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.9rem; }
+.chip { border: 2px solid var(--leaf); background: #eef2df; padding: 0.1rem 0.7rem; font-size: 14px; }
+
+/* stacked value nodes */
+.valnodes { margin-left: 10px; position: relative; padding-left: 26px; }
+.valnodes::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 22px;
+    width: 2px;
+    background: var(--ink);
+}
+.val {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: var(--panel);
+    padding: 0.5rem 0.9rem;
+    margin-bottom: 0.8rem;
+    font-size: 14px;
+}
+.val::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    margin-top: -1px;
+    width: 18px;
+    height: 2px;
+    background: var(--ink);
+}
+.val::after {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 50%;
+    margin-top: -4px;
+    width: 4px;
+    height: 4px;
+    border: 2px solid var(--ink);
+    background: var(--leaf);
+}
 
 @media (max-width: 560px) {
     .grid2 { grid-template-columns: 1fr; }
     .grid2 > div + div { border-left: none; border-top: 2px solid var(--ink); padding: 0.8rem 0 0 0; margin-top: 0.8rem; }
+    .grid2::after { display: none; }
     .gridcells { grid-template-columns: 1fr; }
 }
 
-/* ---------- photos: the model resolves into the world on hover ---------- */
-.photofig { text-align: center; margin: 1.8rem 0; }
-.pix { position: relative; display: inline-block; border: 2px solid var(--ink); box-shadow: 6px 6px 0 rgba(30, 51, 35, 0.25); font-size: 0; }
-.pix img { width: min(460px, 82vw); display: block; }
-.pix canvas {
+/* ---------- photo (one, still) ---------- */
+.photofig { text-align: center; margin: 0 0 2.2rem; position: relative; }
+.photofig::before {
+    content: '';
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    image-rendering: pixelated;
-    pointer-events: none;
-    transition: opacity 0.6s ease;
+    left: -24px;
+    top: 50%;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
 }
-.pix:hover canvas, .pix:active canvas { opacity: 0; }
+.pix { display: inline-block; border: 2px solid var(--ink); box-shadow: 5px 5px 0 rgba(30, 51, 35, 0.16); font-size: 0; position: relative; }
+.pix img { width: min(440px, 80vw); display: block; }
 .pix .cap {
     position: absolute;
     bottom: -2px;
     right: -2px;
-    font-family: 'Silkscreen', monospace;
-    font-size: 8px;
+    font-size: 10px;
+    font-weight: 600;
     background: var(--panel);
     border: 2px solid var(--ink);
-    padding: 2px 6px;
+    padding: 1px 7px;
     color: var(--leaf);
 }
+
+/* ---------- many-worlds divider ---------- */
+.divider { display: block; margin: 0 auto 2.2rem; width: 240px; }
 
 /* ---------- contact: CRT terminal ---------- */
 .touch {
@@ -195,11 +343,19 @@ b { color: var(--ink); }
     background: var(--crt);
     color: var(--phosphor);
     border: 2px solid var(--ink);
-    box-shadow: 6px 6px 0 rgba(30, 51, 35, 0.25);
-    padding: 1.5rem 1.6rem;
-    margin-top: 3rem;
-    /* scanlines */
+    box-shadow: 5px 5px 0 rgba(30, 51, 35, 0.22);
+    padding: 1.3rem 1.5rem;
     background-image: repeating-linear-gradient(180deg, rgba(143, 217, 160, 0.06) 0 1px, transparent 1px 3px);
+    margin-bottom: 0;
+}
+.touch::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 24px;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
 }
 .touch p { margin: 0; }
 .touch .prompt { color: var(--sun); }
@@ -217,7 +373,7 @@ b { color: var(--ink); }
 .vine-crt {
     position: absolute;
     bottom: -8px;
-    left: -46px;
+    right: -40px;
     width: 60px;
     height: 90px;
     pointer-events: none;
@@ -225,8 +381,9 @@ b { color: var(--ink); }
 
 footer {
     text-align: center;
-    font-family: 'Silkscreen', monospace;
-    font-size: 9px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     color: #9a947e;
     margin-top: 2.6rem;
 }
@@ -247,7 +404,6 @@ footer {
 </nav>
 
 <div class="window">
-    <!-- wild growth out of the frame -->
     <svg class="vine-top" viewBox="0 0 80 80" fill="none">
         <path d="M40 80 Q36 62 44 50 Q52 38 44 28 Q36 18 46 8" stroke="#3f7d4e" stroke-width="1.8" stroke-linecap="round"/>
         <path d="M44 50 Q54 48 58 40" stroke="#3f7d4e" stroke-width="1.5" stroke-linecap="round"/>
@@ -269,25 +425,20 @@ footer {
         <p class="byline">liza &amp; adam · last updated jul 2026</p>
     </header>
 
-    <p>Hi,</p>
-    <p>We're Liza Simonova and Adam McKenty, a couple in the process of starting a family.</p>
-    <p>Our ideal setting for raising children is to live with or near other families and friends, in a community or village-like environment.</p>
-    <p>This doc is a starting point for conversations with other families, couples or singles who also want to live in that kind of context, or who already do and are open to new participants.</p>
+    <div class="flow">
 
-    <p class="photofig"><span class="pix"><img src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea"><span class="cap">img_7766</span></span></p>
+    <div class="term">START</div>
 
-    <!-- many worlds branch off; one is walked -->
-    <svg class="divider" viewBox="0 0 240 36" fill="none">
-        <path d="M0 18 H70" stroke="#1e3323" stroke-width="1.6"/>
-        <path d="M70 18 Q110 18 150 5 H240" stroke="#1e3323" stroke-width="1" opacity="0.22"/>
-        <path d="M70 18 Q110 18 150 11 H240" stroke="#1e3323" stroke-width="1" opacity="0.35"/>
-        <path d="M70 18 H240" stroke="#3f7d4e" stroke-width="1.8"/>
-        <path d="M70 18 Q110 18 150 25 H240" stroke="#1e3323" stroke-width="1" opacity="0.35"/>
-        <path d="M70 18 Q110 18 150 31 H240" stroke="#1e3323" stroke-width="1" opacity="0.22"/>
-        <rect x="68" y="16" width="4" height="4" fill="#c98a2d"/>
-    </svg>
+    <div class="node" id="intro">
+        <p>Hi,</p>
+        <p>We're Liza Simonova and Adam McKenty, a couple in the process of starting a family.</p>
+        <p>Our ideal setting for raising children is to live with or near other families and friends, in a community or village-like environment.</p>
+        <p>This doc is a starting point for conversations with other families, couples or singles who also want to live in that kind of context, or who already do and are open to new participants.</p>
+    </div>
 
-    <section id="who">
+    <p class="photofig"><span class="pix"><img src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea"><span class="cap">us</span></span></p>
+
+    <div class="node" id="who">
         <h2><svg class="icon" viewBox="0 0 32 32" fill="currentColor" shape-rendering="crispEdges">
             <rect x="4" y="3" width="6" height="6"/><rect x="6" y="9" width="2" height="8"/><rect x="2" y="10" width="10" height="2"/><rect x="4" y="17" width="2" height="8"/><rect x="8" y="17" width="2" height="8"/>
             <rect x="20" y="3" width="6" height="6"/><rect x="22" y="9" width="2" height="8"/><rect x="18" y="10" width="10" height="2"/><rect x="20" y="17" width="2" height="8"/><rect x="24" y="17" width="2" height="8"/>
@@ -300,21 +451,26 @@ footer {
                 <p><b>Adam McKenty</b> (42) is an inventor of things spiritual and technical. He grew up on a homestead in the Canadian wilderness and has worked as a software developer, writer, photographer, non-profit director, scuba diver, gardener, stone mason and musician. After moving to Berlin in 2020, he founded the church of interbeing, an experiment in non-religious community ritual, based in Schillerkiez. Speaks English and some French, working on German. Currently working as an independent software developer and entrepreneur.</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="looking">
+    <div class="node" id="looking">
         <h2><svg class="icon" viewBox="0 0 32 32" fill="currentColor" shape-rendering="crispEdges">
             <rect x="6" y="4" width="8" height="2"/><rect x="6" y="14" width="8" height="2"/><rect x="4" y="6" width="2" height="8"/><rect x="14" y="6" width="2" height="8"/>
             <rect x="16" y="16" width="3" height="3"/><rect x="19" y="19" width="3" height="3"/><rect x="22" y="22" width="3" height="3"/><rect x="25" y="25" width="3" height="3"/>
         </svg>WHAT WE'RE LOOKING FOR</h2>
         <p>We're looking for a home with others in the proximity of Berlin, ideally close to nature. This could be an existing project, or a new community we create in an existing building. We are quite flexible about the number of people and specific area, if it's a good fit in other ways.</p>
-        <p>There are two timelines for this. If we find a place soon, we would move there this year. Otherwise, next spring or summer.</p>
-    </section>
+        <p>There are two timelines for this.</p>
+        <div class="branches">
+            <div class="branch">If we find a place soon, we would move there this year.</div>
+            <div class="branch">Otherwise, next spring or summer.</div>
+        </div>
+    </div>
 
-    <section id="bring">
+    <div class="node" id="bring">
         <h2><svg class="icon" viewBox="0 0 32 32" fill="currentColor" shape-rendering="crispEdges">
             <rect x="5" y="6" width="16" height="5"/><rect x="21" y="5" width="4" height="7"/><rect x="11" y="11" width="4" height="16"/>
         </svg>WHAT WE BRING</h2>
+        <div class="gridwrap">
         <div class="gridcells">
             <div><b>Governance and community structure experience.</b> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</div>
             <div><b>Financial capacity.</b> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</div>
@@ -323,11 +479,10 @@ footer {
             <div><b>Relational practice and communication skills.</b> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</div>
             <div><b>Play.</b> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</div>
         </div>
-    </section>
+        </div>
+    </div>
 
-    <p class="photofig"><span class="pix"><img src="assets/dwell/dwell-moss.jpg" alt="Liza and Adam on a mossy hillside"><span class="cap">img_7857</span></span></p>
-
-    <section id="live">
+    <div class="node" id="live">
         <h2><svg class="icon" viewBox="0 0 32 32">
             <rect x="12" y="12" width="8" height="8" fill="currentColor" shape-rendering="crispEdges"/>
             <g stroke="#c98a2d" stroke-width="1.6" fill="none" stroke-linecap="round">
@@ -342,13 +497,18 @@ footer {
             </g>
         </svg>HOW WOULD WE LIKE TO LIVE?</h2>
         <p>Our ideal balance of shared and private space: you see others naturally and spontaneously by default, but there's enough space you can be alone when you want. This could look like separate flats with shared common areas, multiple houses with a few people/families in each, or some other configuration.</p>
-        <p>Room to dance. Space for gardening. Sauna. Hot tub?</p>
+        <div class="chips">
+            <span class="chip">Room to dance.</span>
+            <span class="chip">Space for gardening.</span>
+            <span class="chip">Sauna.</span>
+            <span class="chip">Hot tub?</span>
+        </div>
         <p>We like beautiful and simple spaces. The aesthetics of our environment are important!</p>
         <p>What's the vibe of people we'd like to live with? Ambitious explorers of the internal and external world. People who seek living community, understanding that it takes a village to raise a child (as well as to raise an adult).</p>
         <p>We imagine at least some shared meals each week, and a few structured touchpoints like a community/house meeting as often as needed (probably between weekly and monthly).</p>
-    </section>
+    </div>
 
-    <section id="values">
+    <div class="node" id="values">
         <h2><svg class="icon" viewBox="0 0 32 32">
             <g fill="currentColor" shape-rendering="crispEdges">
                 <rect x="5" y="8" width="8" height="3"/><rect x="19" y="8" width="8" height="3"/>
@@ -361,17 +521,17 @@ footer {
             <path d="M16 8 Q15 3 19.5 1.5" stroke="#3f7d4e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
             <path d="M19.5 1.5 Q23 0.5 24 3 Q20.5 4.5 19.5 1.5 Z" stroke="#3f7d4e" stroke-width="1.3" fill="none"/>
         </svg>SOME VALUES</h2>
-        <ul>
-            <li>We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</li>
-            <li>We want to live in a way that is aligned with ecological harmony and social sustainability.</li>
-            <li>We're both spiritual and empirical. We want to take science and evidence and reason seriously, while not making them the boundary of what's allowed to be real, or cause for closed-mindedness.</li>
-            <li>We're both ambitious about our own growth, and about creating projects that make a difference in the world.</li>
-            <li>We're more interested in integrating or playing with polarities than being embedded in them. If you're very strongly identified with the political left or right to a degree that limits conversation or makes topics, ideas, or ways of being impossible to talk about, we're probably not your ideal housemates.</li>
-            <li>We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</li>
-        </ul>
-    </section>
+        <div class="valnodes">
+            <div class="val">We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</div>
+            <div class="val">We want to live in a way that is aligned with ecological harmony and social sustainability.</div>
+            <div class="val">We're both spiritual and empirical. We want to take science and evidence and reason seriously, while not making them the boundary of what's allowed to be real, or cause for closed-mindedness.</div>
+            <div class="val">We're both ambitious about our own growth, and about creating projects that make a difference in the world.</div>
+            <div class="val">We're more interested in integrating or playing with polarities than being embedded in them. If you're very strongly identified with the political left or right to a degree that limits conversation or makes topics, ideas, or ways of being impossible to talk about, we're probably not your ideal housemates.</div>
+            <div class="val">We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</div>
+        </div>
+    </div>
 
-    <section id="kids">
+    <div class="node" id="kids">
         <h2><svg class="icon" viewBox="0 0 32 32">
             <g fill="currentColor" shape-rendering="crispEdges">
                 <rect x="14" y="2" width="4" height="3"/>
@@ -383,18 +543,16 @@ footer {
             <path d="M16 17 Q13 21 16.5 24 Q20 27 15.5 31" stroke="#3f7d4e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
         </svg>KIDS</h2>
         <p>We don't know how raising children will look in practice! But, here are some thoughts and questions about it.</p>
-        <ul>
-            <li>Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</li>
-            <li>Careful relationship with technology: phones, AI, and digital devices are super useful, and also hazards to cognitive freedom and wellbeing. How do we raise children with fluency in using them, and immunity to being used by them?</li>
-            <li>Nature is the original playground and classroom. We want our children to grow up in it!</li>
-            <li>Authority and self-responsibility: we want to balance necessary authority as parents with giving space for children to learn and grow and discover their own strengths and limits, not micromanaging.</li>
-            <li>Many parents lie to their kids, or pretend to know things when they don't because it's convenient. We don't want to do this.</li>
-        </ul>
-    </section>
+        <div class="valnodes">
+            <div class="val">Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</div>
+            <div class="val">Careful relationship with technology: phones, AI, and digital devices are super useful, and also hazards to cognitive freedom and wellbeing. How do we raise children with fluency in using them, and immunity to being used by them?</div>
+            <div class="val">Nature is the original playground and classroom. We want our children to grow up in it!</div>
+            <div class="val">Authority and self-responsibility: we want to balance necessary authority as parents with giving space for children to learn and grow and discover their own strengths and limits, not micromanaging.</div>
+            <div class="val">Many parents lie to their kids, or pretend to know things when they don't because it's convenient. We don't want to do this.</div>
+        </div>
+    </div>
 
-    <p class="photofig"><span class="pix"><img src="assets/dwell/dwell-forest.jpg" alt="Liza and Adam in the redwoods"><span class="cap">img_4205</span></span></p>
-
-    <section id="longterm">
+    <div class="node" id="longterm">
         <h2><svg class="icon" viewBox="0 0 32 32">
             <g fill="currentColor" shape-rendering="crispEdges">
                 <rect x="8" y="10" width="4" height="4"/><rect x="6" y="14" width="8" height="4"/><rect x="4" y="18" width="12" height="4"/><rect x="2" y="22" width="16" height="6"/>
@@ -403,47 +561,33 @@ footer {
             <path d="M26 14 L26 6 M26 8 Q22.5 8.5 21.5 5 M26 6 Q29.5 6.5 30.5 3.5 M26 11 Q23 11 22 8.5" stroke="#3f7d4e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>LONG TERM PLAN (BEYOND GERMANY!)</h2>
         <p>In the longer term we want to live in a larger community or village, in nature or in very close proximity to very beautiful nature - old forest, rivers, mountains. This could be in the EU, in Canada, or somewhere else in the world. A big city nearby (&lt;2h) is a bonus.</p>
-    </section>
+    </div>
 
-    <section id="touch" class="touch">
+    <svg class="divider" viewBox="0 0 240 36" fill="none">
+        <path d="M0 18 H70" stroke="#1e3323" stroke-width="1.6"/>
+        <path d="M70 18 Q110 18 150 5 H240" stroke="#1e3323" stroke-width="1" opacity="0.22"/>
+        <path d="M70 18 Q110 18 150 11 H240" stroke="#1e3323" stroke-width="1" opacity="0.35"/>
+        <path d="M70 18 H240" stroke="#3f7d4e" stroke-width="1.8"/>
+        <path d="M70 18 Q110 18 150 25 H240" stroke="#1e3323" stroke-width="1" opacity="0.35"/>
+        <path d="M70 18 Q110 18 150 31 H240" stroke="#1e3323" stroke-width="1" opacity="0.22"/>
+        <rect x="68" y="16" width="4" height="4" fill="#c98a2d"/>
+    </svg>
+
+    <div class="touch" id="touch">
         <svg class="vine-crt" viewBox="0 0 60 90" fill="none">
-            <path d="M46 90 Q40 70 46 55 Q52 40 42 28 Q32 18 38 4" stroke="#3f7d4e" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M46 55 Q36 52 32 44 M32 44 Q26 44 24 38 Q30 36 32 44 Z" stroke="#3f7d4e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-            <path d="M42 28 Q50 25 52 18 M52 18 Q57 17 58 11 Q52 11 52 18 Z" stroke="#3f7d4e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-            <path d="M38 4 Q38 0 43 -2" stroke="#3f7d4e" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M14 90 Q20 70 14 55 Q8 40 18 28 Q28 18 22 4" stroke="#3f7d4e" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M14 55 Q24 52 28 44 M28 44 Q34 44 36 38 Q30 36 28 44 Z" stroke="#3f7d4e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M18 28 Q10 25 8 18 M8 18 Q3 17 2 11 Q8 11 8 18 Z" stroke="#3f7d4e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
         </svg>
         <p><span class="prompt">&gt;</span> If this sounds interesting, please <a href="mailto:elizaveta.simonova@gmail.com?subject=Dwell%20with%20us">be in touch</a>!<span class="cursor"></span></p>
-    </section>
+    </div>
+
+    </div><!-- /flow -->
 
     <footer>liza &amp; adam · 2026 · grown by hand</footer>
 
     </div>
 </div>
-
-<script>
-// the pixelated model of each photo; hovering resolves it into the actual world
-document.querySelectorAll('.pix').forEach(box => {
-    const img = box.querySelector('img');
-    const cv = document.createElement('canvas');
-    box.appendChild(cv);
-    function draw() {
-        try {
-            const w = img.clientWidth, h = img.clientHeight;
-            if (!w || !h) return;
-            cv.width = w; cv.height = h;
-            const pw = 84, ph = Math.max(1, Math.round(h / w * 84));
-            const off = document.createElement('canvas');
-            off.width = pw; off.height = ph;
-            off.getContext('2d').drawImage(img, 0, 0, pw, ph);
-            const ctx = cv.getContext('2d');
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(off, 0, 0, w, h);
-        } catch (e) { cv.remove(); }
-    }
-    if (img.complete) draw(); else img.addEventListener('load', draw);
-    window.addEventListener('resize', draw);
-});
-</script>
 
 </body>
 </html>
