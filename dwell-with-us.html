@@ -3,376 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dwell with us — Liza & Adam</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Mono&display=swap" rel="stylesheet">
+<title>Dwell with us</title>
 <style>
-:root {
-    --paper: #faf7f0;
-    --ink: #26221b;
-    --soft: #857d6e;
-    --terra: #b4653f;
-    --moss: #5a6b45;
-    --line: #e3ddd0;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
 body {
-    font-family: 'EB Garamond', Georgia, serif;
-    background: var(--paper);
-    color: var(--ink);
-    font-size: 19px;
-    line-height: 1.75;
-    overflow-x: hidden;
-}
-
-/* ---------- layout ---------- */
-.page {
-    max-width: 660px;
-    margin: 0 auto;
-    padding: 4rem 1.5rem 6rem;
-}
-
-/* ---------- header ---------- */
-.doodle-house { width: 74px; height: 74px; margin: 0 auto 1.2rem; display: block; color: var(--terra); }
-
-h1 {
-    font-weight: 500;
-    font-size: clamp(2.4rem, 7vw, 3.4rem);
-    text-align: center;
-    line-height: 1.15;
-}
-
-.kicker {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    text-align: center;
-    color: var(--soft);
-    margin-top: 1rem;
-}
-
-header { margin-bottom: 3.5rem; }
-
-/* ---------- toc ---------- */
-.toc-side {
-    position: fixed;
-    top: 50%;
-    left: 2rem;
-    transform: translateY(-50%);
-    font-size: 0.92rem;
-    line-height: 2;
-    display: none;
-    max-width: 190px;
-}
-@media (min-width: 1150px) { .toc-side { display: block; } }
-.toc-side a {
-    color: var(--soft);
-    text-decoration: none;
-    display: block;
-    padding-left: 0.9rem;
-    border-left: 2px solid transparent;
-    transition: color 0.25s, border-color 0.25s;
-    font-style: italic;
-}
-.toc-side a:hover { color: var(--ink); }
-.toc-side a.active { color: var(--terra); border-left-color: var(--terra); }
-
-details.toc-top {
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.8rem 1.2rem;
-    margin-bottom: 3rem;
-    background: #fffdf8;
-}
-@media (min-width: 1150px) { details.toc-top { display: none; } }
-details.toc-top summary {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--soft);
-    cursor: pointer;
-}
-details.toc-top a {
-    display: block;
-    color: var(--ink);
-    text-decoration: none;
-    font-style: italic;
-    padding: 0.25rem 0;
-}
-details.toc-top a:hover { color: var(--terra); }
-details.toc-top nav { margin-top: 0.7rem; }
-
-/* ---------- sections ---------- */
-section { margin-bottom: 3.2rem; }
-
-h2 {
-    font-weight: 500;
-    font-size: 1.65rem;
-    margin-bottom: 1.1rem;
-    display: inline-block;
-    /* hand-drawn squiggle underline */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='7' viewBox='0 0 90 7'%3E%3Cpath d='M2 4.5 Q13 1.5 24 4 T46 4 T68 3.5 T88 4.5' stroke='%23b4653f' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: left bottom;
-    background-size: 100% 7px;
-    padding-bottom: 9px;
-}
-
-p { margin-bottom: 1.1rem; }
-
-a { color: var(--terra); }
-a:hover { color: var(--ink); }
-
-.divider {
-    text-align: center;
-    color: var(--terra);
-    font-size: 1rem;
-    letter-spacing: 0.9em;
-    margin: 3rem 0;
-    opacity: 0.7;
-}
-
-/* ---------- lists ---------- */
-ul.sprouts { list-style: none; }
-ul.sprouts li {
-    position: relative;
-    padding-left: 1.7rem;
-    margin-bottom: 0.9rem;
-}
-ul.sprouts li::before {
-    content: '❋';
-    position: absolute;
-    left: 0;
-    top: 0.1em;
-    color: var(--moss);
-    font-size: 0.95rem;
-}
-
-ul.bring { list-style: none; }
-ul.bring li {
-    position: relative;
-    padding-left: 1.7rem;
-    margin-bottom: 1rem;
-}
-ul.bring li::before {
-    content: '☞';
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--terra);
-}
-ul.bring strong { font-weight: 600; }
-
-.wishlist {
-    font-style: italic;
-    font-size: 1.25rem;
-    text-align: center;
-    color: var(--moss);
-    margin: 1.6rem 0;
-}
-
-/* ---------- polaroids ---------- */
-.polaroid {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #000;
     background: #fff;
-    padding: 12px 12px 16px;
-    box-shadow: 0 8px 26px rgba(38, 34, 27, 0.16);
-    border-radius: 3px;
-    width: min(430px, 88%);
-    margin: 2.6rem auto;
-    transition: transform 0.35s ease;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
 }
-.polaroid img { width: 100%; display: block; border-radius: 1px; }
-.polaroid.tilt-l { transform: rotate(-2deg); }
-.polaroid.tilt-r { transform: rotate(2.2deg); }
-.polaroid:hover { transform: rotate(0deg) scale(1.015); }
-
-/* ---------- contact ---------- */
-.touch {
-    text-align: center;
-    margin-top: 4rem;
-    padding: 2.6rem 1.5rem;
-    border: 1px dashed var(--terra);
-    border-radius: 14px;
-    background: #fffdf8;
-}
-.touch p { font-size: 1.25rem; font-style: italic; margin-bottom: 1.4rem; }
-.btn-touch {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    padding: 0.95rem 2.2rem;
-    background: var(--terra);
-    color: #fffdf8;
-    text-decoration: none;
-    border-radius: 999px;
-    transition: background 0.25s, transform 0.25s;
-}
-.btn-touch:hover { background: var(--ink); color: #fffdf8; transform: translateY(-2px) rotate(-1deg); }
-
-footer {
-    text-align: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--line);
-    margin-top: 4rem;
-}
+img { max-width: 100%; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.4rem; margin-top: 2rem; }
+li { margin-bottom: 0.4rem; }
+.photo { width: 420px; border: 1px solid #999; }
+.small { font-size: 0.8rem; color: #555; }
 </style>
 </head>
 <body>
 
-<nav class="toc-side" id="toc">
-    <a href="#who">who are we?</a>
-    <a href="#looking">what we're looking for</a>
-    <a href="#bring">what we bring</a>
-    <a href="#live">how would we like to live?</a>
-    <a href="#values">some values</a>
-    <a href="#kids">kids</a>
-    <a href="#longterm">long term plan</a>
-    <a href="#touch">be in touch</a>
-</nav>
+<h1>Dwell with us</h1>
+<p class="small">Liza &amp; Adam — last updated July 2026</p>
 
-<div class="page">
+<hr>
 
-<header>
-    <svg class="doodle-house" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14 40 Q13.5 41 14 66 Q14 69 17 69 L62 69 Q65.5 69 65 65 L65.5 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M8 43 Q24 27 39.5 14 Q40 13.7 40.6 14.2 Q56 28 72 43" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M33 69 L33 51 Q33 48.5 35.5 48.5 L44 48.5 Q46.5 48.5 46.5 51 L46.5 69" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M40 30.5 Q38 27.5 35.5 29.5 Q33.5 31.5 36 34 L40 37.5 L44 34 Q46.5 31.5 44.5 29.5 Q42 27.5 40 30.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-        <path d="M54 22 L54 12.5 M50.5 12 L57.5 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    </svg>
-    <h1>Dwell with us</h1>
-    <div class="kicker">liza &amp; adam · a doc about finding home, together</div>
-</header>
+<p><b>Contents</b></p>
+<ul>
+    <li><a href="#who">Who are we?</a></li>
+    <li><a href="#looking">What we're looking for</a></li>
+    <li><a href="#bring">What we bring</a></li>
+    <li><a href="#live">How would we like to live?</a></li>
+    <li><a href="#values">Some values</a></li>
+    <li><a href="#kids">Kids</a></li>
+    <li><a href="#longterm">Long term plan (beyond Germany!)</a></li>
+    <li><a href="#touch">Be in touch</a></li>
+</ul>
 
-<details class="toc-top">
-    <summary>contents</summary>
-    <nav>
-        <a href="#who">who are we?</a>
-        <a href="#looking">what we're looking for</a>
-        <a href="#bring">what we bring</a>
-        <a href="#live">how would we like to live?</a>
-        <a href="#values">some values</a>
-        <a href="#kids">kids</a>
-        <a href="#longterm">long term plan</a>
-        <a href="#touch">be in touch</a>
-    </nav>
-</details>
+<hr>
 
-<section id="intro">
-    <p>Hi,</p>
-    <p>We're Liza Simonova and Adam McKenty, a couple in the process of starting a family.</p>
-    <p>Our ideal setting for raising children is to live with or near other families and friends, in a community or village-like environment.</p>
-    <p>This doc is a starting point for conversations with other families, couples or singles who also want to live in that kind of context, or who already do and are open to new participants.</p>
+<p>Hi,</p>
+<p>We're Liza Simonova and Adam McKenty, a couple in the process of starting a family.</p>
+<p>Our ideal setting for raising children is to live with or near other families and friends, in a community or village-like environment.</p>
+<p>This doc is a starting point for conversations with other families, couples or singles who also want to live in that kind of context, or who already do and are open to new participants.</p>
 
-    <div class="polaroid tilt-l">
-        <img src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea">
-    </div>
-</section>
+<p><img class="photo" src="assets/dwell/dwell-beach.jpg" alt="Liza and Adam by the sea"></p>
 
-<section id="who">
-    <h2>Who are we?</h2>
-    <p><strong>Liza Simonova</strong> (35) is an entrepreneur, dancer (contact improv, butoh), facilitator (circling, other relational practices) and community builder. She cofounded the <a href="https://foolsvalley.com" target="_blank" rel="noopener">foolsvalley.com</a> project, a residency, retreat, and research center near Lisbon. Fluent in Russian, English and German, and working on Portuguese. Originally from Russia, more recently based in London, Portugal, and Berlin. Works as a facilitator and coach, as well as remotely supporting Fools' Valley.</p>
-    <p><strong>Adam McKenty</strong> (42) is an inventor of things spiritual and technical. He grew up on a homestead in the Canadian wilderness and has worked as a software developer, writer, photographer, non-profit director, scuba diver, gardener, stone mason and musician. After moving to Berlin in 2020, he founded the church of interbeing, an experiment in non-religious community ritual, based in Schillerkiez. Speaks English and some French, working on German. Currently working as an independent software developer and entrepreneur.</p>
-</section>
+<h2 id="who">Who are we?</h2>
+<p><b>Liza Simonova</b> (35) is an entrepreneur, dancer (contact improv, butoh), facilitator (circling, other relational practices) and community builder. She cofounded the <a href="https://foolsvalley.com">foolsvalley.com</a> project, a residency, retreat, and research center near Lisbon. Fluent in Russian, English and German, and working on Portuguese. Originally from Russia, more recently based in London, Portugal, and Berlin. Works as a facilitator and coach, as well as remotely supporting Fools' Valley.</p>
+<p><b>Adam McKenty</b> (42) is an inventor of things spiritual and technical. He grew up on a homestead in the Canadian wilderness and has worked as a software developer, writer, photographer, non-profit director, scuba diver, gardener, stone mason and musician. After moving to Berlin in 2020, he founded the church of interbeing, an experiment in non-religious community ritual, based in Schillerkiez. Speaks English and some French, working on German. Currently working as an independent software developer and entrepreneur.</p>
 
-<section id="looking">
-    <h2>What we're looking for</h2>
-    <p>We're looking for a home with others in the proximity of Berlin, ideally close to nature. This could be an existing project, or a new community we create in an existing building. We are quite flexible about the number of people and specific area, if it's a good fit in other ways.</p>
-    <p>There are two timelines for this. If we find a place soon, we would move there this year. Otherwise, next spring or summer.</p>
-</section>
+<h2 id="looking">What we're looking for</h2>
+<p>We're looking for a home with others in the proximity of Berlin, ideally close to nature. This could be an existing project, or a new community we create in an existing building. We are quite flexible about the number of people and specific area, if it's a good fit in other ways.</p>
+<p>There are two timelines for this. If we find a place soon, we would move there this year. Otherwise, next spring or summer.</p>
 
-<section id="bring">
-    <h2>What we bring</h2>
-    <ul class="bring">
-        <li><strong>Governance and community structure experience.</strong> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</li>
-        <li><strong>Financial capacity.</strong> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</li>
-        <li><strong>Practical skills.</strong> Adam grew up building, designing and fixing things, with experience in construction, landscaping and gardening, electronics, etc. Can bring practical knowledge useful to most community projects.</li>
-        <li><strong>Leadership and entrepreneurial skills.</strong> We've both been in multiple organisational leadership positions. Liza cofounded a business and grew it to 500+ employees.</li>
-        <li><strong>Relational practice and communication skills.</strong> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</li>
-        <li><strong>Play.</strong> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</li>
-    </ul>
+<h2 id="bring">What we bring</h2>
+<ul>
+    <li><b>Governance and community structure experience.</b> We both have experience participating in and creating governance and finding the level of structure needed to support functioning community life.</li>
+    <li><b>Financial capacity.</b> We're financially equipped to buy in or otherwise be active/leading financial participants in a project.</li>
+    <li><b>Practical skills.</b> Adam grew up building, designing and fixing things, with experience in construction, landscaping and gardening, electronics, etc. Can bring practical knowledge useful to most community projects.</li>
+    <li><b>Leadership and entrepreneurial skills.</b> We've both been in multiple organisational leadership positions. Liza cofounded a business and grew it to 500+ employees.</li>
+    <li><b>Relational practice and communication skills.</b> We've both done a lot of meditating, and a lot of relational practices (circling, various coaching and dialogue methodologies). We'd like to live these methods with others, and can also share them.</li>
+    <li><b>Play.</b> We're weaving singing, playing, being all around weird into the daily life and do also take abstract thought with a certain degree of sincere irony.</li>
+</ul>
 
-    <div class="polaroid tilt-r">
-        <img src="assets/dwell/dwell-moss.jpg" alt="Liza and Adam on a mossy hillside">
-    </div>
-</section>
+<p><img class="photo" src="assets/dwell/dwell-moss.jpg" alt="Liza and Adam on a mossy hillside"></p>
 
-<section id="live">
-    <h2>How would we like to live?</h2>
-    <p>Our ideal balance of shared and private space: you see others naturally and spontaneously by default, but there's enough space you can be alone when you want. This could look like separate flats with shared common areas, multiple houses with a few people/families in each, or some other configuration.</p>
-    <p class="wishlist">Room to dance. Space for gardening. Sauna. Hot tub?</p>
-    <p>We like beautiful and simple spaces. The aesthetics of our environment are important!</p>
-    <p>What's the vibe of people we'd like to live with? Ambitious explorers of the internal and external world. People who seek living community, understanding that it takes a village to raise a child (as well as to raise an adult).</p>
-    <p>We imagine at least some shared meals each week, and a few structured touchpoints like a community/house meeting as often as needed (probably between weekly and monthly).</p>
-</section>
+<h2 id="live">How would we like to live?</h2>
+<p>Our ideal balance of shared and private space: you see others naturally and spontaneously by default, but there's enough space you can be alone when you want. This could look like separate flats with shared common areas, multiple houses with a few people/families in each, or some other configuration.</p>
+<p>Room to dance. Space for gardening. Sauna. Hot tub?</p>
+<p>We like beautiful and simple spaces. The aesthetics of our environment are important!</p>
+<p>What's the vibe of people we'd like to live with? Ambitious explorers of the internal and external world. People who seek living community, understanding that it takes a village to raise a child (as well as to raise an adult).</p>
+<p>We imagine at least some shared meals each week, and a few structured touchpoints like a community/house meeting as often as needed (probably between weekly and monthly).</p>
 
-<div class="divider">❋ ❋ ❋</div>
+<h2 id="values">Some values</h2>
+<ul>
+    <li>We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</li>
+    <li>We want to live in a way that is aligned with ecological harmony and social sustainability.</li>
+    <li>We're both spiritual and empirical. We want to take science and evidence and reason seriously, while not making them the boundary of what's allowed to be real, or cause for closed-mindedness.</li>
+    <li>We're both ambitious about our own growth, and about creating projects that make a difference in the world.</li>
+    <li>We're more interested in integrating or playing with polarities than being embedded in them. If you're very strongly identified with the political left or right to a degree that limits conversation or makes topics, ideas, or ways of being impossible to talk about, we're probably not your ideal housemates.</li>
+    <li>We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</li>
+</ul>
 
-<section id="values">
-    <h2>Some values</h2>
-    <ul class="sprouts">
-        <li>We enjoy both deep embodied / emotional connection and intellectual conversations (without taboo topics), and don't want to choose one or the other in choosing community.</li>
-        <li>We want to live in a way that is aligned with ecological harmony and social sustainability.</li>
-        <li>We're both spiritual and empirical. We want to take science and evidence and reason seriously, while not making them the boundary of what's allowed to be real, or cause for closed-mindedness.</li>
-        <li>We're both ambitious about our own growth, and about creating projects that make a difference in the world.</li>
-        <li>We're more interested in integrating or playing with polarities than being embedded in them. If you're very strongly identified with the political left or right to a degree that limits conversation or makes topics, ideas, or ways of being impossible to talk about, we're probably not your ideal housemates.</li>
-        <li>We've been in sex-positive and poly worlds, and even though we're now a monogamous couple we would be happy if the values of those spaces are welcome.</li>
-    </ul>
-</section>
+<h2 id="kids">Kids</h2>
+<p>We don't know how raising children will look in practice! But, here are some thoughts and questions about it.</p>
+<ul>
+    <li>Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</li>
+    <li>Careful relationship with technology: phones, AI, and digital devices are super useful, and also hazards to cognitive freedom and wellbeing. How do we raise children with fluency in using them, and immunity to being used by them?</li>
+    <li>Nature is the original playground and classroom. We want our children to grow up in it!</li>
+    <li>Authority and self-responsibility: we want to balance necessary authority as parents with giving space for children to learn and grow and discover their own strengths and limits, not micromanaging.</li>
+    <li>Many parents lie to their kids, or pretend to know things when they don't because it's convenient. We don't want to do this.</li>
+</ul>
 
-<section id="kids">
-    <h2>Kids</h2>
-    <p>We don't know how raising children will look in practice! But, here are some thoughts and questions about it.</p>
-    <ul class="sprouts">
-        <li>Ideally, we want to collaborate with other parents and families, either in a structured way (for example some slots of rotating shared childcare each week), or more informally. More importantly, we want to be close to other parents so we can hang out together with children! Potlucks! Forest exploring! Water fights! Building things together. Singing.</li>
-        <li>Careful relationship with technology: phones, AI, and digital devices are super useful, and also hazards to cognitive freedom and wellbeing. How do we raise children with fluency in using them, and immunity to being used by them?</li>
-        <li>Nature is the original playground and classroom. We want our children to grow up in it!</li>
-        <li>Authority and self-responsibility: we want to balance necessary authority as parents with giving space for children to learn and grow and discover their own strengths and limits, not micromanaging.</li>
-        <li>Many parents lie to their kids, or pretend to know things when they don't because it's convenient. We don't want to do this.</li>
-    </ul>
+<p><img class="photo" src="assets/dwell/dwell-forest.jpg" alt="Liza and Adam in the redwoods"></p>
 
-    <div class="polaroid tilt-l">
-        <img src="assets/dwell/dwell-forest.jpg" alt="Liza and Adam in the redwoods">
-    </div>
-</section>
+<h2 id="longterm">Long term plan (beyond Germany!)</h2>
+<p>In the longer term we want to live in a larger community or village, in nature or in very close proximity to very beautiful nature - old forest, rivers, mountains. This could be in the EU, in Canada, or somewhere else in the world. A big city nearby (&lt;2h) is a bonus.</p>
 
-<section id="longterm">
-    <h2>Long term plan (beyond Germany!)</h2>
-    <p>In the longer term we want to live in a larger community or village, in nature or in very close proximity to very beautiful nature - old forest, rivers, mountains. This could be in the EU, in Canada, or somewhere else in the world. A big city nearby (&lt;2h) is a bonus.</p>
-</section>
+<hr>
 
-<section id="touch" class="touch">
-    <p>If this sounds interesting, please be in touch!</p>
-    <a class="btn-touch" href="mailto:elizaveta.simonova@gmail.com?subject=Dwell%20with%20us">write to us</a>
-</section>
-
-<footer>liza &amp; adam · 2026</footer>
-
-</div>
-
-<script>
-// highlight the active section in the side table of contents
-const tocLinks = document.querySelectorAll('.toc-side a');
-const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href')));
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
-        }
-    });
-}, { rootMargin: '-30% 0px -60% 0px' });
-sections.forEach(s => s && observer.observe(s));
-</script>
+<h2 id="touch">Be in touch</h2>
+<p>If this sounds interesting, please <a href="mailto:elizaveta.simonova@gmail.com?subject=Dwell%20with%20us">be in touch</a>!</p>
 
 </body>
 </html>
