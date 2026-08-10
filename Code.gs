@@ -310,8 +310,8 @@ function handleAvailability(e) {
     // Tucker retreat: dorms are offered as gendered dorms
     if (eventParam === 'tucker') {
       for (const room of rooms) {
-        if (room.id === 'dorm_oh') room.name = 'Female dorm';
-        if (room.id === 'dorm_bh') room.name = 'Male dorm';
+        if (room.id === 'dorm_oh') room.name = 'Male dorm';
+        if (room.id === 'dorm_bh') room.name = 'Female dorm';
       }
     }
 
