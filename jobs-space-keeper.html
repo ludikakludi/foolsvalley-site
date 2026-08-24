@@ -37,10 +37,24 @@
             font-size: 12px;
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
         nav a { text-decoration: none; }
         nav a:hover { background: none; text-decoration: underline; color: var(--black); }
         nav .logo { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; }
+        nav a.lang-switch {
+            margin-left: auto;
+            border: 1px solid var(--black);
+            padding: 0.15rem 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+        }
+        nav a.lang-switch:hover {
+            background: var(--black);
+            color: var(--bg);
+            text-decoration: none;
+        }
 
         .page {
             max-width: 700px;
@@ -96,6 +110,7 @@
     <nav>
         <a class="logo" href="https://foolsvalley.com">fools' valley</a>
         <a href="jobs.html">&larr; all open jobs</a>
+        <a class="lang-switch" href="jobs-space-keeper-pt.html" title="mudar para português">PT</a>
     </nav>
 
     <div class="page">
