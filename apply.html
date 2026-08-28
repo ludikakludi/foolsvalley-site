@@ -1302,7 +1302,7 @@ function renderRooms() {
       var agarthaNote = (hasAgarthaCode) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
-        '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €20)</span></div>';
+        '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €' + Math.round(room.dailyFee / room.numDays) + ')</span></div>';
       inner.appendChild(info);
 
       card.appendChild(inner);
@@ -1397,8 +1397,8 @@ function populateReview() {
     var revAgarthaNote = (hasAgarthaCode && selectedRoom.numDays >= 14) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
     document.getElementById('rev-room-price').innerHTML = '\u20AC' + effectiveRoomPrice + revAgarthaNote + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
 
-    // Show daily fee with (20 euros/day) annotation
-    document.getElementById('rev-daily-fee').innerHTML = '\u20AC' + selectedRoom.dailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(20 euros/day)</span>';
+    // Show daily fee with per-day rate annotation
+    document.getElementById('rev-daily-fee').innerHTML = '\u20AC' + selectedRoom.dailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(' + Math.round(selectedRoom.dailyFee / selectedRoom.numDays) + ' euros/day)</span>';
 
     // Calculate and display total
     var totalPrice = effectiveRoomPrice + selectedRoom.dailyFee;

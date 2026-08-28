@@ -109,6 +109,31 @@ function calculateRoomPrice(dailyRate, weeklyRate, twoWeekRate, monthlyRate, num
 }
 
 // ============================================================
+// DAILY FEE
+// ============================================================
+// Per-day fee comes from the prices sheet, rows 26-29
+// (column A: tier label, column B: fee per day):
+//   row 26: daily stays (1-6 days)
+//   row 27: weekly stays (7-13 days)
+//   row 28: 2-week stays (14-27 days)
+//   row 29: monthly stays (28+ days)
+function getDailyFeeRate(roomsSheet, numDays) {
+  const tiers = roomsSheet.getRange('A26:B29').getValues();
+  let row;
+  if (numDays >= 28) {
+    row = tiers[3];
+  } else if (numDays >= 14) {
+    row = tiers[2];
+  } else if (numDays >= 7) {
+    row = tiers[1];
+  } else {
+    row = tiers[0];
+  }
+  const fee = parseFloat(row[1]);
+  return isNaN(fee) ? 20 : fee;  // Fall back to €20/day if cell is empty
+}
+
+// ============================================================
 // HANDLE AVAILABILITY REQUEST
 // ============================================================
 function handleAvailability(e) {
@@ -316,6 +341,7 @@ function handleAvailability(e) {
     }
 
     // Check availability and calculate prices
+    const normalDailyFeeRate = getDailyFeeRate(roomsSheet, numDays);
     const availableRooms = [];
 
     for (const room of rooms) {
@@ -339,7 +365,7 @@ function handleAvailability(e) {
           dailyFee = numDays * 35;
         } else {
           pricing = calculateRoomPrice(room.daily, room.weekly, room.twoWeek, room.monthly, numDays);
-          dailyFee = numDays * 20;
+          dailyFee = numDays * normalDailyFeeRate;
         }
 
         const totalPrice = pricing.roomPrice + dailyFee;
@@ -821,7 +847,7 @@ PRICING
 ============================================================
 
 Room Price: €${app.roomPrice} (${app.priceBreakdown})
-Daily Fee (€20/day): €${app.dailyFee}
+Daily Fee (€${Math.round(app.dailyFee / app.numDays)}/day): €${app.dailyFee}
 Total Price: €${app.totalPrice}
 
 ============================================================
