@@ -585,10 +585,6 @@ footer a { color: var(--text); }
     <p style="margin-bottom:0.5rem; color: var(--text-light);">
       showing rooms available for your full stay. the price per day depends on the length of stay (monthly prices are cheaper, <a href="#" onclick="showPriceList(event)" style="color:var(--text); text-decoration:underline;">full price list</a>).
     </p>
-    <p style="margin-bottom:1rem; font-size:0.9rem; color: var(--text-light);">
-      + &euro;20/day per person for food, bills &amp; communal expenses is added on top.
-    </p>
-
     <p style="margin-bottom:1.5rem; padding:1rem; background:rgba(74, 93, 58, 0.08); border-left:3px solid #4a5d3a; font-size:0.95rem; line-height:1.6;">
       Please don't book the cheapest room if you don't have to - this is our way to keep the space affordable.
     </p>
@@ -1557,7 +1553,7 @@ function buildPriceTable(container, rooms) {
     });
   });
   html += '</table>';
-  html += '<p style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-light);">+ \u20AC20/day food &amp; expenses on top of all prices</p>';
+  html += '<p style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-light);">+ a daily fee for food &amp; expenses on top of all prices (depends on length of stay)</p>';
   container.innerHTML = html;
 }
 
