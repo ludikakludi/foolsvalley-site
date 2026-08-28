@@ -386,25 +386,6 @@ function handleAvailability(e) {
       }
     }
 
-    // Tucker retreat: virtual "shared room" option, assigned manually — always offered
-    if (eventParam === 'tucker') {
-      const sharedPrice = Math.round((200 / 7) * numDays);
-      const sharedFee = numDays * 35;
-      availableRooms.push({
-        id: 'shared_tc',
-        name: 'Shared room (2 people)',
-        building: 'Blue House',
-        desc: "a bed in a double room shared with one other retreatant (gender segregated or share with a friend) — we'll assign the specific room",
-        photo: '',
-        roomPrice: sharedPrice,
-        priceBreakdown: '€200/week',
-        dailyFee: sharedFee,
-        totalPrice: sharedPrice + sharedFee,
-        numDays: numDays,
-        availableCount: 2
-      });
-    }
-
     return jsonResponse({ rooms: availableRooms });
 
   } catch (err) {

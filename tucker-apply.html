@@ -759,8 +759,6 @@ const ROOM_PHOTO_MAP = {
   pool:      'photo_2026-01-03-15.04.38-1024x768.webp',
   downstairs:'photo_2026-01-03-15.04.23-1024x768.webp',
   dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
-  // shared room: one of the small TC rooms
-  shared_tc: 'photo_2026-01-03-14.59.13-1-768x1024.webp',
 };
 
 // Booking window (months are 0-indexed)
@@ -903,26 +901,6 @@ async function fetchAvailability() {
 
       availableRooms = data.rooms || [];
 
-      // The shared room is always offered (we assign it manually), so make sure
-      // it's present even if the backend doesn't send it
-      if (!availableRooms.some(r => r.id === 'shared_tc')) {
-        const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
-        const sharedPrice = Math.round((200 / 7) * days);
-        availableRooms.push({
-          id: 'shared_tc',
-          name: 'Shared room (2 people)',
-          building: 'Blue House',
-          desc: "a bed in a double room shared with one other retreatant (gender segregated or share with a friend) — we'll assign the specific room",
-          photo: '',
-          roomPrice: sharedPrice,
-          priceBreakdown: '€200/week',
-          dailyFee: days * 35,
-          totalPrice: sharedPrice + days * 35,
-          numDays: days,
-          availableCount: 2
-        });
-      }
-
       renderRooms();
       return;
     } catch (err) {
@@ -944,7 +922,7 @@ function showFallback(container, msg) {
   fb.className = 'rooms-fallback';
   fb.innerHTML = '<h4>room selection unavailable</h4>' +
     '<p>' + msg + '</p>' +
-    '<p>no worries — just tell us what kind of accommodation you\'re interested in (dorm bed, shared room, private room) and we\'ll get back to you with options and pricing.</p>' +
+    '<p>no worries — just tell us what kind of accommodation you\'re interested in (dorm bed, private room) and we\'ll get back to you with options and pricing.</p>' +
     '<div class="field"><label>what type of accommodation are you interested in?</label>' +
     '<textarea id="f-room-preference" style="width:100%;padding:0.8rem 1rem;font-family:EB Garamond,serif;font-size:1.05rem;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);min-height:80px;resize:vertical;"></textarea></div>' +
     '<button class="btn btn-primary" style="margin-top:1rem;" onclick="if(document.getElementById(\'f-room-preference\').value.trim().length > 0) { showReviewSection(); } else { alert(\'please describe what accommodation you would like\'); }">continue to review</button>';
@@ -958,12 +936,12 @@ function renderRooms() {
   const container = document.getElementById('rooms-container');
   container.innerHTML = '';
 
-  const retreatIds = ['dorm_oh', 'dorm_bh', 'shared_tc'];
+  const retreatIds = ['dorm_oh', 'dorm_bh'];
   const retreatRooms = availableRooms.filter(r => retreatIds.includes(r.id));
   const privateRooms = availableRooms.filter(r => !retreatIds.includes(r.id));
 
   if (retreatRooms.length > 0) {
-    container.appendChild(buildGroup('dorms & shared room', retreatRooms));
+    container.appendChild(buildGroup('dorms', retreatRooms));
   }
 
   const buildingLabels = {
