@@ -183,6 +183,7 @@ function handleAvailability(e) {
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
+      if (i >= 25 && i <= 28) continue; // Sheet rows 26-29 hold the daily fee tiers (see getDailyFeeRate), not rooms
 
       // Determine capacity based on room type and specific room ID
       let capacity = 1;  // Default for private rooms
@@ -238,7 +239,7 @@ function handleAvailability(e) {
       // Create room name to ID mapping from prices sheet
       const roomNameToId = {};
       for (const room of rooms) {
-        const roomNameLower = room.name.toLowerCase().trim();
+        const roomNameLower = String(room.name).toLowerCase().trim();
         roomNameToId[roomNameLower] = room.id;
 
         // Map calendar names to room IDs
@@ -507,6 +508,7 @@ function handlePrices(e) {
     for (let i = 1; i < roomsData.length; i++) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
+      if (i >= 25 && i <= 28) continue; // Sheet rows 26-29 hold the daily fee tiers (see getDailyFeeRate), not rooms
 
       const room = {
         id: row[0],
