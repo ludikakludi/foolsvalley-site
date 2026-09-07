@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Fools' Valley — stay on our list</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Karla:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ground:#f6f4ec; --surface:#fffefa; --sunk:#efece1; --line:#ded9c8; --line-soft:#e8e4d6;
+  --ink:#1b1f18; --body:#3b4136; --muted:#767c6d;
+  --accent:#55663a; --accent-ink:#3f4c2a; --accent-soft:#e7ecd8; --clay:#a2512a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#12150f; --surface:#1b1f16; --sunk:#0e110b; --line:#2e3527; --line-soft:#242a1e;
+  --ink:#eceadf; --body:#c9ccbe; --muted:#8f9683;
+  --accent:#a5ba75; --accent-ink:#bccb95; --accent-soft:#242c19; --clay:#d68d61;
+}}
+:root[data-theme="dark"]{
+  --ground:#12150f; --surface:#1b1f16; --sunk:#0e110b; --line:#2e3527; --line-soft:#242a1e;
+  --ink:#eceadf; --body:#c9ccbe; --muted:#8f9683;
+  --accent:#a5ba75; --accent-ink:#bccb95; --accent-soft:#242c19; --clay:#d68d61;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Karla,ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:660px;margin:0 auto;padding:0 22px 90px}
+h1,h2{font-family:Fraunces,Georgia,serif;color:var(--ink);margin:0;font-weight:600;text-wrap:balance}
+
+header{padding:52px 0 30px}
+.eyebrow{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+h1{font-size:36px;line-height:1.08;letter-spacing:-.015em}
+header p{margin:14px 0 0;max-width:56ch;font-size:16px}
+
+fieldset{border:0;margin:0;padding:34px 0 0;border-top:1px solid var(--line);margin-top:34px}
+legend{padding:0;width:100%}
+.q{font-family:Fraunces,Georgia,serif;font-size:19px;color:var(--ink);font-weight:600;
+  line-height:1.3;letter-spacing:-.005em}
+.hint{font-size:14px;color:var(--muted);margin-top:5px;max-width:58ch}
+.req{color:var(--clay);font-family:Karla,sans-serif;font-size:13px;font-weight:500;
+  letter-spacing:.04em;margin-left:6px;vertical-align:2px}
+
+.opts{display:flex;flex-direction:column;gap:1px;margin-top:16px;
+  background:var(--line-soft);border:1px solid var(--line)}
+label.opt{display:flex;gap:12px;align-items:flex-start;background:var(--surface);
+  padding:13px 15px;cursor:pointer;transition:background .12s}
+label.opt:hover{background:var(--accent-soft)}
+label.opt input{margin:3px 0 0;accent-color:var(--accent);flex:none;width:17px;height:17px}
+label.opt span{font-size:15px;line-height:1.45}
+label.opt.on{background:var(--accent-soft)}
+.more{margin-left:auto;flex:none;align-self:center;white-space:nowrap;font-style:normal;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent);
+  border-radius:2px;padding:2px 7px}
+.more::after{content:"▾ more"}
+label.opt.on .more::after{content:"▴ open"}
+label.opt.on .more{background:var(--surface)}
+
+.sub{margin:0 0 0 0;border-left:2px solid var(--accent);padding:0 0 0 16px;display:none}
+.sub.show{display:block;margin-top:14px}
+.sub .tier{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);
+  font-weight:700;margin:18px 0 0}
+.sub .tier:first-child{margin-top:0}
+
+input[type=text],input[type=email],input[type=url],textarea{
+  width:100%;font:inherit;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:2px;padding:11px 13px;margin-top:14px}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.75}
+
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.actions{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+button{font:inherit;font-weight:700;cursor:pointer;background:var(--accent);color:var(--ground);
+  border:1px solid var(--accent);border-radius:2px;padding:13px 30px;letter-spacing:.02em;
+  transition:filter .12s}
+button:hover{filter:brightness(1.12)}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.err{color:var(--clay);font-size:14.5px;font-weight:500}
+.privacy{margin-top:26px;font-size:13.5px;color:var(--muted);max-width:58ch}
+
+#done{display:none;padding:60px 0}
+#done.show{display:block}
+#done h2{font-size:29px;letter-spacing:-.01em}
+#done p{margin-top:14px;font-size:16.5px;max-width:52ch}
+.sig{font-family:Fraunces,serif;color:var(--ink);margin-top:22px}
+@media (max-width:520px){h1{font-size:29px}.wrap{padding:0 18px 70px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="done">
+  <h2>Thank you — you're on the list.</h2>
+  <p>We'll write to you when something opens up that fits what you've told us. It might be a while, or it might be next month; roles here come up unpredictably.</p>
+  <p class="sig">Liza and the Fools</p>
+</div>
+
+<form id="f" novalidate>
+<header>
+  <div class="eyebrow">Fools' Valley &middot; Sobral de Monte Agraço</div>
+  <h1>Stay on our list</h1>
+  <p>This is a short form to tell us about yourself, so that when we have open positions we can easily get in touch with the people they'd suit. It takes about three minutes.</p>
+</header>
+
+<fieldset>
+  <legend><span class="q">Name<span class="req">required</span></span></legend>
+  <input type="text" name="name" autocomplete="name" required>
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">Email<span class="req">required</span></span></legend>
+  <input type="email" name="email" autocomplete="email" required>
+</fieldset>
+
+<!-- spam trap -->
+<div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+<fieldset>
+  <legend>
+    <span class="q">Could you stay in Portugal without visa sponsorship?<span class="req">required</span></span>
+  </legend>
+  <div class="opts" data-single>
+    <label class="opt"><input type="radio" name="visa" value="EU/EEA/Swiss or EU residence permit" required>
+      <span>Yes, I'm an EU / EEA / Swiss citizen, or I hold an EU residence permit</span></label>
+    <label class="opt"><input type="radio" name="visa" value="No permit yet, can arrange my own">
+      <span>Not yet, but I can arrange a permit myself &mdash; and I'd be happy to volunteer in the meantime</span></label>
+    <label class="opt"><input type="radio" name="visa" value="1-3 months only, volunteering">
+      <span>Only for 1&ndash;3 months. I'm aware you can't sponsor work visas at the moment, but I'm interested in 1&ndash;3 months of volunteering.</span></label>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>
+    <span class="q">Which arrangements would work for you?<span class="req">required</span></span>
+    <div class="hint">Choose all that apply.</div>
+  </legend>
+  <div class="opts">
+    <label class="opt"><input type="checkbox" name="arrangement" value="Volunteering"><span>Volunteering</span></label>
+    <label class="opt"><input type="checkbox" name="arrangement" value="Volunteer first, then paid"><span>Starting as a volunteer for up to a month, with the prospect of a paid position</span></label>
+    <label class="opt"><input type="checkbox" name="arrangement" value="Semi-volunteer"><span>Semi-volunteer &mdash; food and accommodation covered, plus a small extra payment</span></label>
+    <label class="opt"><input type="checkbox" name="arrangement" value="Full-time paid"><span>A full-time paid position</span></label>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>
+    <span class="q">Which roles would interest you?<span class="req">required</span></span>
+    <div class="hint">Choose all that apply. Some will open up a few more questions.</div>
+  </legend>
+  <div class="opts">
+    <label class="opt"><input type="checkbox" name="role" value="Kitchen" data-opens="s-cook"><span>Kitchen</span><em class="more" aria-hidden="true"></em></label>
+  </div>
+  <div class="sub" id="s-cook">
+    <p class="tier">Tell us which of these are true</p>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="cook" value="Chef - runs a kitchen for 25+">
+        <span>I have experience cooking independently for groups of 25 people or larger, and can manage sourcing and run the cooking process with volunteers</span></label>
+      <label class="opt"><input type="checkbox" name="cook" value="Supportive cook">
+        <span>I love to cook but haven't run a kitchen on my own yet &mdash; I'd like to start in a supporting role, taking on my own meals rather than managing the kitchen</span></label>
+      <label class="opt"><input type="checkbox" name="cook" value="Cooks meat and fish">
+        <span>I'm comfortable cooking meat and fish dishes</span></label>
+    </div>
+    <p class="tier">Extra skills</p>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="cook" value="Baking"><span>Baking</span></label>
+      <label class="opt"><input type="checkbox" name="cook" value="Fermenting and preserving"><span>Fermenting and preserving</span></label>
+    </div>
+  </div>
+
+  <div class="opts" style="margin-top:1px">
+    <label class="opt"><input type="checkbox" name="role" value="Gardening" data-opens="s-garden"><span>Gardening and the land</span><em class="more" aria-hidden="true"></em></label>
+  </div>
+  <div class="sub" id="s-garden">
+    <p class="tier">Where would you put yourself?</p>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="garden" value="Can plan and lead planting">
+        <span>I could plan and lead the work &mdash; designing a garden or food forest, choosing species, setting up watering, running a tree-planting programme and directing others</span></label>
+      <label class="opt"><input type="checkbox" name="garden" value="Experienced hands">
+        <span>I have some experience and can work on my own &mdash; planting, weeding, watering, harvesting</span></label>
+      <label class="opt"><input type="checkbox" name="garden" value="Beginner, keen">
+        <span>Not much experience yet, but I'd like to learn and I'm happy working outside</span></label>
+    </div>
+  </div>
+
+  <div class="opts" style="margin-top:1px">
+    <label class="opt"><input type="checkbox" name="role" value="Building and maintenance" data-opens="s-build"><span>Building and maintenance</span><em class="more" aria-hidden="true"></em></label>
+  </div>
+  <div class="sub" id="s-build">
+    <p class="tier">Which of these can you do?</p>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="build" value="Licensed electrician"><span>Electrics &mdash; I'm a licensed electrician</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Basic electrics"><span>Simple electrics &mdash; sockets, lights, a simple circuit, reading a fuse box</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Plumbing"><span>Plumbing</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Carpentry and timber structures"><span>Carpentry and timber structures &mdash; decks, frames, small buildings, furniture</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Machinery"><span>Machinery &mdash; power tools, strimmers, chainsaws, tractors</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Welding"><span>Welding</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Repairs and supported construction"><span>Simple repairs and supporting construction &mdash; I've done a fair bit and work well alongside someone leading</span></label>
+      <label class="opt"><input type="checkbox" name="build" value="Beginner, keen"><span>Not much experience yet, but I'm interested in building and want to learn</span></label>
+    </div>
+  </div>
+
+  <div class="opts" style="margin-top:1px">
+    <label class="opt"><input type="checkbox" name="role" value="Space keeper" data-opens="s-space"><span>Space keeper (space care, guest management)</span><em class="more" aria-hidden="true"></em></label>
+  </div>
+  <div class="sub" id="s-space">
+    <p class="tier">Which parts suit you?</p>
+    <div class="opts">
+      <label class="opt"><input type="checkbox" name="space" value="Cleaning"><span>Cleaning</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Watering plants"><span>Watering the plants</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Preparing rooms"><span>Preparing rooms for residents and retreats</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Welcoming arrivals"><span>Welcoming arrivals</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Contact person"><span>Being the contact person for residents and organisers</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Organising meetings and cleanups"><span>Organising collective meetings and cleanup activities</span></label>
+      <label class="opt"><input type="checkbox" name="space" value="Admin and purchasing"><span>Admin and purchasing</span></label>
+    </div>
+  </div>
+
+  <div class="opts" style="margin-top:1px">
+    <label class="opt"><input type="checkbox" name="role" value="Marketing, social media, photography"><span>Marketing, social media, photography</span></label>
+    <label class="opt"><input type="checkbox" name="role" value="Facilitation" data-opens="s-fac"><span>Facilitation, holding groups</span><em class="more" aria-hidden="true"></em></label>
+  </div>
+  <div class="sub" id="s-fac">
+    <p class="tier">What do you practise?</p>
+    <textarea name="facilitation" placeholder="A line or two — what you hold, and how."></textarea>
+  </div>
+
+  <div class="opts" style="margin-top:1px">
+    <label class="opt"><input type="checkbox" name="role" value="Event and retreat production"><span>Event and retreat production</span></label>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">Languages<span class="req">required</span></span>
+  <div class="hint">The ones you speak comfortably.</div></legend>
+  <div class="opts">
+    <label class="opt"><input type="checkbox" name="lang" value="Portuguese"><span>Portuguese</span></label>
+    <label class="opt"><input type="checkbox" name="lang" value="English"><span>English</span></label>
+    <label class="opt"><input type="checkbox" name="lang" value="Spanish"><span>Spanish</span></label>
+    <label class="opt"><input type="checkbox" name="lang" value="French"><span>French</span></label>
+    <label class="opt"><input type="checkbox" name="lang" value="German"><span>German</span></label>
+    <label class="opt"><input type="checkbox" name="lang" value="Italian"><span>Italian</span></label>
+  </div>
+  <input type="text" name="lang_other" placeholder="Any others">
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">Driving<span class="req">required</span></span>
+  <div class="hint">We're half an hour from the nearest town, so this matters more than it sounds.</div></legend>
+  <div class="opts" data-single>
+    <label class="opt"><input type="radio" name="driving" value="Licence, coming with own car" required><span>I have a licence, and I'd come with my car</span></label>
+    <label class="opt"><input type="radio" name="driving" value="Licence, no car"><span>I have a licence, but no car</span></label>
+    <label class="opt"><input type="radio" name="driving" value="No licence"><span>No licence</span></label>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">Link to your CV</span>
+  <div class="hint">A Drive, Dropbox or WeTransfer link, a personal site, LinkedIn &mdash; whatever you have. Please make sure it's open to anyone with the link.</div></legend>
+  <input type="url" name="cv" placeholder="https://">
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">I'd like to be contacted<span class="req">required</span></span></legend>
+  <div class="opts" data-single>
+    <label class="opt"><input type="radio" name="contact" value="Matching openings only" required>
+      <span>Only about openings for the roles I've chosen</span></label>
+    <label class="opt"><input type="radio" name="contact" value="Openings + general updates">
+      <span>Openings, and I'd also like to be on the general Fools' Valley mailing list</span></label>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend><span class="q">Anything else?</span></legend>
+  <textarea name="notes" placeholder="Optional. What draws you here, when you might be free, anything we haven't asked."></textarea>
+</fieldset>
+
+<div class="actions">
+  <button type="submit" id="go">Send</button>
+  <span class="err" id="err" role="alert"></span>
+</div>
+<p class="privacy">We keep what you write here so we can contact you about openings at Fools' Valley, and nothing else. Write to slowreply@foolsvalley.com any time and we'll take you off the list.</p>
+</form>
+</div>
+
+<script>
+// ---- paste your Apps Script Web App URL here (see sheet_endpoint.gs) ----
+const ENDPOINT = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+const form = document.getElementById("f");
+const err  = document.getElementById("err");
+const go   = document.getElementById("go");
+
+// tick highlighting + conditional sections
+form.addEventListener("change", e => {
+  const i = e.target;
+  if (i.type === "radio") {
+    const box = i.closest(".opts");
+    if (box) box.querySelectorAll("label.opt").forEach(l =>
+      l.classList.toggle("on", l.querySelector("input").checked));
+  } else if (i.type === "checkbox") {
+    i.closest("label.opt")?.classList.toggle("on", i.checked);
+  }
+  if (i.dataset.opens) {
+    const panel = document.getElementById(i.dataset.opens);
+    panel.classList.toggle("show", i.checked);
+    if (!i.checked) {
+      panel.querySelectorAll("input[type=checkbox]").forEach(c => {
+        c.checked = false; c.closest("label.opt")?.classList.remove("on");
+      });
+      panel.querySelectorAll("textarea").forEach(t => t.value = "");
+    }
+  }
+});
+
+const many = n => [...form.querySelectorAll(`[name="${n}"]:checked`)].map(x => x.value).join(", ");
+const one  = n => form.querySelector(`[name="${n}"]:checked`)?.value || "";
+const txt  = n => (form.querySelector(`[name="${n}"]`)?.value || "").trim();
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  err.textContent = "";
+
+  if (txt("website")) return;                       // bot
+  if (!txt("name"))  return fail("Please tell us your name.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(txt("email"))) return fail("That email doesn't look right.");
+  if (!one("visa"))      return fail("Please answer the question about staying in Portugal.");
+  if (!many("arrangement")) return fail("Please choose at least one arrangement.");
+  if (!many("role"))     return fail("Please choose at least one role.");
+  if (!many("lang") && !txt("lang_other")) return fail("Please tell us at least one language.");
+  if (!one("driving"))   return fail("Please answer the driving question.");
+  if (!one("contact"))   return fail("Please choose how you'd like to be contacted.");
+
+  const payload = {
+    name: txt("name"), email: txt("email"), visa: one("visa"),
+    arrangement: many("arrangement"), role: many("role"),
+    cook: many("cook"), garden: many("garden"), build: many("build"), space: many("space"),
+    facilitation: txt("facilitation"),
+    lang: many("lang"), lang_other: txt("lang_other"),
+    driving: one("driving"), cv: txt("cv"),
+    contact: one("contact"), notes: txt("notes"),
+    page: location.href
+  };
+
+  go.disabled = true; go.textContent = "Sending…";
+  try {
+    await fetch(ENDPOINT, {
+      method: "POST", mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    form.style.display = "none";
+    document.getElementById("done").classList.add("show");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (_) {
+    go.disabled = false; go.textContent = "Send";
+    fail("Something went wrong sending this. Please try again, or email slowreply@foolsvalley.com.");
+  }
+
+  function fail(m){ err.textContent = m; go.disabled = false; go.textContent = "Send"; return false; }
+});
+</script>
+</body>
+</html>
