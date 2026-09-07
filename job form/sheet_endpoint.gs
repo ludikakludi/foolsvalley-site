@@ -38,6 +38,8 @@ var SKILLS = [
   ['build',  'Carpentry and timber structures',      'Carpentry & timber'],
   ['build',  'Machinery',                            'Machinery'],
   ['build',  'Welding',                              'Welding'],
+  ['build',  'Painting and plastering',              'Painting & plastering'],
+  ['build',  'Worked in Portugal, can source materials', 'Build: worked in PT, sources materials'],
   ['build',  'Repairs and supported construction',   'Repairs & supported build'],
   ['build',  'Beginner, keen',                       'Building: beginner'],
   ['space',  'Cleaning',                             'Cleaning'],
@@ -57,7 +59,7 @@ var ROLES = ['Kitchen','Gardening','Building and maintenance','Space keeper',
 var LANGS = ['Portuguese','English','Spanish','French','German','Italian'];
 
 function headers_() {
-  var h = ['Timestamp','Name','Email','Can stay in Portugal','Arrangements','Roles'];
+  var h = ['Timestamp','Name','Email','Can stay in Portugal','Arrangements','Stay on site','Roles'];
   ROLES.forEach(function(r){ h.push('R: ' + r); });
   SKILLS.forEach(function(s){ h.push(s[2]); });
   return h.concat(['Facilitation practices','Languages','Other languages',
@@ -129,6 +131,7 @@ function doPost(e) {
       'Email': d.email || '',
       'Can stay in Portugal': d.visa || '',
       'Arrangements': d.arrangement || '',
+      'Stay on site': d.onsite || '',
       'Roles': d.role || '',
       'Facilitation practices': d.facilitation || '',
       'Languages': d.lang || '',
