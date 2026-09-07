@@ -105,7 +105,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 <div id="done">
   <h2>Thank you — you're on the list.</h2>
   <p>We'll write to you when something opens up that fits what you've told us. It might be a while, or it might be next month; roles here come up unpredictably.</p>
-  <p class="sig">Liza and the Fools</p>
+  <p class="sig">Your fools</p>
 </div>
 
 <form id="f" novalidate>
@@ -363,6 +363,8 @@ form.addEventListener("submit", async e => {
     contact: one("contact"), notes: txt("notes"),
     page: location.href
   };
+
+  if (ENDPOINT.indexOf("http") !== 0) return fail("The form isn't connected yet — please email slowreply@foolsvalley.com instead.");
 
   go.disabled = true; go.textContent = "Sending…";
   try {
