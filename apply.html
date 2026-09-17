@@ -670,25 +670,25 @@ footer a { color: var(--text); }
         <input type="email" id="rev-email" required>
       </div>
 
-      <div class="field">
+      <div class="field" id="rev-quest-field">
         <label>main quest (optional)</label>
         <div class="hint">what brings you to fools' valley?</div>
         <textarea id="rev-quest" rows="2"></textarea>
       </div>
 
-      <div class="field">
+      <div class="field" id="rev-past-quests-field">
         <label>past quests (optional)</label>
         <div class="hint">past quests you've been on that have influenced who you are right now</div>
         <textarea id="rev-past-quests" rows="2"></textarea>
       </div>
 
-      <div class="field">
+      <div class="field" id="rev-contribute-field">
         <label>what would you like to contribute? (optional)</label>
         <div class="hint">would you like to host any workshops / activities / talks? what else would you like to contribute?</div>
         <textarea id="rev-contribute" rows="2"></textarea>
       </div>
 
-      <div class="field">
+      <div class="field" id="rev-tc-field">
         <label>TC interest (optional)</label>
         <div class="radio-group">
           <label class="radio-option" id="tc-primary-option">
@@ -784,6 +784,20 @@ let formData = {}; // Store form data from previous page
 let hasShortStayCode = false; // Track if shortstay codeword is active
 let hasTcMayCode = false; // Track if tcmay codeword is active
 let hasAgarthaCode = false; // Track if agartha codeword is active
+let hasVipassanaCode = false; // Track if vipassanaam codeword is active
+
+// Vipassana & authentic movement retreat: Dec 1-6, 2026.
+// Arrive up to 2 days before, leave up to 2 days after; stay must cover the whole retreat.
+const VIPASSANA_START = new Date(2026, 11, 1);
+const VIPASSANA_END = new Date(2026, 11, 6);
+const VIPASSANA_EARLIEST_ARRIVAL = new Date(2026, 10, 29);
+const VIPASSANA_LATEST_DEPARTURE = new Date(2026, 11, 8);
+const VIPASSANA_DAILY_FEE = 25;
+
+function arrivalPrompt() {
+  if (hasVipassanaCode) return 'select your arrival day (nov 29 \u2013 dec 1)';
+  return 'select your arrival Monday';
+}
 
 
 // ============================================================
@@ -934,7 +948,9 @@ function renderCalendar() {
       // With tcmay code, ALSO allow May 8-9, 2026 (in addition to normal Monday rules)
       let isValidArrival = false;
 
-      if (hasShortStayCode) {
+      if (hasVipassanaCode) {
+        isValidArrival = !isPast && date >= VIPASSANA_EARLIEST_ARRIVAL && date <= VIPASSANA_START;
+      } else if (hasShortStayCode) {
         isValidArrival = !isPast && !tooSoon;
       } else if (hasTcMayCode) {
         const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
@@ -962,8 +978,16 @@ function renderCalendar() {
         div.classList.add('selectable');
         div.addEventListener('click', () => selectDeparture(date));
       } else {
+        if (hasVipassanaCode) {
+          // Vipassana retreat: must stay through the end of the retreat, leave at most 2 days after
+          if (date >= VIPASSANA_END && date <= VIPASSANA_LATEST_DEPARTURE) {
+            div.classList.add('selectable');
+            div.addEventListener('click', () => selectDeparture(date));
+          } else {
+            div.classList.add('disabled');
+          }
+        } else if (hasTcMayCode) {
         // With tcmay code: if arrival is May 8-9, minimum 2 nights; otherwise normal 6 day minimum
-        if (hasTcMayCode) {
           const tcMayStart = new Date(2026, 4, 8); // May 8, 2026
           const tcMayArrival = new Date(2026, 4, 9); // May 9, 2026
           const isTcMayArrival = arrivalDate >= tcMayStart && arrivalDate <= tcMayArrival;
@@ -1025,7 +1049,7 @@ function selectArrival(date) {
     selectedRoom = null;
     fallbackMode = false;
     selectingWhat = 'arrival';
-    document.getElementById('date-mode').textContent = 'select your arrival Monday';
+    document.getElementById('date-mode').textContent = arrivalPrompt();
     document.getElementById('date-summary').style.display = 'none';
     renderCalendar();
     return;
@@ -1039,7 +1063,9 @@ function selectArrival(date) {
 
   // Update message based on active code and arrival date
   let minDuration;
-  if (hasTcMayCode) {
+  if (hasVipassanaCode) {
+    minDuration = 'dec 6 \u2013 8';
+  } else if (hasTcMayCode) {
     const tcMayStart = new Date(2026, 4, 8);
     const tcMayArrival = new Date(2026, 4, 9);
     const isTcMayArrival = arrivalDate >= tcMayStart && arrivalDate <= tcMayArrival;
@@ -1063,7 +1089,7 @@ function selectDeparture(date) {
     departureDate = null;
     selectedRoom = null;
     selectingWhat = 'departure';
-    const minDuration = hasShortStayCode ? 'any duration' : 'min 2 weeks';
+    const minDuration = hasVipassanaCode ? 'dec 6 \u2013 8' : hasShortStayCode ? 'any duration' : 'min 2 weeks';
     document.getElementById('date-mode').textContent = `now pick your departure day (${minDuration})`;
     document.getElementById('departure-display').textContent = '—';
     document.getElementById('duration-display').textContent = '—';
@@ -1106,7 +1132,7 @@ function resetDates() {
   selectingWhat = 'arrival';
   selectedRoom = null;
   fallbackMode = false;
-  document.getElementById('date-mode').textContent = 'select your arrival Monday';
+  document.getElementById('date-mode').textContent = arrivalPrompt();
   document.getElementById('date-summary').style.display = 'none';
 
   // Hide rooms and review sections
@@ -1194,6 +1220,14 @@ function getEffectiveRoomPrice(room) {
     return Math.round(room.roomPrice * 0.9);
   }
   return room.roomPrice;
+}
+
+// Daily fee for food & expenses. The vipassanaam codeword uses a flat retreat rate instead of the backend tier.
+function getEffectiveDailyFee(room) {
+  if (hasVipassanaCode) {
+    return VIPASSANA_DAILY_FEE * room.numDays;
+  }
+  return room.dailyFee;
 }
 
 function normalizePriceBreakdown(breakdown, numDays) {
@@ -1295,10 +1329,11 @@ function renderRooms() {
       var normalizedBreakdown = normalizePriceBreakdown(room.priceBreakdown, room.numDays);
 
       var effectiveRoomPrice = getEffectiveRoomPrice(room);
+      var effectiveDailyFee = getEffectiveDailyFee(room);
       var agarthaNote = (hasAgarthaCode) ? ' <span style="color:var(--success); font-size:0.8rem;">−10% agartha discount</span>' : '';
       info.innerHTML = '<h4>' + displayName + '</h4>' +
         '<div class="room-desc">' + displayDesc + '</div>' +
-        '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + room.dailyFee + ' food & expenses (' + room.numDays + ' days × €' + Math.round(room.dailyFee / room.numDays) + ')</span></div>';
+        '<div class="room-price">€' + effectiveRoomPrice + agarthaNote + ' <span style="font-weight:400;">(' + normalizedBreakdown + ')</span><span class="breakdown">+ €' + effectiveDailyFee + ' food & expenses (' + room.numDays + ' days × €' + Math.round(effectiveDailyFee / room.numDays) + ')</span></div>';
       inner.appendChild(info);
 
       card.appendChild(inner);
@@ -1323,6 +1358,12 @@ function renderRooms() {
 // REVIEW
 // ============================================================
 function populateReview() {
+  // Retreat bookings only need name, email and the "any questions" field
+  ['rev-quest-field', 'rev-past-quests-field', 'rev-contribute-field', 'rev-tc-field'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = hasVipassanaCode ? 'none' : '';
+  });
+
   // Populate editable form fields
   document.getElementById('rev-name').value = formData.name || '';
   document.getElementById('rev-email').value = formData.email || '';
@@ -1394,10 +1435,11 @@ function populateReview() {
     document.getElementById('rev-room-price').innerHTML = '\u20AC' + effectiveRoomPrice + revAgarthaNote + ' <span style="font-weight:400; font-size:0.9rem;">(' + normalizedBreakdown + ')</span>';
 
     // Show daily fee with per-day rate annotation
-    document.getElementById('rev-daily-fee').innerHTML = '\u20AC' + selectedRoom.dailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(' + Math.round(selectedRoom.dailyFee / selectedRoom.numDays) + ' euros/day)</span>';
+    var effectiveDailyFee = getEffectiveDailyFee(selectedRoom);
+    document.getElementById('rev-daily-fee').innerHTML = '\u20AC' + effectiveDailyFee + ' <span style="font-weight:400; font-size:0.85rem; color: var(--text-light);">(' + Math.round(effectiveDailyFee / selectedRoom.numDays) + ' euros/day)</span>';
 
     // Calculate and display total
-    var totalPrice = effectiveRoomPrice + selectedRoom.dailyFee;
+    var totalPrice = effectiveRoomPrice + effectiveDailyFee;
     document.getElementById('rev-total').textContent = '\u20AC' + totalPrice;
   }
 }
@@ -1435,6 +1477,10 @@ async function submitApplication() {
   btn.textContent = 'submitting...';
 
   const days = Math.round((departureDate - arrivalDate) / (1000*60*60*24));
+  const submittedDailyFee = fallbackMode ? 0 : (selectedRoom ? getEffectiveDailyFee(selectedRoom) : 0);
+  const submittedRoomPrice = fallbackMode ? 0 : (selectedRoom ? selectedRoom.roomPrice : 0);
+  // Flag retreat bookings in the questions field so they show up in the email and sheet
+  const codewordNote = hasVipassanaCode ? '[codeword: vipassanaam \u2014 vipassana & authentic movement retreat, \u20AC' + VIPASSANA_DAILY_FEE + '/day fee] ' : '';
 
   const payload = {
     action: 'submit',
@@ -1450,7 +1496,8 @@ async function submitApplication() {
       useTimeFor: formData.useTime,
       contribute: formData.contribute,
       idealDay: formData.idealDay,
-      questions: formData.questions,
+      questions: codewordNote + (formData.questions || ''),
+      codeword: hasVipassanaCode ? 'vipassanaam' : (hasAgarthaCode ? 'agartha' : (hasTcMayCode ? 'tcmay' : (hasShortStayCode ? 'shortstay' : ''))),
       cleanupAgreement: formData.cleanupAgreement,
       arrivalDate: formatDate(arrivalDate),
       departureDate: formatDate(departureDate),
@@ -1458,10 +1505,10 @@ async function submitApplication() {
       roomName: fallbackMode ? 'none' : (selectedRoom ? selectedRoom.name : 'none'),
       roomId: fallbackMode ? 'none' : (selectedRoom ? selectedRoom.id : 'none'),
       building: fallbackMode ? '' : (selectedRoom ? selectedRoom.building : ''),
-      roomPrice: fallbackMode ? 0 : (selectedRoom ? selectedRoom.roomPrice : 0),
+      roomPrice: submittedRoomPrice,
       priceBreakdown: fallbackMode ? '' : (selectedRoom ? selectedRoom.priceBreakdown : ''),
-      dailyFee: fallbackMode ? 0 : (selectedRoom ? selectedRoom.dailyFee : 0),
-      totalPrice: fallbackMode ? 0 : (selectedRoom ? selectedRoom.totalPrice : 0),
+      dailyFee: submittedDailyFee,
+      totalPrice: submittedRoomPrice + submittedDailyFee,
       roomPreference: fallbackMode ? (document.getElementById('f-room-preference') ? document.getElementById('f-room-preference').value.trim() : '') : ''
     }
   };
@@ -1567,9 +1614,29 @@ document.getElementById('codeword-input').addEventListener('input', function() {
   const minDurationText = document.getElementById('min-duration-text');
   const minDurationContainer = document.getElementById('min-duration-container');
 
-  if (code === 'shortstay') {
+  if (code === 'vipassanaam') {
+    hasVipassanaCode = true;
+    hasShortStayCode = false;
+    hasTcMayCode = false;
+    hasAgarthaCode = false;
+    message.style.display = 'block';
+    message.style.color = 'var(--success)';
+    message.textContent = '\u2713 vipassana & authentic movement retreat (dec 1\u20136): arrive nov 29 \u2013 dec 1, leave dec 6 \u2013 8. daily fee \u20AC' + VIPASSANA_DAILY_FEE + '/day.';
+
+    // Update instructions
+    instructionText.textContent = 'pick your arrival day (nov 29 \u2013 dec 1), then your departure day (dec 6 \u2013 8).';
+    minDurationContainer.style.display = 'block';
+    minDurationText.textContent = 'your stay must cover the whole retreat (dec 1\u20136). daily fee for food & expenses is \u20AC' + VIPASSANA_DAILY_FEE + '/day.';
+
+    // Jump the calendar to December 2026 and clear any dates picked under other rules
+    calendarMonth = 11;
+    calendarYear = 2026;
+    resetDates();
+  } else if (code === 'shortstay') {
     hasShortStayCode = true;
     hasTcMayCode = false;
+    hasAgarthaCode = false;
+    hasVipassanaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
     message.textContent = '✓ Short stay unlocked: book any day, any duration';
@@ -1584,6 +1651,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     hasTcMayCode = true;
     hasShortStayCode = false;
     hasAgarthaCode = false;
+    hasVipassanaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
     message.textContent = '✓ TC May special: book May 8-9 with 2 night minimum, OR normal Monday bookings';
@@ -1602,6 +1670,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     hasAgarthaCode = true;
     hasShortStayCode = false;
     hasTcMayCode = false;
+    hasVipassanaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--success)';
     message.textContent = '✓ Agartha: 10% discount on accommodation';
@@ -1611,6 +1680,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     hasShortStayCode = false;
     hasTcMayCode = false;
     hasAgarthaCode = false;
+    hasVipassanaCode = false;
     message.style.display = 'block';
     message.style.color = 'var(--error)';
     message.textContent = 'Invalid codeword';
@@ -1629,6 +1699,7 @@ document.getElementById('codeword-input').addEventListener('input', function() {
     hasShortStayCode = false;
     hasTcMayCode = false;
     hasAgarthaCode = false;
+    hasVipassanaCode = false;
     message.style.display = 'none';
 
     // Restore normal instructions

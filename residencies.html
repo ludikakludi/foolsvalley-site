@@ -431,9 +431,31 @@ custom_js: |
   var codewordInput = document.getElementById('codeword-input');
   var codewordMessage = document.getElementById('codeword-message');
   var hiddenRequiredFields = [];
+  var hiddenQuestionBlocks = [];
 
   function applyFormCodeword(code) {
-    if (code === 'tcmay' || code === 'agartha') {
+    if (code === 'vipassanaam') {
+      // Vipassana & authentic movement retreat: only name, email and the "anything else" field
+      restoreFormQuestions();
+      if (questionsWrapper) {
+        Array.prototype.forEach.call(questionsWrapper.children, function(block) {
+          block.querySelectorAll('[required]').forEach(function(el) {
+            hiddenRequiredFields.push(el);
+            el.removeAttribute('required');
+          });
+          if (block.id === 'questions-field') {
+            block.querySelectorAll('.new-visitor-required').forEach(function(el) { el.style.display = 'none'; });
+          } else {
+            hiddenQuestionBlocks.push(block);
+            block.style.display = 'none';
+          }
+        });
+      }
+      codewordMessage.style.display = 'block';
+      codewordMessage.style.color = 'var(--moss)';
+      codewordMessage.textContent = '✓ vipassana & authentic movement retreat (dec 1–6) — just your name and email, plus anything you\'d like to tell us. €25/day daily fee.';
+    } else if (code === 'tcmay' || code === 'agartha') {
+      restoreFormQuestions();
       if (questionsWrapper) {
         hiddenRequiredFields = [];
         questionsWrapper.querySelectorAll('[required]').forEach(function(el) {
@@ -463,6 +485,9 @@ custom_js: |
   function restoreFormQuestions() {
     if (questionsWrapper) {
       questionsWrapper.style.display = '';
+      hiddenQuestionBlocks.forEach(function(block) { block.style.display = ''; });
+      hiddenQuestionBlocks = [];
+      questionsWrapper.querySelectorAll('.new-visitor-required').forEach(function(el) { el.style.display = ''; });
       hiddenRequiredFields.forEach(function(el) {
         el.setAttribute('required', 'required');
       });
@@ -709,7 +734,7 @@ custom_js: |
                 <div class="month-status status-mixed">
                     <span class="status-badge open">open</span>
                     <div class="status-item">
-                        21–25 contact improv intensive workshop by Nita Little
+                        21–25 <a href="https://www.assembly.contact/nita-little" target="_blank" rel="noopener" class="calendar-link">contact improv intensive workshop by Nita Little</a>
                     </div>
                     <div class="status-item">
                         <strong>TC hub:</strong> <a href="#tc" class="calendar-link">transformational connection residency</a>
@@ -731,7 +756,7 @@ custom_js: |
                 <div class="month-status status-mixed">
                     <span class="status-badge open">open</span>
                     <div class="status-item">
-                        8–13 vipassana & authentic movement retreat
+                        1–6 vipassana & authentic movement retreat
                     </div>
                     <div class="status-item">
                         28 dec – 11 jan new year CI festival & intensive
@@ -860,7 +885,7 @@ custom_js: |
                 <textarea name="contribute" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
             </div>
 
-            <div style="margin-bottom: 2rem;">
+            <div style="margin-bottom: 2rem;" id="questions-field">
                 <label style="display: block; font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500;">anything you'd like to ask or let us know about? <span class="new-visitor-required">*</span></label>
                 <textarea name="questions" required rows="3" class="new-visitor-field" style="width: 100%; padding: 0.8rem 1rem; font-family: 'EB Garamond', serif; font-size: 1.05rem; border: 1px solid rgba(26,26,26,0.2); border-radius: 6px; background: var(--cream); color: var(--black); line-height: 1.6; resize: vertical;"></textarea>
             </div>
