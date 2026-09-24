@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>how to be an octopus in the here and now? — fools' valley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --black: #0a0a0a;
+            --gray: #6b6b6b;
+            --gray-light: #b0b0b0;
+            --moss: #4a5d3a;
+            --rust: #8b4a2b;
+            --cream: #fffef8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--black);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: var(--black); text-decoration: underline; }
+        a:hover { text-decoration: none; background: var(--black); color: var(--bg); }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--black);
+            background: var(--bg);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 12px;
+            z-index: 100;
+        }
+
+        nav a { text-transform: lowercase; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; } .nav-logo svg { width: 32px; height: 32px; } .nav-logo span { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--black); } .nav-logo:hover { background: none; } .nav-logo:hover span { text-decoration: underline; }
+
+        .nav-toggle { display: none; background: var(--bg); border: none; cursor: pointer; padding: 0.75rem; margin-left: auto; z-index: 101; }
+        .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--black); margin: 5px 0; transition: 0.3s; }
+        .nav-links { display: contents; }
+
+        @media (max-width: 600px) {
+            nav { flex-wrap: nowrap; justify-content: space-between; align-items: center; }
+            .nav-toggle { display: block !important; }
+            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--bg); flex-direction: column; padding: 1.25rem 1.5rem; border: 1px solid var(--black); border-top: none; gap: 1rem; text-align: right; min-width: 160px; font-size: 14px; }
+            .nav-links.open { display: flex; }
+            .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .nav-toggle.open span:nth-child(2) { opacity: 0; }
+            .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        }
+
+        .hero { padding: 8rem 2rem 3rem; position: relative; overflow: hidden; }
+
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Instrument Serif', serif;
+            font-size: 18vw;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gray-light);
+            top: 50%;
+            right: -10%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 640px; }
+
+        .hero-dates {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--moss);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            font-weight: 400;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-intro { font-size: 13px; color: var(--gray); max-width: 460px; line-height: 1.8; }
+
+        section { padding: 3rem 2rem; border-top: 1px solid var(--black); }
+
+        .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .prose { max-width: 620px; }
+        .prose p { margin-bottom: 1.25rem; font-size: 13.5px; line-height: 1.8; }
+        .prose em { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1em; }
+        .prose .questions { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.15rem; line-height: 1.6; color: var(--moss); }
+
+        .schedule { max-width: 620px; }
+        .schedule-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 1.5rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid var(--gray-light);
+            align-items: baseline;
+        }
+        .schedule-time { font-size: 12px; color: var(--gray); }
+        .schedule-what { font-family: 'EB Garamond', serif; font-size: 1.2rem; }
+
+        .price-list { max-width: 620px; }
+        .price-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-light);
+            align-items: baseline;
+        }
+        .price-amount { font-family: 'EB Garamond', serif; font-size: 1.5rem; }
+        .price-desc { font-size: 13px; color: var(--gray); line-height: 1.7; }
+        .price-note { font-size: 12px; color: var(--gray); margin-top: 1.25rem; font-style: italic; }
+
+        .apply-btn {
+            display: inline-block;
+            margin-top: 2.5rem;
+            padding: 1rem 2.5rem;
+            background: var(--black);
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+            border: 1px solid var(--black);
+        }
+        .apply-btn:hover { background: var(--bg); color: var(--black); }
+
+        footer {
+            padding: 1rem 2rem;
+            font-size: 11px;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--black);
+        }
+        @media (max-width: 768px) {
+            footer { flex-direction: column; gap: 0.5rem; }
+            .schedule-row, .price-row { grid-template-columns: 1fr; gap: 0.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-logo"><svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M 5 45 Q 4 22, 20 10 Q 40 -2, 62 5 Q 82 14, 88 38 Q 92 62, 78 78 Q 60 92, 35 88 Q 10 82, 5 58 Q 2 48, 5 45" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 40 25 Q 42 19, 48 18 Q 55 18, 57 24 Q 58 32, 52 35 Q 44 37, 41 31 Q 39 28, 40 25" stroke="currentColor" stroke-width="2" fill="none"/><path d="M 48 37 Q 47 45, 48 52 Q 47 58, 48 63" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 63 Q 40 70, 32 78" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 62 Q 58 68, 65 72" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 47 48 Q 38 44, 28 42" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 49 47 Q 58 42, 68 38" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg><span>fools' valley</span></a>
+        <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <div class="nav-links">
+            <a href="residencies.html">residencies</a>
+            <a href="events.html">events</a>
+            <a href="saturdays.html">open saturdays</a>
+            <a href="research.html">research</a>
+            <a href="rooms.html">rooms</a>
+            <a href="venue.html">venue</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg-text">OCTO</div>
+        <div class="hero-content">
+            <div class="hero-dates">sat oct 31, 2026 · 11:00–16:00 · fools' valley</div>
+            <h1 class="hero-title">how to be an octopus<br>in the here and now?</h1>
+            <p class="hero-intro">
+                an embodied, experimental workshop with artist Miriam Simun.
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">001 / the workshop</div>
+        <div class="prose">
+            <p>what might we learn by thinking, sensing, and moving like an octopus? in this embodied, experimental workshop, artist Miriam Simun invites participants to explore the world from the perspective of the soft-bodied, many-armed cephalopod. through movement, sensory attention, imagination, and collective reflection, we explore what cephalopod intelligence might teach us about presence, distributed cognition, collective sensing, relationality, and uncertainty.</p>
+            <p>this <em>here and now</em> version moves between individual and group somatic exercises and group dialogue practice. "here and now" is a practice in which participants focus on what is happening between them in the present moment, using immediate feelings, perceptions, roles, and relational dynamics as the material for inquiry, to reveal the unconscious patterns the group is collectively producing.</p>
+            <p>expect sensory play, movement explorations, and moments of gentle discomfort as we probe the boundaries between self and environment, visibility and withdrawal, surface and depth.</p>
+            <p class="questions">how are we sensing collectively? how are we acting unconsciously? how can we use the body to shift ourselves and the group?</p>
+            <p>the session lasts four hours. we alternate between periods of silent movement, still dialogue, movement with dialogue, and reflection. we work alone, in pairs, and as a group. there will be an invitation to come into touch with yourself, your environment, and the others around you.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">002 / the artist</div>
+        <div class="prose">
+            <p>Miriam Simun is a visual artist whose multidisciplinary practice uses science, somatics, scent, and humor to explore ways of knowing — the non-visual senses, interspecies relations, and radical reimaginings of life under ecological crisis. trained as a sociologist, she works as an "artist-as-fieldworker," conducting first-person research with communities from scientific laboratories to rewilded forests, freedivers to human pollinators — research that shapes the final artworks, spanning video, installation, painting, performance, and communal sensorial experiences.</p>
+            <p>their work has been presented at the New Museum, Gropius Bau, MIT List Center for Visual Art, Ars Electronica, Momenta Biennale, and the Bogotá Museum of Modern Art, among others. she is a recipient of grants and fellowships from Creative Capital, the Robert Rauschenberg Foundation, the Onassis Foundation, and the Gulbenkian Foundation, and has been featured in The New York Times, The New Yorker, BBC, and Forbes. Simun holds degrees from the MIT Media Lab, NYU's ITP, and the London School of Economics.</p>
+            <p><a href="https://www.miriamsimun.xyz" target="_blank" rel="noopener">miriamsimun.xyz</a> · Institute for Transhumanist Cephalopod Evolution: <a href="https://www.0ctopus.net" target="_blank" rel="noopener">0ctopus.net</a> <span style="color:var(--gray);">(zer0, not an "o")</span></p>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">003 / schedule</div>
+        <div class="schedule">
+            <div class="schedule-row"><div class="schedule-time">11:00 – 13:00</div><div class="schedule-what">training</div></div>
+            <div class="schedule-row"><div class="schedule-time">13:00 – 14:00</div><div class="schedule-what">lunch</div></div>
+            <div class="schedule-row"><div class="schedule-time">14:00 – 16:00</div><div class="schedule-what">training</div></div>
+            <div class="schedule-row"><div class="schedule-time">16:00 – 17:30</div><div class="schedule-what">sauna</div></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-label">004 / tickets</div>
+        <div class="price-list">
+            <div class="price-row">
+                <div class="price-amount">€20</div>
+                <div class="price-desc">early bird — through october 11</div>
+            </div>
+            <div class="price-row">
+                <div class="price-amount">€40</div>
+                <div class="price-desc">regular — from october 12</div>
+            </div>
+            <div class="price-row">
+                <div class="price-amount">+€20</div>
+                <div class="price-desc">add-on: dinner &amp; sauna — optional, on top of either ticket</div>
+            </div>
+        </div>
+        <p class="price-note">want to stay over? you can <a href="rooms.html">book a room</a>.</p>
+
+        <a class="apply-btn" href="https://shotgun.live/en/festivals/how-to-become-an-ctopus-in-the-here-and-now" target="_blank" rel="noopener">book tickets →</a>
+    </section>
+
+    <section>
+        <div class="section-label">005 / practical</div>
+        <div class="prose">
+            <p>please wear clothes that are comfortable for movement and lying on the floor.</p>
+            <p>special accommodations can be arranged. please email <a href="mailto:msimun@gmail.com">msimun@gmail.com</a> at least three days before the event to discuss your needs.</p>
+        </div>
+    </section>
+
+    <footer>
+        <span>fools' valley</span>
+        <span>30 min north of lisbon</span>
+        <span>things happen here</span>
+    </footer>
+
+    <script>
+    (function() {
+        const toggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('open');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('open');
+                navLinks.classList.remove('open');
+            });
+        });
+    })();
+    </script>
+</body>
+</html>
