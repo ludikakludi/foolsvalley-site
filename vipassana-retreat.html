@@ -194,7 +194,7 @@
         }
         .room-card:hover { background: #ecece5; }
         .room-card.selected { background: var(--black); color: var(--bg); }
-        .room-card.selected .room-desc, .room-card.selected .room-fee { color: var(--gray-light); }
+        .room-card.selected .room-desc { color: var(--gray-light); }
         .room-card img { width: 180px; height: 140px; object-fit: cover; display: block; filter: saturate(0.9); border-right: 1px solid var(--black); }
         .room-card .no-photo { width: 180px; height: 140px; display: flex; align-items: center; justify-content: center; font-family: 'EB Garamond', serif; font-style: italic; color: var(--gray); border-right: 1px solid var(--black); }
         .room-info { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
@@ -202,7 +202,6 @@
         .room-desc { font-size: 11px; color: var(--gray); line-height: 1.6; margin-bottom: 0.6rem; }
         .room-price { font-size: 13px; }
         .room-price strong { font-family: 'EB Garamond', serif; font-size: 1.2rem; font-weight: 400; }
-        .room-fee { display: block; font-size: 11px; color: var(--gray); margin-top: 0.2rem; }
 
         .rooms-fallback { max-width: 620px; border: 1px solid var(--black); padding: 1.5rem; background: var(--cream); }
         .rooms-fallback h4 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.75rem; }
@@ -339,7 +338,7 @@
         <div class="section-label">003 / your dates</div>
         <h2 class="section-title">when</h2>
         <p class="calendar-note">
-            the retreat runs <strong>tuesday dec 1 – sunday dec 6</strong> and your stay has to cover all of it. you can arrive up to two days early (from nov 29) and stay up to two days later (until dec 8). click a day between nov 29 and dec 1 to change your arrival, a day between dec 6 and dec 8 to change your departure.
+            the retreat runs <strong>tuesday dec 1 – sunday dec 6</strong> and your stay has to cover all of it. you can arrive up to two days early (from nov 29) and stay one day later (until monday dec 7). click a day between nov 29 and dec 1 to change your arrival, dec 6 or dec 7 to change your departure.
         </p>
         <div class="calendar-wrap">
             <div class="calendar-header">
@@ -426,7 +425,7 @@
     const RETREAT_START     = new Date(2026, 11, 1);
     const RETREAT_END       = new Date(2026, 11, 6);
     const EARLIEST_ARRIVAL  = new Date(2026, 10, 29);
-    const LATEST_DEPARTURE  = new Date(2026, 11, 8);
+    const LATEST_DEPARTURE  = new Date(2026, 11, 7);
     const CAL_FIRST = { year: 2026, month: 10 }; // November
     const CAL_LAST  = { year: 2026, month: 11 }; // December
 
@@ -647,7 +646,6 @@
           card.appendChild(noPhoto);
         }
 
-        const feePerDay = room.numDays ? Math.round(room.dailyFee / room.numDays) : 0;
         const info = document.createElement('div');
         info.className = 'room-info';
         const h4 = document.createElement('h4');
@@ -657,8 +655,7 @@
         desc.textContent = room.desc || '';
         const price = document.createElement('div');
         price.className = 'room-price';
-        price.innerHTML = '<strong>€' + (room.roomPrice + room.dailyFee) + '</strong> (€' + room.roomPrice + ' accommodation + €' + room.dailyFee + ' food)' +
-          '<span class="room-fee">' + room.numDays + ' nights · ' + room.priceBreakdown + ' · food €' + feePerDay + '/day</span>';
+        price.innerHTML = '<strong>€' + (room.roomPrice + room.dailyFee) + '</strong> (€' + room.roomPrice + ' accommodation + €' + room.dailyFee + ' food)';
         info.appendChild(h4); info.appendChild(desc); info.appendChild(price);
         card.appendChild(info);
 
@@ -692,7 +689,7 @@
       } else if (selectedRoom) {
         document.getElementById('rev-room').textContent = cleanName(selectedRoom.name);
         priceRows.forEach(id => document.getElementById(id).style.display = '');
-        document.getElementById('rev-room-price').textContent = '€' + selectedRoom.roomPrice + ' (' + selectedRoom.priceBreakdown + ')';
+        document.getElementById('rev-room-price').textContent = '€' + selectedRoom.roomPrice;
         document.getElementById('rev-daily-fee').textContent = '€' + selectedRoom.dailyFee;
         document.getElementById('rev-total').textContent = '€' + (selectedRoom.roomPrice + selectedRoom.dailyFee);
       }
