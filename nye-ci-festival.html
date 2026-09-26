@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vipassana & authentic movement retreat — fools' valley</title>
+    <title>new year contact improvisation festival — fools' valley</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -146,32 +146,9 @@
         .field .error-msg { color: var(--rust); font-size: 11px; margin-top: 0.35rem; display: none; }
         .field.error .error-msg { display: block; }
 
-        /* CALENDAR */
-        .calendar-wrap { max-width: 420px; }
-        .calendar-note { font-size: 12px; color: var(--gray); margin-bottom: 1.25rem; line-height: 1.7; max-width: 620px; }
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-        .calendar-header h3 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; }
-        .calendar-header button {
-            background: var(--bg);
-            border: 1px solid var(--black);
-            width: 32px; height: 32px;
-            cursor: pointer;
-            font-family: 'Space Mono', monospace;
-            font-size: 14px;
-            color: var(--black);
-        }
-        .calendar-header button:hover { background: var(--black); color: var(--bg); }
-        .calendar-header button:disabled { opacity: 0.25; cursor: default; }
-        .calendar-header button:disabled:hover { background: var(--bg); color: var(--black); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid var(--black); }
-        .day-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray); text-align: center; padding: 0.5rem 0; border-bottom: 1px solid var(--black); }
-        .day { text-align: center; padding: 0.6rem 0; font-size: 12px; color: var(--gray-light); cursor: default; }
-        .day.selectable { color: var(--black); cursor: pointer; text-decoration: underline; }
-        .day.selectable:hover { background: var(--black); color: var(--bg); }
-        .day.in-range { background: #e4e4dc; color: var(--black); }
-        .day.retreat { font-weight: 700; }
-        .day.selected-arrival, .day.selected-departure { background: var(--black); color: var(--bg); text-decoration: none; }
-        .date-summary { margin-top: 1.25rem; font-size: 12px; line-height: 1.9; }
+        /* DATES */
+        .dates-note { font-size: 12px; color: var(--gray); margin-bottom: 1.25rem; line-height: 1.7; max-width: 620px; }
+        .date-summary { max-width: 420px; border: 1px solid var(--black); background: var(--cream); padding: 1rem 1.25rem; font-size: 12px; line-height: 1.9; }
         .date-summary span { font-family: 'EB Garamond', serif; font-size: 16px; }
 
         /* ROOMS */
@@ -272,29 +249,29 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-bg-text">STILL</div>
+        <div class="hero-bg-text">CI</div>
         <div class="hero-content">
-            <div class="hero-dates">dec 1 – 6, 2026 · fools' valley</div>
-            <h1 class="hero-title">vipassana &amp;<br>authentic movement</h1>
+            <div class="hero-dates">dec 28, 2026 – jan 11, 2027 · fools' valley</div>
+            <h1 class="hero-title">new year<br>contact improvisation<br>festival</h1>
             <p class="hero-intro">
-                six days of sitting still and moving without a plan. silence, land, and whatever surfaces.
+                two weeks of contact improvisation over new year's eve, with Francisco Borges and friends.
             </p>
         </div>
     </section>
 
     <section>
-        <div class="section-label">001 / the retreat</div>
+        <div class="section-label">001 / the festival</div>
         <div class="prose">
-            <p>vipassana is the practice of seeing things as they are. you sit, you breathe, you watch what comes up and let it pass. we sit in silence several times a day.</p>
-            <p><em>authentic movement</em> is its counterpart. eyes closed, a witness present, you let the body move from an impulse instead of an idea. no choreography, no right way. what was still on the cushion starts to move.</p>
+            <p>a contact improvisation festival over new year's eve with Francisco Borges and friends.</p>
             <p class="coming-soon">more info coming soon</p>
-            <p class="price-from">from <strong>€225</strong> for the five nights, dorm bed and food included.</p>
+            <p>feel free to send requests for rooms already: pick a room below and tell us anything you'd like us to know.</p>
+            <p class="price-from">from <strong>€530</strong> for the two weeks, dorm bed and food included.</p>
         </div>
     </section>
 
     <section id="apply">
-        <div class="section-label">002 / apply</div>
-        <h2 class="section-title">a few questions</h2>
+        <div class="section-label">002 / request a room</div>
+        <h2 class="section-title">who are you</h2>
         <div class="form">
             <div class="field" id="field-name">
                 <label for="q-name">your name *</label>
@@ -308,29 +285,9 @@
                 <div class="error-msg">please enter a valid email</div>
             </div>
 
-            <div class="field" id="field-vipassana">
-                <label for="q-vipassana">your experience with vipassana *</label>
-                <div class="hint">retreats you've sat, a daily practice, nothing yet — all fine. just tell us where you are.</div>
-                <textarea id="q-vipassana" rows="3"></textarea>
-                <div class="error-msg">tell us a little, even if it's "none"</div>
-            </div>
-
-            <div class="field" id="field-movement">
-                <label for="q-movement">your experience with movement practices *</label>
-                <div class="hint">authentic movement, dance, contact improvisation, somatics, yoga, or none at all.</div>
-                <textarea id="q-movement" rows="3"></textarea>
-                <div class="error-msg">tell us a little, even if it's "none"</div>
-            </div>
-
-            <div class="field" id="field-dietary">
-                <label for="q-dietary">dietary restrictions</label>
-                <div class="hint">allergies, intolerances, anything the kitchen should know.</div>
-                <textarea id="q-dietary" rows="2"></textarea>
-            </div>
-
             <div class="field" id="field-questions">
-                <label for="q-questions">other questions</label>
-                <div class="hint">anything you'd like to ask or tell us.</div>
+                <label for="q-questions">questions or requests</label>
+                <div class="hint">anything you'd like to ask or tell us — who you're coming with, dietary needs, anything else.</div>
                 <textarea id="q-questions" rows="3"></textarea>
             </div>
         </div>
@@ -339,21 +296,13 @@
     <section id="dates">
         <div class="section-label">003 / your dates</div>
         <h2 class="section-title">when</h2>
-        <p class="calendar-note">
-            the retreat runs <strong>tuesday dec 1 – sunday dec 6</strong> and your stay has to cover all of it. you can arrive up to two days early (from nov 29) and stay one day later (until monday dec 7). click a day between nov 29 and dec 1 to change your arrival, dec 6 or dec 7 to change your departure.
+        <p class="dates-note">
+            the festival runs <strong>monday dec 28 to monday jan 11</strong>. rooms are booked for the whole festival, with no early arrival or late departure.
         </p>
-        <div class="calendar-wrap">
-            <div class="calendar-header">
-                <button type="button" id="cal-prev" onclick="calendarPrev()">&larr;</button>
-                <h3 id="calendar-title"></h3>
-                <button type="button" id="cal-next" onclick="calendarNext()">&rarr;</button>
-            </div>
-            <div class="calendar-grid" id="calendar-grid"></div>
-            <div class="date-summary">
-                arrival: <span id="arrival-display"></span><br>
-                departure: <span id="departure-display"></span><br>
-                <span id="duration-display"></span>
-            </div>
+        <div class="date-summary">
+            arrival: <span id="arrival-display"></span><br>
+            departure: <span id="departure-display"></span><br>
+            <span id="duration-display"></span>
         </div>
     </section>
 
@@ -377,15 +326,15 @@
             <div class="review-row" id="rev-daily-fee-row"><span class="label">daily fee (food &amp; facilities)</span><span class="value" id="rev-daily-fee"></span></div>
             <div class="review-row total" id="rev-total-row"><span class="label">total</span><span class="value" id="rev-total"></span></div>
         </div>
-        <button class="btn" id="btn-submit" onclick="submitApplication()">send application →</button>
+        <button class="btn" id="btn-submit" onclick="submitApplication()">send request →</button>
         <div class="submit-error" id="submit-error"></div>
     </section>
 
     <section id="success" style="display:none;">
         <div class="section-label">006 / sent</div>
         <div class="success">
-            <h2>application sent</h2>
-            <p>thank you. we'll write back to confirm your spot and your room, and send payment details then.</p>
+            <h2>request sent</h2>
+            <p>thank you. we'll write back to confirm your room and send more info about the festival as it comes.</p>
             <p style="margin-top:1rem;"><a href="events.html">← back to events</a></p>
         </div>
     </section>
@@ -423,13 +372,9 @@
       dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
     };
 
-    // Retreat: Dec 1-6, 2026. Arrive up to 2 days early, leave up to 2 days late; stay must cover the retreat.
-    const RETREAT_START     = new Date(2026, 11, 1);
-    const RETREAT_END       = new Date(2026, 11, 6);
-    const EARLIEST_ARRIVAL  = new Date(2026, 10, 29);
-    const LATEST_DEPARTURE  = new Date(2026, 11, 7);
-    const CAL_FIRST = { year: 2026, month: 10 }; // November
-    const CAL_LAST  = { year: 2026, month: 11 }; // December
+    // Festival: Dec 28, 2026 - Jan 11, 2027. Fixed dates, no early arrival or late departure.
+    const arrivalDate   = new Date(2026, 11, 28);
+    const departureDate = new Date(2027, 0, 11);
 
     const BUILDING_ORDER = ['Octopus House', 'Old House', 'Blue House', 'Camping'];
     const BUILDING_LABELS = {
@@ -442,98 +387,17 @@
     // ============================================================
     // STATE
     // ============================================================
-    let calendarMonth = 11;
-    let calendarYear = 2026;
-    let arrivalDate = new Date(RETREAT_START);
-    let departureDate = new Date(RETREAT_END);
     let availableRooms = [];
     let selectedRoom = null;
     let fallbackMode = false;
     let fetchSeq = 0;
 
     // ============================================================
-    // CALENDAR
+    // DATES
     // ============================================================
     const MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
-    const DAYS = ['mo','tu','we','th','fr','sa','su'];
-
-    function sameDay(a, b) { return a.getTime() === b.getTime(); }
-
-    function renderCalendar() {
-      document.getElementById('calendar-title').textContent = MONTHS[calendarMonth] + ' ' + calendarYear;
-      document.getElementById('cal-prev').disabled = (calendarYear === CAL_FIRST.year && calendarMonth === CAL_FIRST.month);
-      document.getElementById('cal-next').disabled = (calendarYear === CAL_LAST.year && calendarMonth === CAL_LAST.month);
-
-      const grid = document.getElementById('calendar-grid');
-      grid.innerHTML = '';
-      DAYS.forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'day-label';
-        div.textContent = d;
-        grid.appendChild(div);
-      });
-
-      const firstDay = new Date(calendarYear, calendarMonth, 1);
-      let startDow = firstDay.getDay();
-      startDow = startDow === 0 ? 6 : startDow - 1;
-      const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
-
-      for (let i = 0; i < startDow; i++) {
-        const div = document.createElement('div');
-        div.className = 'day';
-        grid.appendChild(div);
-      }
-
-      for (let d = 1; d <= daysInMonth; d++) {
-        const date = new Date(calendarYear, calendarMonth, d);
-        const div = document.createElement('div');
-        div.className = 'day';
-        div.textContent = d;
-
-        const isArrivalOption = date >= EARLIEST_ARRIVAL && date <= RETREAT_START;
-        const isDepartureOption = date >= RETREAT_END && date <= LATEST_DEPARTURE;
-        if (date >= RETREAT_START && date <= RETREAT_END) div.classList.add('retreat');
-
-        if (sameDay(date, arrivalDate)) div.classList.add('selected-arrival');
-        else if (sameDay(date, departureDate)) div.classList.add('selected-departure');
-        else if (date > arrivalDate && date < departureDate) div.classList.add('in-range');
-
-        if (isArrivalOption) {
-          div.classList.add('selectable');
-          div.addEventListener('click', () => { arrivalDate = date; updateDates(); });
-        } else if (isDepartureOption) {
-          div.classList.add('selectable');
-          div.addEventListener('click', () => { departureDate = date; updateDates(); });
-        }
-        grid.appendChild(div);
-      }
-    }
-
-    function calendarPrev() {
-      if (calendarYear === CAL_FIRST.year && calendarMonth === CAL_FIRST.month) return;
-      calendarMonth--;
-      if (calendarMonth < 0) { calendarMonth = 11; calendarYear--; }
-      renderCalendar();
-    }
-
-    function calendarNext() {
-      if (calendarYear === CAL_LAST.year && calendarMonth === CAL_LAST.month) return;
-      calendarMonth++;
-      if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
-      renderCalendar();
-    }
 
     function nights() { return Math.round((departureDate - arrivalDate) / (1000*60*60*24)); }
-
-    function updateDates() {
-      document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
-      document.getElementById('departure-display').textContent = formatDate(departureDate);
-      document.getElementById('duration-display').textContent = nights() + ' nights';
-      selectedRoom = null;
-      document.getElementById('review').style.display = 'none';
-      renderCalendar();
-      fetchAvailability();
-    }
 
     function formatDate(d) {
       const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
@@ -542,6 +406,12 @@
 
     function formatDateISO(d) {
       return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function showDates() {
+      document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
+      document.getElementById('departure-display').textContent = formatDate(departureDate);
+      document.getElementById('duration-display').textContent = nights() + ' nights';
     }
 
     // ============================================================
@@ -567,7 +437,7 @@
           if (seq !== fetchSeq) return;
           if (data.error) { showFallback(container, "we couldn't check availability right now: " + data.error); return; }
 
-          // The sheet also returns its daily-fee tier rows as "rooms"; keep only real rooms.
+          // The sheet also returns its daily-fee tier rows as "rooms"; keep only real rooms. No tipi in winter.
           availableRooms = (data.rooms || []).filter(r => BUILDING_ORDER.includes(r.building) && r.roomPrice > 0 && r.id !== 'tipi');
           renderRooms();
           return;
@@ -613,7 +483,7 @@
       container.innerHTML = '';
 
       if (availableRooms.length === 0) {
-        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for these dates</h4><p>try different arrival or departure days, or write to <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a>.</p></div>';
+        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for these dates</h4><p>write to <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a> and we\'ll see what we can do.</p></div>';
         return;
       }
 
@@ -712,8 +582,6 @@
       }
       check('field-name', val('q-name').length > 0);
       check('field-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('q-email')));
-      check('field-vipassana', val('q-vipassana').length > 0);
-      check('field-movement', val('q-movement').length > 0);
       if (firstError) { firstError.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
       return true;
     }
@@ -731,7 +599,6 @@
       const days = nights();
       const roomPrice = fallbackMode ? 0 : selectedRoom.roomPrice;
       const dailyFee = fallbackMode ? 0 : selectedRoom.dailyFee;
-      const dietary = val('q-dietary') || 'none';
       const other = val('q-questions') || 'none';
 
       // The backend stores this in the residency applications sheet; label every field so it reads clearly there.
@@ -743,14 +610,14 @@
           visited: '',
           links: '',
           tcInterest: '',
-          mainQuest: 'VIPASSANA & AUTHENTIC MOVEMENT RETREAT (dec 1–6, 2026)',
-          pastQuests: 'experience with vipassana: ' + val('q-vipassana'),
+          mainQuest: 'NEW YEAR CONTACT IMPROVISATION FESTIVAL (dec 28, 2026 – jan 11, 2027)',
+          pastQuests: '',
           reference: '',
-          useTimeFor: 'experience with movement practices: ' + val('q-movement'),
+          useTimeFor: '',
           contribute: '',
           idealDay: '',
-          questions: '[vipassana & authentic movement retreat, dec 1–6] dietary restrictions: ' + dietary + ' | other questions: ' + other,
-          codeword: 'vipassanaam',
+          questions: '[new year CI festival, dec 28 – jan 11] questions or requests: ' + other,
+          codeword: 'nyeci',
           cleanupAgreement: '',
           arrivalDate: formatDate(arrivalDate),
           departureDate: formatDate(departureDate),
@@ -783,7 +650,7 @@
         errBox.textContent = 'could not send: ' + err.message + '. please try again, or write to theonlyfool@foolsvalley.com.';
         errBox.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'send application →';
+        btn.textContent = 'send request →';
       }
     }
 
@@ -805,8 +672,8 @@
         });
     })();
 
-    renderCalendar();
-    updateDates();
+    showDates();
+    fetchAvailability();
     </script>
 </body>
 </html>
