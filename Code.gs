@@ -26,6 +26,14 @@ const EVENT_BLOCKS = [
   // Add more event blocks here as needed
 ];
 
+// Composite Rooms - one bookable unit made of several calendar columns.
+// The whole apartment is free only when both of its rooms are free, and a
+// whole-apartment booking is written into both columns. Each half can also be
+// booked on its own (apt_a / apt_b rows in the prices sheet).
+const COMPOSITE_ROOMS = {
+  apartment: ['apt_a', 'apt_b']
+};
+
 // ============================================================
 // MAIN HANDLER
 // ============================================================
@@ -184,6 +192,7 @@ function handleAvailability(e) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
       if (i >= 25 && i <= 28) continue; // Sheet rows 26-29 hold the daily fee tiers (see getDailyFeeRate), not rooms
+      if (!row[2]) continue; // Rows without a building are the daily fee table, not rooms
 
       // Determine capacity based on room type and specific room ID
       let capacity = 1;  // Default for private rooms
@@ -271,7 +280,9 @@ function handleAvailability(e) {
         if (room.id === 'normal_n') roomNameToId['normal north'] = room.id;
         if (room.id === 'pool') roomNameToId['pool'] = room.id;
         if (room.id === 'downstairs') roomNameToId['downstairs'] = room.id;
-        if (room.id === 'apartment') roomNameToId['apartment'] = room.id;
+        if (room.id === 'apt_a') roomNameToId['apartment a'] = room.id;
+        if (room.id === 'apt_b') roomNameToId['apartment b'] = room.id;
+        // 'apartment' (the whole thing) has no column of its own: see COMPOSITE_ROOMS
         if (room.id === 'dorm_bh') {
           roomNameToId['bunk 1'] = room.id;
           roomNameToId['bunk 2'] = room.id;
@@ -448,12 +459,13 @@ function checkRoomAvailability(room, bookings, fromDate, toDate, eventParam) {
     }
   }
 
-  // For each day, count bookings
+  // For each day, count bookings. A composite room is taken when any of its parts is.
+  const partIds = COMPOSITE_ROOMS[room.id] || [room.id];
   let maxBookedOnAnyDay = 0;
   for (const dateStr of requestedDates) {
     let bookedOnThisDay = 0;
     for (const booking of bookings) {
-      if (booking.roomId === room.id) {
+      if (partIds.includes(booking.roomId)) {
         const bookingDate = toDateString(booking.date);
         if (bookingDate === dateStr) {
           bookedOnThisDay++;
@@ -509,6 +521,7 @@ function handlePrices(e) {
       const row = roomsData[i];
       if (!row[0]) continue; // Skip empty rows
       if (i >= 25 && i <= 28) continue; // Sheet rows 26-29 hold the daily fee tiers (see getDailyFeeRate), not rooms
+      if (!row[2]) continue; // Rows without a building are the daily fee table, not rooms
 
       const room = {
         id: row[0],
@@ -672,11 +685,15 @@ function recordBookingInCalendar(app, ss) {
     return;
   }
 
-  // For multi-capacity rooms, find first available column
-  let targetColumn = targetColumns[0];
-  if (targetColumns.length > 1) {
-    // Check which bed/spot is available during this date range
-    targetColumn = findAvailableColumn(calendarData, targetColumns, app.arrivalDate, app.departureDate);
+  // Composite rooms (the whole apartment) occupy every one of their columns.
+  // Multi-capacity rooms (dorms, camping) take the first free bed/spot column.
+  let writeColumns;
+  if (COMPOSITE_ROOMS[app.roomId]) {
+    writeColumns = targetColumns;
+  } else if (targetColumns.length > 1) {
+    writeColumns = [findAvailableColumn(calendarData, targetColumns, app.arrivalDate, app.departureDate)];
+  } else {
+    writeColumns = [targetColumns[0]];
   }
 
   // Find date rows and fill in booking
@@ -700,20 +717,22 @@ function recordBookingInCalendar(app, ss) {
 
     // Check if this date is within booking range (arrival inclusive, departure exclusive)
     if (dateVal >= arrivalDate && dateVal < departureDate) {
-      // Write guest name in gray
-      const cell = valleySheet.getRange(row + 1, targetColumn + 1); // +1 for 1-based indexing
-      cell.setValue(app.name);
-      cell.setFontColor('#999999'); // Light gray text
+      for (const targetColumn of writeColumns) {
+        // Write guest name in gray
+        const cell = valleySheet.getRange(row + 1, targetColumn + 1); // +1 for 1-based indexing
+        cell.setValue(app.name);
+        cell.setFontColor('#999999'); // Light gray text
 
-      // Only add note to the first cell
-      if (isFirstCell) {
-        cell.setNote('Pending approval - from application form');
-        isFirstCell = false;
+        // Only add note to the first cell
+        if (isFirstCell) {
+          cell.setNote('Pending approval - from application form');
+          isFirstCell = false;
+        }
       }
     }
   }
 
-  Logger.log('Booking recorded in calendar for ' + app.name + ' in column ' + targetColumn);
+  Logger.log('Booking recorded in calendar for ' + app.name + ' in column(s) ' + writeColumns.join(', '));
 }
 
 // Map room IDs to calendar column names
@@ -727,7 +746,9 @@ function getRoomIdToCalendarNameMapping(roomId) {
     'normal_n': ['normal north'],
     'pool': ['pool'],
     'downstairs': ['downstairs'],
-    'apartment': ['apartment'],
+    'apartment': ['apartment a', 'apartment b'],
+    'apt_a': ['apartment a'],
+    'apt_b': ['apartment b'],
     'dorm_bh': ['bunk 1', 'bunk 2', 'bunk 3', 'bunk 4'],
 
     // Old House / Octopus
