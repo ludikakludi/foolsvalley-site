@@ -1584,16 +1584,17 @@ function buildPriceTable(container, rooms) {
   });
 
   var html = '<table style="width:100%; border-collapse:collapse;">';
-  html += '<tr style="border-bottom:2px solid var(--border); text-align:left;"><th style="padding:0.4rem 0.3rem;">room</th><th style="padding:0.4rem 0.3rem; text-align:right;">weekly</th><th style="padding:0.4rem 0.3rem; text-align:right;">2 weeks</th><th style="padding:0.4rem 0.3rem; text-align:right;">monthly</th></tr>';
+  html += '<tr style="border-bottom:2px solid var(--border); text-align:left;"><th style="padding:0.4rem 0.3rem;">room</th><th style="padding:0.4rem 0.3rem; text-align:right;">daily</th><th style="padding:0.4rem 0.3rem; text-align:right;">weekly</th><th style="padding:0.4rem 0.3rem; text-align:right;">2 weeks</th><th style="padding:0.4rem 0.3rem; text-align:right;">monthly</th></tr>';
 
   order.forEach(function(b) {
     if (!buildings[b] || buildings[b].length === 0) return;
     var labelSuffix = (b === 'Camping') ? ' <span style="font-weight:400; font-style:italic;">(per person)</span>' : '';
-    html += '<tr><td colspan="4" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + labelSuffix + '</td></tr>';
+    html += '<tr><td colspan="5" style="padding:0.6rem 0.3rem 0.2rem; font-weight:600; color:var(--text-light); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em;">' + (buildingLabels[b] || b) + labelSuffix + '</td></tr>';
     buildings[b].forEach(function(r) {
       // Strip dorm bed/van spot counts from room names in price table
       var cleanName = r.name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
       html += '<tr style="border-bottom:1px solid #f0ede8;"><td style="padding:0.3rem;">' + cleanName + '</td>';
+      html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.daily + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.weekly + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.twoWeek + '</td>';
       html += '<td style="padding:0.3rem; text-align:right;">\u20AC' + r.monthly + '</td></tr>';
