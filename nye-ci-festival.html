@@ -185,6 +185,12 @@
         .rooms-fallback h4 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.75rem; }
         .rooms-fallback p { font-size: 12px; color: var(--gray); margin-bottom: 1rem; line-height: 1.7; }
 
+        /* SMALL PRINT */
+        .faq { max-width: 620px; }
+        .faq-item { margin-bottom: 1.25rem; }
+        .faq-item h3 { font-size: 12px; font-weight: 700; margin-bottom: 0.3rem; }
+        .faq-item p { font-size: 12px; color: var(--gray); line-height: 1.7; }
+
         /* REVIEW */
         .review { max-width: 620px; border: 1px solid var(--black); background: var(--cream); }
         .review-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--gray-light); font-size: 12px; }
@@ -314,8 +320,46 @@
         </div>
     </section>
 
+    <section id="small-print">
+        <div class="section-label">005 / small print</div>
+        <div class="faq">
+            <div class="faq-item">
+                <h3>1. reservations</h3>
+                <p>we'll get back to you with payment details once your booking is approved. space is reserved when paid in full.</p>
+            </div>
+            <div class="faq-item">
+                <h3>2. refunds</h3>
+                <p>6+ weeks out: 100% refund on accommodation. 2–6 weeks: 50%. under 2 weeks: no refund. daily fee is always fully refundable.</p>
+            </div>
+            <div class="faq-item">
+                <h3>3. long-stay rates</h3>
+                <p>weekly, two-week, and monthly rates kick in when you book for at least that period. extra days beyond the minimum are charged at the same per-day rate — e.g. if you book 10 days, you can get the weekly rate for all 10.</p>
+            </div>
+            <div class="faq-item">
+                <h3>4. can I extend the booking later?</h3>
+                <p>yes, you can extend the booking at the same rate as you booked it. e.g. if you booked two weeks first and then extend by another two weeks, you'll pay the two-week rate for both stretches. to get a monthly rate, you need to book for a month in advance.</p>
+            </div>
+            <div class="faq-item">
+                <h3>5. what's per person vs. per room?</h3>
+                <p>room rate = per room. daily fee, camping, and van spots = per person (since it covers mainly the use of communal facilities, not the accommodation itself).</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. can I opt out of food?</h3>
+                <p>not fully. the daily fee also covers water, electricity, and kitchen fixed running costs. if our kitchen can't meet your dietary needs, we can offer you cooking and fridge space — and reduce a small part of the fee if needed.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. kitchen &amp; space care</h3>
+                <p>we have a chef, but we ask everyone to help with 1–2 cooking/space care shifts per week. on sunday we have a collective cleaning session.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. can I volunteer extra? how about for a discount / free stay?</h3>
+                <p>we really welcome extra support. sometimes we also have discounted helper spots for people with building/carpentry/electrics/gardening skills, ask us about it.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="review" style="display:none;">
-        <div class="section-label">005 / review</div>
+        <div class="section-label">006 / review</div>
         <h2 class="section-title">your stay</h2>
         <div class="review">
             <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
@@ -331,7 +375,7 @@
     </section>
 
     <section id="success" style="display:none;">
-        <div class="section-label">006 / sent</div>
+        <div class="section-label">007 / sent</div>
         <div class="success">
             <h2>request sent</h2>
             <p>thank you. we'll write back to confirm your room and send more info about the festival as it comes.</p>
