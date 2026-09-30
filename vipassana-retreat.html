@@ -146,6 +146,26 @@
         .field .error-msg { color: var(--rust); font-size: 11px; margin-top: 0.35rem; display: none; }
         .field.error .error-msg { display: block; }
 
+        .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 600px) { .name-row { grid-template-columns: 1fr; gap: 0; } }
+        .terms {
+            border: 1px solid var(--black);
+            background: var(--cream);
+            padding: 1rem 1.25rem;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: 'EB Garamond', serif;
+            font-size: 15px;
+            line-height: 1.55;
+            margin-bottom: 0.75rem;
+        }
+        .terms h4 { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; margin: 0.9rem 0 0.3rem; }
+        .terms p { margin-bottom: 0.5rem; }
+        .terms ul { margin: 0.2rem 0 0.5rem 1.2rem; }
+        .check-row { display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-family: 'EB Garamond', serif; font-size: 15px; }
+        .check-row input { margin-top: 0.3rem; accent-color: var(--black); }
+        .field.error .check-row span { color: var(--rust); }
+
         /* CALENDAR */
         .calendar-wrap { max-width: 420px; }
         .calendar-note { font-size: 12px; color: var(--gray); margin-bottom: 1.25rem; line-height: 1.7; max-width: 620px; }
@@ -302,42 +322,91 @@
         <div class="section-label">002 / apply</div>
         <h2 class="section-title">a few questions</h2>
         <div class="form">
-            <div class="field" id="field-name">
-                <label for="q-name">your name *</label>
-                <input type="text" id="q-name" autocomplete="name">
-                <div class="error-msg">required</div>
+            <div class="name-row">
+                <div class="field" id="field-first">
+                    <label for="q-first">first name *</label>
+                    <input type="text" id="q-first" autocomplete="given-name">
+                    <div class="error-msg">required</div>
+                </div>
+                <div class="field" id="field-last">
+                    <label for="q-last">last name *</label>
+                    <input type="text" id="q-last" autocomplete="family-name">
+                    <div class="error-msg">required</div>
+                </div>
             </div>
 
             <div class="field" id="field-email">
-                <label for="q-email">email *</label>
+                <label for="q-email">email address *</label>
                 <input type="email" id="q-email" autocomplete="email">
                 <div class="error-msg">please enter a valid email</div>
             </div>
 
-            <div class="field" id="field-vipassana">
-                <label for="q-vipassana">your experience with vipassana *</label>
-                <div class="hint">retreats you've sat, a daily practice, nothing yet — all fine. just tell us where you are.</div>
-                <textarea id="q-vipassana" rows="3"></textarea>
-                <div class="error-msg">tell us a little, even if it's "none"</div>
+            <div class="field" id="field-heard">
+                <label for="q-heard">how did you hear about this retreat? *</label>
+                <input type="text" id="q-heard">
+                <div class="error-msg">required</div>
             </div>
 
-            <div class="field" id="field-movement">
-                <label for="q-movement">your experience with movement practices *</label>
-                <div class="hint">authentic movement, dance, contact improvisation, somatics, yoga, or none at all.</div>
-                <textarea id="q-movement" rows="3"></textarea>
-                <div class="error-msg">tell us a little, even if it's "none"</div>
+            <div class="field" id="field-why">
+                <label for="q-why">why do you want to join this retreat? *</label>
+                <textarea id="q-why" rows="3"></textarea>
+                <div class="error-msg">required</div>
             </div>
 
-            <div class="field" id="field-dietary">
-                <label for="q-dietary">dietary restrictions</label>
-                <div class="hint">allergies, intolerances, anything the kitchen should know.</div>
-                <textarea id="q-dietary" rows="2"></textarea>
+            <div class="field" id="field-from">
+                <label for="q-from">which city and country will you be joining the retreat from? *</label>
+                <input type="text" id="q-from">
+                <div class="error-msg">required</div>
             </div>
 
-            <div class="field" id="field-questions">
-                <label for="q-questions">other questions</label>
-                <div class="hint">anything you'd like to ask or tell us.</div>
-                <textarea id="q-questions" rows="3"></textarea>
+            <div class="field" id="field-meditation">
+                <label for="q-meditation">what is your experience with meditation? *</label>
+                <div class="hint">vipassana or other types. please detail.</div>
+                <textarea id="q-meditation" rows="3"></textarea>
+                <div class="error-msg">required</div>
+            </div>
+
+            <div class="field" id="field-body">
+                <label for="q-body">what is your experience with conscious body-based practices? *</label>
+                <div class="hint">e.g. yoga / dance / movement.</div>
+                <textarea id="q-body" rows="3"></textarea>
+                <div class="error-msg">required</div>
+            </div>
+
+            <div class="field" id="field-allergies">
+                <label for="q-allergies">strict food allergies</label>
+                <div class="hint">food will be vegetarian and gluten-free. please note we cannot cater to preferences, only allergies.</div>
+                <textarea id="q-allergies" rows="2"></textarea>
+            </div>
+
+            <div class="field" id="field-terms">
+                <label>terms of participation *</label>
+                <div class="terms">
+                    <p>By registering for this 6-day meditation and movement retreat, you acknowledge and agree to the following:</p>
+                    <h4>1. Your health and wellbeing</h4>
+                    <p>This retreat combines meditation with gentle, body-based practices. Any physical activity carries some risk of injury, and you take part voluntarily and at your own risk. Please listen to your body, rest when you need to, and let the teachers know about any injuries or physical limitations. If you are unsure whether the retreat is right for you, please check with a healthcare professional before joining.</p>
+                    <h4>2. Mental health</h4>
+                    <p>Intensive meditation can sometimes bring up strong emotions or difficult memories. If you are currently experiencing, or have a history of, mental health conditions (such as depression, anxiety, trauma, psychosis or bipolar disorder), please tell us before the retreat so we can talk together about whether it is a good fit right now. The retreat is not a substitute for therapy or medical treatment.</p>
+                    <h4>3. Retreat conduct</h4>
+                    <p>To support everyone's practice, you agree to:</p>
+                    <ul>
+                        <li>attend the full retreat and follow the daily schedule</li>
+                        <li>respect non-verbal silence of other participants and the guidance of the teachers</li>
+                        <li>refrain from alcohol, recreational drugs and other intoxicants throughout the retreat</li>
+                        <li>treat fellow participants, teachers, staff and the venue with kindness and respect</li>
+                    </ul>
+                    <h4>4. Responsibility and liability</h4>
+                    <p>You are responsible for your own safety and for acting considerately towards others. The organizers, teachers and venue are not liable for injuries, damages or losses that occur during the retreat, except where required by law.</p>
+                    <h4>5. Medical emergencies</h4>
+                    <p>In case of injury or a medical emergency, you authorize the organizers to seek medical help on your behalf.</p>
+                    <h4>6. Leaving the retreat</h4>
+                    <p>The organizers may ask a participant to leave if their presence compromises the safety or wellbeing of the group, or if their intentions are clearly not aligned with the retreat. In this case, the registration fee will not be refunded.</p>
+                </div>
+                <label class="check-row" for="q-terms">
+                    <input type="checkbox" id="q-terms">
+                    <span>I have read and agree to these terms of participation.</span>
+                </label>
+                <div class="error-msg">please agree to the terms to continue</div>
             </div>
         </div>
     </section>
@@ -754,10 +823,15 @@
         field.classList.toggle('error', !ok);
         if (!ok && !firstError) firstError = field;
       }
-      check('field-name', val('q-name').length > 0);
+      check('field-first', val('q-first').length > 0);
+      check('field-last', val('q-last').length > 0);
       check('field-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('q-email')));
-      check('field-vipassana', val('q-vipassana').length > 0);
-      check('field-movement', val('q-movement').length > 0);
+      check('field-heard', val('q-heard').length > 0);
+      check('field-why', val('q-why').length > 0);
+      check('field-from', val('q-from').length > 0);
+      check('field-meditation', val('q-meditation').length > 0);
+      check('field-body', val('q-body').length > 0);
+      check('field-terms', document.getElementById('q-terms').checked);
       if (firstError) { firstError.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
       return true;
     }
@@ -775,27 +849,26 @@
       const days = nights();
       const roomPrice = fallbackMode ? 0 : selectedRoom.roomPrice;
       const dailyFee = fallbackMode ? 0 : selectedRoom.dailyFee;
-      const dietary = val('q-dietary') || 'none';
-      const other = val('q-questions') || 'none';
+      const allergies = val('q-allergies') || 'none';
 
       // The backend stores this in the residency applications sheet; label every field so it reads clearly there.
       const payload = {
         action: 'submit',
         application: {
-          name: val('q-name'),
+          name: val('q-first') + ' ' + val('q-last'),
           email: val('q-email'),
           visited: '',
-          links: '',
+          links: 'joining from: ' + val('q-from'),
           tcInterest: '',
-          mainQuest: 'VIPASSANA & AUTHENTIC MOVEMENT RETREAT (dec 1–6, 2026)',
-          pastQuests: 'experience with vipassana: ' + val('q-vipassana'),
-          reference: '',
-          useTimeFor: 'experience with movement practices: ' + val('q-movement'),
+          mainQuest: 'VIPASSANA & AUTHENTIC MOVEMENT RETREAT (dec 1\u20136, 2026) | why join: ' + val('q-why'),
+          pastQuests: 'meditation experience: ' + val('q-meditation'),
+          reference: 'heard about the retreat via: ' + val('q-heard'),
+          useTimeFor: 'body-based practice experience: ' + val('q-body'),
           contribute: '',
           idealDay: '',
-          questions: '[vipassana & authentic movement retreat, dec 1–6] dietary restrictions: ' + dietary + ' | other questions: ' + other,
+          questions: '[vipassana & authentic movement retreat, dec 1\u20136] food allergies: ' + allergies,
           codeword: 'vipassanaam',
-          cleanupAgreement: '',
+          cleanupAgreement: 'agreed to the terms of participation',
           arrivalDate: formatDate(arrivalDate),
           departureDate: formatDate(departureDate),
           arrivalDateISO: formatDateISO(arrivalDate),
