@@ -133,6 +133,24 @@ h1 {
     80%      { transform: rotateY(var(--flip, 0deg)) rotate(3.5deg) translate(4px, -1px); }
 }
 
+/* gather: touch the pin and people arrive, one by one, until six stand in a circle */
+.card.gather .glyph.pin { transition: opacity 0.5s ease, transform 0.5s ease; }
+.card.gather.peopled .glyph.pin { opacity: 0; transform: scale(0.6); }
+.card.gather .people { position: absolute; inset: 0; pointer-events: none; }
+.card.gather .person {
+    position: absolute;
+    width: 13px; height: 17px;
+    margin: -8px 0 0 -6px;
+    color: var(--gold-bright);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: left 1.1s cubic-bezier(0.4, 0.1, 0.3, 1), top 1.1s cubic-bezier(0.4, 0.1, 0.3, 1), opacity 0.6s ease, transform 0.6s ease;
+}
+.card.gather .person.in { opacity: 1; transform: scale(1); }
+.card.gather .person.in.walking svg { animation: walk 0.7s ease-in-out infinite; }
+@keyframes walk { 0%,100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-1px); } }
+@media (max-width: 680px) { .card.gather .person { width: 9px; height: 12px; margin: -6px 0 0 -4px; } }
+
 /* gather: a little person walks in; the page leans in towards the card */
 .card.gather { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='34' viewBox='0 0 26 34'><g fill='none' stroke='%23e3d4a4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='13' cy='6' r='4'/><path d='M13 10v10'/><path d='M13 12l-7 5'/><path d='M13 12l7 5'/><path d='M13 20l-5 11'/><path d='M13 20l5 11'/></g></svg>") 13 17, pointer; }
 /* gather: the page leans in towards the card */
@@ -570,12 +588,13 @@ footer {
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">V</div>
-                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="glyph pin" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 38 C22 38 11 26 11 17.5 A11 11 0 0 1 33 17.5 C33 26 22 38 22 38 Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
                     <circle cx="22" cy="17.5" r="4" stroke="currentColor" stroke-width="1.1"/>
                     <path d="M12 40 Q22 43 32 40" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.45"/>
                 </svg>
                 <div class="card-name">gather</div>
+                <div class="people" aria-hidden="true"></div>
             </div>
             <div class="face back">
                 <img src="../assets/didi/web/gather.jpg" alt="gather">
@@ -620,6 +639,71 @@ footer {
         if (!raf) raf = requestAnimationFrame(step);
     });
     document.addEventListener('mouseleave', () => document.body.classList.remove('lit'));
+})();
+
+// gather: the pin becomes a person, and friends keep arriving until six stand in a circle
+(function () {
+    const card = document.querySelector('.card.gather');
+    const pin = card.querySelector('.glyph.pin');
+    const layer = card.querySelector('.people');
+    const PERSON = '<svg viewBox="0 0 26 34" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="6" r="4"/><path d="M13 10v10"/><path d="M13 12l-7 5"/><path d="M13 12l7 5"/><path d="M13 20l-5 11"/><path d="M13 20l5 11"/></g></svg>';
+    const people = [];
+    let timers = [];
+    let active = false;
+
+    function layerRect() { return layer.getBoundingClientRect(); }
+    function pinCenter() {
+        const r = pin.getBoundingClientRect(), l = layerRect();
+        return { x: r.left + r.width / 2 - l.left, y: r.top + r.height / 2 - l.top };
+    }
+    function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
+    function wander(el, l) {
+        const pad = 16;
+        place(el, pad + Math.random() * (l.width - pad * 2), pad + Math.random() * (l.height - pad * 2));
+    }
+    function gatherInCircle() {
+        const l = layerRect();
+        const c = pinCenter();
+        const radius = Math.min(l.width, l.height) * 0.26;
+        people.forEach((el, i) => {
+            const a = -Math.PI / 2 + i * (Math.PI * 2 / people.length);
+            el.classList.remove('walking');
+            place(el, c.x + Math.cos(a) * radius, c.y - 8 + Math.sin(a) * radius);
+        });
+    }
+    function arrive(i) {
+        const el = document.createElement('span');
+        el.className = 'person';
+        el.innerHTML = PERSON;
+        const c = pinCenter();
+        place(el, c.x, c.y);
+        layer.appendChild(el);
+        people.push(el);
+        timers.push(setTimeout(() => {
+            el.classList.add('in', 'walking');
+            if (i > 0) wander(el, layerRect());
+        }, 40));
+        // keep strolling until the circle forms
+        const stroll = setInterval(() => { if (active && people.length < 6) wander(el, layerRect()); }, 1200 + Math.random() * 500);
+        timers.push(stroll);
+        if (i === 5) timers.push(setTimeout(gatherInCircle, 900));
+    }
+    function start() {
+        if (active) return;
+        active = true;
+        card.classList.add('peopled');
+        for (let i = 0; i < 6; i++) timers.push(setTimeout(() => arrive(i), i === 0 ? 150 : 700 + i * 650));
+    }
+    function stop() {
+        active = false;
+        timers.forEach(t => { clearTimeout(t); clearInterval(t); });
+        timers = [];
+        card.classList.remove('peopled');
+        people.forEach(el => { el.classList.remove('in', 'walking'); setTimeout(() => el.remove(), 700); });
+        people.length = 0;
+    }
+    pin.addEventListener('mouseenter', start);
+    card.addEventListener('mouseleave', stop);
 })();
 
 // tiny stars drift out of her name while the cursor rests on it
