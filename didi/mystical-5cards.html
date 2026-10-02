@@ -124,13 +124,12 @@ h1 {
 .card.flipped .card-inner { transform: rotateY(180deg); --flip: 180deg; }
 
 /* move: the card trembles under the hand */
-.card.shake:hover .card-inner { animation: shake 0.4s ease-in-out infinite; }
+.card.shake:hover .card-inner { animation: shake 2.6s ease-in-out infinite; }
 @keyframes shake {
     0%, 100% { transform: rotateY(var(--flip, 0deg)) rotate(0deg); }
-    20%      { transform: rotateY(var(--flip, 0deg)) rotate(-3.5deg) translate(-4px, 1px); }
-    40%      { transform: rotateY(var(--flip, 0deg)) rotate(3deg) translate(3px, -2px); }
-    60%      { transform: rotateY(var(--flip, 0deg)) rotate(-3deg) translate(-3px, 2px); }
-    80%      { transform: rotateY(var(--flip, 0deg)) rotate(3.5deg) translate(4px, -1px); }
+    25%      { transform: rotateY(var(--flip, 0deg)) rotate(-7deg) translate(-12px, 4px); }
+    50%      { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, -6px); }
+    75%      { transform: rotateY(var(--flip, 0deg)) rotate(7deg) translate(12px, 4px); }
 }
 
 /* gather: touch the pin and people arrive, one by one, until six stand in a circle */
@@ -139,8 +138,8 @@ h1 {
 .card.gather .people { position: absolute; inset: 0; pointer-events: none; }
 .card.gather .person {
     position: absolute;
-    width: 13px; height: 17px;
-    margin: -8px 0 0 -6px;
+    width: 11px; height: 14px;
+    margin: -7px 0 0 -5px;
     color: var(--gold-bright);
     opacity: 0;
     transform: scale(0.4);
@@ -657,19 +656,11 @@ footer {
         return { x: r.left + r.width / 2 - l.left, y: r.top + r.height / 2 - l.top };
     }
     function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
-    function wander(el, l) {
-        const pad = 16;
-        place(el, pad + Math.random() * (l.width - pad * 2), pad + Math.random() * (l.height - pad * 2));
-    }
-    function gatherInCircle() {
-        const l = layerRect();
+    function slot(i) {
         const c = pinCenter();
-        const radius = Math.min(l.width, l.height) * 0.26;
-        people.forEach((el, i) => {
-            const a = -Math.PI / 2 + i * (Math.PI * 2 / people.length);
-            el.classList.remove('walking');
-            place(el, c.x + Math.cos(a) * radius, c.y - 8 + Math.sin(a) * radius);
-        });
+        const radius = 22;
+        const a = -Math.PI / 2 + i * (Math.PI * 2 / 6);
+        return { x: c.x + Math.cos(a) * radius, y: c.y + Math.sin(a) * radius };
     }
     function arrive(i) {
         const el = document.createElement('span');
@@ -681,18 +672,16 @@ footer {
         people.push(el);
         timers.push(setTimeout(() => {
             el.classList.add('in', 'walking');
-            if (i > 0) wander(el, layerRect());
+            const p = slot(i);
+            place(el, p.x, p.y);
         }, 40));
-        // keep strolling until the circle forms
-        const stroll = setInterval(() => { if (active && people.length < 6) wander(el, layerRect()); }, 1200 + Math.random() * 500);
-        timers.push(stroll);
-        if (i === 5) timers.push(setTimeout(gatherInCircle, 900));
+        timers.push(setTimeout(() => el.classList.remove('walking'), 1200));
     }
     function start() {
         if (active) return;
         active = true;
         card.classList.add('peopled');
-        for (let i = 0; i < 6; i++) timers.push(setTimeout(() => arrive(i), i === 0 ? 150 : 700 + i * 650));
+        for (let i = 0; i < 6; i++) timers.push(setTimeout(() => arrive(i), 150 + i * 550));
     }
     function stop() {
         active = false;
