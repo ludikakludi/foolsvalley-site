@@ -98,11 +98,11 @@ h1 {
     animation: fanOpen 1s cubic-bezier(0.3, 0.7, 0.25, 1) both;
 }
 /* stacked in the middle, then the fan opens outward from the center */
-.card:nth-child(1) { --dx: 136%;  --fan: rotate(-13deg);  animation-delay: 0.7s;  z-index: 1; }
-.card:nth-child(2) { --dx: 68%;   --fan: rotate(-6.5deg); animation-delay: 0.6s;  z-index: 2; }
-.card:nth-child(3) { --dx: 0%;    --fan: rotate(0deg);    animation-delay: 0.5s;  z-index: 3; }
-.card:nth-child(4) { --dx: -68%;  --fan: rotate(6.5deg);  animation-delay: 0.6s;  z-index: 4; }
-.card:nth-child(5) { --dx: -136%; --fan: rotate(13deg);   animation-delay: 0.7s;  z-index: 5; }
+.card:nth-child(1) { --dx: 136%;  --fan: translateY(-16px) rotate(-14.5deg); animation-delay: 0.7s;  z-index: 1; }
+.card:nth-child(2) { --dx: 68%;   --fan: translateY(-9px) rotate(-6deg);     animation-delay: 0.6s;  z-index: 2; }
+.card:nth-child(3) { --dx: 0%;    --fan: translateY(-2px) rotate(0.8deg);    animation-delay: 0.5s;  z-index: 3; }
+.card:nth-child(4) { --dx: -68%;  --fan: translateY(5px) rotate(5.5deg);     animation-delay: 0.6s;  z-index: 4; }
+.card:nth-child(5) { --dx: -136%; --fan: translateY(12px) rotate(12.5deg);   animation-delay: 0.7s;  z-index: 5; }
 .card:hover, .card.flipped { z-index: 20; }
 
 @keyframes fanOpen {
@@ -121,7 +121,19 @@ h1 {
     transform-style: preserve-3d;
     transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.card.flipped .card-inner { transform: rotateY(180deg); }
+.card.flipped .card-inner { transform: rotateY(180deg); --flip: 180deg; }
+
+/* move: the card trembles under the hand */
+.card.shake:hover .card-inner { animation: shake 0.42s ease-in-out infinite; }
+@keyframes shake {
+    0%, 100% { transform: rotateY(var(--flip, 0deg)) rotate(0deg); }
+    25%      { transform: rotateY(var(--flip, 0deg)) rotate(-2.4deg) translateX(-2px); }
+    75%      { transform: rotateY(var(--flip, 0deg)) rotate(2.4deg) translateX(2px); }
+}
+
+/* gather: the page leans in towards the card */
+#page { transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
+#page.zoom { transform: scale(1.07); }
 
 .face {
     position: absolute;
@@ -175,6 +187,42 @@ h1 {
     will-change: transform;
 }
 body.lit .cursor-light { opacity: 1; }
+/* see: the light burns brighter */
+.cursor-light::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236,231,218,0.26) 0%, rgba(227,212,164,0.12) 30%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+body.bright .cursor-light::after { opacity: 1; }
+/* cinematography: a star's vertical ray from the cursor */
+.cursor-beam {
+    position: fixed;
+    left: 0; top: 0;
+    width: 2px; height: 760px;
+    margin: -380px 0 0 -1px;
+    pointer-events: none;
+    z-index: 25;
+    background: linear-gradient(180deg, transparent 0%, rgba(236,231,218,0.9) 45%, rgba(236,231,218,0.9) 55%, transparent 100%);
+    box-shadow: 0 0 10px 2px rgba(227,212,164,0.5), 0 0 40px 6px rgba(227,212,164,0.18);
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transition: opacity 0.6s ease;
+    will-change: transform;
+}
+.cursor-beam::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 200px; height: 2px;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(90deg, transparent, rgba(236,231,218,0.7), transparent);
+}
+body.beam .cursor-beam { opacity: 1; animation: twinkle 2.2s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.5); } }
 @media (hover: none) { .cursor-light { display: none; } }
 
 /* tiny stars that leave her name */
@@ -268,7 +316,6 @@ body.lit .cursor-light { opacity: 1; }
     height: 256px;
     margin-bottom: 10px;
 }
-.card.door .card-inner { transition: none; }
 .card.door .front {
     background: var(--ink-soft);
     border: 1px solid var(--gold-bright);
@@ -287,7 +334,24 @@ body.lit .cursor-light { opacity: 1; }
     margin-top: -0.3rem;
     opacity: 0.8;
 }
-.card.door a { color: inherit; text-decoration: none; display: block; width: 100%; height: 100%; }
+.back.site { background: #0b0b0b; }
+.back.site img { opacity: 0.35; }
+.back.site iframe {
+    position: absolute;
+    left: 6px; top: 6px;
+    width: 600px; height: 1000px;
+    border: 0;
+    background: #fff;
+    transform: scale(0.25);
+    transform-origin: 0 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+.back.site iframe.ready { opacity: 1; }
+.back.site .plate { width: auto; height: auto; top: auto; padding-top: 1.6rem; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
+.back.site .plate .word { font-size: 0.78rem; letter-spacing: 0.04em; }
+.back.site .plate .tag { color: var(--gold-bright); font-size: 0.52rem; letter-spacing: 0.3em; }
 
 /* ---------- diary: a page lying on the table, off to the side ---------- */
 .table {
@@ -379,6 +443,7 @@ footer {
     .card.door { width: 104px; height: 166px; margin-bottom: 6px; }
     .card.door .glyph { width: 26px; height: 26px; }
     .card.door .enter { font-size: 0.38rem; }
+    .back.site iframe { transform: scale(0.153); height: 1080px; }
     .front { gap: 0.55rem; }
     .glyph { width: 22px; height: 22px; }
     .numeral { font-size: 0.48rem; }
@@ -394,7 +459,9 @@ footer {
 <body>
 
 <div class="cursor-light" aria-hidden="true"></div>
+<div class="cursor-beam" aria-hidden="true"></div>
 
+<div id="page">
 <header>
     <div class="over-title">a small deck</div>
     <h1>diana olifirova</h1>
@@ -405,7 +472,7 @@ footer {
 <main class="deck">
 
     <!-- I · see -->
-    <div class="card" data-card>
+    <div class="card" data-card data-hover="bright">
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
@@ -425,7 +492,7 @@ footer {
     </div>
 
     <!-- II · move -->
-    <div class="card" data-card>
+    <div class="card shake" data-card>
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
@@ -446,25 +513,28 @@ footer {
     </div>
 
     <!-- III · cinematography: the door out, in the middle of the fan -->
-    <div class="card door">
-        <a href="https://www.dianaolifirova.com" target="_blank" rel="noopener" aria-label="cinematography — dianaolifirova.com">
-            <div class="card-inner">
-                <div class="face front">
-                    <span class="corner tl">✦</span><span class="corner tr">✦</span><span class="corner bl">✦</span><span class="corner br">✦</span>
-                    <div class="numeral">III</div>
-                    <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="22" cy="22" r="13" stroke="currentColor" stroke-width="1.1"/>
-                        <circle cx="22" cy="22" r="7" stroke="currentColor" stroke-width="1.1" opacity="0.7"/>
-                        <circle cx="22" cy="22" r="2" fill="currentColor"/>
-                        <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.8">
-                            <path d="M22 4v4"/><path d="M22 36v4"/><path d="M4 22h4"/><path d="M36 22h4"/>
-                        </g>
-                    </svg>
-                    <div class="card-name">cinematography</div>
-                    <div class="enter">enter ↗</div>
-                </div>
+    <div class="card door" data-card data-hover="beam">
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✦</span><span class="corner tr">✦</span><span class="corner bl">✦</span><span class="corner br">✦</span>
+                <div class="numeral">III</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="22" r="13" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="7" stroke="currentColor" stroke-width="1.1" opacity="0.7"/>
+                    <circle cx="22" cy="22" r="2" fill="currentColor"/>
+                    <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.8">
+                        <path d="M22 4v4"/><path d="M22 36v4"/><path d="M4 22h4"/><path d="M36 22h4"/>
+                    </g>
+                </svg>
+                <div class="card-name">cinematography</div>
+                <div class="enter">open ↗</div>
             </div>
-        </a>
+            <div class="face back site">
+                <img src="../assets/didi/web/cinema.jpg" alt="">
+                <iframe data-src="https://www.dianaolifirova.com" title="dianaolifirova.com" tabindex="-1" scrolling="no"></iframe>
+                <a class="plate" href="https://www.dianaolifirova.com" target="_blank" rel="noopener"><div class="word">dianaolifirova.com</div><div class="tag">enter ↗</div></a>
+            </div>
+        </div>
     </div>
 
     <!-- IIII · learn -->
@@ -489,7 +559,7 @@ footer {
     </div>
 
     <!-- V · gather -->
-    <div class="card" data-card>
+    <div class="card" data-card data-hover="zoom">
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
@@ -522,15 +592,18 @@ footer {
 <div class="contact"><a href="https://www.dianaolifirova.com" target="_blank" rel="noopener">about / contact ↗</a></div>
 
 <footer>© diana olifirova</footer>
+</div>
 
 <script>
 // the light follows the cursor
 (function () {
     const light = document.querySelector('.cursor-light');
+    const beam = document.querySelector('.cursor-beam');
     let x = window.innerWidth / 2, y = window.innerHeight / 2, tx = x, ty = y, raf = null;
     function step() {
         x += (tx - x) * 0.12; y += (ty - y) * 0.12;
         light.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+        beam.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
         if (Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) raf = requestAnimationFrame(step); else raf = null;
     }
     window.addEventListener('mousemove', e => {
@@ -571,8 +644,58 @@ document.querySelectorAll('[data-card]').forEach(card => {
     card.addEventListener('click', (e) => {
         if (card.classList.contains('flipped') && e.target.closest('a')) return;
         card.classList.toggle('flipped');
+        // the cinematography card shows her site: load it the first time it turns
+        const frame = card.querySelector('iframe[data-src]');
+        if (frame && card.classList.contains('flipped')) {
+            frame.addEventListener('load', () => frame.classList.add('ready'), { once: true });
+            frame.src = frame.dataset.src;
+            frame.removeAttribute('data-src');
+        }
     });
 });
+
+// what each card does to the room when the hand rests on it
+(function () {
+    const page = document.getElementById('page');
+    document.querySelectorAll('[data-hover]').forEach(card => {
+        const kind = card.dataset.hover;
+        card.addEventListener('mouseenter', () => {
+            if (kind === 'bright') document.body.classList.add('bright');
+            if (kind === 'beam') document.body.classList.add('beam');
+            if (kind === 'zoom') {
+                const r = card.getBoundingClientRect();
+                const pr = page.getBoundingClientRect();
+                page.style.transformOrigin = (r.left + r.width / 2 - pr.left) + 'px ' + (r.top + r.height / 2 - pr.top) + 'px';
+                page.classList.add('zoom');
+            }
+        });
+        card.addEventListener('mouseleave', () => {
+            document.body.classList.remove('bright', 'beam');
+            page.classList.remove('zoom');
+        });
+    });
+})();
+
+// the diary writes itself out when the hand comes near
+(function () {
+    const diary = document.querySelector('.diary-page');
+    const lines = [...diary.querySelectorAll('.d-word, .d-sub')].map(el => ({ el, text: el.textContent }));
+    let run = 0;
+    diary.addEventListener('mouseenter', () => {
+        const id = ++run;
+        lines.forEach(l => { l.el.textContent = ''; l.el.style.minHeight = '1em'; });
+        let li = 0, ci = 0;
+        (function tick() {
+            if (id !== run) return;
+            const l = lines[li];
+            l.el.textContent = l.text.slice(0, ++ci);
+            if (ci < l.text.length) { setTimeout(tick, 38 + Math.random() * 50); return; }
+            li++; ci = 0;
+            if (li < lines.length) setTimeout(tick, 260);
+        })();
+    });
+    diary.addEventListener('mouseleave', () => { run++; lines.forEach(l => { l.el.textContent = l.text; }); });
+})();
 </script>
 
 </body>
