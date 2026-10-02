@@ -47,7 +47,7 @@ a { color: inherit; text-decoration: none; }
 .field {
     position: relative;
     width: 100%;
-    height: 420vh;
+    height: 215vh;
 }
 .clip {
     position: absolute;
@@ -78,21 +78,16 @@ a { color: inherit; text-decoration: none; }
 
 /* sizes and places, as if thrown */
 .clip.c1 { left: 6vw;  top: 8vh;   width: 27vw; aspect-ratio: 9 / 16; }
-.clip.c2 { left: 48vw; top: 3vh;   width: 19vw; aspect-ratio: 9 / 16; transform: rotate(1.5deg); }
-.clip.c3 { left: 66vw; top: 50vh;  width: 25vw; aspect-ratio: 9 / 16; }
-.clip.c4 { left: 16vw; top: 88vh;  width: 28vw; aspect-ratio: 9 / 16; transform: rotate(-1deg); }
-.clip.c5 { left: 58vw; top: 138vh; width: 17vw; aspect-ratio: 9 / 16; }
-.clip.c6 { left: 4vw;  top: 186vh; width: 21vw; aspect-ratio: 9 / 16; transform: rotate(2deg); }
-.clip.c7 { left: 40vw; top: 208vh; width: 32vw; aspect-ratio: 9 / 16; }
-.clip.c8 { left: 8vw;  top: 276vh; width: 23vw; aspect-ratio: 9 / 16; transform: rotate(-2deg); }
-.clip.c9 { left: 58vw; top: 326vh; width: 25vw; aspect-ratio: 9 / 16; }
-.clip.c10{ left: 24vw; top: 362vh; width: 15vw; aspect-ratio: 9 / 16; transform: rotate(3deg); }
+.clip.c2 { left: 52vw; top: 4vh;   width: 19vw; aspect-ratio: 9 / 16; transform: rotate(1.5deg); }
+.clip.c3 { left: 66vw; top: 58vh;  width: 25vw; aspect-ratio: 9 / 16; }
+.clip.c4 { left: 18vw; top: 96vh;  width: 28vw; aspect-ratio: 9 / 16; transform: rotate(-1deg); }
+.clip.c5 { left: 54vw; top: 150vh; width: 17vw; aspect-ratio: 9 / 16; }
 
 @media (max-width: 760px) {
     .field { height: auto; display: flex; flex-direction: column; gap: 6vh; padding: 14vh 0 30vh; }
     .clip { position: relative; left: auto !important; top: auto !important; }
-    .clip.c1, .clip.c3, .clip.c5, .clip.c7, .clip.c9 { width: 78vw !important; margin-left: 4vw; }
-    .clip.c2, .clip.c4, .clip.c6, .clip.c8, .clip.c10 { width: 62vw !important; margin-left: 32vw; }
+    .clip.c1, .clip.c3, .clip.c5 { width: 78vw !important; margin-left: 4vw; }
+    .clip.c2, .clip.c4 { width: 62vw !important; margin-left: 32vw; }
 }
 
 /* ---------- sound ---------- */
@@ -136,11 +131,6 @@ a { color: inherit; text-decoration: none; }
     <a class="clip c3" href="#"><video src="../assets/didi/move/move-1.mp4" autoplay muted loop playsinline></video><span class="n">03</span></a>
     <a class="clip c4" href="#"><video src="../assets/didi/move/move-3.mp4" autoplay muted loop playsinline></video><span class="n">04</span></a>
     <a class="clip c5" href="#"><video src="../assets/didi/move/move-5.mp4" autoplay muted loop playsinline></video><span class="n">05</span></a>
-    <a class="clip c6" href="#"><video src="../assets/didi/move/move-2.mp4" autoplay muted loop playsinline></video><span class="n">06</span></a>
-    <a class="clip c7" href="#"><video src="../assets/didi/move/move-1.mp4" autoplay muted loop playsinline></video><span class="n">07</span></a>
-    <a class="clip c8" href="#"><video src="../assets/didi/move/move-5.mp4" autoplay muted loop playsinline></video><span class="n">08</span></a>
-    <a class="clip c9" href="#"><video src="../assets/didi/move/move-4.mp4" autoplay muted loop playsinline></video><span class="n">09</span></a>
-    <a class="clip c10" href="#"><video src="../assets/didi/move/move-3.mp4" autoplay muted loop playsinline></video><span class="n">10</span></a>
 </section>
 
 <audio id="music" src="../assets/didi/move/move-music.mp3" loop preload="auto"></audio>
