@@ -6,259 +6,167 @@
 <title>move — diana olifirova</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-    --ink: #1a0407;
-    --ink-soft: #24080c;
-    --cream: #ece7da;
-    --muted: #a08f88;
-    --gold: #c9b98a;
-    --gold-bright: #e3d4a4;
+    --black: #000;
+    --white: #f2f2f2;
+    --grey: #6f6f6f;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { background: var(--black); }
 body {
-    font-family: 'EB Garamond', serif;
-    background-color: var(--ink);
-    background-image: linear-gradient(180deg, #2a070b 0%, #1a0407 55%, #0f0204 100%);
-    background-attachment: fixed;
-    color: var(--cream);
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    background: var(--black);
+    color: var(--white);
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* starfield */
-body::before {
-    content: '';
+a { color: inherit; text-decoration: none; }
+
+/* ---------- corners ---------- */
+.corner {
     position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-        radial-gradient(1.4px 1.4px at 40px 60px, rgba(236,231,218,0.5) 50%, transparent 55%),
-        radial-gradient(1px 1px at 190px 150px, rgba(236,231,218,0.35) 50%, transparent 55%),
-        radial-gradient(1.8px 1.8px at 320px 40px, rgba(201,185,138,0.45) 50%, transparent 55%),
-        radial-gradient(1px 1px at 460px 220px, rgba(236,231,218,0.3) 50%, transparent 55%),
-        radial-gradient(1.2px 1.2px at 110px 280px, rgba(236,231,218,0.4) 50%, transparent 55%),
-        radial-gradient(1.5px 1.5px at 520px 120px, rgba(236,231,218,0.35) 50%, transparent 55%);
-    background-size: 560px 400px;
-    background-repeat: repeat;
-}
-
-/* the light that travels with the cursor */
-.cursor-light {
-    position: fixed;
-    left: 0; top: 0;
-    width: 520px; height: 520px;
-    margin: -260px 0 0 -260px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    background: radial-gradient(circle, rgba(227,212,164,0.16) 0%, rgba(201,185,138,0.07) 30%, transparent 65%);
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    will-change: transform;
-}
-body.lit .cursor-light { opacity: 1; }
-@media (hover: none) { .cursor-light { display: none; } }
-
-header {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: 9vh 2rem 2vh;
-}
-.over-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.1rem;
-}
-h1 {
+    z-index: 10;
+    font-size: 11px;
     font-weight: 400;
-    font-style: italic;
-    font-size: clamp(2rem, 5.5vw, 3rem);
-    letter-spacing: 0.05em;
-}
-.sub {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.56rem;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.9rem;
+    mix-blend-mode: difference;
 }
+.corner.tl { top: 22px; left: 24px; }
+.corner.tr { top: 22px; right: 24px; text-align: right; }
+.corner.bl { bottom: 22px; left: 24px; color: var(--grey); }
+.corner a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-.back-link {
+h1 {
     position: fixed;
-    top: 1.4rem;
-    left: 1.6rem;
-    z-index: 5;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.56rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    opacity: 0.7;
+    z-index: 10;
+    left: 24px;
+    bottom: 60px;
+    font-weight: 300;
+    font-size: clamp(64px, 14vw, 200px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: lowercase;
+    mix-blend-mode: difference;
+    pointer-events: none;
 }
-.back-link:hover { opacity: 1; }
 
-/* ---------- the table where the fragments lie ---------- */
+/* ---------- the chaos ---------- */
 .field {
     position: relative;
-    z-index: 1;
-    width: min(1180px, 100%);
-    height: 1750px;
-    margin: 0 auto;
+    width: 100%;
+    height: 420vh;
 }
-.frag {
+.clip {
     position: absolute;
     display: block;
-    border: 1px solid rgba(201,185,138,0.35);
-    border-radius: 6px;
-    padding: 5px;
-    background: var(--ink-soft);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.55);
-    transition: transform 1s cubic-bezier(0.3, 0.7, 0.25, 1), box-shadow 0.8s ease;
+    overflow: hidden;
+    background: #0a0a0a;
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.frag img {
+.clip video {
     display: block;
     width: 100%;
-    border-radius: 3px;
-    filter: saturate(0.85) brightness(0.9);
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.25) contrast(1.05);
     transition: filter 0.8s ease;
 }
-.frag:hover { transform: var(--tilt) translateY(-6px) scale(1.02); box-shadow: 0 22px 54px rgba(0,0,0,0.65); z-index: 4; }
-.frag:hover img { filter: saturate(1) brightness(1); }
-.frag .cap {
+.clip:hover video { filter: none; }
+.clip:hover { z-index: 5; }
+.clip .n {
     position: absolute;
-    left: 5px; right: 5px; bottom: 5px;
-    padding: 0.8rem 0.5rem 0.5rem;
-    background: linear-gradient(transparent, rgba(15,2,4,0.85));
-    font-family: 'Space Mono', monospace;
-    font-size: 0.42rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-align: center;
-    border-radius: 0 0 3px 3px;
-    opacity: 0;
-    transition: opacity 0.6s ease;
+    left: 10px;
+    top: 8px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    mix-blend-mode: difference;
 }
-.frag:hover .cap { opacity: 1; }
 
-/* scattered, as they fell */
-.frag.f1 { width: 240px; left: 6%;  top: 40px;   --tilt: rotate(-5deg);  transform: rotate(-5deg); }
-.frag.f2 { width: 190px; left: 62%; top: 10px;   --tilt: rotate(4deg);   transform: rotate(4deg); }
-.frag.f3 { width: 270px; left: 36%; top: 300px;  --tilt: rotate(-1.5deg); transform: rotate(-1.5deg); }
-.frag.f4 { width: 210px; left: 74%; top: 560px;  --tilt: rotate(6deg);   transform: rotate(6deg); }
-.frag.f5 { width: 230px; left: 12%; top: 760px;  --tilt: rotate(2.5deg); transform: rotate(2.5deg); }
-.frag.f6 { width: 170px; left: 50%; top: 1010px; --tilt: rotate(-7deg);  transform: rotate(-7deg); }
-.frag.f7 { width: 250px; left: 24%; top: 1280px; --tilt: rotate(3deg);   transform: rotate(3deg); }
-.frag.f8 { width: 200px; left: 66%; top: 1330px; --tilt: rotate(-3deg);  transform: rotate(-3deg); }
+/* sizes and places, as if thrown */
+.clip.c1 { left: 4vw;  top: 6vh;   width: 34vw; aspect-ratio: 9 / 16; }
+.clip.c2 { left: 46vw; top: 2vh;   width: 24vw; aspect-ratio: 9 / 16; transform: rotate(1.5deg); }
+.clip.c3 { left: 64vw; top: 44vh;  width: 32vw; aspect-ratio: 9 / 16; }
+.clip.c4 { left: 14vw; top: 82vh;  width: 42vw; aspect-ratio: 9 / 16; transform: rotate(-1deg); }
+.clip.c5 { left: 58vw; top: 128vh; width: 22vw; aspect-ratio: 9 / 16; }
+.clip.c6 { left: 2vw;  top: 178vh; width: 26vw; aspect-ratio: 9 / 16; transform: rotate(2deg); }
+.clip.c7 { left: 36vw; top: 196vh; width: 50vw; aspect-ratio: 9 / 16; }
+.clip.c8 { left: 6vw;  top: 262vh; width: 30vw; aspect-ratio: 9 / 16; transform: rotate(-2deg); }
+.clip.c9 { left: 54vw; top: 318vh; width: 38vw; aspect-ratio: 9 / 16; }
+.clip.c10{ left: 20vw; top: 352vh; width: 20vw; aspect-ratio: 9 / 16; transform: rotate(3deg); }
 
 @media (max-width: 760px) {
-    .field { height: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.6rem 1rem; padding: 1rem 1rem 3rem; }
-    .frag { position: static; width: 42% !important; }
+    .field { height: auto; display: flex; flex-direction: column; gap: 6vh; padding: 14vh 0 30vh; }
+    .clip { position: relative; left: auto !important; top: auto !important; }
+    .clip.c1, .clip.c3, .clip.c5, .clip.c7, .clip.c9 { width: 78vw !important; margin-left: 4vw; }
+    .clip.c2, .clip.c4, .clip.c6, .clip.c8, .clip.c10 { width: 62vw !important; margin-left: 32vw; }
+    h1 { bottom: 48px; }
 }
 
-/* ---------- the music ---------- */
+/* ---------- sound ---------- */
 .sound {
     position: fixed;
-    right: 1.6rem;
-    bottom: 1.4rem;
-    z-index: 5;
+    right: 24px;
+    bottom: 22px;
+    z-index: 10;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.56rem;
-    letter-spacing: 0.3em;
+    gap: 10px;
+    font: inherit;
+    font-size: 11px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--white);
     background: none;
-    border: 1px solid rgba(201,185,138,0.4);
-    border-radius: 999px;
-    padding: 0.55rem 0.95rem;
+    border: none;
     cursor: pointer;
-    opacity: 0.8;
+    mix-blend-mode: difference;
 }
-.sound:hover { opacity: 1; border-color: var(--gold); }
 .sound .wave { display: inline-flex; gap: 2px; align-items: flex-end; height: 10px; }
-.sound .wave i { display: block; width: 2px; height: 3px; background: var(--gold); transition: height 0.3s; }
+.sound .wave i { display: block; width: 2px; height: 2px; background: currentColor; }
 .sound.playing .wave i { animation: bounce 0.9s ease-in-out infinite; }
 .sound.playing .wave i:nth-child(2) { animation-delay: 0.15s; }
 .sound.playing .wave i:nth-child(3) { animation-delay: 0.3s; }
 .sound.playing .wave i:nth-child(4) { animation-delay: 0.45s; }
-@keyframes bounce { 0%,100% { height: 3px; } 50% { height: 10px; } }
-
-footer {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(160, 143, 136, 0.5);
-    padding: 4rem 0 2.5rem;
-}
+@keyframes bounce { 0%,100% { height: 2px; } 50% { height: 10px; } }
+.sound:hover { text-decoration: underline; text-underline-offset: 4px; }
 </style>
 </head>
 <body>
 
-<div class="cursor-light" aria-hidden="true"></div>
+<div class="corner tl"><a href="mystical-5cards.html">← diana olifirova</a></div>
+<div class="corner tr">somatic practices<br>yoga<br>retreats</div>
+<div class="corner bl">II</div>
 
-<a class="back-link" href="mystical-5cards.html">← the deck</a>
-
-<header>
-    <div class="over-title">II</div>
-    <h1>move</h1>
-    <div class="sub">somatic practices · yoga · retreats</div>
-</header>
+<h1>move</h1>
 
 <section class="field" aria-label="moving fragments">
-    <a class="frag f1" href="#"><img src="../assets/didi/move/move-1.gif" alt=""><div class="cap">fragment i</div></a>
-    <a class="frag f2" href="#"><img src="../assets/didi/move/move-2.gif" alt=""><div class="cap">fragment ii</div></a>
-    <a class="frag f3" href="#"><img src="../assets/didi/move/move-3.gif" alt=""><div class="cap">fragment iii</div></a>
-    <a class="frag f4" href="#"><img src="../assets/didi/move/move-4.gif" alt=""><div class="cap">fragment iv</div></a>
-    <a class="frag f5" href="#"><img src="../assets/didi/move/move-5.gif" alt=""><div class="cap">fragment v</div></a>
-    <a class="frag f6" href="#"><img src="../assets/didi/move/move-2.gif" alt=""><div class="cap">fragment ii</div></a>
-    <a class="frag f7" href="#"><img src="../assets/didi/move/move-4.gif" alt=""><div class="cap">fragment iv</div></a>
-    <a class="frag f8" href="#"><img src="../assets/didi/move/move-1.gif" alt=""><div class="cap">fragment i</div></a>
+    <a class="clip c1" href="#"><video src="../assets/didi/move/move-4.mp4" autoplay muted loop playsinline></video><span class="n">01</span></a>
+    <a class="clip c2" href="#"><video src="../assets/didi/move/move-2.mp4" autoplay muted loop playsinline></video><span class="n">02</span></a>
+    <a class="clip c3" href="#"><video src="../assets/didi/move/move-1.mp4" autoplay muted loop playsinline></video><span class="n">03</span></a>
+    <a class="clip c4" href="#"><video src="../assets/didi/move/move-3.mp4" autoplay muted loop playsinline></video><span class="n">04</span></a>
+    <a class="clip c5" href="#"><video src="../assets/didi/move/move-5.mp4" autoplay muted loop playsinline></video><span class="n">05</span></a>
+    <a class="clip c6" href="#"><video src="../assets/didi/move/move-2.mp4" autoplay muted loop playsinline></video><span class="n">06</span></a>
+    <a class="clip c7" href="#"><video src="../assets/didi/move/move-1.mp4" autoplay muted loop playsinline></video><span class="n">07</span></a>
+    <a class="clip c8" href="#"><video src="../assets/didi/move/move-5.mp4" autoplay muted loop playsinline></video><span class="n">08</span></a>
+    <a class="clip c9" href="#"><video src="../assets/didi/move/move-4.mp4" autoplay muted loop playsinline></video><span class="n">09</span></a>
+    <a class="clip c10" href="#"><video src="../assets/didi/move/move-3.mp4" autoplay muted loop playsinline></video><span class="n">10</span></a>
 </section>
 
 <audio id="music" src="../assets/didi/move/move-music.mp3" loop preload="auto"></audio>
 <button class="sound" id="sound" type="button" aria-label="music">
     <span class="wave"><i></i><i></i><i></i><i></i></span>
-    <span class="label">let the music in</span>
+    <span class="label">sound</span>
 </button>
 
-<footer>© diana olifirova</footer>
-
 <script>
-// the light follows the cursor
-(function () {
-    const light = document.querySelector('.cursor-light');
-    let x = window.innerWidth / 2, y = window.innerHeight / 2, tx = x, ty = y, raf = null;
-    function step() {
-        x += (tx - x) * 0.12; y += (ty - y) * 0.12;
-        light.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-        if (Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3) raf = requestAnimationFrame(step); else raf = null;
-    }
-    window.addEventListener('mousemove', e => {
-        tx = e.clientX; ty = e.clientY;
-        document.body.classList.add('lit');
-        if (!raf) raf = requestAnimationFrame(step);
-    });
-    document.addEventListener('mouseleave', () => document.body.classList.remove('lit'));
-})();
-
 // the music plays the whole time. browsers only allow sound after a first touch,
 // so we try at once, and otherwise start on the first click or key anywhere.
 (function () {
@@ -268,7 +176,7 @@ footer {
     audio.volume = 0.7;
     function setState(playing) {
         btn.classList.toggle('playing', playing);
-        label.textContent = playing ? 'music on' : 'let the music in';
+        label.textContent = playing ? 'sound on' : 'sound';
     }
     function tryPlay() {
         return audio.play().then(() => { setState(true); return true; }).catch(() => { setState(false); return false; });
@@ -290,8 +198,8 @@ footer {
     });
 })();
 
-// placeholders: the fragments don't lead anywhere yet
-document.querySelectorAll('.frag').forEach(f => f.addEventListener('click', e => e.preventDefault()));
+// placeholders: the clips don't lead anywhere yet
+document.querySelectorAll('.clip').forEach(c => c.addEventListener('click', e => e.preventDefault()));
 </script>
 
 </body>
