@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>diana olifirova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+    --ink: #1a0407;
+    --ink-soft: #24080c;
+    --ink-deep: #0f0204;
+    --cream: #ece7da;
+    --muted: #a08f88;
+    --gold: #c9b98a;
+    --gold-bright: #e3d4a4;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'EB Garamond', serif;
+    background-color: var(--ink);
+    background-image: linear-gradient(180deg, #2a070b 0%, #1a0407 55%, #0f0204 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* starfield */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(1.4px 1.4px at 40px 60px, rgba(236,231,218,0.5) 50%, transparent 55%),
+        radial-gradient(1px 1px at 190px 150px, rgba(236,231,218,0.35) 50%, transparent 55%),
+        radial-gradient(1.8px 1.8px at 320px 40px, rgba(201,185,138,0.45) 50%, transparent 55%),
+        radial-gradient(1px 1px at 460px 220px, rgba(236,231,218,0.3) 50%, transparent 55%),
+        radial-gradient(1.2px 1.2px at 110px 280px, rgba(236,231,218,0.4) 50%, transparent 55%),
+        radial-gradient(1.5px 1.5px at 520px 120px, rgba(236,231,218,0.35) 50%, transparent 55%);
+    background-size: 560px 400px;
+    background-repeat: repeat;
+}
+
+body > * { position: relative; z-index: 1; }
+
+header { text-align: center; padding: 11vh 2rem 6vh; }
+
+.over-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.1rem;
+}
+
+h1 {
+    font-weight: 400;
+    font-size: clamp(2rem, 5.5vw, 3rem);
+    letter-spacing: 0.05em;
+}
+
+.sub {
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.7rem;
+    font-size: 1.05rem;
+}
+
+/* ---------- the fan ---------- */
+.deck {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 2rem 2rem 3rem;
+}
+
+.card {
+    perspective: 1200px;
+    width: 150px;
+    height: 237px;
+    cursor: pointer;
+    margin: 0 -1.2rem;
+    transform-origin: 50% 165%;
+    transform: var(--fan);
+    animation: fanOpen 1s cubic-bezier(0.3, 0.7, 0.25, 1) both;
+}
+/* stacked in the middle, then the fan opens outward from the center */
+.card:nth-child(1) { --dx: 136%;  --fan: rotate(-13deg);  animation-delay: 0.7s;  z-index: 1; }
+.card:nth-child(2) { --dx: 68%;   --fan: rotate(-6.5deg); animation-delay: 0.6s;  z-index: 2; }
+.card:nth-child(3) { --dx: 0%;    --fan: rotate(0deg);    animation-delay: 0.5s;  z-index: 3; }
+.card:nth-child(4) { --dx: -68%;  --fan: rotate(6.5deg);  animation-delay: 0.6s;  z-index: 4; }
+.card:nth-child(5) { --dx: -136%; --fan: rotate(13deg);   animation-delay: 0.7s;  z-index: 5; }
+.card:hover, .card.flipped { z-index: 20; }
+
+@keyframes fanOpen {
+    0%   { transform: translateX(var(--dx)) rotate(0deg); }
+    100% { transform: var(--fan); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card.flipped .card-inner { transform: rotateY(180deg); }
+
+.face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.front {
+    background: var(--ink-soft);
+    border: 1px solid rgba(201, 185, 138, 0.55);
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(201, 185, 138, 0.35), 0 12px 34px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: box-shadow 0.5s ease;
+}
+.card:hover .front {
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(201, 185, 138, 0.55), 0 16px 44px rgba(0,0,0,0.65), 0 0 24px rgba(201, 185, 138, 0.12);
+}
+
+.corner {
+    position: absolute;
+    font-size: 8px;
+    color: var(--gold);
+    opacity: 0.8;
+}
+.corner.tl { top: 8px; left: 10px; }
+.corner.tr { top: 8px; right: 10px; }
+.corner.bl { bottom: 8px; left: 10px; }
+.corner.br { bottom: 8px; right: 10px; }
+
+.numeral {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+}
+
+.glyph { width: 34px; height: 34px; color: var(--gold); }
+
+.card-name {
+    font-style: italic;
+    font-size: 1.02rem;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+}
+
+.back {
+    transform: rotateY(180deg);
+    background: var(--ink-soft);
+    border: 1px solid rgba(201, 185, 138, 0.55);
+    padding: 6px;
+}
+.back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    filter: saturate(0.85) brightness(0.94);
+}
+.back .plate {
+    position: absolute;
+    left: 6px; right: 6px; bottom: 6px;
+    padding: 1.1rem 0.6rem 0.7rem;
+    background: linear-gradient(transparent, rgba(15,2,4,0.92));
+    color: var(--cream);
+    text-align: center;
+    border-radius: 0 0 4px 4px;
+}
+.back .plate .word { font-style: italic; font-size: 0.98rem; }
+.back .plate .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.3rem;
+    line-height: 1.7;
+}
+
+/* ---------- the cinematography card: the door out ---------- */
+.card.door {
+    width: 162px;
+    height: 256px;
+    margin-bottom: 10px;
+}
+.card.door .card-inner { transition: none; }
+.card.door .front {
+    background:
+        radial-gradient(ellipse at 50% 30%, rgba(227,212,164,0.12), transparent 60%),
+        var(--ink-soft);
+    border: 1px solid var(--gold-bright);
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(227, 212, 164, 0.7), inset 0 0 0 7px var(--ink-soft), inset 0 0 0 8px rgba(227, 212, 164, 0.25), 0 14px 40px rgba(0,0,0,0.6), 0 0 30px rgba(227, 212, 164, 0.16);
+}
+.card.door:hover .front {
+    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px var(--gold-bright), inset 0 0 0 7px var(--ink-soft), inset 0 0 0 8px rgba(227, 212, 164, 0.4), 0 18px 48px rgba(0,0,0,0.7), 0 0 44px rgba(227, 212, 164, 0.28);
+}
+.card.door .corner { color: var(--gold-bright); opacity: 1; font-size: 9px; }
+.card.door .numeral, .card.door .glyph { color: var(--gold-bright); }
+.card.door .glyph { width: 40px; height: 40px; }
+.card.door .card-name { color: var(--gold-bright); }
+.card.door .enter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: -0.3rem;
+    opacity: 0.8;
+}
+.card.door a { color: inherit; text-decoration: none; display: block; width: 100%; height: 100%; }
+
+.hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 2.5vh 0 0;
+    animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { opacity: 0.4; } 50% { opacity: 0.85; } }
+
+/* ---------- diary: the ethereal side door ---------- */
+.diary-link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: var(--cream);
+    margin: 7vh 2rem 0;
+    opacity: 0.75;
+    transition: opacity 0.6s ease;
+}
+.diary-link:hover { opacity: 1; }
+.diary-link .d-word {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+.diary-link .d-sub {
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    font-size: 0.98rem;
+}
+
+/* ---------- recent fragments: a visual stream ---------- */
+.fragments {
+    width: min(760px, 100%);
+    margin: 6vh auto 0;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+.fragments .rule {
+    width: 180px;
+    height: 1px;
+    margin: 0 auto 1.4rem;
+    background: linear-gradient(90deg, transparent, rgba(201,185,138,0.6), transparent);
+}
+.fragments .f-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2.2rem;
+}
+.cloud {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.9rem;
+    align-items: start;
+}
+.cloud img {
+    width: 100%;
+    display: block;
+    border-radius: 3px;
+    border: 1px solid rgba(201,185,138,0.25);
+    filter: saturate(0.8) brightness(0.9);
+    transition: filter 0.8s ease, transform 0.8s ease;
+}
+.cloud img:hover { filter: saturate(1) brightness(1); transform: translateY(-3px); }
+.cloud .f1 { grid-column: 1 / span 2; margin-top: 2.2rem; }
+.cloud .f2 { grid-column: 3 / span 2; margin-top: 0; }
+.cloud .f3 { grid-column: 5 / span 2; margin-top: 3.4rem; }
+.cloud .f4 { grid-column: 2 / span 2; margin-top: -0.6rem; }
+.cloud .f5 { grid-column: 4 / span 3; margin-top: 1.4rem; }
+
+/* ---------- about ---------- */
+.about {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 580px;
+    margin: 10vh 2rem 2.5rem;
+}
+.about img {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border: 1px solid rgba(201, 185, 138, 0.5);
+    filter: saturate(0.85);
+    flex-shrink: 0;
+}
+.about p {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.7;
+}
+.contact {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8vh;
+}
+.contact a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(201,185,138,0.4); }
+.contact a:hover { border-bottom-color: var(--gold); }
+
+footer {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(160, 143, 136, 0.5);
+    padding-bottom: 2.5rem;
+}
+
+@media (max-width: 680px) {
+    header { padding-top: 8vh; }
+    .card { width: 96px; height: 152px; margin: 0 -1.4rem; }
+    .card.door { width: 104px; height: 166px; margin-bottom: 6px; }
+    .card.door .glyph { width: 26px; height: 26px; }
+    .card.door .enter { font-size: 0.38rem; }
+    .front { gap: 0.55rem; }
+    .glyph { width: 22px; height: 22px; }
+    .numeral { font-size: 0.48rem; }
+    .card-name { font-size: 0.66rem; }
+    .corner { font-size: 6px; }
+    .back .plate { padding: 0.5rem 0.3rem 0.4rem; }
+    .back .plate .word { font-size: 0.6rem; }
+    .back .plate .tag { font-size: 0.32rem; letter-spacing: 0.1em; }
+    .cloud { gap: 0.5rem; }
+    .about { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="over-title">a small deck</div>
+    <h1>diana olifirova</h1>
+    <div class="sub">the art of presence</div>
+</header>
+
+<main class="deck">
+
+    <!-- I · see -->
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">I</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 22 Q22 6 38 22 Q22 38 6 22 Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                    <circle cx="22" cy="22" r="5.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="22" cy="22" r="1.6" fill="currentColor"/>
+                </svg>
+                <div class="card-name">see</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/didi/web/see.jpg" alt="see">
+                <div class="plate"><div class="word">see</div><div class="tag">photography · visual art · prints<br>books · exhibitions · visual diary</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- II · move -->
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">II</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 26 Q14 17 22 26 T36 26" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M8 18 Q14 9 22 18 T36 18" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <div class="card-name">move</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/didi/web/move.jpg" alt="move">
+                <div class="plate"><div class="word">move</div><div class="tag">somatic practices · yoga · retreats</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- III · cinematography: the door out, in the middle of the fan -->
+    <div class="card door">
+        <a href="https://www.dianaolifirova.com" target="_blank" rel="noopener" aria-label="cinematography — dianaolifirova.com">
+            <div class="card-inner">
+                <div class="face front">
+                    <span class="corner tl">✦</span><span class="corner tr">✦</span><span class="corner bl">✦</span><span class="corner br">✦</span>
+                    <div class="numeral">III</div>
+                    <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="22" cy="22" r="13" stroke="currentColor" stroke-width="1.1"/>
+                        <circle cx="22" cy="22" r="7" stroke="currentColor" stroke-width="1.1" opacity="0.7"/>
+                        <circle cx="22" cy="22" r="2" fill="currentColor"/>
+                        <g stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.8">
+                            <path d="M22 4v4"/><path d="M22 36v4"/><path d="M4 22h4"/><path d="M36 22h4"/>
+                        </g>
+                    </svg>
+                    <div class="card-name">cinematography</div>
+                    <div class="enter">enter ↗</div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- IIII · learn -->
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">IIII</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="22" cy="28" r="1.8" fill="currentColor"/>
+                    <path d="M15 23 a10 10 0 0 1 14 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M11 18 a16 16 0 0 1 22 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M7.5 13.5 a21 21 0 0 1 29 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.3"/>
+                </svg>
+                <div class="card-name">learn</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/didi/web/learn.jpg" alt="learn">
+                <div class="plate"><div class="word">learn</div><div class="tag">1:1 · mentoring · jury</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- V · gather -->
+    <div class="card" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">V</div>
+                <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="17" cy="19" r="8.5" stroke="currentColor" stroke-width="1.1"/>
+                    <circle cx="27" cy="25" r="8.5" stroke="currentColor" stroke-width="1.1"/>
+                </svg>
+                <div class="card-name">gather</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/didi/web/gather.jpg" alt="gather">
+                <div class="plate"><div class="word">gather</div><div class="tag">dark room socials · events<br>collaborations</div></div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<div class="hint">pick a card</div>
+
+<a class="diary-link" href="#diary">
+    <div class="d-word">diary →</div>
+    <div class="d-sub">fragments from wherever I am</div>
+</a>
+
+<section class="fragments" id="diary">
+    <div class="rule"></div>
+    <div class="f-label">recent fragments</div>
+    <div class="cloud">
+        <img class="f1" src="../assets/didi/web/frag-1.jpg" alt="">
+        <img class="f2" src="../assets/didi/web/frag-4.jpg" alt="">
+        <img class="f3" src="../assets/didi/web/frag-2.jpg" alt="">
+        <img class="f4" src="../assets/didi/web/frag-3.jpg" alt="">
+        <img class="f5" src="../assets/didi/web/frag-5.jpg" alt="">
+    </div>
+</section>
+
+<div class="about">
+    <img src="../assets/didi/web/portrait.jpg" alt="Diana Olifirova">
+    <p>filmmaker, photographer, and embodiment facilitator — exploring how movement, creativity, and attention become pathways back to ourselves and to one another.</p>
+</div>
+
+<div class="contact"><a href="https://www.dianaolifirova.com" target="_blank" rel="noopener">about / contact ↗</a></div>
+
+<footer>© diana olifirova</footer>
+
+<script>
+document.querySelectorAll('[data-card]').forEach(card => {
+    card.addEventListener('click', (e) => {
+        if (card.classList.contains('flipped') && e.target.closest('a')) return;
+        card.classList.toggle('flipped');
+    });
+});
+</script>
+
+</body>
+</html>
