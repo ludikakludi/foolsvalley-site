@@ -657,7 +657,8 @@ footer {
     }
     function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
     function slot(i) {
-        const c = pinCenter();
+        const l = layerRect();
+        const c = { x: l.width / 2, y: l.height / 2 };
         const radius = 22;
         const a = -Math.PI / 2 + i * (Math.PI * 2 / 6);
         return { x: c.x + Math.cos(a) * radius, y: c.y + Math.sin(a) * radius };
