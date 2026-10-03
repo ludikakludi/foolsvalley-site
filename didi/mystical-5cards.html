@@ -103,7 +103,7 @@ h1 {
 /* stacked in the middle, then the fan opens outward from the center */
 .card:nth-child(1) { --dx: 136%;  --fan: translateY(-16px) rotate(-14.5deg); animation-delay: 0.7s;  z-index: 1; }
 .card:nth-child(2) { --dx: 68%;   --fan: translateY(-9px) rotate(-6deg);     animation-delay: 0.6s;  z-index: 2; }
-.card:nth-child(3) { --dx: 0%;    --fan: translateY(-2px) rotate(0.8deg);    animation-delay: 0.5s;  z-index: 3; }
+.card:nth-child(3) { --dx: 0%;    --fan: translateY(-16px) rotate(0.8deg);   animation-delay: 0.5s;  z-index: 3; }
 .card:nth-child(4) { --dx: -68%;  --fan: translateY(5px) rotate(5.5deg);     animation-delay: 0.6s;  z-index: 4; }
 .card:nth-child(5) { --dx: -136%; --fan: translateY(12px) rotate(12.5deg);   animation-delay: 0.7s;  z-index: 5; }
 .card:hover, .card.flipped { z-index: 20; }
@@ -162,9 +162,8 @@ h1 {
 
 /* gather: a little person walks in; the page leans in towards the card */
 .card.gather { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='21' viewBox='0 0 26 34'><g fill='none' stroke='%23e3d4a4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='13' cy='6' r='4'/><path d='M13 10v10'/><path d='M13 12l-7 5'/><path d='M13 12l7 5'/><path d='M13 20l-5 11'/><path d='M13 20l5 11'/></g></svg>") 8 10, pointer; }
-/* learn: the page leans in on the card */
-#page { transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
-#page.zoom { transform: scale(1.1); }
+/* learn: the card itself grows a little */
+.card.learn:hover .card-inner { transform: rotateY(var(--flip, 0deg)) scale(1.1); }
 
 .face {
     position: absolute;
@@ -559,7 +558,6 @@ footer {
                     </g>
                 </svg>
                 <div class="card-name">cinematography</div>
-                <div class="enter">open ↗</div>
             </div>
             <div class="face back site">
                 <img src="../assets/didi/web/cinema.jpg" alt="">
@@ -571,7 +569,7 @@ footer {
     </div>
 
     <!-- IIII · learn -->
-    <div class="card" data-card data-hover="zoom">
+    <div class="card learn" data-card>
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
@@ -657,8 +655,9 @@ footer {
     const layer = card.querySelector('.people');
     const PERSON = '<svg viewBox="0 0 26 34" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="6" r="4"/><path d="M13 10v10"/><path d="M13 12l-7 5"/><path d="M13 12l7 5"/><path d="M13 20l-5 11"/><path d="M13 20l5 11"/></g></svg>';
     const people = [];
-    let timers = [];
     let active = false;
+    let slots = null;
+    let next = null;
 
     function layerRect() { return layer.getBoundingClientRect(); }
     function pinCenter() {
@@ -666,13 +665,30 @@ footer {
         return { x: r.left + r.width / 2 - l.left, y: r.top + r.height / 2 - l.top };
     }
     function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
-    function slot(i) {
-        const c = pinCenter();
-        const radius = 27;
-        const a = -Math.PI / 2 + i * (Math.PI * 2 / 6);
-        return { x: c.x + Math.cos(a) * radius, y: c.y + Math.sin(a) * radius };
+    // the first six make a ring around the pin; everyone after fills the card outward, nearest spots first
+    function buildSlots() {
+        const l = layerRect(), c = pinCenter();
+        const ring = [];
+        for (let i = 0; i < 6; i++) {
+            const a = -Math.PI / 2 + i * (Math.PI * 2 / 6);
+            ring.push({ x: c.x + Math.cos(a) * 27, y: c.y + Math.sin(a) * 27 });
+        }
+        const grid = [];
+        const step = 21, pad = 12;
+        for (let y = pad; y <= l.height - pad; y += step) {
+            for (let x = pad; x <= l.width - pad; x += step) {
+                const d = Math.hypot(x - c.x, y - c.y);
+                if (d < 44) continue; // leave the ring its room
+                grid.push({ x: x + (Math.random() - 0.5) * 6, y: y + (Math.random() - 0.5) * 6, d });
+            }
+        }
+        grid.sort((a, b) => a.d - b.d);
+        return ring.concat(grid);
     }
-    function arrive(i) {
+    function arrive() {
+        if (!slots) slots = buildSlots();
+        const i = people.length;
+        if (i >= slots.length) { active = false; return; }
         const el = document.createElement('span');
         el.className = 'person';
         el.innerHTML = PERSON;
@@ -680,26 +696,20 @@ footer {
         place(el, c.x, c.y);
         layer.appendChild(el);
         people.push(el);
-        timers.push(setTimeout(() => {
-            el.classList.add('in', 'walking');
-            const p = slot(i);
-            place(el, p.x, p.y);
-        }, 40));
-        timers.push(setTimeout(() => el.classList.remove('walking'), 1200));
+        setTimeout(() => { el.classList.add('in', 'walking'); place(el, slots[i].x, slots[i].y); }, 40);
+        setTimeout(() => el.classList.remove('walking'), 1200);
+        if (active) next = setTimeout(arrive, 520);
     }
     function start() {
         if (active) return;
         active = true;
         card.classList.add('peopled');
-        for (let i = 0; i < 6; i++) timers.push(setTimeout(() => arrive(i), 150 + i * 550));
+        next = setTimeout(arrive, people.length ? 300 : 150);
     }
     function stop() {
         active = false;
-        timers.forEach(t => { clearTimeout(t); clearInterval(t); });
-        timers = [];
-        card.classList.remove('peopled');
-        people.forEach(el => { el.classList.remove('in', 'walking'); setTimeout(() => el.remove(), 700); });
-        people.length = 0;
+        clearTimeout(next);
+        next = null;
     }
     pin.addEventListener('mouseenter', start);
     card.addEventListener('mouseleave', stop);
@@ -750,21 +760,13 @@ document.querySelectorAll('[data-card]').forEach(card => {
 
 // what each card does to the room when the hand rests on it
 (function () {
-    const page = document.getElementById('page');
     document.querySelectorAll('[data-hover]').forEach(card => {
         const kind = card.dataset.hover;
         card.addEventListener('mouseenter', () => {
             if (kind === 'beam') document.body.classList.add('beam');
-            if (kind === 'zoom') {
-                const r = card.getBoundingClientRect();
-                const pr = page.getBoundingClientRect();
-                page.style.transformOrigin = (r.left + r.width / 2 - pr.left) + 'px ' + (r.top + r.height / 2 - pr.top) + 'px';
-                page.classList.add('zoom');
-            }
         });
         card.addEventListener('mouseleave', () => {
             document.body.classList.remove('beam');
-            page.classList.remove('zoom');
         });
     });
 })();
