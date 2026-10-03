@@ -335,21 +335,7 @@ body.beam .cursor-beam { opacity: 1; animation: twinkle 2.2s ease-in-out infinit
 }
 
 
-/* ---------- the cinematography card: the door out ---------- */
-.card.door {
-    width: 162px;
-    height: 256px;
-    margin-bottom: 10px;
-}
-.card.door .front {
-    background: var(--ink-soft);
-    border: 1px solid var(--gold-bright);
-    box-shadow: inset 0 0 0 4px var(--ink-soft), inset 0 0 0 5px rgba(227, 212, 164, 0.7), inset 0 0 0 7px var(--ink-soft), inset 0 0 0 8px rgba(227, 212, 164, 0.25), 0 14px 40px rgba(0,0,0,0.6);
-}
-.card.door .corner { color: var(--gold-bright); opacity: 1; font-size: 9px; }
-.card.door .numeral, .card.door .glyph { color: var(--gold-bright); }
-.card.door .glyph { width: 40px; height: 40px; }
-.card.door .card-name { color: var(--gold-bright); }
+/* ---------- the cinematography card ---------- */
 .card.door .enter {
     font-family: 'Space Mono', monospace;
     font-size: 0.5rem;
@@ -367,7 +353,7 @@ body.beam .cursor-beam { opacity: 1; animation: twinkle 2.2s ease-in-out infinit
     width: 600px; height: 1000px;
     border: 0;
     background: #fff;
-    transform: scale(0.25);
+    transform: scale(0.23);
     transform-origin: 0 0;
     pointer-events: none;
     opacity: 0;
@@ -480,10 +466,8 @@ footer {
 @media (max-width: 680px) {
     header { padding-top: 8vh; }
     .card { width: 96px; height: 152px; margin: 0 -1.4rem; }
-    .card.door { width: 104px; height: 166px; margin-bottom: 6px; }
-    .card.door .glyph { width: 26px; height: 26px; }
     .card.door .enter { font-size: 0.38rem; }
-    .back.site iframe { transform: scale(0.153); height: 1080px; }
+    .back.site iframe { transform: scale(0.14); height: 1180px; }
     .front { gap: 0.55rem; }
     .glyph { width: 22px; height: 22px; }
     .numeral { font-size: 0.48rem; }
@@ -564,7 +548,7 @@ footer {
     <div class="card door" data-card data-hover="beam">
         <div class="card-inner">
             <div class="face front">
-                <span class="corner tl">✦</span><span class="corner tr">✦</span><span class="corner bl">✦</span><span class="corner br">✦</span>
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">III</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="22" cy="22" r="13" stroke="currentColor" stroke-width="1.1"/>
