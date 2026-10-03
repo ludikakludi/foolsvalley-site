@@ -40,8 +40,8 @@ const NYE = {
   // Guests don't pick a dorm or a shared room themselves: they book a bed and we put them in any free one,
   // trying the rooms in this order.
   categories: {
-    nye_dorm:   { name: 'dorm bed', desc: 'a bed in one of our dorms — old house dorm, blue house dorm, zen room or the blue house hallway. we place you.', price: 210, rooms: ['dorm_oh', 'dorm_bh', 'zen', 'hallway'] },
-    nye_shared: { name: 'bed in a shared room', desc: 'a bed in a room shared with one to three others — m big suite, m curve suite, m room, big bedroom 1, small bedrooms middle or north. we place you.', price: 350, rooms: ['mbig', 'mcurve', 'mdouble', 'ensuite', 'normal_m', 'normal_n'] }
+    nye_dorm:   { name: 'dorm bed', desc: '', price: 210, rooms: ['dorm_oh', 'dorm_bh', 'zen', 'hallway'] },
+    nye_shared: { name: 'bed in a shared room', desc: '', price: 350, rooms: ['mbig', 'mcurve', 'mdouble', 'ensuite', 'normal_m', 'normal_n'] }
   }
   // Not listed, so not bookable for the festival: apartment / apt_a / apt_b and sunny (organisers' team),
   // galeria and library (our staff), pool, downstairs, tipi.
@@ -1190,7 +1190,8 @@ const NYE_HEADERS = [
   'Total Price',                 // N
   'Status',                      // O (column 15): yes / no
   'Amount Paid',                 // P
-  'Facilitators Fee Passed On'   // Q
+  'Facilitators Fee Passed On',  // Q
+  'Gender'                       // R
 ];
 const NYE_STATUS_COLUMN = 15;
 
@@ -1317,7 +1318,8 @@ function handleNyeSubmission(app, ss) {
     totalPrice,
     'pending',
     '',
-    ''
+    '',
+    app.gender || ''
   ]);
 
   if (cfg) {
@@ -1329,7 +1331,7 @@ function handleNyeSubmission(app, ss) {
     }
   }
 
-  const record = { name: app.name, email: app.email, questions: app.questions || '', roomName: roomName, roomId: app.roomId,
+  const record = { name: app.name, email: app.email, gender: app.gender || '', questions: app.questions || '', roomName: roomName, roomId: app.roomId,
                    roomPreference: app.roomPreference || '', people: people, roomPrice: roomPrice, foodFee: foodFee,
                    facilitatorsFee: facilitatorsFee, totalPrice: totalPrice, unit: cfg ? cfg.unit : '' };
   try {
@@ -1349,6 +1351,7 @@ PARTICIPANT
 
 Name: ${r.name}
 Email: ${r.email}
+Gender: ${r.gender || 'Not given'}
 Number of people: ${r.people}
 
 ============================================================

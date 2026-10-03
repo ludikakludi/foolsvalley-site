@@ -219,6 +219,9 @@
         }
         .radio-row label.selected { background: var(--black); color: var(--bg); }
         .radio-row input { accent-color: var(--black); }
+        .gender-row label { font-size: 14px; padding: 0.6rem 0.8rem; }
+        .field.error .gender-row label { border-color: var(--rust); }
+        @media (max-width: 600px) { .gender-row { flex-wrap: wrap; } .gender-row label { flex: 1 1 45%; } }
 
         /* SMALL PRINT */
         .faq { max-width: 620px; }
@@ -304,9 +307,8 @@
     <section>
         <div class="section-label">001 / the festival</div>
         <div class="prose">
-            <p>a contact improvisation festival over new year's eve with Francisco Borges and friends.</p>
             <p class="coming-soon">more info coming soon</p>
-            <p>feel free to send requests for rooms already: pick a bed or a private room below and tell us anything you'd like us to know. dorm and shared-room beds are placed by us.</p>
+            <p>feel free to send requests for rooms already: pick a bed or a private room below and tell us anything you'd like us to know.</p>
             <p class="price-from">from <strong>€560</strong> for the two weeks, food and accommodation included.</p>
         </div>
     </section>
@@ -325,6 +327,18 @@
                 <label for="q-email">email *</label>
                 <input type="email" id="q-email" autocomplete="email">
                 <div class="error-msg">please enter a valid email</div>
+            </div>
+
+            <div class="field" id="field-gender">
+                <label>gender *</label>
+                <div class="hint">dorms and shared rooms will be gender segregated where possible.</div>
+                <div class="radio-row gender-row">
+                    <label><input type="radio" name="gender" value="woman"> woman</label>
+                    <label><input type="radio" name="gender" value="man"> man</label>
+                    <label><input type="radio" name="gender" value="non-binary"> non-binary</label>
+                    <label><input type="radio" name="gender" value="prefer not to say"> rather not say</label>
+                </div>
+                <div class="error-msg">please choose one</div>
             </div>
 
             <div class="field" id="field-questions">
@@ -365,38 +379,8 @@
         </div>
     </section>
 
-    <section id="small-print">
-        <div class="section-label">005 / small print</div>
-        <div class="faq">
-            <div class="faq-item">
-                <h3>1. reservations</h3>
-                <p>we'll get back to you with payment details once your booking is approved. space is reserved when paid in full.</p>
-            </div>
-            <div class="faq-item">
-                <h3>2. refunds</h3>
-                <p>6+ weeks out: 100% refund on accommodation. 2–6 weeks: 50%. under 2 weeks: no refund. daily fee is always fully refundable.</p>
-            </div>
-            <div class="faq-item">
-                <h3>3. one payment</h3>
-                <p>room, food &amp; facilities and the facilitators fee are collected together in one payment. we pass the facilitators fee on to Francisco.</p>
-            </div>
-            <div class="faq-item">
-                <h3>4. what's per person vs. per room?</h3>
-                <p>dorm and shared-room beds and van spots are per person. private rooms are per room, for one or two people. food &amp; facilities are always per person.</p>
-            </div>
-            <div class="faq-item">
-                <h3>5. can I opt out of food?</h3>
-                <p>not fully. the daily fee also covers water, electricity, and kitchen fixed running costs. if our kitchen can't meet your dietary needs, we can offer you cooking and fridge space — and reduce a small part of the fee if needed.</p>
-            </div>
-            <div class="faq-item">
-                <h3>6. kitchen &amp; space care</h3>
-                <p>we have a chef, but we ask everyone to help with 1–2 cooking/space care shifts per week. on sunday we have a collective cleaning session.</p>
-            </div>
-        </div>
-    </section>
-
     <section id="review" style="display:none;">
-        <div class="section-label">006 / review</div>
+        <div class="section-label">005 / review</div>
         <h2 class="section-title">your stay</h2>
         <div class="review">
             <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
@@ -414,7 +398,7 @@
     </section>
 
     <section id="success" style="display:none;">
-        <div class="section-label">007 / sent</div>
+        <div class="section-label">006 / sent</div>
         <div class="success">
             <h2>request sent</h2>
             <p>thank you. we'll write back to confirm your room and send more info about the festival as it comes.</p>
@@ -637,8 +621,8 @@
         const price = document.createElement('div');
         price.className = 'room-price';
         const food = festival.foodPerDay * festival.nights;
-        price.innerHTML = '<strong>€' + (room.roomPrice + food) + '</strong> (€' + room.roomPrice + ' accommodation ' + unitLabel(room) + ' + €' + food + ' food)' +
-          '<span class="room-sub">for one person, the whole festival' + (festival.facilitatorsFee ? ' · + €' + festival.facilitatorsFee + ' facilitators fee' : '') + '</span>';
+        price.innerHTML = '<strong>€' + (room.roomPrice + food) + '</strong> (€' + room.roomPrice + ' ' + unitLabel(room) + ' + €' + food + ' food)' +
+          (festival.facilitatorsFee ? '<span class="room-sub">+ €' + festival.facilitatorsFee + ' facilitators fee per person</span>' : '');
         info.appendChild(h4); info.appendChild(desc); info.appendChild(price);
         card.appendChild(info);
 
@@ -666,6 +650,10 @@
       if (selectedRoom) populateReview();
     }
     document.querySelectorAll('input[name="people"]').forEach(r => r.addEventListener('change', syncPeople));
+    document.querySelectorAll('input[name="gender"]').forEach(r => r.addEventListener('change', () => {
+      document.querySelectorAll('input[name="gender"]').forEach(g => g.closest('label').classList.toggle('selected', g.checked));
+    }));
+    function gender() { const g = document.querySelector('input[name="gender"]:checked'); return g ? g.value : ''; }
 
     // ============================================================
     // REVIEW
@@ -689,7 +677,7 @@
         priceRows.forEach(id => document.getElementById(id).style.display = 'none');
       } else if (selectedRoom) {
         const p = pricing();
-        document.getElementById('rev-room').textContent = cleanName(selectedRoom.name) + (selectedRoom.unit === 'bed' ? ' (one bed)' : selectedRoom.unit === 'spot' ? ' (one spot)' : '');
+        document.getElementById('rev-room').textContent = cleanName(selectedRoom.name);
         priceRows.forEach(id => document.getElementById(id).style.display = '');
         document.getElementById('rev-fac-row').style.display = p.fac > 0 ? '' : 'none';
         document.getElementById('rev-people').textContent = p.people;
@@ -721,6 +709,7 @@
       }
       check('field-name', val('q-name').length > 0);
       check('field-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('q-email')));
+      check('field-gender', gender().length > 0);
       if (firstError) { firstError.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
       return true;
     }
@@ -745,6 +734,7 @@
           name: val('q-name'),
           email: val('q-email'),
           questions: val('q-questions'),
+          gender: gender(),
           people: p.people,
           arrivalDateISO: formatDateISO(arrivalDate),
           departureDateISO: formatDateISO(departureDate),
