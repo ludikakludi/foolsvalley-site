@@ -853,24 +853,20 @@
       const dailyFee = fallbackMode ? 0 : selectedRoom.dailyFee;
       const allergies = val('q-allergies') || 'none';
 
-      // The backend stores this in the residency applications sheet; label every field so it reads clearly there.
       const payload = {
         action: 'submit',
         application: {
+          eventType: 'vipassana',
           name: val('q-first') + ' ' + val('q-last'),
           email: val('q-email'),
-          visited: '',
-          links: 'joining from: ' + val('q-from'),
-          tcInterest: '',
-          mainQuest: 'VIPASSANA & AUTHENTIC MOVEMENT RETREAT (dec 1\u20136, 2026) | why join: ' + val('q-why'),
-          pastQuests: 'meditation experience: ' + val('q-meditation'),
-          reference: 'heard about the retreat via: ' + val('q-heard'),
-          useTimeFor: 'body-based practice experience: ' + val('q-body'),
-          contribute: '',
-          idealDay: '',
-          questions: '[vipassana & authentic movement retreat, dec 1\u20136, food \u20AC' + RETREAT_FEE_PER_DAY + '/day] food allergies: ' + allergies,
-          codeword: 'vipassanaam',
-          cleanupAgreement: 'agreed to the terms of participation',
+          heardFrom: val('q-heard'),
+          whyJoin: val('q-why'),
+          joiningFrom: val('q-from'),
+          meditation: val('q-meditation'),
+          movement: val('q-body'),
+          allergies: allergies,
+          termsAgreed: document.getElementById('q-terms').checked,
+          questions: '',
           arrivalDate: formatDate(arrivalDate),
           departureDate: formatDate(departureDate),
           arrivalDateISO: formatDateISO(arrivalDate),

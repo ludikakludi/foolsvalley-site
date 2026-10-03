@@ -9,6 +9,7 @@ const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 const TUCKER_APPLICATIONS_SHEET = 'tucker applications';
 const NYE_APPLICATIONS_SHEET = 'nye applications';
+const VIPASSANA_APPLICATIONS_SHEET = 'vipassana applications';
 
 // New Year CI Festival, Dec 28 2026 - Jan 11 2027 (requests with ?event=nye / eventType 'nye').
 // Fixed dates and fixed prices for the whole festival. Food is per person; room and bed prices are not.
@@ -666,6 +667,9 @@ function handleSubmission(data) {
     if (app.eventType === 'nye') {
       return handleNyeSubmission(app, ss);
     }
+    if (app.eventType === 'vipassana' || app.codeword === 'vipassanaam') {
+      return handleVipassanaSubmission(app, ss);
+    }
 
     let appSheet = ss.getSheetByName(APPLICATIONS_SHEET);
 
@@ -1178,6 +1182,179 @@ function sendTuckerNotification(app) {
 }
 
 // ============================================================
+// VIPASSANA & AUTHENTIC MOVEMENT RETREAT SUBMISSION (Dec 1-6, 2026)
+// ============================================================
+const VIPASSANA_HEADERS = [
+  'Timestamp',             // A
+  'Name',                  // B
+  'Email',                 // C
+  'Heard From',            // D
+  'Why Join',              // E
+  'Joining From',          // F
+  'Meditation Experience', // G
+  'Movement Experience',   // H
+  'Food Allergies',        // I
+  'Terms Agreed',          // J
+  'Arrival Date',          // K
+  'Departure Date',        // L
+  'Num Nights',            // M
+  'Room Name',             // N
+  'Room ID',               // O
+  'Room Price',            // P
+  'Food Fee',              // Q
+  'Total Price',           // R
+  'Status',                // S (column 19): yes / no
+  'Amount Paid',           // T
+  'Questions / Notes'      // U
+];
+const VIPASSANA_STATUS_COLUMN = 19;
+const VIPASSANA_EMAILS = 'theonlyfool@foolsvalley.com,Reimar@vipassanaathome.org';
+
+function handleVipassanaSubmission(app, ss) {
+  let sheet = ss.getSheetByName(VIPASSANA_APPLICATIONS_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(VIPASSANA_APPLICATIONS_SHEET);
+    sheet.appendRow(VIPASSANA_HEADERS);
+    const headerRange = sheet.getRange(1, 1, 1, VIPASSANA_HEADERS.length);
+    headerRange.setFontWeight('bold');
+    headerRange.setBackground('#f3f3f3');
+  }
+
+  // The retreat page sends clean fields; the apply page's codeword flow only has name, email and a note
+  const arrivalISO = app.arrivalDateISO || toISODate(app.arrivalDate);
+  const departureISO = app.departureDateISO || toISODate(app.departureDate);
+  const roomPrice = Number(app.roomPrice) || 0;
+  const foodFee = Number(app.dailyFee) || 0;
+
+  sheet.appendRow([
+    new Date(),
+    app.name,
+    app.email,
+    app.heardFrom || '',
+    app.whyJoin || '',
+    app.joiningFrom || '',
+    app.meditation || '',
+    app.movement || '',
+    app.allergies || '',
+    app.termsAgreed ? 'yes' : '',
+    arrivalISO,
+    departureISO,
+    app.numDays,
+    app.roomName,
+    app.roomId,
+    roomPrice,
+    foodFee,
+    roomPrice + foodFee,
+    'pending',
+    '',
+    (app.questions || '') + (app.roomPreference ? ' | room preference: ' + app.roomPreference : '')
+  ]);
+
+  if (app.roomId && app.roomId !== 'none') {
+    try {
+      recordBookingInCalendar({ name: app.name, roomId: app.roomId, arrivalDate: arrivalISO, departureDate: departureISO }, ss);
+    } catch (calendarErr) {
+      Logger.log('Vipassana calendar recording failed: ' + calendarErr.message);
+    }
+  }
+
+  try {
+    sendVipassanaNotification(app, arrivalISO, departureISO, roomPrice, foodFee);
+  } catch (emailErr) {
+    Logger.log('Vipassana email failed: ' + emailErr.message);
+  }
+
+  return jsonResponse({ success: true });
+}
+
+function toISODate(value) {
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return String(value || '');
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function buildVipassanaSummary(app, arrivalISO, departureISO, roomPrice, foodFee) {
+  return `
+============================================================
+PARTICIPANT
+============================================================
+
+Name: ${app.name}
+Email: ${app.email}
+Joining from: ${app.joiningFrom || 'Not given'}
+Heard about the retreat via: ${app.heardFrom || 'Not given'}
+
+============================================================
+DATES & ACCOMMODATION
+============================================================
+
+Vipassana & authentic movement retreat, Dec 1-6, 2026
+Arrival: ${arrivalISO}
+Departure: ${departureISO}
+Duration: ${app.numDays} nights
+
+Accommodation: ${app.roomName}
+${app.roomPreference ? 'Accommodation preference (room selection was unavailable): ' + app.roomPreference : ''}
+
+============================================================
+PRICE
+============================================================
+
+Accommodation: €${roomPrice}
+Food & facilities: €${foodFee} (${app.numDays} days × €30)
+TOTAL: €${roomPrice + foodFee}
+
+============================================================
+ANSWERS
+============================================================
+
+Why do you want to join this retreat?
+${app.whyJoin || 'Not given'}
+
+Experience with meditation:
+${app.meditation || 'Not given'}
+
+Experience with conscious body-based practices:
+${app.movement || 'Not given'}
+
+Strict food allergies:
+${app.allergies || 'None given'}
+
+Terms of participation agreed: ${app.termsAgreed ? 'yes' : 'not recorded'}
+
+Questions / notes:
+${app.questions || 'None'}
+`;
+}
+
+function sendVipassanaNotification(app, arrivalISO, departureISO, roomPrice, foodFee) {
+  const summary = buildVipassanaSummary(app, arrivalISO, departureISO, roomPrice, foodFee);
+  try {
+    MailApp.sendEmail(
+      VIPASSANA_EMAILS,
+      'Vipassana retreat application: ' + app.name,
+      'New application for the vipassana & authentic movement retreat (Dec 1-6, 2026):\n' + summary +
+      '\nFull record in the "vipassana applications" tab of the booking spreadsheet.'
+    );
+  } catch (err) {
+    Logger.log('Vipassana staff email failed: ' + err.message);
+  }
+  try {
+    MailApp.sendEmail(
+      app.email,
+      "Your application — vipassana & authentic movement retreat at fools' valley",
+      'Dear ' + app.name + ',\n\n' +
+      "Thank you for applying to the vipassana & authentic movement retreat at fools' valley (Dec 1-6, 2026). " +
+      'Here is a copy of your application:\n' + summary +
+      '\nWe will write back to confirm your place and send payment details. If anything looks wrong, just reply to this email.\n\n' +
+      "fools' valley\n"
+    );
+  } catch (err) {
+    Logger.log('Vipassana participant email failed: ' + err.message);
+  }
+}
+
+// ============================================================
 // NEW YEAR CI FESTIVAL SUBMISSION
 // ============================================================
 const NYE_HEADERS = [
@@ -1507,6 +1684,7 @@ function onEdit(e) {
     layouts[APPLICATIONS_SHEET] = { status: 24, arrival: 12, departure: 13, room: 16 };
     layouts[TUCKER_APPLICATIONS_SHEET] = { status: 21, arrival: 11, departure: 12, room: 15 };
     layouts[NYE_APPLICATIONS_SHEET] = { status: NYE_STATUS_COLUMN, arrival: 4, departure: 5, room: 8 };
+    layouts[VIPASSANA_APPLICATIONS_SHEET] = { status: VIPASSANA_STATUS_COLUMN, arrival: 10, departure: 11, room: 14 };
     const layout = layouts[sheetName];
     if (!layout) {
       Logger.log('Not an applications sheet, exiting');
