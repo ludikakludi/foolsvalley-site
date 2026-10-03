@@ -928,8 +928,10 @@ function findAvailableColumn(calendarData, columnIndices, arrivalDate, departure
 // SEND EMAIL NOTIFICATION (OPTIONAL)
 // ============================================================
 function sendApplicationNotification(app) {
-  const recipient = 'theonlyfool@foolsvalley.com';
-  const subject = 'New Residency Application: ' + app.name;
+  // Vipassana & authentic movement retreat applications (Dec 1-6, 2026) also go to the retreat's teacher
+  const isVipassana = app.codeword === 'vipassanaam' || /vipassana & authentic movement retreat/i.test(String(app.questions || '') + String(app.mainQuest || ''));
+  const recipient = isVipassana ? 'theonlyfool@foolsvalley.com,Reimar@vipassanaathome.org' : 'theonlyfool@foolsvalley.com';
+  const subject = (isVipassana ? 'Vipassana retreat application: ' : 'New Residency Application: ') + app.name;
 
   const tcLabel = app.tcInterest === 'tc-primary' ? 'Yes — primary interest, joining all sessions' :
                   app.tcInterest === 'tc-no' ? 'No, not primary interest' :
