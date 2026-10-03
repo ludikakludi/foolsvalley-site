@@ -552,6 +552,9 @@ footer a { color: var(--text); }
     <p id="min-duration-container" style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic; display:none;">
       <span id="min-duration-text">2 weeks min recommended stay if you're coming for the first time.</span>
     </p>
+    <p id="closing-note" style="margin-bottom:1.5rem; font-size:0.9rem; color: var(--text-light); font-style: italic;">
+      bookings here are open until the end of november 2026. for stays from december onwards, write to us at <a href="mailto:theonlyfool@foolsvalley.com" style="color:var(--text);">theonlyfool@foolsvalley.com</a>.
+    </p>
 
     <div class="date-selection-mode" id="date-mode">select your arrival Monday</div>
 
@@ -792,6 +795,10 @@ const VIPASSANA_EARLIEST_ARRIVAL = new Date(2026, 10, 29);
 const VIPASSANA_LATEST_DEPARTURE = new Date(2026, 11, 8);
 const VIPASSANA_DAILY_FEE = 30;
 
+// Residency bookings are open up to the end of November 2026. From December onwards people write to us.
+// Event codewords (vipassanaam) are not affected.
+const BOOKING_CLOSES = new Date(2026, 11, 1);
+
 function arrivalPrompt() {
   if (hasVipassanaCode) return 'select your arrival day (nov 29 \u2013 dec 1)';
   return 'select your arrival Monday';
@@ -959,6 +966,7 @@ function renderCalendar() {
       } else {
         isValidArrival = isMonday && !isPast && !tooSoon;
       }
+      if (!hasVipassanaCode && date >= BOOKING_CLOSES) isValidArrival = false;
 
       if (isValidArrival) {
         div.classList.add('selectable');
@@ -976,7 +984,10 @@ function renderCalendar() {
         div.classList.add('selectable');
         div.addEventListener('click', () => selectDeparture(date));
       } else {
-        if (hasVipassanaCode) {
+        if (!hasVipassanaCode && date > BOOKING_CLOSES) {
+          // No residency stays into December 2026 or later
+          div.classList.add('disabled');
+        } else if (hasVipassanaCode) {
           // Vipassana retreat: must stay through the end of the retreat, leave at most 2 days after
           if (date >= VIPASSANA_END && date <= VIPASSANA_LATEST_DEPARTURE) {
             div.classList.add('selectable');
