@@ -310,9 +310,9 @@ function handleAvailability(e) {
 
         // Map calendar names to room IDs
         // Octopus House
-        if (room.id === 'mcurve') { roomNameToId['m curve suite'] = room.id; roomNameToId['m curve suite 2'] = room.id; }
-        if (room.id === 'mbig') { ['m big suite', 'm big suite 2', 'm big suite 3', 'm big suite 4'].forEach(n => roomNameToId[n] = room.id); }
-        if (room.id === 'mdouble') { roomNameToId['m double'] = room.id; roomNameToId['m double 2'] = room.id; }
+        if (room.id === 'mcurve') roomNameToId['m curve suite'] = room.id;
+        if (room.id === 'mbig') roomNameToId['m big suite'] = room.id;
+        if (room.id === 'mdouble') roomNameToId['m double'] = room.id;
 
         // Old House
         if (room.id === 'studio') roomNameToId['studio'] = room.id;
@@ -320,7 +320,7 @@ function handleAvailability(e) {
         if (room.id === 'chafariz') roomNameToId['chafariz suite'] = room.id;
         if (room.id === 'library') roomNameToId['library suite'] = room.id;
         if (room.id === 'isabel') roomNameToId['isabel'] = room.id;
-        if (room.id === 'zen') { ['zen 1', 'zen 2', 'zen 3', 'zen 4'].forEach(n => roomNameToId[n] = room.id); }
+        if (room.id === 'zen') roomNameToId['zen'] = room.id;
         if (room.id === 'dorm_oh') {
           roomNameToId['master bunk 1'] = room.id;
           roomNameToId['master bunk 2'] = room.id;
@@ -331,12 +331,12 @@ function handleAvailability(e) {
         }
 
         // Blue House
-        if (room.id === 'ensuite') { roomNameToId['en suite'] = room.id; roomNameToId['en suite 2'] = room.id; }
+        if (room.id === 'ensuite') roomNameToId['en suite'] = room.id;
         if (room.id === 'sunny') roomNameToId['sunny'] = room.id;
         if (room.id === 'normal_s') roomNameToId['normal south'] = room.id;
-        if (room.id === 'normal_m') { roomNameToId['normal middle'] = room.id; roomNameToId['normal middle 2'] = room.id; }
-        if (room.id === 'normal_n') { roomNameToId['normal north'] = room.id; roomNameToId['normal north 2'] = room.id; }
-        if (room.id === 'hallway') { ['hallway 1', 'hallway 2', 'hallway 3', 'hallway 4'].forEach(n => roomNameToId[n] = room.id); }
+        if (room.id === 'normal_m') roomNameToId['normal middle'] = room.id;
+        if (room.id === 'normal_n') roomNameToId['normal north'] = room.id;
+        // 'hallway' has no column of its own: hallway guests sit in the van columns, tagged '(hallway)'
         if (room.id === 'pool') roomNameToId['pool'] = room.id;
         if (room.id === 'downstairs') roomNameToId['downstairs'] = room.id;
         if (room.id === 'apt_a') roomNameToId['apartment a'] = room.id;
@@ -351,7 +351,10 @@ function handleAvailability(e) {
 
         // Camping
         if (room.id === 'van') {
-          ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].forEach(n => roomNameToId[n] = room.id);
+          roomNameToId['a'] = room.id;
+          roomNameToId['b'] = room.id;
+          roomNameToId['c'] = room.id;
+          roomNameToId['d'] = room.id;
         }
 
         // Tipi
@@ -389,11 +392,13 @@ function handleAvailability(e) {
           if (cellValue && String(cellValue).trim().length > 0) {
             const roomId = roomNameToId[roomName];
             if (roomId) {
-              // Record this as a single-day booking
-              bookings.push({
-                roomId: roomId,
-                date: dateVal
-              });
+              // A cell may hold several guests joined with ' + ' (festival beds in one room).
+              // Each counts as one booking. In the van columns, names tagged '(hallway)' are
+              // the Blue House hallway beds.
+              for (const guest of splitGuests(cellValue)) {
+                const id = (roomId === 'van' && /\(hallway\)/i.test(guest)) ? 'hallway' : roomId;
+                bookings.push({ roomId: id, date: dateVal });
+              }
             }
           }
         }
@@ -844,24 +849,24 @@ function recordBookingInCalendar(app, ss) {
 function getRoomIdToCalendarNameMapping(roomId) {
   const mapping = {
     // Blue House
-    'ensuite': ['en suite', 'en suite 2'],
+    'ensuite': ['en suite'],
     'sunny': ['sunny'],
     'normal_s': ['normal south'],
-    'normal_m': ['normal middle', 'normal middle 2'],
-    'normal_n': ['normal north', 'normal north 2'],
+    'normal_m': ['normal middle'],
+    'normal_n': ['normal north'],
     'pool': ['pool'],
     'downstairs': ['downstairs'],
-    'hallway': ['hallway 1', 'hallway 2', 'hallway 3', 'hallway 4'],
+    'hallway': ['a', 'b', 'c', 'd'],   // hallway beds are written into the van columns, tagged '(hallway)'
     'apartment': ['apartment a', 'apartment b'],
     'apt_a': ['apartment a'],
     'apt_b': ['apartment b'],
     'dorm_bh': ['bunk 1', 'bunk 2', 'bunk 3', 'bunk 4'],
 
     // Old House / Octopus
-    'mcurve': ['m curve suite', 'm curve suite 2'],
-    'mbig': ['m big suite', 'm big suite 2', 'm big suite 3', 'm big suite 4'],
-    'mdouble': ['m double', 'm double 2'],
-    'zen': ['zen 1', 'zen 2', 'zen 3', 'zen 4'],
+    'mcurve': ['m curve suite'],
+    'mbig': ['m big suite'],
+    'mdouble': ['m double'],
+    'zen': ['zen'],
     'studio': ['studio'],
     'galeria': ['galeria'],
     'chafariz': ['chafariz suite'],
@@ -870,7 +875,7 @@ function getRoomIdToCalendarNameMapping(roomId) {
     'dorm_oh': ['master bunk 1', 'master bunk 2', 'master bunk 3', 'master bunk 4', 'master bunk 5', 'master bunk 6'],
 
     // Camping
-    'van': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
+    'van': ['a', 'b', 'c', 'd'],
     'tipi': ['1', '2', '3', '4']
   };
 
@@ -1221,41 +1226,111 @@ function nyePeopleBooked(ss) {
   return total;
 }
 
-// A column that is free for every night of the festival, or -1
-function findFreeColumn(calendarData, columnIndices, arrivalISO, departureISO) {
-  const arrival = new Date(arrivalISO), departure = new Date(departureISO);
-  for (const colIdx of columnIndices) {
-    let free = true;
-    for (let row = 5; row < Math.min(calendarData.length, 1500) && free; row++) {
-      const rowData = calendarData[row];
-      let dateVal = null;
-      for (let col = 1; col <= 3; col++) {
-        if (rowData[col] instanceof Date) { dateVal = new Date(rowData[col]); break; }
-      }
-      if (!dateVal || dateVal < arrival || dateVal >= departure) continue;
-      const cellValue = rowData[colIdx];
-      if (cellValue && String(cellValue).trim().length > 0) free = false;
-    }
-    if (free) return colIdx;
-  }
-  return -1;
+// Several guests can share one calendar cell, written as 'Anna + Ben + Carla (hallway)'
+function splitGuests(cellValue) {
+  return String(cellValue || '').split(' + ').map(g => g.trim()).filter(g => g.length > 0);
+}
+function guestMatches(guest, name) {
+  const bare = guest.replace(/\s*\((van|hallway)\)\s*$/i, '').trim();
+  return bare === name || guest === name;
 }
 
-// Pick the first room in the category with a bed free for the whole festival
+// Rows of the calendar that fall inside the festival
+function nyeRows(calendarData) {
+  const arrival = new Date(NYE.start), departure = new Date(NYE.end);
+  const rows = [];
+  for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
+    const rowData = calendarData[row];
+    let dateVal = null;
+    for (let col = 1; col <= 3; col++) {
+      if (rowData[col] instanceof Date) { dateVal = new Date(rowData[col]); break; }
+    }
+    if (dateVal && dateVal >= arrival && dateVal < departure) rows.push(row);
+  }
+  return rows;
+}
+
+function nyeColumnsFor(roomRow, roomId) {
+  const names = getRoomIdToCalendarNameMapping(roomId);
+  const cols = [];
+  for (let col = 5; col < roomRow.length; col++) {
+    if (names.includes(String(roomRow[col] || '').toLowerCase().trim())) cols.push(col);
+  }
+  return cols;
+}
+
+// Guests of this room in a cell: hallway and van share columns, told apart by the '(hallway)' tag
+function nyeGuestsInCell(cellValue, roomId) {
+  return splitGuests(cellValue).filter(g => {
+    const hallway = /\(hallway\)/i.test(g);
+    if (roomId === 'hallway') return hallway;
+    if (roomId === 'van') return !hallway;
+    return true;
+  });
+}
+
+// Most guests of this room on any festival night
+function nyeOccupancy(calendarData, roomId) {
+  const cols = nyeColumnsFor(calendarData[2], roomId);
+  let worst = 0;
+  for (const row of nyeRows(calendarData)) {
+    let n = 0;
+    for (const c of cols) n += nyeGuestsInCell(calendarData[row][c], roomId).length;
+    worst = Math.max(worst, n);
+  }
+  return worst;
+}
+
+// Pick the first room in the category that still has a bed for the whole festival
 function assignNyeRoom(ss, category) {
   const valleySheet = ss.getSheetByName('valley rooms');
   if (!valleySheet) return null;
   const calendarData = valleySheet.getDataRange().getValues();
-  const roomRow = calendarData[2];
   for (const roomId of category.rooms) {
-    const names = getRoomIdToCalendarNameMapping(roomId);
-    const cols = [];
-    for (let col = 5; col < roomRow.length; col++) {
-      if (names.includes(String(roomRow[col] || '').toLowerCase().trim())) cols.push(col);
-    }
-    if (cols.length && findFreeColumn(calendarData, cols, NYE.start, NYE.end) >= 0) return roomId;
+    const cfg = NYE.rooms[roomId];
+    if (!cfg) continue;
+    if (nyeColumnsFor(calendarData[2], roomId).length === 0) continue;
+    if (nyeOccupancy(calendarData, roomId) < cfg.capacity) return roomId;
   }
   return null;
+}
+
+// Write a festival guest into the calendar. Dorm bunks have a column per bed; every other
+// space has one column, and guests are joined with ' + '. Van and hallway guests are tagged.
+function recordNyeBooking(ss, name, roomId) {
+  if (roomId === 'dorm_oh' || roomId === 'dorm_bh') {
+    // ISO dates parse as UTC midnight; Dec/Jan Portugal is WET (UTC+0), so they match the sheet's local dates.
+    recordBookingInCalendar({ name: name, roomId: roomId, arrivalDate: NYE.start, departureDate: NYE.end }, ss);
+    return;
+  }
+  const valleySheet = ss.getSheetByName('valley rooms');
+  if (!valleySheet) return;
+  const calendarData = valleySheet.getDataRange().getValues();
+  const cols = nyeColumnsFor(calendarData[2], roomId);
+  if (cols.length === 0) { Logger.log('No calendar column for ' + roomId); return; }
+  const rows = nyeRows(calendarData);
+  const label = roomId === 'van' ? name + ' (van)' : roomId === 'hallway' ? name + ' (hallway)' : name;
+
+  // the column with the fewest guests over the festival
+  let best = cols[0], bestLoad = Infinity;
+  for (const c of cols) {
+    let load = 0;
+    for (const row of rows) load = Math.max(load, splitGuests(calendarData[row][c]).length);
+    if (load < bestLoad) { best = c; bestLoad = load; }
+  }
+  let first = true;
+  for (const row of rows) {
+    const cell = valleySheet.getRange(row + 1, best + 1);
+    const current = String(calendarData[row][best] || '').trim();
+    if (current) {
+      cell.setValue(current + ' + ' + label);
+    } else {
+      cell.setValue(label);
+      cell.setFontColor('#999999');
+    }
+    if (first) { cell.setNote((cell.getNote() ? cell.getNote() + '\n' : '') + label + ': pending approval - from the festival form'); first = false; }
+  }
+  Logger.log('Festival booking recorded for ' + label + ' in column ' + best);
 }
 
 function nyeRoomDisplayName(ss, roomId) {
@@ -1324,8 +1399,7 @@ function handleNyeSubmission(app, ss) {
 
   if (cfg) {
     try {
-      // ISO dates parse as UTC midnight; Dec/Jan Portugal is WET (UTC+0), so they match the sheet's local dates.
-      recordBookingInCalendar({ name: app.name, roomId: app.roomId, arrivalDate: NYE.start, departureDate: NYE.end }, ss);
+      recordNyeBooking(ss, app.name, app.roomId);
     } catch (calendarErr) {
       Logger.log('NYE calendar recording failed: ' + calendarErr.message);
     }
@@ -1568,8 +1642,8 @@ function updateBookingColor(ss, applicantName, arrivalDate, departureDate, roomI
       // Check each target column for matching name
       for (const colIdx of targetColumns) {
         const cellValue = String(rowData[colIdx] || '').trim();
-        if (cellValue === applicantName) {
-          // Update color and clear note
+        if (cellValue === applicantName || splitGuests(cellValue).some(g => guestMatches(g, applicantName))) {
+          // Update color and clear note (a shared cell is coloured as a whole)
           const cell = valleySheet.getRange(row + 1, colIdx + 1);
           cell.setFontColor(color);
           cell.clearNote();
@@ -1658,10 +1732,12 @@ function removeBookingFromCalendar(ss, applicantName, arrivalDate, departureDate
       // Check each target column for matching name
       for (const colIdx of targetColumns) {
         const cellValue = String(rowData[colIdx] || '').trim();
-        if (cellValue === applicantName) {
-          // Clear the cell
+        const guests = splitGuests(cellValue);
+        if (cellValue === applicantName || guests.some(g => guestMatches(g, applicantName))) {
+          // Clear the cell, or take just this guest out of a shared cell
           const cell = valleySheet.getRange(row + 1, colIdx + 1);
-          cell.clear();
+          const others = guests.filter(g => !guestMatches(g, applicantName));
+          if (others.length) cell.setValue(others.join(' + ')); else cell.clear();
           cellsCleared++;
           Logger.log('Cleared cell at row ' + (row + 1) + ', col ' + (colIdx + 1) + ' (' + dateVal.toDateString() + ')');
         }
