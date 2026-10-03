@@ -124,12 +124,18 @@ h1 {
 .card.flipped .card-inner { transform: rotateY(180deg); --flip: 180deg; }
 
 /* move: the card trembles under the hand */
-.card.shake:hover .card-inner { animation: shake 2.6s ease-in-out infinite; }
-@keyframes shake {
-    0%, 100% { transform: rotateY(var(--flip, 0deg)) rotate(0deg); }
-    25%      { transform: rotateY(var(--flip, 0deg)) rotate(-7deg) translate(-12px, 4px); }
-    50%      { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, -6px); }
-    75%      { transform: rotateY(var(--flip, 0deg)) rotate(7deg) translate(12px, 4px); }
+.card.shake:hover .card-inner { animation: dance 1.8s ease-in-out infinite; }
+@keyframes dance {
+    0%   { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, 0) scale(1); }
+    12%  { transform: rotateY(var(--flip, 0deg)) rotate(-8deg) translate(-10px, -14px) scale(1.04); }
+    24%  { transform: rotateY(var(--flip, 0deg)) rotate(5deg) translate(6px, 2px) scale(0.98); }
+    36%  { transform: rotateY(var(--flip, 0deg)) rotate(-4deg) translate(-4px, -18px) scale(1.06); }
+    48%  { transform: rotateY(var(--flip, 0deg)) rotate(9deg) translate(12px, 0) scale(1); }
+    60%  { transform: rotateY(var(--flip, 0deg)) rotate(-2deg) translate(2px, -8px) scale(1.03); }
+    72%  { transform: rotateY(var(--flip, 0deg)) rotate(6deg) translate(-8px, -20px) scale(1.05); }
+    84%  { transform: rotateY(var(--flip, 0deg)) rotate(-7deg) translate(8px, 3px) scale(0.97); }
+    100% { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, 0) scale(1); }
+}
 }
 
 /* gather: touch the pin and people arrive, one by one, until six stand in a circle */
@@ -152,9 +158,9 @@ h1 {
 
 /* gather: a little person walks in; the page leans in towards the card */
 .card.gather { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='34' viewBox='0 0 26 34'><g fill='none' stroke='%23e3d4a4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='13' cy='6' r='4'/><path d='M13 10v10'/><path d='M13 12l-7 5'/><path d='M13 12l7 5'/><path d='M13 20l-5 11'/><path d='M13 20l5 11'/></g></svg>") 13 17, pointer; }
-/* gather: the page leans in towards the card */
+/* learn: the page steps back */
 #page { transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
-#page.zoom { transform: scale(1.07); }
+#page.zoom { transform: scale(0.9); }
 
 .face {
     position: absolute;
@@ -561,7 +567,7 @@ footer {
     </div>
 
     <!-- IIII · learn -->
-    <div class="card" data-card>
+    <div class="card" data-card data-hover="zoom">
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
@@ -582,7 +588,7 @@ footer {
     </div>
 
     <!-- V · gather -->
-    <div class="card gather" data-card data-hover="zoom">
+    <div class="card gather" data-card>
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
