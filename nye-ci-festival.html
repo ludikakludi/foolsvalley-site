@@ -306,7 +306,7 @@
         <div class="prose">
             <p>a contact improvisation festival over new year's eve with Francisco Borges and friends.</p>
             <p class="coming-soon">more info coming soon</p>
-            <p>feel free to send requests for rooms already: pick a room below and tell us anything you'd like us to know.</p>
+            <p>feel free to send requests for rooms already: pick a bed or a private room below and tell us anything you'd like us to know. dorm and shared-room beds are placed by us.</p>
             <p class="price-from">from <strong>€560</strong> for the two weeks, food and accommodation included.</p>
         </div>
     </section>
@@ -453,6 +453,8 @@
       pool:      'photo_2026-01-03-15.04.38-1024x768.webp',
       downstairs:'photo_2026-01-03-15.04.23-1024x768.webp',
       dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
+      nye_dorm:  'IMG_1326-1-1024x768.webp',
+      nye_shared:'IMG_1036_1-1024x768.webp',
     };
 
     // Festival: Dec 28, 2026 - Jan 11, 2027. Fixed dates, no early arrival or late departure.
@@ -461,11 +463,12 @@
     const arrivalDate   = new Date(2026, 11, 28);
     const departureDate = new Date(2027, 0, 11);
 
-    const BUILDING_ORDER = ['Octopus House', 'Old House', 'Blue House', 'Camping'];
+    const BUILDING_ORDER = ['Shared', 'Octopus House', 'Old House', 'Blue House', 'Camping'];
     const BUILDING_LABELS = {
-      'Octopus House': 'm / octopus house',
-      'Old House': 'the old house',
-      'Blue House': 'the villa',
+      'Shared': 'a bed — we place you',
+      'Octopus House': 'private rooms — m / octopus house',
+      'Old House': 'private rooms — the old house',
+      'Blue House': 'private rooms — the villa',
       'Camping': 'own tent / van (per person)'
     };
 

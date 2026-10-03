@@ -36,6 +36,12 @@ const NYE = {
     studio:   { price: 670,  unit: 'room', capacity: 1, maxPeople: 2 },
     normal_s: { price: 650,  unit: 'room', capacity: 1, maxPeople: 1 },
     van:      { price: 140,  unit: 'spot', capacity: 5 }
+  },
+  // Guests don't pick a dorm or a shared room themselves: they book a bed and we put them in any free one,
+  // trying the rooms in this order.
+  categories: {
+    nye_dorm:   { name: 'dorm bed', desc: 'a bed in one of our dorms — old house dorm, blue house dorm, zen room or the blue house hallway. we place you.', price: 210, rooms: ['dorm_oh', 'dorm_bh', 'zen', 'hallway'] },
+    nye_shared: { name: 'bed in a shared room', desc: 'a bed in a room shared with one to three others — m big suite, m curve suite, m room, big bedroom 1, small bedrooms middle or north. we place you.', price: 350, rooms: ['mbig', 'mcurve', 'mdouble', 'ensuite', 'normal_m', 'normal_n'] }
   }
   // Not listed, so not bookable for the festival: apartment / apt_a / apt_b and sunny (organisers' team),
   // galeria and library (our staff), pool, downstairs, tipi.
@@ -471,8 +477,22 @@ function handleAvailability(e) {
     }
 
     if (eventParam === 'nye') {
+      // Dorm and shared-room beds are offered as two pooled options, not room by room
+      const pooled = [];
+      for (const [catId, cat] of Object.entries(NYE.categories)) {
+        const beds = availableRooms.filter(r => cat.rooms.includes(r.id)).reduce((n, r) => n + r.availableCount, 0);
+        if (beds > 0) {
+          pooled.push({
+            id: catId, name: cat.name + ' (' + beds + ' bed' + (beds === 1 ? '' : 's') + ' available)', building: 'Shared', desc: cat.desc, photo: '',
+            roomPrice: cat.price, priceBreakdown: '€' + cat.price + ' per bed, whole festival', dailyFee: NYE.foodPerDay * numDays,
+            totalPrice: cat.price + NYE.foodPerDay * numDays, numDays: numDays, availableCount: beds, unit: 'bed', maxPeople: 1
+          });
+        }
+      }
+      const inCategory = new Set(Object.values(NYE.categories).flatMap(c => c.rooms));
+      const singles = availableRooms.filter(r => !inCategory.has(r.id));
       return jsonResponse({
-        rooms: availableRooms,
+        rooms: pooled.concat(singles),
         event: 'nye',
         nights: NYE.nights,
         foodPerDay: NYE.foodPerDay,
@@ -1200,7 +1220,64 @@ function nyePeopleBooked(ss) {
   return total;
 }
 
+// A column that is free for every night of the festival, or -1
+function findFreeColumn(calendarData, columnIndices, arrivalISO, departureISO) {
+  const arrival = new Date(arrivalISO), departure = new Date(departureISO);
+  for (const colIdx of columnIndices) {
+    let free = true;
+    for (let row = 5; row < Math.min(calendarData.length, 1500) && free; row++) {
+      const rowData = calendarData[row];
+      let dateVal = null;
+      for (let col = 1; col <= 3; col++) {
+        if (rowData[col] instanceof Date) { dateVal = new Date(rowData[col]); break; }
+      }
+      if (!dateVal || dateVal < arrival || dateVal >= departure) continue;
+      const cellValue = rowData[colIdx];
+      if (cellValue && String(cellValue).trim().length > 0) free = false;
+    }
+    if (free) return colIdx;
+  }
+  return -1;
+}
+
+// Pick the first room in the category with a bed free for the whole festival
+function assignNyeRoom(ss, category) {
+  const valleySheet = ss.getSheetByName('valley rooms');
+  if (!valleySheet) return null;
+  const calendarData = valleySheet.getDataRange().getValues();
+  const roomRow = calendarData[2];
+  for (const roomId of category.rooms) {
+    const names = getRoomIdToCalendarNameMapping(roomId);
+    const cols = [];
+    for (let col = 5; col < roomRow.length; col++) {
+      if (names.includes(String(roomRow[col] || '').toLowerCase().trim())) cols.push(col);
+    }
+    if (cols.length && findFreeColumn(calendarData, cols, NYE.start, NYE.end) >= 0) return roomId;
+  }
+  return null;
+}
+
+function nyeRoomDisplayName(ss, roomId) {
+  const roomsSheet = ss.getSheetByName(ROOMS_SHEET);
+  if (!roomsSheet) return roomId;
+  const data = roomsSheet.getDataRange().getValues();
+  for (const row of data) if (row[0] === roomId) return row[1] || roomId;
+  return roomId;
+}
+
 function handleNyeSubmission(app, ss) {
+  // Dorm / shared-room beds: we choose the room
+  const category = NYE.categories[app.roomId];
+  let requested = '';
+  if (category) {
+    const assigned = assignNyeRoom(ss, category);
+    if (!assigned) {
+      return jsonResponse({ success: false, error: 'no ' + category.name + ' is left for the festival' });
+    }
+    requested = category.name;
+    app.roomId = assigned;
+    app.roomName = category.name + ' → ' + nyeRoomDisplayName(ss, assigned);
+  }
   const cfg = NYE.rooms[app.roomId];
   if (!cfg && app.roomId !== 'none') {
     return jsonResponse({ success: false, error: 'That space is not available for the festival' });
@@ -1216,7 +1293,7 @@ function handleNyeSubmission(app, ss) {
   }
 
   // Prices are decided here, not by the page
-  const roomPrice = cfg ? cfg.price : 0;
+  const roomPrice = cfg ? (category ? category.price : cfg.price) : 0;
   const foodFee = NYE.foodPerDay * NYE.nights * people;
   const facilitatorsFee = NYE.facilitatorsFee * people;
   const totalPrice = roomPrice + foodFee + facilitatorsFee;
