@@ -73,6 +73,8 @@ h1 {
 }
 
 .sub {
+    display: inline-block;
+    cursor: default;
     font-style: italic;
     color: var(--muted);
     margin-top: 0.7rem;
@@ -124,17 +126,18 @@ h1 {
 .card.flipped .card-inner { transform: rotateY(180deg); --flip: 180deg; }
 
 /* move: the card trembles under the hand */
-.card.shake:hover .card-inner { animation: dance 1.8s ease-in-out infinite; }
+.card.shake:hover .card-inner { animation: dance 2.4s ease-in-out infinite; }
 @keyframes dance {
-    0%   { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, 0) scale(1); }
-    12%  { transform: rotateY(var(--flip, 0deg)) rotate(-8deg) translate(-10px, -14px) scale(1.04); }
-    24%  { transform: rotateY(var(--flip, 0deg)) rotate(5deg) translate(6px, 2px) scale(0.98); }
-    36%  { transform: rotateY(var(--flip, 0deg)) rotate(-4deg) translate(-4px, -18px) scale(1.06); }
-    48%  { transform: rotateY(var(--flip, 0deg)) rotate(9deg) translate(12px, 0) scale(1); }
-    60%  { transform: rotateY(var(--flip, 0deg)) rotate(-2deg) translate(2px, -8px) scale(1.03); }
-    72%  { transform: rotateY(var(--flip, 0deg)) rotate(6deg) translate(-8px, -20px) scale(1.05); }
-    84%  { transform: rotateY(var(--flip, 0deg)) rotate(-7deg) translate(8px, 3px) scale(0.97); }
-    100% { transform: rotateY(var(--flip, 0deg)) rotate(0deg) translate(0, 0) scale(1); }
+    0%   { transform: rotateY(var(--flip, 0deg)) translate(0, 0); }
+    10%  { transform: rotateY(var(--flip, 0deg)) translate(0, -22px); }
+    20%  { transform: rotateY(var(--flip, 0deg)) translate(0, 0); }
+    30%  { transform: rotateY(var(--flip, 0deg)) translate(7px, -3px); }
+    45%  { transform: rotateY(var(--flip, 0deg)) translate(0, -7px) rotate(2deg); }
+    60%  { transform: rotateY(var(--flip, 0deg)) translate(-7px, -3px); }
+    75%  { transform: rotateY(var(--flip, 0deg)) translate(0, 2px) rotate(-2deg); }
+    90%  { transform: rotateY(var(--flip, 0deg)) translate(7px, -3px); }
+    100% { transform: rotateY(var(--flip, 0deg)) translate(0, 0); }
+}
 }
 }
 
@@ -144,8 +147,8 @@ h1 {
 .card.gather .people { position: absolute; inset: 0; pointer-events: none; }
 .card.gather .person {
     position: absolute;
-    width: 11px; height: 14px;
-    margin: -7px 0 0 -5px;
+    width: 16px; height: 21px;
+    margin: -10px 0 0 -8px;
     color: var(--gold-bright);
     opacity: 0;
     transform: scale(0.4);
@@ -154,13 +157,13 @@ h1 {
 .card.gather .person.in { opacity: 1; transform: scale(1); }
 .card.gather .person.in.walking svg { animation: walk 0.7s ease-in-out infinite; }
 @keyframes walk { 0%,100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-1px); } }
-@media (max-width: 680px) { .card.gather .person { width: 9px; height: 12px; margin: -6px 0 0 -4px; } }
+@media (max-width: 680px) { .card.gather .person { width: 11px; height: 14px; margin: -7px 0 0 -5px; } }
 
 /* gather: a little person walks in; the page leans in towards the card */
-.card.gather { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='34' viewBox='0 0 26 34'><g fill='none' stroke='%23e3d4a4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='13' cy='6' r='4'/><path d='M13 10v10'/><path d='M13 12l-7 5'/><path d='M13 12l7 5'/><path d='M13 20l-5 11'/><path d='M13 20l5 11'/></g></svg>") 13 17, pointer; }
-/* learn: the page steps back */
+.card.gather { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='21' viewBox='0 0 26 34'><g fill='none' stroke='%23e3d4a4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='13' cy='6' r='4'/><path d='M13 10v10'/><path d='M13 12l-7 5'/><path d='M13 12l7 5'/><path d='M13 20l-5 11'/><path d='M13 20l5 11'/></g></svg>") 8 10, pointer; }
+/* learn: the page leans in on the card */
 #page { transition: transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1); will-change: transform; }
-#page.zoom { transform: scale(0.9); }
+#page.zoom { transform: scale(1.1); }
 
 .face {
     position: absolute;
@@ -373,6 +376,21 @@ body.beam .cursor-beam { opacity: 1; animation: twinkle 2.2s ease-in-out infinit
 .back.site .plate { width: auto; height: auto; top: auto; padding-top: 1.6rem; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
 .back.site .plate .word { font-size: 0.78rem; letter-spacing: 0.04em; }
 .back.site .plate .tag { color: var(--gold-bright); font-size: 0.52rem; letter-spacing: 0.3em; }
+.back.site .close {
+    position: absolute;
+    top: 10px; right: 11px;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--gold-bright);
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(227,212,164,0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 3;
+}
+.back.site .close:hover { background: var(--gold-bright); color: #000; }
 
 /* ---------- diary: a page lying on the table, off to the side ---------- */
 .table {
@@ -562,6 +580,7 @@ footer {
                 <img src="../assets/didi/web/cinema.jpg" alt="">
                 <iframe data-src="https://www.dianaolifirova.com" title="dianaolifirova.com" tabindex="-1" scrolling="no"></iframe>
                 <a class="plate" href="https://www.dianaolifirova.com" target="_blank" rel="noopener"><div class="word">dianaolifirova.com</div><div class="tag">enter ↗</div></a>
+                <span class="close" role="button" aria-label="close">✕</span>
             </div>
         </div>
     </div>
@@ -663,9 +682,8 @@ footer {
     }
     function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
     function slot(i) {
-        const l = layerRect();
-        const c = { x: l.width / 2, y: l.height / 2 };
-        const radius = 22;
+        const c = pinCenter();
+        const radius = 27;
         const a = -Math.PI / 2 + i * (Math.PI * 2 / 6);
         return { x: c.x + Math.cos(a) * radius, y: c.y + Math.sin(a) * radius };
     }
@@ -704,10 +722,10 @@ footer {
 
 // tiny stars drift out of her name while the cursor rests on it
 (function () {
-    const name = document.querySelector('h1');
     let timer = null;
+    let source = null;
     function spark() {
-        const r = name.getBoundingClientRect();
+        const r = source.getBoundingClientRect();
         const x = r.left + Math.random() * r.width;
         const y = r.top + r.height * (0.2 + Math.random() * 0.7);
         const el = document.createElement('span');
@@ -724,12 +742,15 @@ footer {
         document.body.appendChild(el);
         setTimeout(() => el.remove(), life + 50);
     }
-    name.addEventListener('mouseenter', () => { if (!timer) timer = setInterval(spark, 110); });
-    name.addEventListener('mouseleave', () => { clearInterval(timer); timer = null; });
+    document.querySelectorAll('h1, .sub').forEach(el => {
+        el.addEventListener('mouseenter', () => { source = el; if (!timer) timer = setInterval(spark, 110); });
+        el.addEventListener('mouseleave', () => { clearInterval(timer); timer = null; });
+    });
 })();
 
 document.querySelectorAll('[data-card]').forEach(card => {
     card.addEventListener('click', (e) => {
+        if (e.target.closest('.close')) { card.classList.remove('flipped'); return; }
         if (card.classList.contains('flipped') && e.target.closest('a')) return;
         card.classList.toggle('flipped');
         // the cinematography card shows her site: load it the first time it turns
