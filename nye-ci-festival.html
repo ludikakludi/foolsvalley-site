@@ -114,6 +114,19 @@
         .prose .price-from { font-size: 13px; color: var(--moss); }
         .prose .price-from strong { font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--black); }
 
+        .price-list { max-width: 620px; margin-top: 0.5rem; }
+        .price-row {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 1.5rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--gray-light);
+            align-items: baseline;
+        }
+        .price-amount { font-family: 'EB Garamond', serif; font-size: 1.4rem; }
+        .price-desc { font-size: 12px; color: var(--gray); line-height: 1.7; }
+        .price-note { font-size: 12px; color: var(--gray); margin-top: 1.25rem; font-style: italic; max-width: 620px; }
+
         .section-title {
             font-family: 'EB Garamond', serif;
             font-size: 1.9rem;
@@ -153,6 +166,7 @@
 
         /* ROOMS */
         .rooms-loading { padding: 2rem 0; color: var(--gray); font-size: 12px; }
+        .places-left { font-size: 12px; color: var(--moss); margin-bottom: 1.5rem; }
         .building-group { margin-bottom: 2.5rem; max-width: 720px; }
         .building-group h3 {
             font-size: 10px;
@@ -172,7 +186,7 @@
         }
         .room-card:hover { background: #ecece5; }
         .room-card.selected { background: var(--black); color: var(--bg); }
-        .room-card.selected .room-desc { color: var(--gray-light); }
+        .room-card.selected .room-desc, .room-card.selected .room-sub { color: var(--gray-light); }
         .room-card img { width: 180px; height: 140px; object-fit: cover; display: block; filter: saturate(0.9); border-right: 1px solid var(--black); }
         .room-card .no-photo { width: 180px; height: 140px; display: flex; align-items: center; justify-content: center; font-family: 'EB Garamond', serif; font-style: italic; color: var(--gray); border-right: 1px solid var(--black); }
         .room-info { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
@@ -180,10 +194,31 @@
         .room-desc { font-size: 11px; color: var(--gray); line-height: 1.6; margin-bottom: 0.6rem; }
         .room-price { font-size: 13px; }
         .room-price strong { font-family: 'EB Garamond', serif; font-size: 1.2rem; font-weight: 400; }
+        .room-sub { display: block; font-size: 11px; color: var(--gray); margin-top: 0.2rem; }
 
         .rooms-fallback { max-width: 620px; border: 1px solid var(--black); padding: 1.5rem; background: var(--cream); }
         .rooms-fallback h4 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.75rem; }
         .rooms-fallback p { font-size: 12px; color: var(--gray); margin-bottom: 1rem; line-height: 1.7; }
+
+        /* PEOPLE */
+        .people-choice { max-width: 620px; margin-top: 1.5rem; }
+        .people-choice .label { font-size: 12px; margin-bottom: 0.6rem; }
+        .radio-row { display: flex; gap: 0; }
+        .radio-row label {
+            flex: 1;
+            border: 1px solid var(--black);
+            margin-right: -1px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: var(--cream);
+            font-family: 'EB Garamond', serif;
+            font-size: 15px;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+        .radio-row label.selected { background: var(--black); color: var(--bg); }
+        .radio-row input { accent-color: var(--black); }
 
         /* SMALL PRINT */
         .faq { max-width: 620px; }
@@ -237,6 +272,7 @@
             .room-card img, .room-card .no-photo { width: 100%; height: 180px; border-right: none; border-bottom: 1px solid var(--black); }
             .review-row { flex-direction: column; gap: 0.2rem; }
             .review-row .value { text-align: left; }
+            .price-row { grid-template-columns: 1fr; gap: 0.25rem; }
         }
     </style>
 </head>
@@ -271,8 +307,16 @@
             <p>a contact improvisation festival over new year's eve with Francisco Borges and friends.</p>
             <p class="coming-soon">more info coming soon</p>
             <p>feel free to send requests for rooms already: pick a room below and tell us anything you'd like us to know.</p>
-            <p class="price-from">from <strong>€530</strong> for the two weeks, dorm bed and food included.</p>
+            <p class="price-from">from <strong>€560</strong> with your own van, <strong>€630</strong> in a dorm — the whole festival, food included.</p>
         </div>
+        <div class="price-list">
+            <div class="price-row"><div class="price-amount">€420</div><div class="price-desc">food &amp; facilities for the 14 days, per person (€30/day) — on every booking</div></div>
+            <div class="price-row"><div class="price-amount">€210</div><div class="price-desc">a dorm bed — old house dorm, blue house dorm, zen room, blue house hallway</div></div>
+            <div class="price-row"><div class="price-amount">€350</div><div class="price-desc">a bed in a shared room — m big suite, m curve suite, m room, big bedroom 1, small bedrooms middle &amp; north</div></div>
+            <div class="price-row"><div class="price-amount">€650 – 1050</div><div class="price-desc">a private room — small bedroom south (1 person), studio, isabel, chafariz suite (1–2 people)</div></div>
+            <div class="price-row"><div class="price-amount">€140</div><div class="price-desc">a spot for your own van or tent</div></div>
+        </div>
+        <p class="price-note">a facilitators fee will be added once the programme is confirmed. room, food and the facilitators fee are paid together in one payment.</p>
     </section>
 
     <section id="apply">
@@ -315,8 +359,17 @@
     <section id="rooms">
         <div class="section-label">004 / your room</div>
         <h2 class="section-title">where you'll sleep</h2>
+        <div class="places-left" id="places-left" style="display:none;"></div>
         <div id="rooms-container">
             <div class="rooms-loading">checking availability...</div>
+        </div>
+        <div class="people-choice" id="people-choice" style="display:none;">
+            <div class="label">how many people in this room?</div>
+            <div class="radio-row">
+                <label class="selected"><input type="radio" name="people" value="1" checked> 1 person</label>
+                <label><input type="radio" name="people" value="2"> 2 people</label>
+            </div>
+            <p class="dates-note" style="margin-top:0.75rem;">the room price stays the same; food &amp; facilities are per person.</p>
         </div>
     </section>
 
@@ -332,28 +385,20 @@
                 <p>6+ weeks out: 100% refund on accommodation. 2–6 weeks: 50%. under 2 weeks: no refund. daily fee is always fully refundable.</p>
             </div>
             <div class="faq-item">
-                <h3>3. long-stay rates</h3>
-                <p>weekly, two-week, and monthly rates kick in when you book for at least that period. extra days beyond the minimum are charged at the same per-day rate — e.g. if you book 10 days, you can get the weekly rate for all 10.</p>
+                <h3>3. one payment</h3>
+                <p>room, food &amp; facilities and the facilitators fee are collected together in one payment. we pass the facilitators fee on to Francisco.</p>
             </div>
             <div class="faq-item">
-                <h3>4. can I extend the booking later?</h3>
-                <p>yes, you can extend the booking at the same rate as you booked it. e.g. if you booked two weeks first and then extend by another two weeks, you'll pay the two-week rate for both stretches. to get a monthly rate, you need to book for a month in advance.</p>
+                <h3>4. what's per person vs. per room?</h3>
+                <p>dorm and shared-room beds and van spots are per person. private rooms are per room, for one or two people. food &amp; facilities are always per person.</p>
             </div>
             <div class="faq-item">
-                <h3>5. what's per person vs. per room?</h3>
-                <p>room rate = per room. daily fee, camping, and van spots = per person (since it covers mainly the use of communal facilities, not the accommodation itself).</p>
-            </div>
-            <div class="faq-item">
-                <h3>6. can I opt out of food?</h3>
+                <h3>5. can I opt out of food?</h3>
                 <p>not fully. the daily fee also covers water, electricity, and kitchen fixed running costs. if our kitchen can't meet your dietary needs, we can offer you cooking and fridge space — and reduce a small part of the fee if needed.</p>
             </div>
             <div class="faq-item">
-                <h3>7. kitchen &amp; space care</h3>
+                <h3>6. kitchen &amp; space care</h3>
                 <p>we have a chef, but we ask everyone to help with 1–2 cooking/space care shifts per week. on sunday we have a collective cleaning session.</p>
-            </div>
-            <div class="faq-item">
-                <h3>8. can I volunteer extra? how about for a discount / free stay?</h3>
-                <p>we really welcome extra support. sometimes we also have discounted helper spots for people with building/carpentry/electrics/gardening skills, ask us about it.</p>
             </div>
         </div>
     </section>
@@ -366,8 +411,10 @@
             <div class="review-row"><span class="label">departure</span><span class="value" id="rev-departure"></span></div>
             <div class="review-row"><span class="label">nights</span><span class="value" id="rev-duration"></span></div>
             <div class="review-row"><span class="label">room</span><span class="value" id="rev-room"></span></div>
+            <div class="review-row" id="rev-people-row"><span class="label">people</span><span class="value" id="rev-people"></span></div>
             <div class="review-row" id="rev-room-price-row"><span class="label">accommodation</span><span class="value" id="rev-room-price"></span></div>
-            <div class="review-row" id="rev-daily-fee-row"><span class="label">daily fee (food &amp; facilities)</span><span class="value" id="rev-daily-fee"></span></div>
+            <div class="review-row" id="rev-food-row"><span class="label">food &amp; facilities</span><span class="value" id="rev-food"></span></div>
+            <div class="review-row" id="rev-fac-row" style="display:none;"><span class="label">facilitators fee</span><span class="value" id="rev-fac"></span></div>
             <div class="review-row total" id="rev-total-row"><span class="label">total</span><span class="value" id="rev-total"></span></div>
         </div>
         <button class="btn" id="btn-submit" onclick="submitApplication()">send request →</button>
@@ -417,6 +464,8 @@
     };
 
     // Festival: Dec 28, 2026 - Jan 11, 2027. Fixed dates, no early arrival or late departure.
+    // Prices come from the booking backend (event=nye): room/bed price for the whole festival,
+    // food & facilities per person per day, facilitators fee per person.
     const arrivalDate   = new Date(2026, 11, 28);
     const departureDate = new Date(2027, 0, 11);
 
@@ -435,6 +484,7 @@
     let selectedRoom = null;
     let fallbackMode = false;
     let fetchSeq = 0;
+    let festival = { nights: 14, foodPerDay: 30, facilitatorsFee: 0, peopleLeft: null };
 
     // ============================================================
     // DATES
@@ -468,7 +518,7 @@
       selectedRoom = null;
       fallbackMode = false;
 
-      const url = APPS_SCRIPT_URL + '?action=availability&from=' + formatDateISO(arrivalDate) + '&to=' + formatDateISO(departureDate);
+      const url = APPS_SCRIPT_URL + '?action=availability&event=nye&from=' + formatDateISO(arrivalDate) + '&to=' + formatDateISO(departureDate);
 
       // The booking backend can take a while to wake from cold; retry once before falling back.
       for (let attempt = 1; attempt <= 2; attempt++) {
@@ -480,9 +530,10 @@
           const data = await resp.json();
           if (seq !== fetchSeq) return;
           if (data.error) { showFallback(container, "we couldn't check availability right now: " + data.error); return; }
+          if (data.event !== 'nye') { showFallback(container, "the booking system doesn't know the festival prices yet."); return; }
 
-          // The sheet also returns its daily-fee tier rows as "rooms"; keep only real rooms. No tipi in winter.
-          availableRooms = (data.rooms || []).filter(r => BUILDING_ORDER.includes(r.building) && r.roomPrice > 0 && r.id !== 'tipi');
+          festival = { nights: data.nights, foodPerDay: data.foodPerDay, facilitatorsFee: data.facilitatorsFee || 0, peopleLeft: data.peopleLeft };
+          availableRooms = (data.rooms || []).filter(r => BUILDING_ORDER.includes(r.building));
           renderRooms();
           return;
         } catch (err) {
@@ -500,11 +551,12 @@
     function showFallback(container, msg) {
       fallbackMode = true;
       container.innerHTML = '';
+      document.getElementById('people-choice').style.display = 'none';
       const fb = document.createElement('div');
       fb.className = 'rooms-fallback';
       fb.innerHTML = '<h4>room selection unavailable</h4>' +
-        '<p>' + msg + ' no worries — tell us what kind of room you\'d like (dorm bed, shared room, private room) and we\'ll get back to you with options and prices.</p>' +
-        '<div class="field"><label for="f-room-preference">what kind of room?</label><textarea id="f-room-preference" rows="3"></textarea></div>' +
+        '<p>' + msg + ' no worries — tell us what kind of room you\'d like (dorm bed, shared room, private room, van spot) and how many of you are coming, and we\'ll get back to you with options and prices.</p>' +
+        '<div class="field"><label for="f-room-preference">what kind of room, for how many people?</label><textarea id="f-room-preference" rows="3"></textarea></div>' +
         '<button class="btn" style="margin-top:0;" type="button" onclick="fallbackContinue()">continue →</button>';
       container.appendChild(fb);
     }
@@ -522,12 +574,24 @@
       return name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
     }
 
+    function peopleCount() {
+      if (!selectedRoom || (selectedRoom.maxPeople || 1) < 2) return 1;
+      const checked = document.querySelector('input[name="people"]:checked');
+      return checked ? parseInt(checked.value) : 1;
+    }
+
     function renderRooms() {
       const container = document.getElementById('rooms-container');
       container.innerHTML = '';
 
+      const left = document.getElementById('places-left');
+      if (typeof festival.peopleLeft === 'number') {
+        left.style.display = '';
+        left.textContent = festival.peopleLeft > 0 ? festival.peopleLeft + ' place' + (festival.peopleLeft === 1 ? '' : 's') + ' left in the festival' : 'the festival is full — write to us and we\'ll put you on the waiting list';
+      }
+
       if (availableRooms.length === 0) {
-        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for these dates</h4><p>write to <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a> and we\'ll see what we can do.</p></div>';
+        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for the festival</h4><p>write to <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a> and we\'ll see what we can do.</p></div>';
         return;
       }
 
@@ -535,6 +599,12 @@
         const rs = availableRooms.filter(r => r.building === b);
         if (rs.length > 0) container.appendChild(buildGroup(BUILDING_LABELS[b], rs));
       });
+    }
+
+    function unitLabel(room) {
+      if (room.unit === 'bed') return 'per bed';
+      if (room.unit === 'spot') return 'per spot';
+      return (room.maxPeople || 1) > 1 ? 'per room, 1–2 people' : 'per room, 1 person';
     }
 
     function buildGroup(title, rooms) {
@@ -565,13 +635,15 @@
         const info = document.createElement('div');
         info.className = 'room-info';
         const h4 = document.createElement('h4');
-        h4.textContent = cleanName(room.name);
+        h4.textContent = room.name;
         const desc = document.createElement('div');
         desc.className = 'room-desc';
         desc.textContent = room.desc || '';
         const price = document.createElement('div');
         price.className = 'room-price';
-        price.innerHTML = '<strong>€' + (room.roomPrice + room.dailyFee) + '</strong> (€' + room.roomPrice + ' accommodation + €' + room.dailyFee + ' food)';
+        const food = festival.foodPerDay * festival.nights;
+        price.innerHTML = '<strong>€' + (room.roomPrice + food) + '</strong> (€' + room.roomPrice + ' accommodation ' + unitLabel(room) + ' + €' + food + ' food)' +
+          '<span class="room-sub">for one person, the whole festival' + (festival.facilitatorsFee ? ' · + €' + festival.facilitatorsFee + ' facilitators fee' : '') + '</span>';
         info.appendChild(h4); info.appendChild(desc); info.appendChild(price);
         card.appendChild(info);
 
@@ -579,6 +651,13 @@
           document.querySelectorAll('.room-card').forEach(c => c.classList.remove('selected'));
           card.classList.add('selected');
           selectedRoom = room;
+          const choice = document.getElementById('people-choice');
+          const isDouble = (room.maxPeople || 1) > 1;
+          choice.style.display = isDouble ? '' : 'none';
+          if (!isDouble) {
+            const one = document.querySelector('input[name="people"][value="1"]');
+            one.checked = true; syncPeople();
+          }
           showReview();
         });
 
@@ -587,28 +666,49 @@
       return group;
     }
 
+    function syncPeople() {
+      document.querySelectorAll('input[name="people"]').forEach(r => r.closest('label').classList.toggle('selected', r.checked));
+      if (selectedRoom) populateReview();
+    }
+    document.querySelectorAll('input[name="people"]').forEach(r => r.addEventListener('change', syncPeople));
+
     // ============================================================
     // REVIEW
     // ============================================================
-    function showReview() {
-      const section = document.getElementById('review');
-      section.style.display = 'block';
+    function pricing() {
+      const people = peopleCount();
+      const roomPrice = selectedRoom ? selectedRoom.roomPrice : 0;
+      const food = festival.foodPerDay * festival.nights * people;
+      const fac = (festival.facilitatorsFee || 0) * people;
+      return { people, roomPrice, food, fac, total: roomPrice + food + fac };
+    }
+
+    function populateReview() {
       document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
       document.getElementById('rev-departure').textContent = formatDate(departureDate);
       document.getElementById('rev-duration').textContent = nights();
-
-      const priceRows = ['rev-room-price-row', 'rev-daily-fee-row', 'rev-total-row'];
+      const priceRows = ['rev-people-row', 'rev-room-price-row', 'rev-food-row', 'rev-fac-row', 'rev-total-row'];
       if (fallbackMode) {
         const pref = document.getElementById('f-room-preference');
         document.getElementById('rev-room').textContent = 'preference: ' + (pref ? pref.value.trim() : 'not specified');
         priceRows.forEach(id => document.getElementById(id).style.display = 'none');
       } else if (selectedRoom) {
-        document.getElementById('rev-room').textContent = cleanName(selectedRoom.name);
+        const p = pricing();
+        document.getElementById('rev-room').textContent = cleanName(selectedRoom.name) + (selectedRoom.unit === 'bed' ? ' (one bed)' : selectedRoom.unit === 'spot' ? ' (one spot)' : '');
         priceRows.forEach(id => document.getElementById(id).style.display = '');
-        document.getElementById('rev-room-price').textContent = '€' + selectedRoom.roomPrice;
-        document.getElementById('rev-daily-fee').textContent = '€' + selectedRoom.dailyFee;
-        document.getElementById('rev-total').textContent = '€' + (selectedRoom.roomPrice + selectedRoom.dailyFee);
+        document.getElementById('rev-fac-row').style.display = p.fac > 0 ? '' : 'none';
+        document.getElementById('rev-people').textContent = p.people;
+        document.getElementById('rev-room-price').textContent = '€' + p.roomPrice;
+        document.getElementById('rev-food').textContent = '€' + p.food + ' (' + p.people + ' × ' + festival.nights + ' days × €' + festival.foodPerDay + ')';
+        document.getElementById('rev-fac').textContent = '€' + p.fac;
+        document.getElementById('rev-total').textContent = '€' + p.total;
       }
+    }
+
+    function showReview() {
+      const section = document.getElementById('review');
+      section.style.display = 'block';
+      populateReview();
       setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
 
@@ -640,41 +740,27 @@
       btn.disabled = true;
       btn.textContent = 'sending...';
 
-      const days = nights();
-      const roomPrice = fallbackMode ? 0 : selectedRoom.roomPrice;
-      const dailyFee = fallbackMode ? 0 : selectedRoom.dailyFee;
-      const other = val('q-questions') || 'none';
+      const p = fallbackMode ? { people: 1, roomPrice: 0, food: 0, fac: 0, total: 0 } : pricing();
 
-      // The backend stores this in the residency applications sheet; label every field so it reads clearly there.
+      // The backend prices the booking itself from the festival price list; these figures are what the guest saw.
       const payload = {
         action: 'submit',
         application: {
+          eventType: 'nye',
           name: val('q-name'),
           email: val('q-email'),
-          visited: '',
-          links: '',
-          tcInterest: '',
-          mainQuest: 'NEW YEAR CONTACT IMPROVISATION FESTIVAL (dec 28, 2026 – jan 11, 2027)',
-          pastQuests: '',
-          reference: '',
-          useTimeFor: '',
-          contribute: '',
-          idealDay: '',
-          questions: '[new year CI festival, dec 28 – jan 11] questions or requests: ' + other,
-          codeword: 'nyeci',
-          cleanupAgreement: '',
-          arrivalDate: formatDate(arrivalDate),
-          departureDate: formatDate(departureDate),
+          questions: val('q-questions'),
+          people: p.people,
           arrivalDateISO: formatDateISO(arrivalDate),
           departureDateISO: formatDateISO(departureDate),
-          numDays: days,
+          numDays: nights(),
           roomName: fallbackMode ? 'none' : cleanName(selectedRoom.name),
           roomId: fallbackMode ? 'none' : selectedRoom.id,
           building: fallbackMode ? '' : (selectedRoom.building || ''),
-          roomPrice: roomPrice,
-          priceBreakdown: fallbackMode ? '' : selectedRoom.priceBreakdown,
-          dailyFee: dailyFee,
-          totalPrice: roomPrice + dailyFee,
+          roomPrice: p.roomPrice,
+          foodFee: p.food,
+          facilitatorsFee: p.fac,
+          totalPrice: p.total,
           roomPreference: fallbackMode ? val('f-room-preference') : ''
         }
       };
