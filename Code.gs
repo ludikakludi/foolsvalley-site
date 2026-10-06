@@ -1224,12 +1224,17 @@ const VIPASSANA_HEADERS = [
   'Total Price',           // R
   'Status',                // S (column 19): yes / no
   'Amount Paid',           // T
-  'Questions / Notes'      // U
+  'Questions / Notes',     // U
+  'Payment Commitment'     // V
 ];
 const VIPASSANA_STATUS_COLUMN = 19;
 const VIPASSANA_EMAILS = 'theonlyfool@foolsvalley.com,Reimar@vipassanaathome.org';
 
 function handleVipassanaSubmission(app, ss) {
+  // The retreat page requires the commitment to pay the full amount; the apply-page codeword flow has no such question
+  if (app.eventType === 'vipassana' && app.payment !== 'yes') {
+    return jsonResponse({ success: false, error: 'The application needs the payment commitment' });
+  }
   let sheet = ss.getSheetByName(VIPASSANA_APPLICATIONS_SHEET);
   if (!sheet) {
     sheet = ss.insertSheet(VIPASSANA_APPLICATIONS_SHEET);
@@ -1266,7 +1271,8 @@ function handleVipassanaSubmission(app, ss) {
     roomPrice + foodFee,
     'pending',
     '',
-    (app.questions || '') + (app.roomPreference ? ' | room preference: ' + app.roomPreference : '')
+    (app.questions || '') + (app.roomPreference ? ' | room preference: ' + app.roomPreference : ''),
+    app.payment === 'yes' ? 'yes, full amount' : ''
   ]);
 
   if (app.roomId && app.roomId !== 'none') {
@@ -1322,6 +1328,8 @@ PRICE
 Accommodation: €${roomPrice}
 Food & facilities: €${foodFee} (${app.numDays} days × €30)
 TOTAL: €${roomPrice + foodFee}
+Payment commitment: ${app.payment === 'yes' ? 'yes, full amount to Christopher William Wray, IBAN BE36 9671 7217 6881' : 'not recorded'}
+Cancellation terms: 6+ weeks before arrival 100% refund on accommodation, 2-6 weeks 50%, under 2 weeks none; the daily fee is always refundable.
 
 ============================================================
 ANSWERS

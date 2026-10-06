@@ -164,6 +164,10 @@
         .terms ul { margin: 0.2rem 0 0.5rem 1.2rem; }
         .check-row { display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-family: 'EB Garamond', serif; font-size: 15px; }
         .check-row input { margin-top: 0.3rem; accent-color: var(--black); }
+        .pay-choice { border: 1px solid var(--black); background: var(--cream); padding: 0.7rem 0.9rem; margin-bottom: -1px; }
+        .pay-choice.selected { background: var(--black); color: var(--bg); }
+        .pay-choice.selected a { color: var(--bg); }
+        .field.error .pay-choice { border-color: var(--rust); }
         .field.error .check-row span { color: var(--rust); }
 
         /* CALENDAR */
@@ -315,6 +319,7 @@
             <p><em>authentic movement</em> is its counterpart. eyes closed, a witness present, you let the body move from an impulse instead of an idea. no choreography, no right way. what was still on the cushion starts to move.</p>
             <p class="coming-soon">more info coming soon</p>
             <p class="price-from">from <strong>€250</strong> for the five nights, dorm bed and food included.</p>
+            <p style="font-size:12px; color:var(--gray);">questions about the retreat: <a href="mailto:Reimar@vipassanaathome.org">Reimar@vipassanaathome.org</a></p>
         </div>
     </section>
 
@@ -440,8 +445,35 @@
         </div>
     </section>
 
+    <section id="payment">
+        <div class="section-label">005 / payment</div>
+        <h2 class="section-title">payment</h2>
+        <p class="calendar-note" id="pay-hint">your total appears here once you have chosen a room above.</p>
+        <div class="review" style="margin-bottom:1.25rem;">
+            <div class="review-row total"><span class="label">your total (full amount)</span><span class="value" id="pay-total">—</span></div>
+        </div>
+        <div class="form">
+            <div class="field" id="field-payment">
+                <label>yes, I will transfer the full amount to this account upon completion of this form. *</label>
+                <div class="terms" style="max-height:none; font-family:'Space Mono', monospace; font-size:12px; line-height:1.9;">
+                    payment to be sent to:<br>
+                    <strong>name:</strong> Christopher William Wray<br>
+                    <strong>IBAN:</strong> BE36 9671 7217 6881<br>
+                    <strong>swift/BIC:</strong> TRWIBEB1XXX (use when sending money from outside SEPA)<br>
+                    <strong>bank name and address:</strong> Wise, Rue du Trône 100, 3rd floor, Brussels, 1050, Belgium<br>
+                    <br>
+                    only the full amount is possible; without it, the place isn't confirmed.<br>
+                    <strong>cancellation terms:</strong> 6+ weeks before arrival, 100% refund on accommodation. 2–6 weeks, 50%. under 2 weeks, no refund. the daily fee for food &amp; facilities is always fully refundable.
+                </div>
+                <label class="check-row pay-choice" for="q-pay-yes"><input type="radio" name="payment" id="q-pay-yes" value="yes"><span>yes, I will pay the full amount.</span></label>
+                <label class="check-row pay-choice" for="q-pay-no"><input type="radio" name="payment" id="q-pay-no" value="no"><span>no, I can't commit yet. I won't send my application and will contact the organisers by email first (<a href="mailto:Reimar@vipassanaathome.org">Reimar@vipassanaathome.org</a>).</span></label>
+                <div class="error-msg">the application can only be sent with the payment commitment. not ready yet? write to Reimar@vipassanaathome.org first.</div>
+            </div>
+        </div>
+    </section>
+
     <section id="small-print">
-        <div class="section-label">005 / small print</div>
+        <div class="section-label">006 / small print</div>
         <div class="faq">
             <div class="faq-item">
                 <h3>1. reservations</h3>
@@ -479,7 +511,7 @@
     </section>
 
     <section id="review" style="display:none;">
-        <div class="section-label">006 / review</div>
+        <div class="section-label">007 / review</div>
         <h2 class="section-title">your stay</h2>
         <div class="review">
             <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
@@ -495,7 +527,7 @@
     </section>
 
     <section id="success" style="display:none;">
-        <div class="section-label">007 / sent</div>
+        <div class="section-label">008 / sent</div>
         <div class="success">
             <h2>application sent</h2>
             <p>thank you. we'll write back to confirm your spot and your room, and send payment details then.</p>
@@ -791,8 +823,25 @@
     // ============================================================
     // REVIEW
     // ============================================================
+    function paymentAnswer() { const r = document.querySelector('input[name="payment"]:checked'); return r ? r.value : ''; }
+    function updatePayment() {
+      const has = !fallbackMode && !!selectedRoom;
+      document.getElementById('pay-total').textContent = has ? '€' + (selectedRoom.roomPrice + selectedRoom.dailyFee) : '—';
+      document.getElementById('pay-hint').style.display = has ? 'none' : '';
+      const field = document.getElementById('field-payment');
+      field.classList.toggle('error', paymentAnswer() === 'no');
+      document.querySelectorAll('input[name="payment"]').forEach(r => r.closest('label').classList.toggle('selected', r.checked));
+    }
+    document.querySelectorAll('input[name="payment"]').forEach(r => r.addEventListener('change', () => {
+      updatePayment();
+      if (paymentAnswer() === 'yes' && (selectedRoom || fallbackMode)) showReview();
+      else document.getElementById('review').style.display = 'none';
+    }));
+
     function showReview() {
-      const section = document.getElementById('review');
+      updatePayment();
+      const section = document.getElementById(paymentAnswer() === 'yes' ? 'review' : 'payment');
+      if (paymentAnswer() !== 'yes') { setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); return; }
       section.style.display = 'block';
       document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
       document.getElementById('rev-departure').textContent = formatDate(departureDate);
@@ -834,6 +883,7 @@
       check('field-meditation', val('q-meditation').length > 0);
       check('field-body', val('q-body').length > 0);
       check('field-terms', document.getElementById('q-terms').checked);
+      check('field-payment', paymentAnswer() === 'yes');
       if (firstError) { firstError.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
       return true;
     }
@@ -866,6 +916,7 @@
           movement: val('q-body'),
           allergies: allergies,
           termsAgreed: document.getElementById('q-terms').checked,
+          payment: paymentAnswer(),
           questions: '',
           arrivalDate: formatDate(arrivalDate),
           departureDate: formatDate(departureDate),
