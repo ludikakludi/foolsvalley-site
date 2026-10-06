@@ -9,11 +9,12 @@ const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 const TUCKER_APPLICATIONS_SHEET = 'tucker applications';
 const VIPASSANA_APPLICATIONS_SHEET = 'vipassana applications';
+const NYE_APPLICATIONS_SHEET = 'nye applications';
 
 // New Year CI Festival 2026-27 (requests with ?event=nye / eventType 'nye').
 // Two parts; a guest books Part I, Part II or both. Every price is per person for the chosen part(s),
 // except room prices for private rooms, which are per room (1 or 2 people).
-// Registrations go to the organisers' own spreadsheet (see registrations below), not to our booking sheet.
+// Registrations go to the 'nye applications' tab of our booking spreadsheet.
 const NYE = {
   parts: {
     part1: { label: 'Part I — the festival', start: '2026-12-28', end: '2027-01-02', nights: 5,  food: 100, facilitators: 315, counts: ['part1'] },
@@ -47,10 +48,6 @@ const NYE = {
   },
   // Not listed, so not bookable for the festival: apartment / apt_a / apt_b and sunny (organisers' team),
   // galeria and library (our staff), pool, downstairs, tipi.
-  registrations: {
-    spreadsheetId: '12a-aPJJc3fPgJECW2kXzgX3l7MJp7MQxJkgkuHH3WDQ',   // the organisers' sheet
-    tab: 'registrations'
-  },
   emails: 'cifestivalportugal@gmail.com,theonlyfool@foolsvalley.com',
   deposit: {
     name: 'Christopher William Wray',
@@ -1379,7 +1376,7 @@ function sendVipassanaNotification(app, arrivalISO, departureISO, roomPrice, foo
 // ============================================================
 // NEW YEAR CI FESTIVAL SUBMISSION
 // ============================================================
-// Registrations live in the organisers' spreadsheet, one row per booking.
+// Registrations live in the 'nye applications' tab of our booking spreadsheet, one row per booking.
 const NYE_HEADERS = [
   'Timestamp',                 // A
   'Name',                      // B
@@ -1414,18 +1411,14 @@ const NYE_STATUS_COLUMN = 19;
 const NYE_COL = { part: 5, people: 11, status: 18, name: 1, room: 10 }; // 0-based
 
 function nyeRegistrationsSheet() {
-  // Needs the script to be allowed to open spreadsheets other than its own (see deployment note)
-  const ss = SpreadsheetApp.openById(NYE.registrations.spreadsheetId);
-  let sheet = ss.getSheetByName(NYE.registrations.tab);
-  if (!sheet) {
-    sheet = ss.getSheets()[0];
-    if (sheet.getLastRow() > 0 && String(sheet.getRange(1, 1).getValue()) !== 'Timestamp') {
-      sheet = ss.insertSheet(NYE.registrations.tab);
-    } else if (sheet.getName() !== NYE.registrations.tab) {
-      sheet.setName(NYE.registrations.tab);
-    }
-  }
-  if (sheet.getLastRow() === 0) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(NYE_APPLICATIONS_SHEET);
+  if (!sheet) sheet = ss.insertSheet(NYE_APPLICATIONS_SHEET);
+  // (Re)write the header row while the tab holds no registrations yet
+  const firstHeader = sheet.getLastRow() ? String(sheet.getRange(1, 1).getValue()) : '';
+  const lastHeader = sheet.getLastRow() ? String(sheet.getRange(1, NYE_HEADERS.length).getValue()) : '';
+  if (sheet.getLastRow() <= 1 && (firstHeader !== NYE_HEADERS[0] || lastHeader !== NYE_HEADERS[NYE_HEADERS.length - 1])) {
+    sheet.clear();
     sheet.appendRow(NYE_HEADERS);
     const headerRange = sheet.getRange(1, 1, 1, NYE_HEADERS.length);
     headerRange.setFontWeight('bold');
@@ -1439,7 +1432,7 @@ function nyeRegistrationsSheet() {
 function nyePeopleBookedByPart() {
   const booked = { part1: 0, part2: 0 };
   let sheet;
-  try { sheet = nyeRegistrationsSheet(); } catch (err) { Logger.log('Registrations sheet unavailable: ' + err.message); return booked; }
+  try { sheet = nyeRegistrationsSheet(); } catch (err) { Logger.log('nye applications sheet unavailable: ' + err.message); return booked; }
   if (sheet.getLastRow() < 2) return booked;
   const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, NYE_STATUS_COLUMN).getValues();
   for (const row of rows) {
@@ -1736,7 +1729,7 @@ function sendNyeNotification(r) {
       NYE.emails,
       'NYE CI Festival registration: ' + r.name + ' — ' + r.partLabel + ' (' + r.people + ')',
       'New registration for the New Year CI Festival 2026-27:\n' + summary +
-      '\nFull record in the registrations spreadsheet.'
+      '\nFull record in the "nye applications" tab of the booking spreadsheet.'
     );
   } catch (err) {
     Logger.log('NYE organisers email failed: ' + err.message);
@@ -1753,25 +1746,6 @@ function sendNyeNotification(r) {
     );
   } catch (err) {
     Logger.log('NYE participant email failed: ' + err.message);
-  }
-}
-
-// The registrations sheet is not ours, so status edits there cannot trigger onEdit here.
-// Run this (by hand or on a time-based trigger) to mirror statuses into the calendar:
-// 'yes' turns the guest's entry black, 'no' removes it.
-function syncNyeStatuses() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = nyeRegistrationsSheet();
-  if (sheet.getLastRow() < 2) return;
-  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, NYE_STATUS_COLUMN).getValues();
-  for (const row of rows) {
-    const status = String(row[NYE_COL.status] || '').toLowerCase().trim();
-    const part = nyePart(String(row[NYE_COL.part] || '').trim());
-    const roomId = String(row[NYE_COL.room] || '').trim();
-    const name = String(row[NYE_COL.name] || '').trim();
-    if (!part || !roomId || roomId === 'none' || !name) continue;
-    if (status === 'yes') updateBookingColor(ss, name, part.start, part.end, roomId, '#000000');
-    else if (status === 'no') removeBookingFromCalendar(ss, name, part.start, part.end, roomId);
   }
 }
 
@@ -1798,6 +1772,7 @@ function onEdit(e) {
     layouts[APPLICATIONS_SHEET] = { status: 24, arrival: 12, departure: 13, room: 16 };
     layouts[TUCKER_APPLICATIONS_SHEET] = { status: 21, arrival: 11, departure: 12, room: 15 };
     layouts[VIPASSANA_APPLICATIONS_SHEET] = { status: VIPASSANA_STATUS_COLUMN, arrival: 10, departure: 11, room: 14 };
+    layouts[NYE_APPLICATIONS_SHEET] = { status: NYE_STATUS_COLUMN, arrival: 6, departure: 7, room: 10 };
     const layout = layouts[sheetName];
     if (!layout) {
       Logger.log('Not an applications sheet, exiting');
