@@ -110,22 +110,14 @@
         .prose { max-width: 620px; }
         .prose p { margin-bottom: 1.25rem; font-size: 13.5px; line-height: 1.8; }
         .prose em { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1em; }
-        .prose .coming-soon { font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; }
+        .prose h3 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.35rem; margin: 1.75rem 0 0.5rem; }
         .prose .price-from { font-size: 13px; color: var(--moss); }
         .prose .price-from strong { font-family: 'EB Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--black); }
+        .prose ul { margin: 0 0 1.25rem 1.1rem; font-size: 13.5px; line-height: 1.8; }
 
-        .price-list { max-width: 620px; margin-top: 0.5rem; }
-        .price-row {
-            display: grid;
-            grid-template-columns: 110px 1fr;
-            gap: 1.5rem;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid var(--gray-light);
-            align-items: baseline;
-        }
-        .price-amount { font-family: 'EB Garamond', serif; font-size: 1.4rem; }
-        .price-desc { font-size: 12px; color: var(--gray); line-height: 1.7; }
-        .price-note { font-size: 12px; color: var(--gray); margin-top: 1.25rem; font-style: italic; max-width: 620px; }
+        .about { display: flex; gap: 3rem; align-items: flex-start; flex-wrap: wrap; }
+        .flyer { width: 320px; max-width: 100%; border: 1px solid var(--black); display: block; }
+        .contact-line { font-size: 12px; color: var(--gray); line-height: 1.9; }
 
         .section-title {
             font-family: 'EB Garamond', serif;
@@ -135,6 +127,23 @@
             margin-bottom: 1.5rem;
         }
 
+        /* PART CHOICE */
+        .parts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 820px; }
+        .part {
+            border: 1px solid var(--black);
+            margin-right: -1px;
+            padding: 1.25rem 1.25rem 1.1rem;
+            background: var(--cream);
+            cursor: pointer;
+        }
+        .part:hover { background: #ecece5; }
+        .part.selected { background: var(--black); color: var(--bg); }
+        .part.selected .part-dates, .part.selected .part-note { color: var(--gray-light); }
+        .part h4 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .part-dates { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--moss); margin-bottom: 0.6rem; }
+        .part-note { font-size: 11px; color: var(--gray); line-height: 1.6; }
+        @media (max-width: 760px) { .parts { grid-template-columns: 1fr; } .part { margin-right: 0; margin-bottom: -1px; } }
+
         /* FORM */
         .form { max-width: 620px; }
         .field { margin-bottom: 1.75rem; }
@@ -142,6 +151,7 @@
         .field .hint { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--gray); margin-bottom: 0.5rem; line-height: 1.5; }
         .field input[type="text"],
         .field input[type="email"],
+        .field input[type="tel"],
         .field textarea {
             width: 100%;
             padding: 0.75rem 0.9rem;
@@ -154,10 +164,40 @@
             line-height: 1.5;
         }
         .field input:focus, .field textarea:focus { outline: none; box-shadow: 2px 2px 0 var(--black); }
-        .field textarea { min-height: 90px; resize: vertical; }
+        .field textarea { min-height: 80px; resize: vertical; }
         .field.error input, .field.error textarea { border-color: var(--rust); }
         .field .error-msg { color: var(--rust); font-size: 11px; margin-top: 0.35rem; display: none; }
         .field.error .error-msg { display: block; }
+
+        .radio-row { display: flex; gap: 0; }
+        .radio-row label {
+            flex: 1;
+            border: 1px solid var(--black);
+            margin-right: -1px;
+            padding: 0.6rem 0.8rem;
+            cursor: pointer;
+            background: var(--cream);
+            font-family: 'EB Garamond', serif;
+            font-size: 14px;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+        .radio-row label.selected { background: var(--black); color: var(--bg); }
+        .radio-row input { accent-color: var(--black); }
+        .field.error .radio-row label { border-color: var(--rust); }
+        @media (max-width: 600px) { .radio-row { flex-wrap: wrap; } .radio-row label { flex: 1 1 45%; } }
+
+        .choice-list label {
+            display: flex; gap: 0.7rem; align-items: flex-start;
+            border: 1px solid var(--black); margin-bottom: -1px;
+            padding: 0.7rem 0.9rem; cursor: pointer; background: var(--cream);
+            font-family: 'EB Garamond', serif; font-size: 15px; line-height: 1.5;
+        }
+        .choice-list label.selected { background: var(--black); color: var(--bg); }
+        .choice-list input[type="radio"], .choice-list input[type="checkbox"] { margin-top: 0.3rem; accent-color: var(--black); flex-shrink: 0; }
+        .choice-list input[type="text"] { margin-left: 0.4rem; padding: 0.2rem 0.5rem; font-family: 'EB Garamond', serif; font-size: 14px; border: 1px solid var(--gray-light); background: var(--cream); width: 60%; }
+        .field.error .choice-list label { border-color: var(--rust); }
 
         /* DATES */
         .dates-note { font-size: 12px; color: var(--gray); margin-bottom: 1.25rem; line-height: 1.7; max-width: 620px; }
@@ -168,25 +208,11 @@
         .rooms-loading { padding: 2rem 0; color: var(--gray); font-size: 12px; }
         .places-left { font-size: 12px; color: var(--moss); margin-bottom: 1.5rem; }
         .building-group { margin-bottom: 2.5rem; max-width: 720px; }
-        .building-group h3 {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.25em;
-            color: var(--gray);
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-        .room-card {
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            border: 1px solid var(--black);
-            background: var(--cream);
-            margin-bottom: -1px;
-            cursor: pointer;
-        }
+        .building-group h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--gray); font-weight: 400; margin-bottom: 1rem; }
+        .room-card { display: grid; grid-template-columns: 180px 1fr; border: 1px solid var(--black); background: var(--cream); margin-bottom: -1px; cursor: pointer; }
         .room-card:hover { background: #ecece5; }
         .room-card.selected { background: var(--black); color: var(--bg); }
-        .room-card.selected .room-desc, .room-card.selected .room-sub { color: var(--gray-light); }
+        .room-card.selected .room-desc { color: var(--gray-light); }
         .room-card img { width: 180px; height: 140px; object-fit: cover; display: block; filter: saturate(0.9); border-right: 1px solid var(--black); }
         .room-card .no-photo { width: 180px; height: 140px; display: flex; align-items: center; justify-content: center; font-family: 'EB Garamond', serif; font-style: italic; color: var(--gray); border-right: 1px solid var(--black); }
         .room-info { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
@@ -194,40 +220,18 @@
         .room-desc { font-size: 11px; color: var(--gray); line-height: 1.6; margin-bottom: 0.6rem; }
         .room-price { font-size: 13px; }
         .room-price strong { font-family: 'EB Garamond', serif; font-size: 1.2rem; font-weight: 400; }
-        .room-sub { display: block; font-size: 11px; color: var(--gray); margin-top: 0.2rem; }
 
         .rooms-fallback { max-width: 620px; border: 1px solid var(--black); padding: 1.5rem; background: var(--cream); }
         .rooms-fallback h4 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 0.75rem; }
         .rooms-fallback p { font-size: 12px; color: var(--gray); margin-bottom: 1rem; line-height: 1.7; }
 
-        /* PEOPLE */
         .people-choice { max-width: 620px; margin-top: 1.5rem; }
         .people-choice .label { font-size: 12px; margin-bottom: 0.6rem; }
-        .radio-row { display: flex; gap: 0; }
-        .radio-row label {
-            flex: 1;
-            border: 1px solid var(--black);
-            margin-right: -1px;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            background: var(--cream);
-            font-family: 'EB Garamond', serif;
-            font-size: 15px;
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
-        }
-        .radio-row label.selected { background: var(--black); color: var(--bg); }
-        .radio-row input { accent-color: var(--black); }
-        .gender-row label { font-size: 14px; padding: 0.6rem 0.8rem; }
-        .field.error .gender-row label { border-color: var(--rust); }
-        @media (max-width: 600px) { .gender-row { flex-wrap: wrap; } .gender-row label { flex: 1 1 45%; } }
 
-        /* SMALL PRINT */
-        .faq { max-width: 620px; }
-        .faq-item { margin-bottom: 1.25rem; }
-        .faq-item h3 { font-size: 12px; font-weight: 700; margin-bottom: 0.3rem; }
-        .faq-item p { font-size: 12px; color: var(--gray); line-height: 1.7; }
+        /* PAYMENT */
+        .totals { max-width: 620px; border: 1px solid var(--black); background: var(--cream); margin-bottom: 1.25rem; }
+        .bank { max-width: 620px; border: 1px solid var(--black); background: var(--cream); padding: 1rem 1.25rem; font-size: 12px; line-height: 1.9; margin-bottom: 1.25rem; }
+        .bank strong { font-weight: 700; }
 
         /* REVIEW */
         .review { max-width: 620px; border: 1px solid var(--black); background: var(--cream); }
@@ -261,21 +265,13 @@
         .success h2 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 2.2rem; margin-bottom: 1rem; }
         .success p { font-size: 13px; color: var(--gray); line-height: 1.8; }
 
-        footer {
-            padding: 1rem 2rem;
-            font-size: 11px;
-            color: var(--gray);
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--black);
-        }
+        footer { padding: 1rem 2rem; font-size: 11px; color: var(--gray); display: flex; justify-content: space-between; border-top: 1px solid var(--black); }
         @media (max-width: 768px) {
             footer { flex-direction: column; gap: 0.5rem; }
             .room-card { grid-template-columns: 1fr; }
             .room-card img, .room-card .no-photo { width: 100%; height: 180px; border-right: none; border-bottom: 1px solid var(--black); }
             .review-row { flex-direction: column; gap: 0.2rem; }
             .review-row .value { text-align: left; }
-            .price-row { grid-template-columns: 1fr; gap: 0.25rem; }
         }
     </style>
 </head>
@@ -296,43 +292,102 @@
     <section class="hero">
         <div class="hero-bg-text">CI</div>
         <div class="hero-content">
-            <div class="hero-dates">dec 28, 2026 – jan 11, 2027 · fools' valley</div>
+            <div class="hero-dates">dec 28 – jan 2 · jan 5 – 10 · 2026–27 · fools' valley, portugal</div>
             <h1 class="hero-title">new year<br>contact improvisation<br>festival</h1>
             <p class="hero-intro">
-                two weeks of contact improvisation over new year's eve, with Francisco Borges and friends.
+                two parts over new year: the festival and the retreat. come for one, or stay for both.
             </p>
         </div>
     </section>
 
     <section>
         <div class="section-label">001 / the festival</div>
-        <div class="prose">
-            <p class="coming-soon">more info coming soon</p>
-            <p>feel free to send requests for rooms already: pick a bed or a private room below and tell us anything you'd like us to know.</p>
-            <p class="price-from">from <strong>€560</strong> for the two weeks, food and accommodation included.</p>
+        <div class="about">
+            <img class="flyer" src="assets/nye-flyer.jpg" alt="New Year Contact Improvisation Festival 26/27, Portugal, 28 dec – 02 jan and 05 jan – 10 jan, at fools' valley">
+            <div class="prose">
+                <p>welcome to the new year contact improvisation festival at fools' valley, 30 minutes north of lisbon. a complete immersion, celebration and study of contact improvisation over the turn of the year, in two parts.</p>
+
+                <h3>part I — the festival · dec 28 – jan 2</h3>
+                <p>five days of classes, labs, talks, score jams, live music and the new year's marathon jam, with Alexa, Viktoria, Francisco and friends.</p>
+
+                <h3>part II — the retreat · jan 5 – 10</h3>
+                <p>five days of focused, in-depth work: a retreat for dancers who want to go deeper, with focused jams and performative laboratories.</p>
+
+                <h3>who it is for</h3>
+                <p>dancers and movers with some experience of contact improvisation, from the curious beginner with a few jams behind them to the long-time practitioner. you choose part I, part II, or both.</p>
+
+                <h3>food &amp; rooms</h3>
+                <ul>
+                    <li>3 vegetarian meals a day. arrival day is dinner only, departure day is breakfast only.</li>
+                    <li>during the break between the parts (jan 2 – 5), meals are organised with community cooking shifts, groceries provided.</li>
+                    <li>shared rooms have mostly 2 single beds, with a couple of bigger rooms with 3. limited private rooms with double beds.</li>
+                </ul>
+
+                <p class="price-from">from <strong>€390</strong> (part II, own van), all included — accommodation, food and the facilitators fee.</p>
+                <p>if the prices are not accessible to you, email the organisers: a few work exchange places exist.</p>
+
+                <p class="contact-line">
+                    organisers: Alexa, Viktoria &amp; Francisco · <a href="https://assembly.contact" target="_blank" rel="noopener">assembly.contact</a><br>
+                    contact: <a href="mailto:cifestivalportugal@gmail.com">cifestivalportugal@gmail.com</a> · whatsapp <a href="https://wa.me/351927789929" target="_blank" rel="noopener">+351 927 789 929</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="part">
+        <div class="section-label">002 / which part</div>
+        <h2 class="section-title">when are you coming?</h2>
+        <div class="parts">
+            <div class="part" data-part="part1">
+                <div class="part-dates">dec 28 – jan 2 · 5 nights</div>
+                <h4>part I — the festival</h4>
+                <div class="part-note">from €490 per person, all included</div>
+            </div>
+            <div class="part" data-part="part2">
+                <div class="part-dates">jan 5 – 10 · 5 nights</div>
+                <h4>part II — the retreat</h4>
+                <div class="part-note">from €390 per person, all included</div>
+            </div>
+            <div class="part" data-part="both">
+                <div class="part-dates">dec 28 – jan 10 · 13 nights</div>
+                <h4>both parts</h4>
+                <div class="part-note">from €860 per person, all included</div>
+            </div>
+        </div>
+        <div class="date-summary" id="date-summary" style="margin-top:1.5rem; display:none;">
+            arrival: <span id="arrival-display"></span><br>
+            departure: <span id="departure-display"></span><br>
+            <span id="duration-display"></span>
         </div>
     </section>
 
     <section id="apply">
-        <div class="section-label">002 / request a room</div>
-        <h2 class="section-title">who are you</h2>
+        <div class="section-label">003 / registration</div>
+        <h2 class="section-title">about you</h2>
         <div class="form">
-            <div class="field" id="field-name">
-                <label for="q-name">your name *</label>
-                <input type="text" id="q-name" autocomplete="name">
-                <div class="error-msg">required</div>
-            </div>
-
             <div class="field" id="field-email">
                 <label for="q-email">email *</label>
                 <input type="email" id="q-email" autocomplete="email">
                 <div class="error-msg">please enter a valid email</div>
             </div>
 
+            <div class="field" id="field-name">
+                <label for="q-name">first &amp; last name *</label>
+                <input type="text" id="q-name" autocomplete="name">
+                <div class="error-msg">required</div>
+            </div>
+
+            <div class="field" id="field-phone">
+                <label for="q-phone">phone number *</label>
+                <div class="hint">active on whatsapp if possible.</div>
+                <input type="tel" id="q-phone" autocomplete="tel">
+                <div class="error-msg">required</div>
+            </div>
+
             <div class="field" id="field-gender">
                 <label>gender *</label>
                 <div class="hint">dorms and shared rooms will be gender segregated where possible.</div>
-                <div class="radio-row gender-row">
+                <div class="radio-row">
                     <label><input type="radio" name="gender" value="woman"> woman</label>
                     <label><input type="radio" name="gender" value="man"> man</label>
                     <label><input type="radio" name="gender" value="non-binary"> non-binary</label>
@@ -341,33 +396,78 @@
                 <div class="error-msg">please choose one</div>
             </div>
 
-            <div class="field" id="field-questions">
-                <label for="q-questions">questions or requests</label>
-                <div class="hint">anything you'd like to ask or tell us — who you're coming with, dietary needs, anything else.</div>
-                <textarea id="q-questions" rows="3"></textarea>
+            <div class="field" id="field-ci">
+                <label for="q-ci">please add a short description of your experience with contact improvisation *</label>
+                <textarea id="q-ci" rows="3"></textarea>
+                <div class="error-msg">required</div>
             </div>
-        </div>
-    </section>
 
-    <section id="dates">
-        <div class="section-label">003 / your dates</div>
-        <h2 class="section-title">when</h2>
-        <p class="dates-note">
-            the festival runs <strong>monday dec 28 to monday jan 11</strong>. rooms are booked for the whole festival, with no early arrival or late departure.
-        </p>
-        <div class="date-summary">
-            arrival: <span id="arrival-display"></span><br>
-            departure: <span id="departure-display"></span><br>
-            <span id="duration-display"></span>
+            <div class="field" id="field-food">
+                <label for="q-food">food</label>
+                <div class="hint">we are offering 3 meals a day of simple vegetarian food. please let us know if you have any allergies or special diets.</div>
+                <textarea id="q-food" rows="2"></textarea>
+            </div>
+
+            <div class="field" id="field-mental">
+                <label for="q-mental">have you ever been diagnosed with any mental health disorder? *</label>
+                <div class="hint">if yes, are you currently taking medication, receiving treatment or engaged in any form of therapy?</div>
+                <textarea id="q-mental" rows="2"></textarea>
+                <div class="error-msg">required — "no" is fine</div>
+            </div>
+
+            <div class="field" id="field-physical">
+                <label for="q-physical">do you consider yourself to be physically healthy and ready to practice contact improvisation? *</label>
+                <div class="hint">are there any serious injuries or surgeries you've had in the past that still affect you today?</div>
+                <textarea id="q-physical" rows="2"></textarea>
+                <div class="error-msg">required</div>
+            </div>
+
+            <div class="field" id="field-contagious">
+                <label for="q-contagious">in the past 2 months, have you been in close contact with anyone who has been diagnosed with, or is suspected of having, a contagious or easily transmitted disease? *</label>
+                <div class="hint">such as influenza, covid-19, measles, or any contagious skin condition like impetigo, ringworm, scabies or molluscum contagiosum. your honest answers help us ensure the well-being and safety of everyone.</div>
+                <textarea id="q-contagious" rows="2"></textarea>
+                <div class="error-msg">required — "no" is fine</div>
+            </div>
+
+            <div class="field" id="field-heard">
+                <label>how did you know about the festival? *</label>
+                <div class="choice-list">
+                    <label><input type="radio" name="heard" value="Facebook/Instagram"> facebook / instagram</label>
+                    <label><input type="radio" name="heard" value="Telegram/WhatsApp"> telegram / whatsapp</label>
+                    <label><input type="radio" name="heard" value="A friend recommended"> a friend recommended</label>
+                    <label><input type="radio" name="heard" value="I've been here before and I loved it"> I've been here before and I loved it</label>
+                    <label><input type="radio" name="heard" value="other"> other: <input type="text" id="q-heard-other"></label>
+                </div>
+                <div class="error-msg">please choose one</div>
+            </div>
+
+            <div class="field" id="field-terms">
+                <label>terms &amp; agreements *</label>
+                <div class="hint">please check the boxes confirming your acknowledgement and agreement to the following terms.</div>
+                <div class="choice-list">
+                    <label><input type="checkbox" class="term"> <span><strong>1. assumption of risk:</strong> I understand that participation in contact improvisation and related activities carries inherent risks, including but not limited to physical injury, emotional discomfort, and personal loss. I voluntarily assume all risks associated with my participation in the festival, including any potential injury or harm that may occur during classes, jams, workshops, or other festival activities.</span></label>
+                    <label><input type="checkbox" class="term"> <span><strong>2. self-responsibility:</strong> I agree to take full responsibility for my physical and emotional well-being throughout the duration of the festival. this includes self-monitoring of my health, physical abilities, and emotional state, and refraining from engaging in any activities beyond my own capacity.</span></label>
+                    <label><input type="checkbox" class="term"> <span><strong>3. no liability for loss or damage:</strong> the organizers shall not be held responsible for any loss, injury, damage, or theft of personal property, including personal belongings or valuables, that may occur during the festival. this includes loss or damage caused by other participants, natural events, or accidents during the festival period. the participant agrees to indemnify and hold harmless the organizers from any such claims.</span></label>
+                    <label><input type="checkbox" class="term"> <span><strong>4. photographic release:</strong> I grant permission to the organizers of the festival to photograph, video record, and otherwise capture my likeness during the festival and any related events. I understand and agree that these images may be used for promotional or educational purposes by the organizers.</span></label>
+                    <label><input type="checkbox" class="term"> <span><strong>5.</strong> I confirm all of the information written above is true and complete.</span></label>
+                </div>
+                <div class="error-msg">please agree to all five</div>
+            </div>
+
+            <div class="field" id="field-add">
+                <label for="q-add">is there anything you would like to add, or any question?</label>
+                <textarea id="q-add" rows="3"></textarea>
+            </div>
         </div>
     </section>
 
     <section id="rooms">
         <div class="section-label">004 / your room</div>
         <h2 class="section-title">where you'll sleep</h2>
+        <p class="dates-note">dorm and shared-room beds are placed by us. private rooms are per room, for one or two people.</p>
         <div class="places-left" id="places-left" style="display:none;"></div>
         <div id="rooms-container">
-            <div class="rooms-loading">checking availability...</div>
+            <div class="rooms-loading">choose part I, part II or both above to see the rooms.</div>
         </div>
         <div class="people-choice" id="people-choice" style="display:none;">
             <div class="label">how many people in this room?</div>
@@ -375,33 +475,64 @@
                 <label class="selected"><input type="radio" name="people" value="1" checked> 1 person</label>
                 <label><input type="radio" name="people" value="2"> 2 people</label>
             </div>
-            <p class="dates-note" style="margin-top:0.75rem;">the room price stays the same; food &amp; facilities are per person.</p>
+            <p class="dates-note" style="margin-top:0.75rem;">the room price stays the same; food &amp; facilities and the facilitators fee are per person.</p>
+        </div>
+    </section>
+
+    <section id="payment" style="display:none;">
+        <div class="section-label">005 / payment</div>
+        <h2 class="section-title">deposit</h2>
+        <div class="totals">
+            <div class="review-row"><span class="label">your total</span><span class="value" id="pay-total"></span></div>
+            <div class="review-row total"><span class="label">deposit (50%)</span><span class="value" id="pay-deposit"></span></div>
+        </div>
+        <div class="form">
+            <div class="field" id="field-deposit">
+                <label>yes, I will transfer a deposit (50% of my payment) or the full payment (that would make it much easier for us) to this account upon completion of this form. *</label>
+                <div class="bank">
+                    payment to be sent to:<br>
+                    <strong>name:</strong> Christopher William Wray<br>
+                    <strong>IBAN:</strong> BE36 9671 7217 6881<br>
+                    <strong>swift/BIC:</strong> TRWIBEB1XXX (use when sending money from outside SEPA)<br>
+                    <strong>bank name and address:</strong> Wise, Rue du Trône 100, 3rd floor, Brussels, 1050, Belgium<br>
+                    <br>
+                    without the deposit, the booking isn't confirmed.<br>
+                    <strong>cancellation policy:</strong> before 1 december, 50% refund. after 1 december, non-refundable.
+                </div>
+                <div class="choice-list">
+                    <label><input type="radio" name="deposit" value="yes"> yes, I will make the organizers' life easier and do it.</label>
+                    <label><input type="radio" name="deposit" value="no"> no, I realize I'm not ready to commit. I won't send this form and will message the organizers (cifestivalportugal@gmail.com) with my questions.</label>
+                </div>
+                <div class="error-msg">the registration can only be sent with the deposit commitment. not ready yet? write to <a href="mailto:cifestivalportugal@gmail.com">cifestivalportugal@gmail.com</a>.</div>
+            </div>
         </div>
     </section>
 
     <section id="review" style="display:none;">
-        <div class="section-label">005 / review</div>
-        <h2 class="section-title">your stay</h2>
+        <div class="section-label">006 / review</div>
+        <h2 class="section-title">your registration</h2>
         <div class="review">
+            <div class="review-row"><span class="label">part</span><span class="value" id="rev-part"></span></div>
             <div class="review-row"><span class="label">arrival</span><span class="value" id="rev-arrival"></span></div>
             <div class="review-row"><span class="label">departure</span><span class="value" id="rev-departure"></span></div>
             <div class="review-row"><span class="label">nights</span><span class="value" id="rev-duration"></span></div>
             <div class="review-row"><span class="label">room</span><span class="value" id="rev-room"></span></div>
-            <div class="review-row" id="rev-people-row"><span class="label">people</span><span class="value" id="rev-people"></span></div>
-            <div class="review-row" id="rev-room-price-row"><span class="label">accommodation</span><span class="value" id="rev-room-price"></span></div>
-            <div class="review-row" id="rev-food-row"><span class="label">food &amp; facilities</span><span class="value" id="rev-food"></span></div>
-            <div class="review-row" id="rev-fac-row" style="display:none;"><span class="label">facilitators fee</span><span class="value" id="rev-fac"></span></div>
-            <div class="review-row total" id="rev-total-row"><span class="label">total</span><span class="value" id="rev-total"></span></div>
+            <div class="review-row"><span class="label">people</span><span class="value" id="rev-people"></span></div>
+            <div class="review-row"><span class="label">accommodation</span><span class="value" id="rev-room-price"></span></div>
+            <div class="review-row"><span class="label">food &amp; facilities</span><span class="value" id="rev-food"></span></div>
+            <div class="review-row"><span class="label">facilitators fee</span><span class="value" id="rev-fac"></span></div>
+            <div class="review-row total"><span class="label">total</span><span class="value" id="rev-total"></span></div>
+            <div class="review-row"><span class="label">deposit (50%)</span><span class="value" id="rev-deposit"></span></div>
         </div>
-        <button class="btn" id="btn-submit" onclick="submitApplication()">send request →</button>
+        <button class="btn" id="btn-submit" onclick="submitApplication()">send registration →</button>
         <div class="submit-error" id="submit-error"></div>
     </section>
 
     <section id="success" style="display:none;">
-        <div class="section-label">006 / sent</div>
+        <div class="section-label">007 / sent</div>
         <div class="success">
-            <h2>request sent</h2>
-            <p>thank you. we'll write back to confirm your room and send more info about the festival as it comes.</p>
+            <h2>registration sent</h2>
+            <p>thank you. you'll get a copy by email, and your place is confirmed once the deposit arrives. questions: <a href="mailto:cifestivalportugal@gmail.com">cifestivalportugal@gmail.com</a>.</p>
             <p style="margin-top:1rem;"><a href="events.html">← back to events</a></p>
         </div>
     </section>
@@ -421,31 +552,18 @@
     const ROOM_PHOTO_MAP = {
       chafariz:  'IMG_3325-806x1024.webp',
       isabel:    'IMG_3374_1-1-768x1024.webp',
-      library:   'IMG_1314-1024x768.webp',
       studio:    'IMG_3298-1-1-768x1024.webp',
-      galeria:   'IMG_3211_1-893x1024.webp',
-      dorm_oh:   'IMG_1326-1-1024x768.webp',
-      mbig:      'IMG_1037-2-1024x768.webp',
-      mcurve:    'IMG_0071-1024x768.webp',
-      mdouble:   'IMG_1036_1-1024x768.webp',
-      apartment: 'apartment-3.jpg',
-      ensuite:   'photo_2026-01-03-14.59.17-1024x768.webp',
-      sunny:     'photo_2026-01-03-14.59.03-1024x768.webp',
       normal_s:  'small-north.png',
-      normal_m:  'photo_2026-01-03-14.59.13-1-768x1024.webp',
-      normal_n:  'small-south.jpg',
-      pool:      'photo_2026-01-03-15.04.38-1024x768.webp',
-      downstairs:'photo_2026-01-03-15.04.23-1024x768.webp',
-      dorm_bh:   'photo_2026-01-03-15.04.51-1024x768.webp',
       nye_dorm:  'IMG_1326-1-1024x768.webp',
       nye_shared:'IMG_1036_1-1024x768.webp',
     };
 
-    // Festival: Dec 28, 2026 - Jan 11, 2027. Fixed dates, no early arrival or late departure.
-    // Prices come from the booking backend (event=nye): room/bed price for the whole festival,
-    // food & facilities per person per day, facilitators fee per person.
-    const arrivalDate   = new Date(2026, 11, 28);
-    const departureDate = new Date(2027, 0, 11);
+    // The two parts of the festival. Dates are fixed; prices come from the booking backend per part.
+    const PARTS = {
+      part1: { label: 'part I — the festival', start: new Date(2026, 11, 28), end: new Date(2027, 0, 2) },
+      part2: { label: 'part II — the retreat',  start: new Date(2027, 0, 5),   end: new Date(2027, 0, 10) },
+      both:  { label: 'both parts',             start: new Date(2026, 11, 28), end: new Date(2027, 0, 10) }
+    };
 
     const BUILDING_ORDER = ['Shared', 'Octopus House', 'Old House', 'Blue House', 'Camping'];
     const BUILDING_LABELS = {
@@ -459,33 +577,46 @@
     // ============================================================
     // STATE
     // ============================================================
+    let partKey = null;
     let availableRooms = [];
     let selectedRoom = null;
     let fallbackMode = false;
     let fetchSeq = 0;
-    let festival = { nights: 14, foodPerDay: 30, facilitatorsFee: 0, peopleLeft: null };
+    let festival = { nights: 0, food: 0, facilitatorsFee: 0, peopleLeft: null };
 
     // ============================================================
     // DATES
     // ============================================================
     const MONTHS = ['january','february','march','april','may','june','july','august','september','october','november','december'];
-
-    function nights() { return Math.round((departureDate - arrivalDate) / (1000*60*60*24)); }
-
+    function nights() { const p = PARTS[partKey]; return p ? Math.round((p.end - p.start) / 86400000) : 0; }
     function formatDate(d) {
       const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
       return days[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
     }
-
     function formatDateISO(d) {
       return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     }
 
-    function showDates() {
-      document.getElementById('arrival-display').textContent = formatDate(arrivalDate);
-      document.getElementById('departure-display').textContent = formatDate(departureDate);
-      document.getElementById('duration-display').textContent = nights() + ' nights';
-    }
+    // ============================================================
+    // PART CHOICE
+    // ============================================================
+    document.querySelectorAll('.part').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.part').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        partKey = card.dataset.part;
+        const p = PARTS[partKey];
+        document.getElementById('arrival-display').textContent = formatDate(p.start);
+        document.getElementById('departure-display').textContent = formatDate(p.end);
+        document.getElementById('duration-display').textContent = nights() + ' nights';
+        document.getElementById('date-summary').style.display = '';
+        selectedRoom = null;
+        document.getElementById('payment').style.display = 'none';
+        document.getElementById('review').style.display = 'none';
+        document.getElementById('people-choice').style.display = 'none';
+        fetchAvailability();
+      });
+    });
 
     // ============================================================
     // AVAILABILITY
@@ -496,8 +627,8 @@
       container.innerHTML = '<div class="rooms-loading">checking availability...</div>';
       selectedRoom = null;
       fallbackMode = false;
-
-      const url = APPS_SCRIPT_URL + '?action=availability&event=nye&from=' + formatDateISO(arrivalDate) + '&to=' + formatDateISO(departureDate);
+      const p = PARTS[partKey];
+      const url = APPS_SCRIPT_URL + '?action=availability&event=nye&part=' + partKey + '&from=' + formatDateISO(p.start) + '&to=' + formatDateISO(p.end);
 
       // The booking backend can take a while to wake from cold; retry once before falling back.
       for (let attempt = 1; attempt <= 2; attempt++) {
@@ -509,9 +640,9 @@
           const data = await resp.json();
           if (seq !== fetchSeq) return;
           if (data.error) { showFallback(container, "we couldn't check availability right now: " + data.error); return; }
-          if (data.event !== 'nye') { showFallback(container, "the booking system doesn't know the festival prices yet."); return; }
+          if (data.event !== 'nye' || data.part !== partKey) { showFallback(container, "the booking system doesn't know this year's festival yet."); return; }
 
-          festival = { nights: data.nights, foodPerDay: data.foodPerDay, facilitatorsFee: data.facilitatorsFee || 0, peopleLeft: data.peopleLeft };
+          festival = { nights: data.nights, food: data.food, facilitatorsFee: data.facilitatorsFee || 0, peopleLeft: data.peopleLeft };
           availableRooms = (data.rooms || []).filter(r => BUILDING_ORDER.includes(r.building));
           renderRooms();
           return;
@@ -534,16 +665,8 @@
       const fb = document.createElement('div');
       fb.className = 'rooms-fallback';
       fb.innerHTML = '<h4>room selection unavailable</h4>' +
-        '<p>' + msg + ' no worries — tell us what kind of room you\'d like (dorm bed, shared room, private room, van spot) and how many of you are coming, and we\'ll get back to you with options and prices.</p>' +
-        '<div class="field"><label for="f-room-preference">what kind of room, for how many people?</label><textarea id="f-room-preference" rows="3"></textarea></div>' +
-        '<button class="btn" style="margin-top:0;" type="button" onclick="fallbackContinue()">continue →</button>';
+        '<p>' + msg + ' please write to <a href="mailto:cifestivalportugal@gmail.com">cifestivalportugal@gmail.com</a> with the part you want, the kind of room and how many of you are coming.</p>';
       container.appendChild(fb);
-    }
-
-    function fallbackContinue() {
-      const pref = document.getElementById('f-room-preference');
-      if (pref && pref.value.trim().length > 0) showReview();
-      else pref.closest('.field').classList.add('error');
     }
 
     // ============================================================
@@ -552,7 +675,6 @@
     function cleanName(name) {
       return name.replace(/ \(\d+ beds? available\)/, '').replace(/ \(\d+ spots? available\)/, '');
     }
-
     function peopleCount() {
       if (!selectedRoom || (selectedRoom.maxPeople || 1) < 2) return 1;
       const checked = document.querySelector('input[name="people"]:checked');
@@ -562,18 +684,17 @@
     function renderRooms() {
       const container = document.getElementById('rooms-container');
       container.innerHTML = '';
-
       const left = document.getElementById('places-left');
       if (typeof festival.peopleLeft === 'number') {
         left.style.display = '';
-        left.textContent = festival.peopleLeft > 0 ? festival.peopleLeft + ' place' + (festival.peopleLeft === 1 ? '' : 's') + ' left in the festival' : 'the festival is full — write to us and we\'ll put you on the waiting list';
+        left.textContent = festival.peopleLeft > 0
+          ? festival.peopleLeft + ' place' + (festival.peopleLeft === 1 ? '' : 's') + ' left for ' + PARTS[partKey].label
+          : PARTS[partKey].label + ' is full — write to cifestivalportugal@gmail.com for the waiting list';
       }
-
       if (availableRooms.length === 0) {
-        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for the festival</h4><p>write to <a href="mailto:theonlyfool@foolsvalley.com">theonlyfool@foolsvalley.com</a> and we\'ll see what we can do.</p></div>';
+        container.innerHTML = '<div class="rooms-fallback"><h4>nothing free for these dates</h4><p>write to <a href="mailto:cifestivalportugal@gmail.com">cifestivalportugal@gmail.com</a> and we\'ll see what we can do.</p></div>';
         return;
       }
-
       BUILDING_ORDER.forEach(b => {
         const rs = availableRooms.filter(r => r.building === b);
         if (rs.length > 0) container.appendChild(buildGroup(BUILDING_LABELS[b], rs));
@@ -596,33 +717,23 @@
       rooms.forEach(room => {
         const card = document.createElement('div');
         card.className = 'room-card';
-
         const photoFile = ROOM_PHOTO_MAP[room.id] || room.photo;
         if (photoFile) {
           const img = document.createElement('img');
-          img.src = ROOM_PHOTOS_BASE + photoFile;
-          img.alt = cleanName(room.name);
-          img.loading = 'lazy';
+          img.src = ROOM_PHOTOS_BASE + photoFile; img.alt = cleanName(room.name); img.loading = 'lazy';
           card.appendChild(img);
         } else {
           const noPhoto = document.createElement('div');
-          noPhoto.className = 'no-photo';
-          noPhoto.textContent = 'photo coming';
+          noPhoto.className = 'no-photo'; noPhoto.textContent = 'photo coming';
           card.appendChild(noPhoto);
         }
-
         const info = document.createElement('div');
         info.className = 'room-info';
-        const h4 = document.createElement('h4');
-        h4.textContent = room.name;
-        const desc = document.createElement('div');
-        desc.className = 'room-desc';
-        desc.textContent = room.desc || '';
-        const price = document.createElement('div');
-        price.className = 'room-price';
-        const food = festival.foodPerDay * festival.nights;
-        price.innerHTML = '<strong>€' + (room.roomPrice + food) + '</strong> (€' + room.roomPrice + ' ' + unitLabel(room) + ' + €' + food + ' food)' +
-          (festival.facilitatorsFee ? '<span class="room-sub">+ €' + festival.facilitatorsFee + ' facilitators fee per person</span>' : '');
+        const h4 = document.createElement('h4'); h4.textContent = room.name;
+        const desc = document.createElement('div'); desc.className = 'room-desc'; desc.textContent = room.desc || '';
+        const price = document.createElement('div'); price.className = 'room-price';
+        const perPerson = room.roomPrice + festival.food + festival.facilitatorsFee;
+        price.innerHTML = '<strong>€' + perPerson + '</strong> (€' + room.roomPrice + ' ' + unitLabel(room) + ' + €' + festival.food + ' food + €' + festival.facilitatorsFee + ' facilitators)';
         info.appendChild(h4); info.appendChild(desc); info.appendChild(price);
         card.appendChild(info);
 
@@ -633,13 +744,10 @@
           const choice = document.getElementById('people-choice');
           const isDouble = (room.maxPeople || 1) > 1;
           choice.style.display = isDouble ? '' : 'none';
-          if (!isDouble) {
-            const one = document.querySelector('input[name="people"][value="1"]');
-            one.checked = true; syncPeople();
-          }
-          showReview();
+          if (!isDouble) { document.querySelector('input[name="people"][value="1"]').checked = true; }
+          syncPeople();
+          showPayment();
         });
-
         group.appendChild(card);
       });
       return group;
@@ -647,58 +755,91 @@
 
     function syncPeople() {
       document.querySelectorAll('input[name="people"]').forEach(r => r.closest('label').classList.toggle('selected', r.checked));
-      if (selectedRoom) populateReview();
+      if (selectedRoom) { populateTotals(); if (depositAnswer() === 'yes') populateReview(); }
     }
     document.querySelectorAll('input[name="people"]').forEach(r => r.addEventListener('change', syncPeople));
-    document.querySelectorAll('input[name="gender"]').forEach(r => r.addEventListener('change', () => {
-      document.querySelectorAll('input[name="gender"]').forEach(g => g.closest('label').classList.toggle('selected', g.checked));
+
+    // radio / checkbox highlighting
+    document.querySelectorAll('.radio-row input[type="radio"], .choice-list input[type="radio"], .choice-list input[type="checkbox"]').forEach(inp => {
+      inp.addEventListener('change', () => {
+        const name = inp.name;
+        if (name) document.querySelectorAll('input[name="' + name + '"]').forEach(g => g.closest('label').classList.toggle('selected', g.checked));
+        else inp.closest('label').classList.toggle('selected', inp.checked);
+        if (name === 'deposit') onDepositChange();
+      });
+    });
+    const heardOther = document.getElementById('q-heard-other');
+    ['focus', 'input'].forEach(evt => heardOther.addEventListener(evt, () => {
+      const other = document.querySelector('input[name="heard"][value="other"]');
+      other.checked = true;
+      document.querySelectorAll('input[name="heard"]').forEach(g => g.closest('label').classList.toggle('selected', g.checked));
     }));
-    function gender() { const g = document.querySelector('input[name="gender"]:checked'); return g ? g.value : ''; }
 
     // ============================================================
-    // REVIEW
+    // PRICE, PAYMENT, REVIEW
     // ============================================================
     function pricing() {
       const people = peopleCount();
       const roomPrice = selectedRoom ? selectedRoom.roomPrice : 0;
-      const food = festival.foodPerDay * festival.nights * people;
-      const fac = (festival.facilitatorsFee || 0) * people;
-      return { people, roomPrice, food, fac, total: roomPrice + food + fac };
+      const food = festival.food * people;
+      const fac = festival.facilitatorsFee * people;
+      const total = roomPrice + food + fac;
+      return { people, roomPrice, food, fac, total, deposit: Math.round(total / 2) };
     }
 
-    function populateReview() {
-      document.getElementById('rev-arrival').textContent = formatDate(arrivalDate);
-      document.getElementById('rev-departure').textContent = formatDate(departureDate);
-      document.getElementById('rev-duration').textContent = nights();
-      const priceRows = ['rev-people-row', 'rev-room-price-row', 'rev-food-row', 'rev-fac-row', 'rev-total-row'];
-      if (fallbackMode) {
-        const pref = document.getElementById('f-room-preference');
-        document.getElementById('rev-room').textContent = 'preference: ' + (pref ? pref.value.trim() : 'not specified');
-        priceRows.forEach(id => document.getElementById(id).style.display = 'none');
-      } else if (selectedRoom) {
-        const p = pricing();
-        document.getElementById('rev-room').textContent = cleanName(selectedRoom.name);
-        priceRows.forEach(id => document.getElementById(id).style.display = '');
-        document.getElementById('rev-fac-row').style.display = p.fac > 0 ? '' : 'none';
-        document.getElementById('rev-people').textContent = p.people;
-        document.getElementById('rev-room-price').textContent = '€' + p.roomPrice;
-        document.getElementById('rev-food').textContent = '€' + p.food + ' (' + p.people + ' × ' + festival.nights + ' days × €' + festival.foodPerDay + ')';
-        document.getElementById('rev-fac').textContent = '€' + p.fac;
-        document.getElementById('rev-total').textContent = '€' + p.total;
+    function populateTotals() {
+      const p = pricing();
+      document.getElementById('pay-total').textContent = '€' + p.total;
+      document.getElementById('pay-deposit').textContent = '€' + p.deposit;
+    }
+
+    function showPayment() {
+      populateTotals();
+      const section = document.getElementById('payment');
+      section.style.display = 'block';
+      onDepositChange();
+      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+    function depositAnswer() { const d = document.querySelector('input[name="deposit"]:checked'); return d ? d.value : ''; }
+
+    function onDepositChange() {
+      const field = document.getElementById('field-deposit');
+      const review = document.getElementById('review');
+      const answer = depositAnswer();
+      field.classList.toggle('error', answer === 'no');
+      if (answer === 'yes' && selectedRoom) {
+        populateReview();
+        review.style.display = 'block';
+        setTimeout(() => review.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      } else {
+        review.style.display = 'none';
       }
     }
 
-    function showReview() {
-      const section = document.getElementById('review');
-      section.style.display = 'block';
-      populateReview();
-      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    function populateReview() {
+      const p = PARTS[partKey];
+      const pr = pricing();
+      document.getElementById('rev-part').textContent = p.label;
+      document.getElementById('rev-arrival').textContent = formatDate(p.start);
+      document.getElementById('rev-departure').textContent = formatDate(p.end);
+      document.getElementById('rev-duration').textContent = nights();
+      document.getElementById('rev-room').textContent = cleanName(selectedRoom.name);
+      document.getElementById('rev-people').textContent = pr.people;
+      document.getElementById('rev-room-price').textContent = '€' + pr.roomPrice;
+      document.getElementById('rev-food').textContent = '€' + pr.food + ' (' + pr.people + ' × €' + festival.food + ')';
+      document.getElementById('rev-fac').textContent = '€' + pr.fac + ' (' + pr.people + ' × €' + festival.facilitatorsFee + ')';
+      document.getElementById('rev-total').textContent = '€' + pr.total;
+      document.getElementById('rev-deposit').textContent = '€' + pr.deposit;
     }
 
     // ============================================================
     // VALIDATION + SUBMIT
     // ============================================================
     function val(id) { return document.getElementById(id).value.trim(); }
+    function radio(name) { const r = document.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ''; }
+    function heardFrom() { const h = radio('heard'); return h === 'other' ? ('Other: ' + val('q-heard-other')) : h; }
+    function termsAllChecked() { return [...document.querySelectorAll('.term')].every(t => t.checked); }
 
     function validateForm() {
       let firstError = null;
@@ -707,9 +848,17 @@
         field.classList.toggle('error', !ok);
         if (!ok && !firstError) firstError = field;
       }
-      check('field-name', val('q-name').length > 0);
       check('field-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('q-email')));
-      check('field-gender', gender().length > 0);
+      check('field-name', val('q-name').length > 0);
+      check('field-phone', val('q-phone').length > 0);
+      check('field-gender', radio('gender').length > 0);
+      check('field-ci', val('q-ci').length > 0);
+      check('field-mental', val('q-mental').length > 0);
+      check('field-physical', val('q-physical').length > 0);
+      check('field-contagious', val('q-contagious').length > 0);
+      check('field-heard', heardFrom().length > 0 && heardFrom() !== 'Other: ');
+      check('field-terms', termsAllChecked());
+      check('field-deposit', depositAnswer() === 'yes');
       if (firstError) { firstError.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
       return true;
     }
@@ -717,36 +866,47 @@
     async function submitApplication() {
       const errBox = document.getElementById('submit-error');
       errBox.style.display = 'none';
+      if (!partKey) { errBox.textContent = 'please choose part I, part II or both.'; errBox.style.display = 'block'; document.getElementById('part').scrollIntoView({ behavior: 'smooth' }); return; }
+      if (!selectedRoom) { errBox.textContent = 'please choose a room first.'; errBox.style.display = 'block'; return; }
       if (!validateForm()) return;
-      if (!fallbackMode && !selectedRoom) { errBox.textContent = 'please choose a room first.'; errBox.style.display = 'block'; return; }
 
       const btn = document.getElementById('btn-submit');
       btn.disabled = true;
       btn.textContent = 'sending...';
+      const p = PARTS[partKey];
+      const pr = pricing();
 
-      const p = fallbackMode ? { people: 1, roomPrice: 0, food: 0, fac: 0, total: 0 } : pricing();
-
-      // The backend prices the booking itself from the festival price list; these figures are what the guest saw.
+      // The backend prices the registration itself from the festival price list; these figures are what the guest saw.
       const payload = {
         action: 'submit',
         application: {
           eventType: 'nye',
+          part: partKey,
           name: val('q-name'),
           email: val('q-email'),
-          questions: val('q-questions'),
-          gender: gender(),
-          people: p.people,
-          arrivalDateISO: formatDateISO(arrivalDate),
-          departureDateISO: formatDateISO(departureDate),
+          phone: val('q-phone'),
+          gender: radio('gender'),
+          ciExperience: val('q-ci'),
+          food: val('q-food'),
+          mentalHealth: val('q-mental'),
+          physicalHealth: val('q-physical'),
+          contagious: val('q-contagious'),
+          heardFrom: heardFrom(),
+          termsAgreed: termsAllChecked(),
+          anythingToAdd: val('q-add'),
+          deposit: depositAnswer(),
+          people: pr.people,
+          arrivalDateISO: formatDateISO(p.start),
+          departureDateISO: formatDateISO(p.end),
           numDays: nights(),
-          roomName: fallbackMode ? 'none' : cleanName(selectedRoom.name),
-          roomId: fallbackMode ? 'none' : selectedRoom.id,
-          building: fallbackMode ? '' : (selectedRoom.building || ''),
-          roomPrice: p.roomPrice,
-          foodFee: p.food,
-          facilitatorsFee: p.fac,
-          totalPrice: p.total,
-          roomPreference: fallbackMode ? val('f-room-preference') : ''
+          roomName: cleanName(selectedRoom.name),
+          roomId: selectedRoom.id,
+          building: selectedRoom.building || '',
+          roomPrice: pr.roomPrice,
+          foodFee: pr.food,
+          facilitatorsFee: pr.fac,
+          totalPrice: pr.total,
+          depositDue: pr.deposit
         }
       };
 
@@ -762,10 +922,10 @@
           throw new Error(data.error || 'unknown error');
         }
       } catch (err) {
-        errBox.textContent = 'could not send: ' + err.message + '. please try again, or write to theonlyfool@foolsvalley.com.';
+        errBox.textContent = 'could not send: ' + err.message + '. please try again, or write to cifestivalportugal@gmail.com.';
         errBox.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'send request →';
+        btn.textContent = 'send registration →';
       }
     }
 
@@ -786,9 +946,6 @@
             });
         });
     })();
-
-    showDates();
-    fetchAvailability();
     </script>
 </body>
 </html>

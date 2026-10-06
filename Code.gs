@@ -8,45 +8,59 @@ const ROOMS_SHEET = 'prices';  // This has room data: IDs, names, buildings, dai
 const BOOKINGS_SHEET = 'bookings';  // Will be created if it doesn't exist
 const APPLICATIONS_SHEET = 'applications';  // Will be created automatically
 const TUCKER_APPLICATIONS_SHEET = 'tucker applications';
-const NYE_APPLICATIONS_SHEET = 'nye applications';
 const VIPASSANA_APPLICATIONS_SHEET = 'vipassana applications';
 
-// New Year CI Festival, Dec 28 2026 - Jan 11 2027 (requests with ?event=nye / eventType 'nye').
-// Fixed dates and fixed prices for the whole festival. Food is per person; room and bed prices are not.
+// New Year CI Festival 2026-27 (requests with ?event=nye / eventType 'nye').
+// Two parts; a guest books Part I, Part II or both. Every price is per person for the chosen part(s),
+// except room prices for private rooms, which are per room (1 or 2 people).
+// Registrations go to the organisers' own spreadsheet (see registrations below), not to our booking sheet.
 const NYE = {
-  start: '2026-12-28',
-  end: '2027-01-11',
-  nights: 14,
-  foodPerDay: 30,        // food & facilities, per person per day
-  facilitatorsFee: 0,    // per person, set it here once known; collected with the booking and passed on to Francisco weekly
-  cap: 38,               // people in total across all bookings
+  parts: {
+    part1: { label: 'Part I — the festival', start: '2026-12-28', end: '2027-01-02', nights: 5,  food: 100, facilitators: 315, counts: ['part1'] },
+    part2: { label: 'Part II — the retreat',  start: '2027-01-05', end: '2027-01-10', nights: 5,  food: 100, facilitators: 215, counts: ['part2'] },
+    both:  { label: 'Both parts',             start: '2026-12-28', end: '2027-01-10', nights: 13, food: 240, facilitators: 490, counts: ['part1', 'part2'] }
+  },
+  cap: 38,   // people per part; a both-parts booking counts in each
+  // accommodation for one part / for both parts
   rooms: {
-    // 'bed' prices are per bed, 'room' prices per room (1 or 2 people), 'spot' per van spot
-    dorm_oh:  { price: 210,  unit: 'bed',  capacity: 6 },
-    dorm_bh:  { price: 210,  unit: 'bed',  capacity: 4 },
-    zen:      { price: 210,  unit: 'bed',  capacity: 4 },
-    hallway:  { price: 210,  unit: 'bed',  capacity: 4 },
-    mbig:     { price: 350,  unit: 'bed',  capacity: 4 },
-    mcurve:   { price: 350,  unit: 'bed',  capacity: 2 },
-    mdouble:  { price: 350,  unit: 'bed',  capacity: 2 },
-    ensuite:  { price: 350,  unit: 'bed',  capacity: 2 },
-    normal_m: { price: 350,  unit: 'bed',  capacity: 2 },
-    normal_n: { price: 350,  unit: 'bed',  capacity: 2 },
-    chafariz: { price: 1050, unit: 'room', capacity: 1, maxPeople: 2 },
-    isabel:   { price: 780,  unit: 'room', capacity: 1, maxPeople: 2 },
-    studio:   { price: 670,  unit: 'room', capacity: 1, maxPeople: 2 },
-    normal_s: { price: 650,  unit: 'room', capacity: 1, maxPeople: 1 },
-    van:      { price: 140,  unit: 'spot', capacity: 5 }
+    dorm_oh:  { price: { one: 125, both: 180 },  unit: 'bed',  capacity: 6 },
+    dorm_bh:  { price: { one: 125, both: 180 },  unit: 'bed',  capacity: 4 },
+    zen:      { price: { one: 125, both: 180 },  unit: 'bed',  capacity: 4 },
+    hallway:  { price: { one: 125, both: 180 },  unit: 'bed',  capacity: 4 },
+    mbig:     { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 4 },
+    mcurve:   { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 2 },
+    mdouble:  { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 2 },
+    ensuite:  { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 2 },
+    normal_m: { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 2 },
+    normal_n: { price: { one: 175, both: 330 },  unit: 'bed',  capacity: 2 },
+    chafariz: { price: { one: 500, both: 1050 }, unit: 'room', capacity: 1, maxPeople: 2 },
+    isabel:   { price: { one: 375, both: 780 },  unit: 'room', capacity: 1, maxPeople: 2 },
+    studio:   { price: { one: 320, both: 670 },  unit: 'room', capacity: 1, maxPeople: 2 },
+    normal_s: { price: { one: 310, both: 650 },  unit: 'room', capacity: 1, maxPeople: 1 },
+    van:      { price: { one: 75,  both: 130 },  unit: 'spot', capacity: 5 }
   },
   // Guests don't pick a dorm or a shared room themselves: they book a bed and we put them in any free one,
   // trying the rooms in this order.
   categories: {
-    nye_dorm:   { name: 'dorm bed', desc: '', price: 210, rooms: ['dorm_oh', 'dorm_bh', 'zen', 'hallway'] },
-    nye_shared: { name: 'bed in a shared room', desc: '', price: 350, rooms: ['mbig', 'mcurve', 'mdouble', 'ensuite', 'normal_m', 'normal_n'] }
-  }
+    nye_dorm:   { name: 'dorm bed',             price: { one: 125, both: 180 }, rooms: ['dorm_oh', 'dorm_bh', 'zen', 'hallway'] },
+    nye_shared: { name: 'bed in a shared room', price: { one: 175, both: 330 }, rooms: ['mbig', 'mcurve', 'mdouble', 'ensuite', 'normal_m', 'normal_n'] }
+  },
   // Not listed, so not bookable for the festival: apartment / apt_a / apt_b and sunny (organisers' team),
   // galeria and library (our staff), pool, downstairs, tipi.
+  registrations: {
+    spreadsheetId: '12a-aPJJc3fPgJECW2kXzgX3l7MJp7MQxJkgkuHH3WDQ',   // the organisers' sheet
+    tab: 'registrations'
+  },
+  emails: 'cifestivalportugal@gmail.com,theonlyfool@foolsvalley.com',
+  deposit: {
+    name: 'Christopher William Wray',
+    iban: 'BE36 9671 7217 6881',
+    bic: 'TRWIBEB1XXX',
+    bank: 'Wise, Rue du Trône 100, 3rd floor, Brussels, 1050, Belgium'
+  }
 };
+function nyePart(key) { return NYE.parts[key] || null; }
+function nyePriceFor(prices, partKey) { return partKey === 'both' ? prices.both : prices.one; }
 
 // Event Blocking - Block ALL rooms during special events
 // Add date ranges here to make all rooms unavailable
@@ -65,7 +79,7 @@ const EVENT_BLOCKS = [
   {
     name: 'New Year CI Festival 2026-27',
     startDate: '2026-12-28',  // Dec 28, 2026
-    endDate: '2027-01-11',    // Jan 11, 2027 (exclusive - checkout morning stays free)
+    endDate: '2027-01-10',    // Jan 10, 2027 (exclusive - checkout morning stays free)
     exceptEvent: 'nye'        // requests with ?event=nye bypass this block
   }
   // Add more event blocks here as needed
@@ -204,6 +218,11 @@ function handleAvailability(e) {
     const from = e.parameter.from; // ISO format: YYYY-MM-DD
     const to = e.parameter.to;
     const eventParam = e.parameter.event || '';
+    const partKey = e.parameter.part || '';
+    const part = eventParam === 'nye' ? nyePart(partKey) : null;
+    if (eventParam === 'nye' && !part) {
+      return jsonResponse({ error: 'Please choose Part I, Part II or both' });
+    }
 
     if (!from || !to) {
       return jsonResponse({ error: 'Missing date parameters' });
@@ -414,8 +433,8 @@ function handleAvailability(e) {
       }
     }
 
-    if (eventParam === 'nye' && (from !== NYE.start || to !== NYE.end)) {
-      return jsonResponse({ error: 'The festival runs ' + NYE.start + ' to ' + NYE.end + ' only' });
+    if (part && (from !== part.start || to !== part.end)) {
+      return jsonResponse({ error: part.label + ' runs ' + part.start + ' to ' + part.end });
     }
 
     // Check availability and calculate prices
@@ -450,13 +469,14 @@ function handleAvailability(e) {
           };
           dailyFee = numDays * 35;
         } else if (eventParam === 'nye') {
-          // Festival pricing: fixed for the whole stay; food per person
+          // Festival pricing: fixed per part; food per person
           const cfg = NYE.rooms[room.id];
+          const price = nyePriceFor(cfg.price, partKey);
           pricing = {
-            roomPrice: cfg.price,
-            priceBreakdown: '€' + cfg.price + ' per ' + cfg.unit + ', whole festival'
+            roomPrice: price,
+            priceBreakdown: '€' + price + ' per ' + cfg.unit + ', ' + part.label.toLowerCase()
           };
-          dailyFee = NYE.foodPerDay * numDays;
+          dailyFee = part.food;
         } else {
           pricing = calculateRoomPrice(room.daily, room.weekly, room.twoWeek, room.monthly, numDays);
           dailyFee = numDays * normalDailyFeeRate;
@@ -488,10 +508,11 @@ function handleAvailability(e) {
       for (const [catId, cat] of Object.entries(NYE.categories)) {
         const beds = availableRooms.filter(r => cat.rooms.includes(r.id)).reduce((n, r) => n + r.availableCount, 0);
         if (beds > 0) {
+          const price = nyePriceFor(cat.price, partKey);
           pooled.push({
-            id: catId, name: cat.name + ' (' + beds + ' bed' + (beds === 1 ? '' : 's') + ' available)', building: 'Shared', desc: cat.desc, photo: '',
-            roomPrice: cat.price, priceBreakdown: '€' + cat.price + ' per bed, whole festival', dailyFee: NYE.foodPerDay * numDays,
-            totalPrice: cat.price + NYE.foodPerDay * numDays, numDays: numDays, availableCount: beds, unit: 'bed', maxPeople: 1
+            id: catId, name: cat.name + ' (' + beds + ' bed' + (beds === 1 ? '' : 's') + ' available)', building: 'Shared', desc: '', photo: '',
+            roomPrice: price, priceBreakdown: '€' + price + ' per bed, ' + part.label.toLowerCase(), dailyFee: part.food,
+            totalPrice: price + part.food, numDays: numDays, availableCount: beds, unit: 'bed', maxPeople: 1
           });
         }
       }
@@ -500,10 +521,11 @@ function handleAvailability(e) {
       return jsonResponse({
         rooms: pooled.concat(singles),
         event: 'nye',
-        nights: NYE.nights,
-        foodPerDay: NYE.foodPerDay,
-        facilitatorsFee: NYE.facilitatorsFee,
-        peopleLeft: Math.max(0, NYE.cap - nyePeopleBooked(ss))
+        part: partKey,
+        nights: part.nights,
+        food: part.food,
+        facilitatorsFee: part.facilitators,
+        peopleLeft: nyePeopleLeft(partKey)
       });
     }
 
@@ -1357,52 +1379,85 @@ function sendVipassanaNotification(app, arrivalISO, departureISO, roomPrice, foo
 // ============================================================
 // NEW YEAR CI FESTIVAL SUBMISSION
 // ============================================================
+// Registrations live in the organisers' spreadsheet, one row per booking.
 const NYE_HEADERS = [
-  'Timestamp',                   // A
-  'Name',                        // B
-  'Email',                       // C
-  'Questions / Requests',        // D
-  'Arrival Date',                // E
-  'Departure Date',              // F
-  'Num Nights',                  // G
-  'Room Name',                   // H
-  'Room ID',                     // I
-  'Number of People',            // J
-  'Room Price',                  // K
-  'Food & Facilities',           // L
-  'Facilitators Fee',            // M
-  'Total Price',                 // N
-  'Status',                      // O (column 15): yes / no
-  'Amount Paid',                 // P
-  'Facilitators Fee Passed On',  // Q
-  'Gender'                       // R
+  'Timestamp',                 // A
+  'Name',                      // B
+  'Email',                     // C
+  'Phone',                     // D
+  'Gender',                    // E
+  'Part',                      // F  part1 / part2 / both
+  'Arrival',                   // G
+  'Departure',                 // H
+  'Nights',                    // I
+  'Accommodation',             // J
+  'Room ID',                   // K
+  'Number of People',          // L
+  'Room Price',                // M
+  'Food & Facilities',         // N
+  'Facilitators Fee',          // O
+  'Total',                     // P
+  'Deposit Due (50%)',         // Q
+  'Amount Paid',               // R
+  'Status',                    // S (column 19): yes / no
+  'Deposit Commitment',        // T
+  'CI Experience',             // U
+  'Food / Allergies',          // V
+  'Mental Health',             // W
+  'Physical Health',           // X
+  'Contagious Contact',        // Y
+  'Heard From',                // Z
+  'Terms Agreed',              // AA
+  'Anything to Add'            // AB
 ];
-const NYE_STATUS_COLUMN = 15;
+const NYE_STATUS_COLUMN = 19;
+const NYE_COL = { part: 5, people: 11, status: 18, name: 1, room: 10 }; // 0-based
 
-function getOrCreateNyeSheet(ss) {
-  let sheet = ss.getSheetByName(NYE_APPLICATIONS_SHEET);
+function nyeRegistrationsSheet() {
+  // Needs the script to be allowed to open spreadsheets other than its own (see deployment note)
+  const ss = SpreadsheetApp.openById(NYE.registrations.spreadsheetId);
+  let sheet = ss.getSheetByName(NYE.registrations.tab);
   if (!sheet) {
-    sheet = ss.insertSheet(NYE_APPLICATIONS_SHEET);
+    sheet = ss.getSheets()[0];
+    if (sheet.getLastRow() > 0 && String(sheet.getRange(1, 1).getValue()) !== 'Timestamp') {
+      sheet = ss.insertSheet(NYE.registrations.tab);
+    } else if (sheet.getName() !== NYE.registrations.tab) {
+      sheet.setName(NYE.registrations.tab);
+    }
+  }
+  if (sheet.getLastRow() === 0) {
     sheet.appendRow(NYE_HEADERS);
     const headerRange = sheet.getRange(1, 1, 1, NYE_HEADERS.length);
     headerRange.setFontWeight('bold');
     headerRange.setBackground('#f3f3f3');
+    sheet.setFrozenRows(1);
   }
   return sheet;
 }
 
-// People already booked for the festival (every row whose status is not 'no')
-function nyePeopleBooked(ss) {
-  const sheet = ss.getSheetByName(NYE_APPLICATIONS_SHEET);
-  if (!sheet || sheet.getLastRow() < 2) return 0;
+// People booked per part (every row whose status is not 'no'); a both-parts booking counts in each
+function nyePeopleBookedByPart() {
+  const booked = { part1: 0, part2: 0 };
+  let sheet;
+  try { sheet = nyeRegistrationsSheet(); } catch (err) { Logger.log('Registrations sheet unavailable: ' + err.message); return booked; }
+  if (sheet.getLastRow() < 2) return booked;
   const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, NYE_STATUS_COLUMN).getValues();
-  let total = 0;
   for (const row of rows) {
-    const status = String(row[NYE_STATUS_COLUMN - 1] || '').toLowerCase().trim();
+    const status = String(row[NYE_COL.status] || '').toLowerCase().trim();
     if (status === 'no' || status === 'cancelled') continue;
-    total += parseInt(row[9]) || 0; // column J
+    const part = nyePart(String(row[NYE_COL.part] || '').trim());
+    const people = parseInt(row[NYE_COL.people]) || 0;
+    if (!part) continue;
+    for (const k of part.counts) booked[k] += people;
   }
-  return total;
+  return booked;
+}
+
+function nyePeopleLeft(partKey) {
+  const part = nyePart(partKey);
+  if (!part) return 0;
+  const booked = nyePeopleBookedByPart();
+  return Math.max(0, Math.min.apply(null, part.counts.map(k => NYE.cap - booked[k])));
 }
 
 // Several guests can share one calendar cell, written as 'Anna + Ben + Carla (hallway)'
@@ -1414,9 +1469,9 @@ function guestMatches(guest, name) {
   return bare === name || guest === name;
 }
 
-// Rows of the calendar that fall inside the festival
-function nyeRows(calendarData) {
-  const arrival = new Date(NYE.start), departure = new Date(NYE.end);
+// Rows of the calendar that fall inside the part (arrival night up to the night before departure)
+function nyeRows(calendarData, part) {
+  const arrival = new Date(part.start), departure = new Date(part.end);
   const rows = [];
   for (let row = 5; row < Math.min(calendarData.length, 1500); row++) {
     const rowData = calendarData[row];
@@ -1448,11 +1503,11 @@ function nyeGuestsInCell(cellValue, roomId) {
   });
 }
 
-// Most guests of this room on any festival night
-function nyeOccupancy(calendarData, roomId) {
+// Most guests of this room on any night of the part
+function nyeOccupancy(calendarData, roomId, part) {
   const cols = nyeColumnsFor(calendarData[2], roomId);
   let worst = 0;
-  for (const row of nyeRows(calendarData)) {
+  for (const row of nyeRows(calendarData, part)) {
     let n = 0;
     for (const c of cols) n += nyeGuestsInCell(calendarData[row][c], roomId).length;
     worst = Math.max(worst, n);
@@ -1460,8 +1515,8 @@ function nyeOccupancy(calendarData, roomId) {
   return worst;
 }
 
-// Pick the first room in the category that still has a bed for the whole festival
-function assignNyeRoom(ss, category) {
+// Pick the first room in the category that still has a bed for every night of the part
+function assignNyeRoom(ss, category, part) {
   const valleySheet = ss.getSheetByName('valley rooms');
   if (!valleySheet) return null;
   const calendarData = valleySheet.getDataRange().getValues();
@@ -1469,17 +1524,18 @@ function assignNyeRoom(ss, category) {
     const cfg = NYE.rooms[roomId];
     if (!cfg) continue;
     if (nyeColumnsFor(calendarData[2], roomId).length === 0) continue;
-    if (nyeOccupancy(calendarData, roomId) < cfg.capacity) return roomId;
+    if (nyeOccupancy(calendarData, roomId, part) < cfg.capacity) return roomId;
   }
   return null;
 }
 
-// Write a festival guest into the calendar. Dorm bunks have a column per bed; every other
-// space has one column, and guests are joined with ' + '. Van and hallway guests are tagged.
-function recordNyeBooking(ss, name, roomId) {
+// Write a festival guest into the calendar for the nights of the part only. Dorm bunks have a
+// column per bed; every other space has one column, and guests are joined with ' + '.
+// Van and hallway guests are tagged.
+function recordNyeBooking(ss, name, roomId, part) {
   if (roomId === 'dorm_oh' || roomId === 'dorm_bh') {
     // ISO dates parse as UTC midnight; Dec/Jan Portugal is WET (UTC+0), so they match the sheet's local dates.
-    recordBookingInCalendar({ name: name, roomId: roomId, arrivalDate: NYE.start, departureDate: NYE.end }, ss);
+    recordBookingInCalendar({ name: name, roomId: roomId, arrivalDate: part.start, departureDate: part.end }, ss);
     return;
   }
   const valleySheet = ss.getSheetByName('valley rooms');
@@ -1487,10 +1543,10 @@ function recordNyeBooking(ss, name, roomId) {
   const calendarData = valleySheet.getDataRange().getValues();
   const cols = nyeColumnsFor(calendarData[2], roomId);
   if (cols.length === 0) { Logger.log('No calendar column for ' + roomId); return; }
-  const rows = nyeRows(calendarData);
+  const rows = nyeRows(calendarData, part);
   const label = roomId === 'van' ? name + ' (van)' : roomId === 'hallway' ? name + ' (hallway)' : name;
 
-  // the column with the fewest guests over the festival
+  // the column with the fewest guests over the part
   let best = cols[0], bestLoad = Infinity;
   for (const c of cols) {
     let load = 0;
@@ -1507,7 +1563,7 @@ function recordNyeBooking(ss, name, roomId) {
       cell.setValue(label);
       cell.setFontColor('#999999');
     }
-    if (first) { cell.setNote((cell.getNote() ? cell.getNote() + '\n' : '') + label + ': pending approval - from the festival form'); first = false; }
+    if (first) { cell.setNote((cell.getNote() ? cell.getNote() + '\n' : '') + label + ': pending - festival form'); first = false; }
   }
   Logger.log('Festival booking recorded for ' + label + ' in column ' + best);
 }
@@ -1521,15 +1577,19 @@ function nyeRoomDisplayName(ss, roomId) {
 }
 
 function handleNyeSubmission(app, ss) {
+  const part = nyePart(app.part);
+  if (!part) return jsonResponse({ success: false, error: 'Please choose Part I, Part II or both' });
+  if (app.deposit !== 'yes') return jsonResponse({ success: false, error: 'The booking needs the deposit commitment' });
+
   // Dorm / shared-room beds: we choose the room
   const category = NYE.categories[app.roomId];
-  let requested = '';
+  let categoryName = '';
   if (category) {
-    const assigned = assignNyeRoom(ss, category);
+    const assigned = assignNyeRoom(ss, category, part);
     if (!assigned) {
-      return jsonResponse({ success: false, error: 'no ' + category.name + ' is left for the festival' });
+      return jsonResponse({ success: false, error: 'no ' + category.name + ' is left for ' + part.label.toLowerCase() });
     }
-    requested = category.name;
+    categoryName = category.name;
     app.roomId = assigned;
     app.roomName = category.name + ' → ' + nyeRoomDisplayName(ss, assigned);
   }
@@ -1540,60 +1600,62 @@ function handleNyeSubmission(app, ss) {
   const maxPeople = cfg ? (cfg.maxPeople || 1) : 2;
   const people = Math.min(maxPeople, Math.max(1, parseInt(app.people) || 1));
 
-  // 38 people in total
-  const booked = nyePeopleBooked(ss);
-  if (booked + people > NYE.cap) {
-    const left = Math.max(0, NYE.cap - booked);
-    return jsonResponse({ success: false, soldOut: true, error: left === 0 ? 'the festival is full' : 'only ' + left + ' place' + (left === 1 ? '' : 's') + ' left' });
+  // 38 people per part; both parts count in each
+  const booked = nyePeopleBookedByPart();
+  for (const k of part.counts) {
+    if (booked[k] + people > NYE.cap) {
+      const left = Math.max(0, NYE.cap - booked[k]);
+      return jsonResponse({ success: false, soldOut: true, error: left === 0 ? nyePart(k).label + ' is full' : 'only ' + left + ' place' + (left === 1 ? '' : 's') + ' left in ' + nyePart(k).label });
+    }
   }
 
   // Prices are decided here, not by the page
-  const roomPrice = cfg ? (category ? category.price : cfg.price) : 0;
-  const foodFee = NYE.foodPerDay * NYE.nights * people;
-  const facilitatorsFee = NYE.facilitatorsFee * people;
+  const roomPrice = cfg ? nyePriceFor(category ? category.price : cfg.price, app.part) : 0;
+  const foodFee = part.food * people;
+  const facilitatorsFee = part.facilitators * people;
   const totalPrice = roomPrice + foodFee + facilitatorsFee;
+  const deposit = Math.round(totalPrice / 2);
   const roomName = cfg ? app.roomName : 'none';
 
-  const sheet = getOrCreateNyeSheet(ss);
-  sheet.appendRow([
-    new Date(),
-    app.name,
-    app.email,
-    (app.questions || '') + (app.roomPreference ? ' | room preference: ' + app.roomPreference : ''),
-    NYE.start,
-    NYE.end,
-    NYE.nights,
-    roomName,
-    app.roomId,
-    people,
-    roomPrice,
-    foodFee,
-    facilitatorsFee,
-    totalPrice,
-    'pending',
-    '',
-    '',
-    app.gender || ''
-  ]);
+  const record = {
+    name: app.name, email: app.email, phone: app.phone || '', gender: app.gender || '',
+    part: app.part, partLabel: part.label, arrival: part.start, departure: part.end, nights: part.nights,
+    roomName: roomName, roomId: app.roomId, roomPreference: app.roomPreference || '', unit: cfg ? cfg.unit : '',
+    people: people, roomPrice: roomPrice, foodFee: foodFee, facilitatorsFee: facilitatorsFee, totalPrice: totalPrice, deposit: deposit,
+    depositCommitment: 'Yes, I will make the organizers\' life easier and do it.',
+    ciExperience: app.ciExperience || '', food: app.food || '', mentalHealth: app.mentalHealth || '',
+    physicalHealth: app.physicalHealth || '', contagious: app.contagious || '', heardFrom: app.heardFrom || '',
+    termsAgreed: app.termsAgreed ? 'yes' : '', anythingToAdd: app.anythingToAdd || ''
+  };
+
+  try {
+    const sheet = nyeRegistrationsSheet();
+    sheet.appendRow([
+      new Date(), record.name, record.email, record.phone, record.gender, record.part, record.arrival, record.departure, record.nights,
+      record.roomName, record.roomId, record.people, record.roomPrice, record.foodFee, record.facilitatorsFee, record.totalPrice, record.deposit,
+      '', 'pending', record.depositCommitment, record.ciExperience, record.food, record.mentalHealth, record.physicalHealth, record.contagious,
+      record.heardFrom, record.termsAgreed, record.anythingToAdd + (record.roomPreference ? ' | room preference: ' + record.roomPreference : '')
+    ]);
+  } catch (sheetErr) {
+    Logger.log('Registrations sheet write failed: ' + sheetErr.message);
+    return jsonResponse({ success: false, error: 'could not save the registration: ' + sheetErr.message });
+  }
 
   if (cfg) {
     try {
-      recordNyeBooking(ss, app.name, app.roomId);
+      recordNyeBooking(ss, record.name, record.roomId, part);
     } catch (calendarErr) {
       Logger.log('NYE calendar recording failed: ' + calendarErr.message);
     }
   }
 
-  const record = { name: app.name, email: app.email, gender: app.gender || '', questions: app.questions || '', roomName: roomName, roomId: app.roomId,
-                   roomPreference: app.roomPreference || '', people: people, roomPrice: roomPrice, foodFee: foodFee,
-                   facilitatorsFee: facilitatorsFee, totalPrice: totalPrice, unit: cfg ? cfg.unit : '' };
   try {
     sendNyeNotification(record);
   } catch (emailErr) {
     Logger.log('NYE email notification failed: ' + emailErr.message);
   }
 
-  return jsonResponse({ success: true, totalPrice: totalPrice, peopleLeft: Math.max(0, NYE.cap - booked - people) });
+  return jsonResponse({ success: true, totalPrice: totalPrice, deposit: deposit });
 }
 
 function buildNyeSummary(r) {
@@ -1604,16 +1666,18 @@ PARTICIPANT
 
 Name: ${r.name}
 Email: ${r.email}
+Phone: ${r.phone || 'Not given'}
 Gender: ${r.gender || 'Not given'}
 Number of people: ${r.people}
 
 ============================================================
-DATES & ACCOMMODATION
+PART, DATES & ACCOMMODATION
 ============================================================
 
-New Year Contact Improvisation Festival
-Arrival: Monday 28 December 2026
-Departure: Monday 11 January 2027 (14 nights)
+New Year Contact Improvisation Festival 2026-27
+${r.partLabel}
+Arrival: ${r.arrival}
+Departure: ${r.departure} (${r.nights} nights)
 
 Accommodation: ${r.roomName}${r.unit === 'bed' ? ' (one bed)' : ''}
 ${r.roomPreference ? 'Accommodation preference (room selection was unavailable): ' + r.roomPreference : ''}
@@ -1623,14 +1687,45 @@ PRICE
 ============================================================
 
 Accommodation: €${r.roomPrice}
-Food & facilities: €${r.foodFee} (${r.people} × 14 days × €${NYE.foodPerDay})
-${r.facilitatorsFee ? 'Facilitators fee: €' + r.facilitatorsFee + '\n' : ''}TOTAL: €${r.totalPrice}
+Food & facilities: €${r.foodFee} (${r.people} × €${r.foodFee / r.people})
+Facilitators fee: €${r.facilitatorsFee} (${r.people} × €${r.facilitatorsFee / r.people})
+TOTAL: €${r.totalPrice}
+Deposit (50%): €${r.deposit}
+
+Payment to: ${NYE.deposit.name}
+IBAN: ${NYE.deposit.iban}
+Swift/BIC: ${NYE.deposit.bic} (from outside SEPA)
+Bank: ${NYE.deposit.bank}
+Without the deposit, the booking isn't confirmed.
+Cancellation policy: before 1 December 50% refund, after 1 December non-refundable.
 
 ============================================================
-QUESTIONS / REQUESTS
+FORM ANSWERS
 ============================================================
 
-${r.questions || 'None'}
+Experience with Contact Improvisation:
+${r.ciExperience || 'Not given'}
+
+Food — allergies / special diets:
+${r.food || 'None given'}
+
+Mental health (diagnosis, medication, treatment or therapy):
+${r.mentalHealth || 'Not given'}
+
+Physically healthy and ready to practice CI; injuries or surgeries:
+${r.physicalHealth || 'Not given'}
+
+Close contact with a contagious disease in the past 2 months:
+${r.contagious || 'Not given'}
+
+How did you know about the festival?
+${r.heardFrom || 'Not given'}
+
+Terms & agreements accepted: ${r.termsAgreed || 'not recorded'}
+Deposit commitment: ${r.depositCommitment}
+
+Anything to add / questions:
+${r.anythingToAdd || 'None'}
 `;
 }
 
@@ -1638,26 +1733,45 @@ function sendNyeNotification(r) {
   const summary = buildNyeSummary(r);
   try {
     MailApp.sendEmail(
-      'theonlyfool@foolsvalley.com',
-      'NYE CI Festival booking request: ' + r.name + ' (' + r.people + ')',
-      'New booking request for the New Year CI Festival (Dec 28, 2026 - Jan 11, 2027):\n' + summary +
-      '\nFull record in the "nye applications" tab of the booking spreadsheet.'
+      NYE.emails,
+      'NYE CI Festival registration: ' + r.name + ' — ' + r.partLabel + ' (' + r.people + ')',
+      'New registration for the New Year CI Festival 2026-27:\n' + summary +
+      '\nFull record in the registrations spreadsheet.'
     );
   } catch (err) {
-    Logger.log('NYE staff email failed: ' + err.message);
+    Logger.log('NYE organisers email failed: ' + err.message);
   }
   try {
     MailApp.sendEmail(
       r.email,
-      "Your request — New Year CI Festival at fools' valley",
+      'Your registration — New Year CI Festival at fools\' valley',
       'Dear ' + r.name + ',\n\n' +
-      "Thank you for your request for the New Year Contact Improvisation Festival at fools' valley (Dec 28, 2026 - Jan 11, 2027). " +
-      'Here is a copy of it:\n' + summary +
-      '\nWe will write back to confirm your place and send payment details. If anything looks wrong, just reply to this email.\n\n' +
-      "fools' valley\n"
+      'Thank you for registering for the New Year Contact Improvisation Festival at fools\' valley. ' +
+      'Here is a copy of your registration:\n' + summary +
+      '\nYour place is confirmed once the deposit arrives. If anything looks wrong, or you have any questions, reply to this email or write to cifestivalportugal@gmail.com.\n\n' +
+      'Alexa, Viktoria & Francisco, and fools\' valley\n'
     );
   } catch (err) {
     Logger.log('NYE participant email failed: ' + err.message);
+  }
+}
+
+// The registrations sheet is not ours, so status edits there cannot trigger onEdit here.
+// Run this (by hand or on a time-based trigger) to mirror statuses into the calendar:
+// 'yes' turns the guest's entry black, 'no' removes it.
+function syncNyeStatuses() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = nyeRegistrationsSheet();
+  if (sheet.getLastRow() < 2) return;
+  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, NYE_STATUS_COLUMN).getValues();
+  for (const row of rows) {
+    const status = String(row[NYE_COL.status] || '').toLowerCase().trim();
+    const part = nyePart(String(row[NYE_COL.part] || '').trim());
+    const roomId = String(row[NYE_COL.room] || '').trim();
+    const name = String(row[NYE_COL.name] || '').trim();
+    if (!part || !roomId || roomId === 'none' || !name) continue;
+    if (status === 'yes') updateBookingColor(ss, name, part.start, part.end, roomId, '#000000');
+    else if (status === 'no') removeBookingFromCalendar(ss, name, part.start, part.end, roomId);
   }
 }
 
@@ -1683,7 +1797,6 @@ function onEdit(e) {
     const layouts = {};
     layouts[APPLICATIONS_SHEET] = { status: 24, arrival: 12, departure: 13, room: 16 };
     layouts[TUCKER_APPLICATIONS_SHEET] = { status: 21, arrival: 11, departure: 12, room: 15 };
-    layouts[NYE_APPLICATIONS_SHEET] = { status: NYE_STATUS_COLUMN, arrival: 4, departure: 5, room: 8 };
     layouts[VIPASSANA_APPLICATIONS_SHEET] = { status: VIPASSANA_STATUS_COLUMN, arrival: 10, departure: 11, room: 14 };
     const layout = layouts[sheetName];
     if (!layout) {
