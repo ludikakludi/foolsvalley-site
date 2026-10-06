@@ -479,12 +479,13 @@
         </div>
     </section>
 
-    <section id="payment" style="display:none;">
+    <section id="payment">
         <div class="section-label">005 / payment</div>
         <h2 class="section-title">deposit</h2>
+        <p class="dates-note" id="pay-hint">your total and the deposit appear here once you have chosen a part and a room above.</p>
         <div class="totals">
-            <div class="review-row"><span class="label">your total</span><span class="value" id="pay-total"></span></div>
-            <div class="review-row total"><span class="label">deposit (50%)</span><span class="value" id="pay-deposit"></span></div>
+            <div class="review-row"><span class="label">your total</span><span class="value" id="pay-total">—</span></div>
+            <div class="review-row total"><span class="label">deposit (50%)</span><span class="value" id="pay-deposit">—</span></div>
         </div>
         <div class="form">
             <div class="field" id="field-deposit">
@@ -611,7 +612,7 @@
         document.getElementById('duration-display').textContent = nights() + ' nights';
         document.getElementById('date-summary').style.display = '';
         selectedRoom = null;
-        document.getElementById('payment').style.display = 'none';
+        populateTotals();
         document.getElementById('review').style.display = 'none';
         document.getElementById('people-choice').style.display = 'none';
         fetchAvailability();
@@ -788,15 +789,16 @@
     }
 
     function populateTotals() {
+      const has = !!selectedRoom;
       const p = pricing();
-      document.getElementById('pay-total').textContent = '€' + p.total;
-      document.getElementById('pay-deposit').textContent = '€' + p.deposit;
+      document.getElementById('pay-total').textContent = has ? '€' + p.total : '—';
+      document.getElementById('pay-deposit').textContent = has ? '€' + p.deposit : '—';
+      document.getElementById('pay-hint').style.display = has ? 'none' : '';
     }
 
     function showPayment() {
       populateTotals();
       const section = document.getElementById('payment');
-      section.style.display = 'block';
       onDepositChange();
       setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
