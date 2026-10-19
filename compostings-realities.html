@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fools research lab: compos(t)ing realities — fools' valley</title>
-    <meta name="description" content="Open call: residency &amp; crew invitation. Fools Research Lab: Compos(t)ing Realities, Nov 14–22, 2026, Ericeira, Portugal.">
+    <title>fools' research lab II: compos(t)ing realities — fools' valley</title>
+    <meta name="description" content="Open call: residency &amp; crew invitation. Fools' Research Lab II: Compos(t)ing Realities, Nov 14–22, 2026, Ericeira, Portugal.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -197,8 +197,47 @@
             border: 1px solid var(--black);
         }
         .apply-btn:hover { background: var(--bg); color: var(--black); }
+        .prev-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            margin-left: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            color: var(--black);
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: lowercase;
+            letter-spacing: 0.05em;
+            border: 1px solid var(--black);
+        }
+        .prev-btn:hover { background: var(--black); color: var(--bg); }
+        @media (max-width: 480px) { .prev-btn { margin-left: 0; margin-top: 0.75rem; } }
 
         .closing { font-family: 'EB Garamond', serif; font-size: 1.4rem; font-style: italic; margin-top: 2.5rem; max-width: 620px; }
+
+
+        /* slugs — hand-drawn, scattered around the text */
+        section { position: relative; }
+        .slug {
+            position: absolute;
+            height: var(--s, 80px);
+            width: auto;
+            transform: rotate(var(--r, 0deg));
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.9;
+            z-index: 0;
+        }
+        .hero .slug { z-index: 1; }
+        .hero-content, .section-label, .pull, .prose, .partners, .practices, .fields, .apply-btn, .prev-btn, .closing { position: relative; z-index: 2; }
+        @media (max-width: 1000px) {
+            .slug { display: none; }
+            /* !important: these override the per-slug inline positions used on wide screens */
+            .slug.slug-keep { display: block; left: auto !important; right: 1.5rem !important; top: 0.9rem !important; bottom: auto !important; height: 50px !important; }
+            .hero .slug.slug-keep { top: 4.25rem !important; right: 2rem !important; height: 56px !important; }
+            .slug.slug-keep.slug-foot { top: auto !important; bottom: 1rem !important; }
+            .section-label, .closing { padding-right: 4.5rem; }
+        }
 
         footer {
             padding: 1rem 2rem;
@@ -227,28 +266,38 @@
 
     <section class="hero">
         <div class="hero-bg-text">COMPOST</div>
+        <img class="slug slug-keep" src="assets/slugs/slug-15.svg" alt="" aria-hidden="true" style="left:calc(672px + 4vw); top:9rem; --s:112px; --r:-8deg">
+        <img class="slug" src="assets/slugs/slug-03.svg" alt="" aria-hidden="true" style="left:calc(672px + 22vw); top:16rem; --s:86px; --r:6deg">
+        <img class="slug" src="assets/slugs/slug-08.svg" alt="" aria-hidden="true" style="left:calc(672px + 9vw); top:24rem; --s:96px; --r:-3deg">
+        <img class="slug" src="assets/slugs/slug-23.svg" alt="" aria-hidden="true" style="left:calc(672px + 30vw); top:8rem; --s:46px; --r:12deg">
+        <img class="slug" src="assets/slugs/slug-12.svg" alt="" aria-hidden="true" style="right:5%; bottom:2.5rem; --s:70px; --r:-5deg">
         <div class="hero-content">
             <div class="hero-kicker">open call · residency &amp; crew invitation</div>
             <div class="hero-dates">nov 14 – 22, 2026 · ericeira, portugal</div>
-            <h1 class="hero-title">fools research lab:<br><em>compos(t)ing realities</em></h1>
+            <h1 class="hero-title">fools' research lab II:<br><em>compos(t)ing realities</em></h1>
             <p class="hero-intro">
                 an international, interdisciplinary collaboration between fools' valley, <a href="https://deepplayinstitute.com/" target="_blank" rel="noopener">the deep play institute</a> and <a href="https://www.instagram.com/candies_and_catharsis/" target="_blank" rel="noopener">candies and catharsis</a>.
             </p>
             <dl class="hero-facts">
                 <div class="hero-fact"><dt>dates</dt><dd>nov 14 – 22, 2026</dd></div>
                 <div class="hero-fact"><dt>location</dt><dd>ericeira, portugal</dd></div>
-                <div class="hero-fact"><dt>contribution</dt><dd>€350<small>lodging in a dorm &amp; 3 meals a day</small></dd></div>
+                <div class="hero-fact"><dt>contribution</dt><dd>from €350<small>lodging in a dorm &amp; 3 meals a day</small></dd></div>
                 <div class="hero-fact"><dt>apply by</dt><dd>nov 1, 2026<small>rolling admission</small></dd></div>
             </dl>
             <a class="apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfMoJZKJLIbWp7Eu3b9cedb9S5-wBTjeamhVVCQVQ2SoQg_Zw/viewform" target="_blank" rel="noopener">apply →</a>
+            <a class="prev-btn" href="fools-research-lab.html">← previous fools' lab</a>
         </div>
     </section>
 
     <section>
+        <img class="slug slug-keep" src="assets/slugs/slug-10.svg" alt="" aria-hidden="true" style="left:calc(752px + 3vw); top:2rem; --s:64px; --r:4deg">
+        <img class="slug" src="assets/slugs/slug-19.svg" alt="" aria-hidden="true" style="left:calc(672px + 14vw); top:11rem; --s:120px; --r:-10deg">
+        <img class="slug" src="assets/slugs/slug-01.svg" alt="" aria-hidden="true" style="right:9%; top:5.5rem; --s:72px; --r:7deg">
+        <img class="slug" src="assets/slugs/slug-24.svg" alt="" aria-hidden="true" style="left:calc(672px + 6vw); bottom:2.2rem; --s:52px; --r:-14deg">
         <div class="section-label">001 / the lab</div>
         <p class="pull">we are bringing together contemporary dance, theater, experience design, psychosomatic techniques, relational &amp; healing arts practices to research and develop frameworks for innovative, immersive performance and transformative ritual.</p>
         <div class="prose">
-            <p>we are currently in the initial conceptual research phase. we are standing at the beginning of this journey and want to meet potential long-term collaborators who share our interests and experience.</p>
+            <p>this is the second fools' research lab, after the <a href="fools-research-lab.html">first edition in april 2026</a>. we are currently in the initial conceptual research phase. we are standing at the beginning of this journey and want to meet potential long-term collaborators who share our interests and experience.</p>
             <p>our long-term vision is to form a dedicated, cohesive core crew that will continue to research, rehearse and perform in regular blocks each year.</p>
         </div>
         <div class="partners">
@@ -259,6 +308,11 @@
     </section>
 
     <section>
+        <img class="slug slug-keep" src="assets/slugs/slug-16.svg" alt="" aria-hidden="true" style="left:calc(752px + 2vw); top:1.5rem; --s:118px; --r:5deg">
+        <img class="slug" src="assets/slugs/slug-05.svg" alt="" aria-hidden="true" style="right:7%; top:13rem; --s:66px; --r:-9deg">
+        <img class="slug" src="assets/slugs/slug-21.svg" alt="" aria-hidden="true" style="left:calc(752px + 12vw); top:22rem; --s:80px; --r:11deg">
+        <img class="slug" src="assets/slugs/slug-13.svg" alt="" aria-hidden="true" style="right:16%; top:31rem; --s:64px; --r:-4deg">
+        <img class="slug" src="assets/slugs/slug-09.svg" alt="" aria-hidden="true" style="left:calc(752px + 4vw); bottom:2rem; --s:130px; --r:-7deg">
         <div class="section-label">002 / the residency: focus &amp; intent</div>
         <div class="prose">
             <p>this initial residency is a space for deepening practice, artistic research, and collective experimentation.</p>
@@ -284,6 +338,11 @@
     </section>
 
     <section>
+        <img class="slug slug-keep" src="assets/slugs/slug-17.svg" alt="" aria-hidden="true" style="left:calc(672px + 5vw); top:2rem; --s:90px; --r:-6deg">
+        <img class="slug" src="assets/slugs/slug-02.svg" alt="" aria-hidden="true" style="left:calc(672px + 18vw); top:9rem; --s:68px; --r:9deg">
+        <img class="slug" src="assets/slugs/slug-22.svg" alt="" aria-hidden="true" style="right:6%; top:16rem; --s:98px; --r:-12deg">
+        <img class="slug" src="assets/slugs/slug-06.svg" alt="" aria-hidden="true" style="left:calc(672px + 9vw); top:24rem; --s:124px; --r:4deg">
+        <img class="slug" src="assets/slugs/slug-25.svg" alt="" aria-hidden="true" style="right:20%; bottom:3rem; --s:66px; --r:-3deg">
         <div class="section-label">003 / who we are looking for</div>
         <div class="prose">
             <p>we are seeking artists, researchers and practitioners who possess solid experience and value the approach to collaborative creation. you should have a background in at least two of the fields below.</p>
@@ -303,11 +362,15 @@
     </section>
 
     <section>
+        <img class="slug slug-keep" src="assets/slugs/slug-11.svg" alt="" aria-hidden="true" style="left:calc(672px + 4vw); top:2rem; --s:86px; --r:7deg">
+        <img class="slug" src="assets/slugs/slug-14.svg" alt="" aria-hidden="true" style="left:calc(672px + 20vw); top:6rem; --s:134px; --r:-5deg">
+        <img class="slug" src="assets/slugs/slug-04.svg" alt="" aria-hidden="true" style="right:8%; top:17rem; --s:84px; --r:10deg">
+        <img class="slug slug-keep slug-foot" src="assets/slugs/slug-20.svg" alt="" aria-hidden="true" style="left:calc(672px + 7vw); bottom:1.5rem; --s:52px; --r:-8deg">
         <div class="section-label">004 / how to apply</div>
         <div class="prose">
             <p>please fill out our short application form by <strong>november 1st</strong>.</p>
             <p>applicants will be accepted on a rolling basis, so please apply as soon as possible to reserve your spot. spaces are limited to ensure a focused research environment.</p>
-            <p>contribution: <strong>€350</strong>, which includes lodging in a dorm and 3 meals per day.</p>
+            <p>contribution: starting from <strong>€350</strong>, which includes lodging in a dorm and 3 meals per day.</p>
         </div>
         <a class="apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfMoJZKJLIbWp7Eu3b9cedb9S5-wBTjeamhVVCQVQ2SoQg_Zw/viewform" target="_blank" rel="noopener">apply →</a>
         <p class="closing">we look forward to moving, researching, and building with you!</p>

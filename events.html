@@ -66,6 +66,7 @@
         .hero {
             padding: 8rem 2rem 4rem;
             position: relative;
+            overflow: hidden;
         }
 
         .hero-bg-text {
@@ -175,6 +176,39 @@
             color: var(--moss);
             margin-top: 0.75rem;
         }
+
+        /* Featured event */
+        .event-card.featured {
+            position: relative;
+            border: 1px solid var(--black);
+            background: var(--cream);
+            padding: 2rem 1.5rem;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .event-card.featured:hover { padding-left: 2.5rem; background: var(--cream); }
+        .featured-label {
+            position: absolute;
+            top: 0; left: 0;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            padding: 0.35rem 0.75rem;
+            background: var(--black);
+            color: var(--bg);
+        }
+        .event-card.featured .event-tag { border-color: var(--black); color: var(--black); }
+        .featured-slug {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1rem;
+            height: 84px;
+            width: auto;
+            opacity: 0.9;
+            pointer-events: none;
+            transform: rotate(-6deg);
+        }
+        @media (max-width: 600px) { .featured-slug { height: 56px; right: 1rem; bottom: auto; top: 1.75rem; } }
 
         /* Past events */
         .past-section {
@@ -304,16 +338,18 @@
                 </div>
             </a>
 
-            <a href="compostings-realities.html" class="event-card">
+            <a href="compostings-realities.html" class="event-card featured">
+                <span class="featured-label">open call · apply by nov 1</span>
                 <div class="event-date">
                     <div class="event-date-range">Nov 14–22</div>
                     <div class="event-date-year">2026</div>
                 </div>
                 <div class="event-content">
-                    <h3>fools research lab: compos(t)ing realities</h3>
-                    <p>open call for a residency &amp; crew: dance, theater, experience design, psychosomatic and relational practices, researching immersive performance and transformative ritual. ericeira, portugal. apply by nov 1.</p>
+                    <h3>fools' research lab II: compos(t)ing realities</h3>
+                    <p>open call for a residency &amp; crew: dance, theater, experience design, psychosomatic and relational practices, researching immersive performance and transformative ritual. ericeira, portugal. contribution from €350.</p>
                     <span class="event-tag">research lab</span>
                 </div>
+                <img class="featured-slug" src="assets/slugs/slug-15.svg" alt="" aria-hidden="true">
             </a>
 
             <a href="vipassana-retreat.html" class="event-card">
