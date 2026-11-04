@@ -51,9 +51,10 @@ const NYE = {
   emails: 'cifestivalportugal@gmail.com,theonlyfool@foolsvalley.com',
   deposit: {
     name: 'Christopher William Wray',
-    iban: 'BE36 9671 7217 6881',
-    bic: 'TRWIBEB1XXX',
-    bank: 'Wise, Rue du Trône 100, 3rd floor, Brussels, 1050, Belgium'
+    iban: 'GB09 REVO 0099 7092 9665 57',
+    bic: 'REVOGB21',
+    bank: 'Revolut Ltd, 30 South Colonnade, E14 5HX, London, United Kingdom',
+    correspondentBic: 'CHASDEFX'
   }
 };
 function nyePart(key) { return NYE.parts[key] || null; }
@@ -110,6 +111,10 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
+
+    if (data.action === 'venue_enquiry') {
+      return handleVenueEnquiry(data.enquiry);
+    }
 
     if (data.action === 'submit') {
       return handleSubmission(data);
@@ -1328,7 +1333,7 @@ PRICE
 Accommodation: €${roomPrice}
 Food & facilities: €${foodFee} (${app.numDays} days × €30)
 TOTAL: €${roomPrice + foodFee}
-Payment commitment: ${app.payment === 'yes' ? 'yes, full amount to Christopher William Wray, IBAN BE36 9671 7217 6881' : 'not recorded'}
+Payment commitment: ${app.payment === 'yes' ? 'yes, full amount to Christopher William Wray, IBAN GB09 REVO 0099 7092 9665 57 (Revolut, BIC REVOGB21)' : 'not recorded'}
 Cancellation terms: 6+ weeks before arrival 100% refund on accommodation, 2-6 weeks 50%, under 2 weeks none; the daily fee is always refundable.
 
 ============================================================
@@ -1697,6 +1702,7 @@ Payment to: ${NYE.deposit.name}
 IBAN: ${NYE.deposit.iban}
 Swift/BIC: ${NYE.deposit.bic} (from outside SEPA)
 Bank: ${NYE.deposit.bank}
+Correspondent BIC: ${NYE.deposit.correspondentBic}
 Without the deposit, the booking isn't confirmed.
 Cancellation policy: before 1 December 50% refund, after 1 December non-refundable.
 
@@ -2079,4 +2085,65 @@ function testStatusUpdate() {
   // Logger.log('Testing REJECTION (remove booking)...');
   // removeBookingFromCalendar(ss, applicantName, arrivalDate, departureDate, roomId);
   // Logger.log('Rejection test complete. Check valley rooms sheet.');
+}
+
+// ============================================================
+// VENUE HIRE REQUESTS (host-your-event.html)
+// ============================================================
+// Saved to the 'venue enquiries' tab and emailed to slowreply@foolsvalley.com
+// (reply goes straight to the organiser); the organiser gets a copy.
+const VENUE_ENQUIRIES_SHEET = 'venue enquiries';
+const VENUE_ENQUIRY_EMAIL = 'slowreply@foolsvalley.com';
+const VENUE_PRICE_NOTE = 'the prices in the calculator are for information only. the exact prices and the availability ' +
+  'of the spaces will be confirmed by our team after looking at your request.';
+const VENUE_ENQUIRY_HEADERS = ['submitted', 'name', 'email', 'dates', 'participants', 'option', 'estimate',
+  'price for participants', 'about the event', 'questions and requests', 'calculator estimate'];
+
+function handleVenueEnquiry(q) {
+  if (!q || !q.name || !q.email || !q.about) {
+    return jsonResponse({ success: false, error: 'Please add your name, email and a few words about your event' });
+  }
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(VENUE_ENQUIRIES_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(VENUE_ENQUIRIES_SHEET);
+    sheet.appendRow(VENUE_ENQUIRY_HEADERS);
+  }
+  sheet.appendRow([new Date(), q.name, q.email, q.dates || '', q.participants || '', q.option || '', q.estimate || '',
+    q.participantPrice || '', q.about || '', q.questions || '', q.summary || '']);
+
+  const text =
+    'name: ' + q.name + '\n' +
+    'email: ' + q.email + '\n' +
+    'dates: ' + (q.dates || '-') + '\n' +
+    'participants: ' + (q.participants || '-') + '\n\n' +
+    'about the event:\n' + q.about + '\n\n' +
+    'questions and requests:\n' + (q.questions || '-') + '\n\n' +
+    'approximate price for participants: ' + (q.participantPrice || '-') + '\n' +
+    (q.summary ? '\ncalculator estimate:\n' + q.summary + '\n' : '');
+
+  try {
+    MailApp.sendEmail({
+      to: VENUE_ENQUIRY_EMAIL,
+      replyTo: q.email,
+      subject: 'Event request: ' + q.name + (q.dates ? ', ' + q.dates : ''),
+      body: 'New request from the host-your-event page:\n\n' + text +
+        '\n' + VENUE_PRICE_NOTE + '\n\nAlso saved in the "' + VENUE_ENQUIRIES_SHEET + '" tab of the booking spreadsheet.'
+    });
+  } catch (err) {
+    Logger.log('Venue enquiry email failed: ' + err.message);
+  }
+  try {
+    MailApp.sendEmail({
+      to: q.email,
+      replyTo: VENUE_ENQUIRY_EMAIL,
+      subject: "Your event request — fools' valley",
+      body: 'Dear ' + q.name + ',\n\nthank you for your request. we will look at it and write back to you soon.\n\n' +
+        VENUE_PRICE_NOTE + '\n\n' +
+        'here is a copy of what you sent:\n\n' + text + "\nfools' valley\n"
+    });
+  } catch (err) {
+    Logger.log('Venue enquiry confirmation failed: ' + err.message);
+  }
+  return jsonResponse({ success: true });
 }
