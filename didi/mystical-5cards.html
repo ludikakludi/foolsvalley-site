@@ -238,29 +238,42 @@ body.lit .cursor-light { opacity: 1; }
     color: var(--gold-bright);
 }
 /* where each bubble floats (x, y as a share of the card; s = diameter as a share of card width) */
-.card .p1 { --x: -32.4%; --y: 3.7%;   --s: 58.8%; --d: 0.35s; --bob: 6.5s; }
-.card .p2 { --x: 35.3%;  --y: -14.9%; --s: 42.4%; --d: 0.47s; --bob: 5.5s; }
-.card .p3 { --x: 135.3%; --y: 7.4%;   --s: 52.9%; --d: 0.59s; --bob: 6.2s; }
-.card .p4 { --x: -47.1%; --y: 55.8%;  --s: 76.5%; --d: 0.71s; --bob: 7s; }
-.card .p5 { --x: 147.1%; --y: 63.2%;  --s: 56.5%; --d: 0.83s; --bob: 5.8s; }
-.card .p6 { --x: 58.8%;  --y: 119%;   --s: 54.1%; --d: 0.95s; --bob: 6.6s; }
+.card .p1 { --d: 0.35s; --bob: 6.5s; }
+.card .p2 { --d: 0.47s; --bob: 5.5s; }
+.card .p3 { --d: 0.59s; --bob: 6.2s; }
+.card .p4 { --d: 0.71s; --bob: 7s; }
+.card .p5 { --d: 0.83s; --bob: 5.8s; }
+.card .p6 { --d: 0.95s; --bob: 6.6s; }
+/* where the bubbles float: see's to its left, move's beneath it (x, y share of the card; s = diameter share of card width) */
+.card.see .p1 { --x: -50%; --y: 18.6%; --s: 64.7%; }
+.card.see .p2 { --x: 11.8%; --y: -26%; --s: 49.4%; }
+.card.see .p3 { --x: 76.5%; --y: -29.7%; --s: 54.1%; }
+.card.see .p4 { --x: -70%; --y: 80%; --s: 115%; }
+.card.see .p5 { --x: -115%; --y: 15%; --s: 42.4%; }
+.card.see .p6 { --x: -5%; --y: 128%; --s: 54.1%; }
+.card.shake .p1 { --x: 0%; --y: 128%; --s: 61.2%; }
+.card.shake .p2 { --x: -50%; --y: 145%; --s: 47%; }
+.card.shake .p3 { --x: 165%; --y: 95%; --s: 50.6%; }
+.card.shake .p4 { --x: 90%; --y: 140%; --s: 115%; }
+.card.shake .p5 { --x: -30%; --y: 172%; --s: 43.5%; }
+.card.shake .p6 { --x: 25%; --y: 190%; --s: 43.5%; }
 @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
 @media (prefers-reduced-motion: reduce) { .card .bubble > * { animation: none; } }
 @media (max-width: 680px) {
     /* on a phone there is no room beside the fan, so the bubbles gather underneath it */
-    /* on a phone the ring is placed per card so it stays on screen */
-    .card.see .p1 { --x: 43.5%; --y: -22.6%; --s: 63%; }
-    .card.see .p2 { --x: 141.3%; --y: -17.1%; --s: 67.4%; }
-    .card.see .p3 { --x: 173.9%; --y: 47.9%; --s: 78.3%; }
-    .card.see .p4 { --x: 56.5%; --y: 141.8%; --s: 113%; }
-    .card.see .p5 { --x: 157.6%; --y: 116.4%; --s: 71.7%; }
-    .card.see .p6 { --x: 179.3%; --y: 174.7%; --s: 60.9%; }
-    .card.shake .p1 { --x: -57.6%; --y: 39.7%; --s: 65.2%; }
-    .card.shake .p2 { --x: 40.2%; --y: -12%; --s: 60%; }
-    .card.shake .p3 { --x: 154.3%; --y: 19.2%; --s: 76.1%; }
-    .card.shake .p4 { --x: -30.4%; --y: 125.3%; --s: 113%; }
-    .card.shake .p5 { --x: 148.9%; --y: 104.8%; --s: 71.7%; }
-    .card.shake .p6 { --x: 78.3%; --y: 173.3%; --s: 63%; }
+    /* on a phone there is no room beside the fan, so the bubbles gather underneath it */
+    .card.see .p1 { --x: 222.8%; --y: 164.4%; --s: 91.3%; }
+    .card.see .p2 { --x: 320.7%; --y: 215.8%; --s: 80.4%; }
+    .card.see .p3 { --x: 212%; --y: 239.7%; --s: 97.8%; }
+    .card.see .p4 { --x: 87%; --y: 198.6%; --s: 141.3%; }
+    .card.see .p5 { --x: 38%; --y: 274%; --s: 69.6%; }
+    .card.see .p6 { --x: 347.8%; --y: 157.5%; --s: 76.1%; }
+    .card.shake .p1 { --x: 121.7%; --y: 166.4%; --s: 91.3%; }
+    .card.shake .p2 { --x: 219.6%; --y: 217.8%; --s: 80.4%; }
+    .card.shake .p3 { --x: 110.9%; --y: 241.8%; --s: 97.8%; }
+    .card.shake .p4 { --x: -14.1%; --y: 200.7%; --s: 141.3%; }
+    .card.shake .p5 { --x: -63%; --y: 276%; --s: 69.6%; }
+    .card.shake .p6 { --x: 246.7%; --y: 159.6%; --s: 76.1%; }
     .card .bubble .words { font-size: 0.42rem; letter-spacing: 0.08em; padding: 10%; }
 }
 
@@ -423,8 +436,8 @@ body.lit .cursor-light { opacity: 1; }
     color: var(--muted);
 }
 @media (max-width: 680px) {
-    .diary-page { right: 4%; bottom: -11rem; }
-    body footer { margin-top: 40vh; }
+    .diary-page { right: 4%; bottom: -15rem; }
+    body footer { margin-top: 50vh; }
     .diary-page .d-word { font-size: 0.56rem; }
     .diary-page .d-sub { font-size: 0.9rem; }
 }
@@ -660,8 +673,8 @@ document.querySelectorAll('[data-card]').forEach(card => {
         if (card.classList.contains('flipped') && e.target.closest('a')) return;
         card.classList.toggle('flipped');
         const open = card.classList.contains('flipped');
-        // see and move each open a ring of bubbles: one ring at a time
-        if (open && card.querySelector('.bubbles')) {
+        // on a phone the bubbles of see and move share the space under the fan: one set at a time
+        if (open && card.querySelector('.bubbles') && window.matchMedia('(max-width: 680px)').matches) {
             document.querySelectorAll('[data-card].flipped').forEach(other => {
                 if (other !== card && other.querySelector('.bubbles')) { other.classList.remove('flipped'); setVideos(other, false); }
             });
