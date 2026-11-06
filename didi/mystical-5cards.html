@@ -96,7 +96,7 @@ h1 {
     width: 170px;
     height: 269px;
     cursor: pointer;
-    margin: 0 -0.6rem;
+    margin: 0 -1.5rem;
     transform-origin: 50% 165%;
     transform: var(--fan);
     animation: fanOpen 1s cubic-bezier(0.3, 0.7, 0.25, 1) both;
@@ -251,29 +251,29 @@ body.lit .cursor-light { opacity: 1; }
 .card.see .p4 { --x: -70%; --y: 80%; --s: 115%; }
 .card.see .p5 { --x: -115%; --y: 15%; --s: 42.4%; }
 .card.see .p6 { --x: -5%; --y: 128%; --s: 54.1%; }
-.card.shake .p1 { --x: 0%; --y: 128%; --s: 61.2%; }
-.card.shake .p2 { --x: -50%; --y: 145%; --s: 47%; }
-.card.shake .p3 { --x: 165%; --y: 95%; --s: 50.6%; }
-.card.shake .p4 { --x: 90%; --y: 140%; --s: 115%; }
-.card.shake .p5 { --x: -30%; --y: 172%; --s: 43.5%; }
-.card.shake .p6 { --x: 25%; --y: 190%; --s: 43.5%; }
+.card.shake .p1 { --x: -35.3%; --y: 119%; --s: 61.2%; }
+.card.shake .p2 { --x: -76.5%; --y: 156.1%; --s: 47%; }
+.card.shake .p3 { --x: 117.6%; --y: 111.5%; --s: 50.6%; }
+.card.shake .p4 { --x: 44.1%; --y: 148.7%; --s: 115%; }
+.card.shake .p5 { --x: -29.4%; --y: 174.7%; --s: 43.5%; }
+.card.shake .p6 { --x: 135.3%; --y: 146.8%; --s: 43.5%; }
 @keyframes bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
 @media (prefers-reduced-motion: reduce) { .card .bubble > * { animation: none; } }
 @media (max-width: 680px) {
     /* on a phone there is no room beside the fan, so the bubbles gather underneath it */
     /* on a phone there is no room beside the fan, so the bubbles gather underneath it */
-    .card.see .p1 { --x: 222.8%; --y: 164.4%; --s: 91.3%; }
-    .card.see .p2 { --x: 320.7%; --y: 215.8%; --s: 80.4%; }
-    .card.see .p3 { --x: 212%; --y: 239.7%; --s: 97.8%; }
-    .card.see .p4 { --x: 87%; --y: 198.6%; --s: 141.3%; }
-    .card.see .p5 { --x: 38%; --y: 274%; --s: 69.6%; }
-    .card.see .p6 { --x: 347.8%; --y: 157.5%; --s: 76.1%; }
-    .card.shake .p1 { --x: 121.7%; --y: 166.4%; --s: 91.3%; }
-    .card.shake .p2 { --x: 219.6%; --y: 217.8%; --s: 80.4%; }
-    .card.shake .p3 { --x: 110.9%; --y: 241.8%; --s: 97.8%; }
-    .card.shake .p4 { --x: -14.1%; --y: 200.7%; --s: 141.3%; }
-    .card.shake .p5 { --x: -63%; --y: 276%; --s: 69.6%; }
-    .card.shake .p6 { --x: 246.7%; --y: 159.6%; --s: 76.1%; }
+    .card.see .p1 { --x: 205.2%; --y: 147.5%; --s: 91.3%; }
+    .card.see .p2 { --x: 303.0%; --y: 198.9%; --s: 80.4%; }
+    .card.see .p3 { --x: 194.3%; --y: 222.9%; --s: 97.8%; }
+    .card.see .p4 { --x: 69.3%; --y: 181.8%; --s: 141.3%; }
+    .card.see .p5 { --x: 20.4%; --y: 257.1%; --s: 69.6%; }
+    .card.see .p6 { --x: 330.2%; --y: 140.7%; --s: 76.1%; }
+    .card.shake .p1 { --x: 118.6%; --y: 149.5%; --s: 91.3%; }
+    .card.shake .p2 { --x: 216.4%; --y: 200.8%; --s: 80.4%; }
+    .card.shake .p3 { --x: 107.7%; --y: 224.8%; --s: 97.8%; }
+    .card.shake .p4 { --x: -17.3%; --y: 183.7%; --s: 141.3%; }
+    .card.shake .p5 { --x: -66.2%; --y: 259.0%; --s: 69.6%; }
+    .card.shake .p6 { --x: 243.6%; --y: 142.6%; --s: 76.1%; }
     .card .bubble .words { font-size: 0.42rem; letter-spacing: 0.08em; padding: 10%; }
 }
 
@@ -379,7 +379,6 @@ body.lit .cursor-light { opacity: 1; }
 .back.site video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 4px; }
 .card.door .face { transition: opacity 0.8s ease; }
 .card.door:not(.flipped) { z-index: 0; }
-.card.door:not(.flipped) .card-inner { transform: scale(0.9); }
 .card.door:not(.flipped) .face { opacity: 0.55; }
 .card.door:not(.flipped):hover .face { opacity: 0.85; }
 .back.site .plate { width: auto; height: auto; top: auto; padding-top: 1.6rem; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
@@ -455,7 +454,8 @@ footer {
 @media (max-width: 680px) {
     header { padding-top: 8vh; }
     .deck { padding: 2rem 0.5rem 3rem; }
-    .card { width: 92px; height: 146px; margin: 0 -0.35rem; }
+    .card { width: 92px; height: 146px; margin: 0 -0.75rem; }
+    .card.door { margin-left: -0.35rem; } /* a little more of cinematography shows */
     /* a flatter fan so all four fit on a phone */
     .card:nth-child(1) { --fan: translateY(-8px) rotate(-6deg); }
     .card:nth-child(2) { --fan: translateY(-10px) rotate(-2deg); }
@@ -540,10 +540,8 @@ footer {
                 <div class="card-name">move</div>
             </div>
             <div class="face back">
-                <a href="move.html">
-                    <img src="../assets/didi/web/card-move.jpg" alt="move">
-                    <div class="plate"><div class="word">move</div><div class="tag">enter ↗</div></div>
-                </a>
+                <img src="../assets/didi/web/card-move.jpg" alt="move">
+                <div class="plate"><div class="word">move</div></div>
             </div>
         </div>
         <div class="bubbles" aria-hidden="true">
@@ -556,12 +554,32 @@ footer {
         </div>
     </div>
 
-    <!-- III · cinematography: the door out, in the middle of the fan -->
-    <div class="card door" data-card>
+    <!-- III · meet -->
+    <div class="card gather" data-card>
         <div class="card-inner">
             <div class="face front">
                 <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
                 <div class="numeral">III</div>
+                <svg class="glyph pin" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 38 C22 38 11 26 11 17.5 A11 11 0 0 1 33 17.5 C33 26 22 38 22 38 Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                    <circle cx="22" cy="17.5" r="4" stroke="currentColor" stroke-width="1.1"/>
+                    <path d="M12 40 Q22 43 32 40" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.45"/>
+                </svg>
+                <div class="card-name">meet</div>
+            </div>
+            <div class="face back">
+                <img src="../assets/didi/web/card-meet.jpg" alt="meet">
+                <div class="plate"><div class="word">meet</div><div class="tag">dark room socials · events<br>collaborations</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IIII · cinematography: the door out, last in the fan, tucked under meet -->
+    <div class="card door" data-card>
+        <div class="card-inner">
+            <div class="face front">
+                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
+                <div class="numeral">IIII</div>
                 <svg class="glyph" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="22" cy="22" r="13" stroke="currentColor" stroke-width="1.1"/>
                     <circle cx="22" cy="22" r="7" stroke="currentColor" stroke-width="1.1" opacity="0.7"/>
@@ -576,26 +594,6 @@ footer {
                 <video data-src="../assets/didi/reel/reel-card.mp4" poster="../assets/didi/reel/reel-poster.jpg" muted loop playsinline preload="none"></video>
                 <a class="plate" href="https://www.dianaolifirova.com" target="_blank" rel="noopener"><div class="word">dianaolifirova.com</div><div class="tag">enter ↗</div></a>
                 <span class="close" role="button" aria-label="close">✕</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- IIII · meet -->
-    <div class="card gather" data-card>
-        <div class="card-inner">
-            <div class="face front">
-                <span class="corner tl">✶</span><span class="corner tr">✶</span><span class="corner bl">✶</span><span class="corner br">✶</span>
-                <div class="numeral">IIII</div>
-                <svg class="glyph pin" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 38 C22 38 11 26 11 17.5 A11 11 0 0 1 33 17.5 C33 26 22 38 22 38 Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
-                    <circle cx="22" cy="17.5" r="4" stroke="currentColor" stroke-width="1.1"/>
-                    <path d="M12 40 Q22 43 32 40" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.45"/>
-                </svg>
-                <div class="card-name">meet</div>
-            </div>
-            <div class="face back">
-                <img src="../assets/didi/web/card-meet.jpg" alt="meet">
-                <div class="plate"><div class="word">meet</div><div class="tag">dark room socials · events<br>collaborations</div></div>
             </div>
         </div>
     </div>
